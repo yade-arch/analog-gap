@@ -15,7 +15,7 @@ export default {
   "home.step2.d": "Rover veya astronotu 6 istasyona gönder; her varışta karşılaştırma kartı açılır.",
   "home.step3.t": "3 · Rapor al",
   "home.step3.d": "Sonuçları yazdırılabilir rapora ve JSON'a dök; Gap (sınırlar) her zaman yanında.",
-  "home.example": "Gerçek örnek sonuç",
+  "home.example": "Gerçek sonuç: bu profildeki en yakın aday",
   "home.example.d": "Bu profildeki en yakın aday {id} ({region}): D = {D} (düşük = referansa daha yakın).",
   "home.limit": "Hiçbir bölge Ay/Mars'ın tam karşılığı değildir; yalnızca topografya karşılaştırılır. Bkz. Yöntem ve Doğrulama.",
 
@@ -25,6 +25,7 @@ export default {
   "map.clickHint": "Tıkla: aday kartı",
   "map.rank": "sıra",
   "map.attribution": "Altlık: NASA EOSDIS GIBS · Blue Marble Shaded Relief + Bathymetry (çevrimdışıysa Natural Earth kıyı çizgisi) · Natural Earth (kamu malı) · Pencereler: NASADEM_HGT v001 türevi",
+  "map.attribution.offline": "Altlık: Natural Earth kıyı çizgisi (kamu malı); çevrimdışı derleme, uydu altlığı yok · Pencereler: NASADEM_HGT v001 türevi",
   "map.offline": "Altlık görüntü yüklenemedi (çevrimdışı olabilir); yalnızca kıyı çizgileri gösteriliyor.",
 
   "list.purpose": "Referansa en yakın adayların sıralı listesi. Bir satıra tıklayınca karşılaştırma görevi başlar.",
@@ -47,6 +48,7 @@ export default {
   "gl.slope50": "Eğim P50: penceredeki piksel eğimlerinin medyanı (derece).",
 
   "move.layout": "Konumlar gösterim düzenidir, ölçüm yeri değil.",
+  "scene.aria": "İki yarım 3B arazi sahnesi: solda Ay/Mars referansı, sağda Dünya adayı; birimler istasyonlara gider.",
   "auto.start": "Otomatik görev",
   "auto.stop": "Durdur",
   "auto.skip": "Atla",

@@ -16,8 +16,10 @@ function declutter(labels, m) {
   const boxes = [];
   for (const { el, lngLat } of labels) {
     el.style.visibility = "visible";
-    const p = m.project(lngLat), w = el.offsetWidth || 90, h = el.offsetHeight || 16;
-    const b = [p.x - w / 2, p.y - h, p.x + w / 2, p.y];
+    const p = m.project(lngLat), w = el.offsetWidth || 90, h = el.offsetHeight || 16, W = m.getContainer().clientWidth;
+    const shift = Math.max(0, 6 - (p.x - w / 2)) + Math.min(0, W - 6 - (p.x + w / 2));      // kenarda kırpılmasın: etiketi içeri kaydır
+    el.style.marginLeft = shift + "px";
+    const b = [p.x - w / 2 + shift, p.y - h, p.x + w / 2 + shift, p.y];
     const hit = boxes.some((o) => b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]);
     if (hit) el.style.visibility = "hidden"; else boxes.push(b);
   }
@@ -42,13 +44,15 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
     });
     m.once("idle", () => { if (el.current) el.current.dataset.idle = "1"; });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    m.addControl(new maplibregl.AttributionControl({ compact: false, customAttribution: t("map.attribution") }));
+    m.addControl(new maplibregl.AttributionControl({ compact: false, customAttribution: t(import.meta.env.VITE_OFFLINE ? "map.attribution.offline" : "map.attribution") }));
     m.on("load", () => {
       const base = import.meta.env.BASE_URL || "./";
       m.addSource("land", { type: "geojson", data: `${base}data/ne_110m_land.geojson` });
       m.addLayer({ id: "land-fill", type: "fill", source: "land", paint: { "fill-color": "#2b3b4f" } });
-      m.addSource("gibs", { type: "raster", tiles: [GIBS], tileSize: 256, maxzoom: 8, attribution: "" });
-      m.addLayer({ id: "gibs", type: "raster", source: "gibs", paint: { "raster-opacity": 0.8, "raster-saturation": -0.3 } });
+      if (!import.meta.env.VITE_OFFLINE) {                     // çevrimdışı derlemede dış istek yok: yalnızca kıyı çizgileri
+        m.addSource("gibs", { type: "raster", tiles: [GIBS], tileSize: 256, maxzoom: 8, attribution: "" });
+        m.addLayer({ id: "gibs", type: "raster", source: "gibs", paint: { "raster-opacity": 0.8, "raster-saturation": -0.3 } });
+      }
       m.addLayer({ id: "coast", type: "line", source: "land", paint: { "line-color": "#9fb6cf", "line-width": 0.7 } });
       m.addSource("regions", { type: "geojson", data: regions });
       m.addLayer({ id: "regions-line", type: "line", source: "regions", paint: { "line-color": "#e8eef7", "line-width": 1.2, "line-dasharray": [3, 2] } });

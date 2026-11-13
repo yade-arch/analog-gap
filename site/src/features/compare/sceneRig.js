@@ -110,7 +110,9 @@ export function createRig(container) {
     return new THREE.Vector3(ps.reduce((a, p) => a + p.x, 0) / (ps.length || 1), 0, ps.reduce((a, p) => a + p.z, 0) / (ps.length || 1));
   }
   function applyCamera() {
-    fol.copy(followTarget()); fitCamera(); controls.enabled = st.mode === "free"; controls.update(); request();
+    fol.copy(followTarget()); fitCamera(); controls.enabled = st.mode === "free"; controls.update();
+    renderer.domElement.style.touchAction = st.mode === "free" ? "none" : "pan-y";   // serbest dışında dokunmatik kaydırma sayfayı kaydırır
+    request();
   }
   applyCamera();
   // Hafif animasyon döngüsü (render-on-demand korunur): bekleme/hareket animasyonu + yumuşak kamera takibi; hareket azaltma tercihinde animasyon yok, kamera anında izler.

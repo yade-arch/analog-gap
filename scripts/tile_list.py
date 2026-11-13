@@ -4,7 +4,7 @@ import csv, json, requests
 # SPEC §3.1 yaklaşık kutuları (W, S, E, N). Kesin sınırlar = bu kutular; regions.geojson'da tutulur.
 REGIONS = {
     "US-SW": ("ABD Güneybatı (Colorado Platosu, Mojave)", (-118.0, 34.0, -109.0, 39.0)),
-    "ATA":   ("Atacama ve Orta And",                       (-71.0, -26.0, -67.0, -20.0)),
+    "ATA":   ("Atacama ve Orta And Dağları",                       (-71.0, -26.0, -67.0, -20.0)),
     "HAW":   ("Hawaii Büyük Ada",                          (-156.1, 18.9, -154.8, 20.3)),
     "ANA":   ("Batı ve Orta Anadolu",                      (29.0, 37.0, 35.0, 40.0)),
 }

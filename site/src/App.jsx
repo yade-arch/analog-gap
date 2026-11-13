@@ -1,16 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { PROFILES, SOURCES, Tag } from "./common.jsx";
-import MapPage from "./pages/MapPage.jsx";
 import ListPage from "./pages/ListPage.jsx";
 import Home from "./pages/Home.jsx";
 import { loadDemIndex } from "./features/compare/demLoader.js";
 import Card from "./Card.jsx";
 import Method from "./Method.jsx";
-import Compare from "./pages/Compare.jsx";
 import Report from "./pages/Report.jsx";
 import TopBar from "./components/TopBar.jsx";
 import { DEFAULT_ROUTE } from "./config.js";
 
+// Ağır paketler (three.js, MapLibre) yalnızca ilgili sayfada indirilir.
+const MapPage = lazy(() => import("./pages/MapPage.jsx"));
+const Compare = lazy(() => import("./pages/Compare.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
@@ -54,7 +55,7 @@ export default function App() {
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
       <main className={page === "compare" ? "full" : ""}>
         {!D.cm ? <p>Veri yükleniyor…</p> : (
-          <>
+          <Suspense fallback={<p>Sayfa yükleniyor…</p>}>
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={cand} profile={profile} D={D} onSelect={go} />}
@@ -64,7 +65,7 @@ export default function App() {
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
               : <div className="card">Bu pencere seçili profilin aday dosyasında yok (yalnızca bölge başına en iyi 250 aday dosyaya konur). <a href="#/list">Listeye dön</a></div>)}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
-          </>
+          </Suspense>
         )}
       </main>
       <footer>

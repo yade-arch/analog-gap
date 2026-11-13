@@ -29,5 +29,5 @@ export default function SceneView({ dems, limits, exag, mode, unit, rigRef }) {
   useEffect(() => { rig.current?.setCamera(mode); }, [mode, gl]);
   useEffect(() => { rig.current?.setUnit(unit); }, [unit, gl, dems[0], dems[1]]);
   if (!gl) return <div className="scene flatwrap"><Flat dem={dems[0]} limit={limits[0]} /><Flat dem={dems[1]} limit={limits[1]} /><div className="warn fb">{t("cmp.fallback")}</div></div>;
-  return <div className="scene" ref={box} />;
+  return <div className="scene" ref={box} role="img" aria-label={t("scene.aria")} />;
 }

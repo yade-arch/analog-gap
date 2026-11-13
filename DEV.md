@@ -32,7 +32,10 @@ site/src/
   features/mission/    hareket kancası (useMove), rapor
   hud/                 HUD panelleri (Fold = dar ekranda açılır/kapanır)
   hardware/            rover bağlantı iskeleti (docs/PROTOCOL.md); arayüze bağlı değil
-  pages/               Compare (ana ekran), Report; eski sayfalar src/ kökünde
+  pages/               Home, Compare (Görev), Report, ListPage, MapPage; Card/Method src/ kökünde (Method = kapalı bölümler)
+  components/          TopBar, PageIntro (+Term ipucu, Glossary), CopyPre
+  features/mission/    useMove (hareket), useAuto (otomatik görev), report
+  offline-kit/         çevrimdışı paketin serve.mjs ve baslat.bat dosyaları (npm run offline)
 docs/            PROTOCOL.md, tasarım taslağı, ekran görüntüleri
 ```
 

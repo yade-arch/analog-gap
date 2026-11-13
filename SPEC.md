@@ -101,7 +101,7 @@ Bölgeler jeomorfolojik çeşitlilik (volkanik, kurak, çarpma veya göl tabanı
 | Kod | Bölge | Yaklaşık kutu |
 |---|---|---|
 | US-SW | ABD Güneybatı (Colorado Platosu, Mojave) | 34–39°K, 109–118°B |
-| ATA | Atacama ve Orta And | 20–26°G, 67–71°B |
+| ATA | Atacama ve Orta And Dağları | 20–26°G, 67–71°B |
 | HAW | Hawaii Büyük Ada | 18.9–20.3°K, 154.8–156.1°B |
 | ANA | Batı ve Orta Anadolu | 37–40°K, 29–35°D |
 
