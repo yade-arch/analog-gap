@@ -1,25 +1,50 @@
-// Sahne katmanı: istasyon işaretleri (numaralı) ve rota çizgisi. Yükseklik h (km) DEM'den; dikey abartı çağıran tarafından uygulanır.
+// Sahne katmanı: istasyon işaretleri (numaralı, ışık huzmeli, etiketli) ve rota çizgisi. Yükseklik h (km) DEM'den; dikey abartı çağıran tarafından uygulanır.
+// İşaret renkleri yalnızca durumu gösterir (ziyaret edildi / bekliyor / veri eksik); iyi-kötü anlamı yoktur.
 import * as THREE from "three";
 import { SETTINGS } from "../../config.js";
 
 const LIFT = 0.03;                                   // km: çizginin arazi üçgenlerine gömülmemesi için sabit kaldırma
+export const STATE_COLOR = { visited: "#6fb98f", pending: SETTINGS.routeColor, missing: "#8a94a3" };
 
-function numberSprite(n) {
-  const c = document.createElement("canvas"); c.width = c.height = 64;
-  const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.85)"; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
-  g.strokeStyle = SETTINGS.routeColor; g.lineWidth = 4; g.stroke();
-  g.fillStyle = "#f4f1e6"; g.font = "bold 34px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(n), 32, 34);
+const spr = (c, w, h) => {
   const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true }));
-  m.scale.set(0.55, 0.55, 1); m.renderOrder = 5; return m;
+  m.scale.set(w, h, 1); m.renderOrder = 5; return m;
+};
+function numberSprite(n, col) {
+  const c = document.createElement("canvas"); c.width = c.height = 64;
+  const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.9)"; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
+  g.strokeStyle = col; g.lineWidth = 5; g.stroke();
+  g.fillStyle = "#f4f1e6"; g.font = "bold 34px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(n), 32, 34);
+  return spr(c, 0.5, 0.5);
+}
+function labelSprite(text, col) {
+  const c = document.createElement("canvas"); c.width = 256; c.height = 56;
+  const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.88)"; g.beginPath(); g.roundRect(2, 2, 252, 52, 12); g.fill();
+  g.strokeStyle = col; g.lineWidth = 3; g.stroke();
+  g.fillStyle = "#f4f1e6"; g.font = "600 26px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 128, 30, 236);
+  return spr(c, 1.3, 0.28);
+}
+function paint(m, state) {                            // işaret grubunu duruma göre (yeniden) çiz
+  const col = STATE_COLOR[state] || STATE_COLOR.pending;
+  for (const k of ["num", "lab"]) { const o = m.userData[k]; if (o) { m.remove(o); o.material.map.dispose(); o.material.dispose(); } }
+  m.userData.num = numberSprite(m.userData.i + 1, col); m.userData.num.position.y = 1.7;
+  m.userData.lab = labelSprite(m.userData.text, col); m.userData.lab.position.y = 2.1;
+  m.add(m.userData.num, m.userData.lab); m.userData.beam.material.color.set(col); m.userData.state = state;
 }
 
-/** spots: [{x,z,h}|null] -> Group (numaralı işaretler). */
-export function makeMarkers(spots, exag) {
+/** spots: [{x,z,h}|null], labels: ["Eğim", ...], states: ["pending"|"visited"|"missing"] -> Group. */
+export function makeMarkers(spots, exag, labels = [], states = []) {
   const g = new THREE.Group();
-  spots.forEach((p, i) => { if (!p) return; const m = numberSprite(i + 1); m.position.set(p.x, p.h * exag + 0.45, p.z); m.userData.h = p.h; g.add(m); });
+  spots.forEach((p, i) => {
+    if (!p) return;
+    const m = new THREE.Group(); m.position.set(p.x, p.h * exag, p.z); m.userData = { h: p.h, i, text: `${i + 1} · ${labels[i] || ""}` };
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.1, 1.6, 8, 1, true), new THREE.MeshBasicMaterial({ color: "#fff", transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide }));
+    beam.position.y = 0.8; m.add(beam); m.userData.beam = beam; paint(m, states[i] || "pending"); g.add(m);
+  });
   return g;
 }
-export const setMarkerExag = (g, exag) => g.children.forEach((m) => { m.position.y = m.userData.h * exag + 0.45; });
+export const setMarkerExag = (g, exag) => g.children.forEach((m) => { m.position.y = m.userData.h * exag; });
+export const setMarkerStates = (g, states) => g.children.forEach((m) => { const s = states[m.userData.i] || "pending"; if (m.userData.state !== s) paint(m, s); });
 
 /** pts: [{x,z,h}] -> Line (veri boşluğunda NaN noktalar çizgiyi böler). */
 export function makeRoute(pts, exag) {

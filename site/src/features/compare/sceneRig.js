@@ -5,7 +5,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { buildSlopeCanvas } from "./slopeTexture.js";
 import { buildTerrain } from "./terrainMesh.js";
 import { MODELS } from "./unitModels.js";
-import { makeMarkers, setMarkerExag, makeRoute, disposeObj } from "./rigOverlay.js";
+import { makeMarkers, setMarkerExag, setMarkerStates, makeRoute, disposeObj } from "./rigOverlay.js";
+import { makeTrail } from "./trail.js";
 import { SETTINGS } from "../../config.js";
 
 const DIR = { follow: [0, 0.6, 0.8], free: [0, 0.6, 0.8], top: [0, 1, 0.001] };   // kamera yönü (pencere merkezinden)
@@ -19,7 +20,8 @@ function makeSide() {
   const scene = new THREE.Scene();
   scene.add(new THREE.AmbientLight(0xffffff, 0.75));
   const sun = new THREE.DirectionalLight(0xfff2d8, 1.9); sun.position.set(-6, 5, 4); scene.add(sun);   // görsel aydınlatma; gölge modeli değil
-  return { scene, mesh: null, unit: null, hf: null, tex: null, pos: null, markers: null, route: null };
+  const trail = makeTrail(); scene.add(trail.line);
+  return { scene, mesh: null, unit: null, hf: null, tex: null, pos: null, markers: null, route: null, trail };
 }
 
 export function createRig(container) {
@@ -31,8 +33,10 @@ export function createRig(container) {
   const controls = new OrbitControls(cam, renderer.domElement);
   controls.enableDamping = false; controls.maxPolarAngle = Math.PI / 2.05; controls.target.set(0, 0.2, 0);
   const sides = [makeSide(), makeSide()];
-  const st = { exag: SETTINGS.defaultExag, mode: "follow", unit: "rover", limit: [null, null], dem: [null, null] };
-  let raf = 0, dead = false, lastW = 0, lastH = 0;
+  const st = { exag: SETTINGS.defaultExag, mode: "follow", unit: "rover", limit: [null, null], dem: [null, null], labels: [[], []], states: [] };
+  const reduce = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fol = new THREE.Vector3();                      // yumuşatılmış takip hedefi
+  let raf = 0, loopRaf = 0, lastMove = -1e9, lastTick = 0, dead = false, lastW = 0, lastH = 0;
 
   const draw = () => {
     raf = 0; if (dead) return;
@@ -53,7 +57,7 @@ export function createRig(container) {
   function clearSide(s) {
     if (s.mesh) { s.scene.remove(s.mesh); s.mesh.geometry.dispose(); s.tex.dispose(); s.mesh.material.dispose(); s.mesh = null; }
     if (s.unit) { s.scene.remove(s.unit); s.unit = null; }
-    dropOverlay(s); s.pos = null;
+    dropOverlay(s); s.trail.clear(); s.pos = null;
   }
   function dropOverlay(s) {
     for (const key of ["markers", "route"]) if (s[key]) { s.scene.remove(s[key]); disposeObj(s[key]); s[key] = null; }
@@ -69,7 +73,7 @@ export function createRig(container) {
   function applyExag() {
     sides.forEach((s) => {
       if (s.mesh) s.mesh.scale.y = st.exag;
-      place(s); if (s.markers) setMarkerExag(s.markers, st.exag);
+      place(s); s.trail.rescale(st.exag); if (s.markers) setMarkerExag(s.markers, st.exag);
       if (s.route) setRouteObj(s, s.route.userData.pts);
     });
   }
@@ -95,7 +99,7 @@ export function createRig(container) {
     const v = THREE.MathUtils.degToRad(cam.fov / 2), asp = w / 2 / h;
     const R = 0.5 * SETTINGS.windowKm * (st.mode === "top" ? 1 : 1.2) * FIT_MARGIN;
     const d = R / Math.tan(Math.min(v, Math.atan(Math.tan(v) * asp)));
-    const f = st.mode === "follow", tg = f ? followTarget() : new THREE.Vector3();
+    const f = st.mode === "follow", tg = f ? fol : new THREE.Vector3();
     cam.position.copy(dir.multiplyScalar(d * (f ? SETTINGS.followZoom : 1))).add(tg); cam.lookAt(tg); controls.target.copy(tg);
   }
   // Takip: birim(ler)in yatay konumu (iki tarafın ortalaması; kamera tek). Yükseklik 0: iki taraf farklı aralıkta.
@@ -104,19 +108,32 @@ export function createRig(container) {
     return new THREE.Vector3(ps.reduce((a, p) => a + p.x, 0) / (ps.length || 1), 0, ps.reduce((a, p) => a + p.z, 0) / (ps.length || 1));
   }
   function applyCamera() {
-    fitCamera(); controls.enabled = st.mode === "free"; controls.update(); request();
+    fol.copy(followTarget()); fitCamera(); controls.enabled = st.mode === "free"; controls.update(); request();
   }
   applyCamera();
+  // Hafif animasyon döngüsü (render-on-demand korunur): bekleme/hareket animasyonu + yumuşak kamera takibi; hareket azaltma tercihinde animasyon yok, kamera anında izler.
+  const loop = (now) => {
+    if (dead) return; loopRaf = requestAnimationFrame(loop);
+    const mv = now - lastMove < 200;
+    if (now - lastTick < (mv ? 30 : 60)) return;
+    const dt = Math.min((now - lastTick) / 1000, 0.1); lastTick = now; let dirty = false;
+    if (!reduce) { sides.forEach((s) => { if (s.unit?.userData.tick) s.unit.userData.tick(dt, mv); }); dirty = true; }
+    if (st.mode === "follow") { const goal = followTarget(); if (fol.distanceToSquared(goal) > 1e-6) { fol.lerp(goal, reduce ? 1 : 0.15); fitCamera(); dirty = true; } }
+    if (dirty) request();
+  };
+  loopRaf = requestAnimationFrame(loop);
 
   return {
     setSide(k, dem, limit) { st.dem[k] = dem; st.limit[k] = limit; applySide(k); },
     setExag(v) { st.exag = v; applyExag(); request(); },
     setCamera(m) { st.mode = m; applyCamera(); },
     setUnit(u) { st.unit = u; applyUnit(0); applyUnit(1); request(); },
-    setStations(k, spots) { const s = sides[k]; if (s.markers) { s.scene.remove(s.markers); disposeObj(s.markers); s.markers = null; } if (spots && s.mesh) { s.markers = makeMarkers(spots.map((p) => p && { ...p }), st.exag); s.scene.add(s.markers); } request(); },
+    setStations(k, spots, labels) { const s = sides[k]; if (labels) st.labels[k] = labels; if (s.markers) { s.scene.remove(s.markers); disposeObj(s.markers); s.markers = null; } if (spots && s.mesh) { s.markers = makeMarkers(spots.map((p) => p && { ...p }), st.exag, st.labels[k], st.states); s.scene.add(s.markers); } request(); },
+    setStationStates(states) { st.states = states; sides.forEach((s) => s.markers && setMarkerStates(s.markers, states)); request(); },
+    clearTrail() { sides.forEach((s) => s.trail.clear()); request(); },
     setRoute(k, pts) { setRouteObj(sides[k], pts); request(); },
-    setUnitPos(k, pos) { const s = sides[k]; if (!s.pos) return; s.pos = pos; place(s); if (st.mode === "follow") fitCamera(); request(); },
+    setUnitPos(k, pos) { const s = sides[k]; if (!s.pos) return; s.pos = pos; lastMove = performance.now(); place(s); s.trail.add(pos, st.exag); request(); },
     snapshot: () => renderer.domElement.toDataURL("image/png"),
-    dispose() { dead = true; cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); sides.forEach(clearSide); renderer.dispose(); renderer.domElement.remove(); },
+    dispose() { dead = true; cancelAnimationFrame(raf); cancelAnimationFrame(loopRaf); ro.disconnect(); controls.dispose(); sides.forEach(clearSide); renderer.dispose(); renderer.domElement.remove(); },
   };
 }

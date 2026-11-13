@@ -1,5 +1,16 @@
 import React from "react";
 import { Tag, Warn, Limitations, fmt } from "./common.jsx";
+import PageIntro, { Term } from "./components/PageIntro.jsx";
+import CopyPre from "./components/CopyPre.jsx";
+
+const STEPS = ["Veri", "Hazırlık", "Özellik", "Karşılaştırılabilirlik", "Karşılaştırma", "Sonuç"];
+const STEP_D = ["NASADEM, LOLA, CTX DTM", "30 m ortak ızgara", "eğim, röleyf, pürüzlülük", "örtüşme filtresi O_k", "W1 / IQR → D", "sıralı liste + Gap"];
+const Sec = ({ title, children }) => <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">{children}</div></details>;
+const FORMULA = `Değişkenler (yalnızca topografya): eğim, yerel röleyf (11×11, 330 m, max−min), pürüzlülük (z − ort_5x5(z) artığının 11×11 RMS'i)
+Filtre:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  her k için ve geçerli piksel >= %90
+d_k   =  W1(F_aday,k , F_ref,k) / IQR(F_ref,k)     (scipy wasserstein_distance, 20 000 piksellik alt örnek, seed = 42)
+D     =  (d_eğim + d_röleyf + d_pürüzlülük) / 3     eşit ağırlık; kullanıcı tarafından değiştirilemez
+Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven puanı üretilmez.`;
 
 export default function Method({ lim, valid, controls, inventory, expl }) {
   const pc = controls?.positive_control;
@@ -8,22 +19,40 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
   const neg = controls?.negative_control;
   return (
     <div>
-      <div className="card">
-        <h2>Yöntem</h2>
-        <p><Tag kind="der" />Ortak ölçek: tüm DEM'ler 30 m eşit alanlı yerel projeksiyona alan ortalamasıyla; eğim 30 m ızgarada Horn 3×3 (etkin taban ≈ 60 m); pencere 10 × 10 km (333 × 333 piksel), adım 5 km. Hiçbir ürün inceltilmez; Ay ve Mars'ın ince detayı bu ölçekte kaybolur.</p>
-        <pre className="formula">{`Değişkenler (yalnızca topografya): eğim, yerel röleyf (11×11, 330 m, max−min), pürüzlülük (z − ort_5x5(z) artığının 11×11 RMS'i)
-Filtre:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  her k için ve geçerli piksel >= %90
-d_k   =  W1(F_aday,k , F_ref,k) / IQR(F_ref,k)     (scipy wasserstein_distance, 20 000 piksellik alt örnek, seed = 42)
-D     =  (d_eğim + d_röleyf + d_pürüzlülük) / 3     eşit ağırlık; kullanıcı tarafından değiştirilemez
-Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven puanı üretilmez.`}</pre>
-        <p>Termal değişkenler puana ve filtreye <strong>girmez</strong>: Dünya LST (yüzey, iki örnek), Ay Diviner PRP (2 cm derinlik, model) ve Mars THEMIS (kalibre değil) eşdeğer nicelikler değildir; yalnızca Characterize ve Gap panelinde, ürün adıyla gösterilir.</p>
-        <p>Aday üretimi: ABD Güneybatı, Atacama, Hawaii Büyük Ada, Batı/Orta Anadolu. Bilinen analoglar aday üretiminde kullanılmaz; yalnızca pozitif kontrol ve "bilinen" etiketi içindir. Referans profilleri: Ay = Shackleton çevresi (LOLA, 3 ROI penceresi), Mars = Jezero çevresi (CTX DTM, R2).</p>
-        <p>Sapma notu: bölge başına tek LAEA ızgarası kullanıldı (pencere merkezli değil); ≈ 500 km'de ölçek sapması %0,08.</p>
-        <p>Duyarlılık analizi (pencere 5/20 km, ızgara 90 m, eşik 0,25/0,75, değişken çıkarma): <strong>yapılmadı</strong> (kesme listesi, süre). Eşikler bu sonuçlara göre ayarlanmadı.</p>
+      <PageIntro purpose="Dünya'daki daha az incelenmiş arazi pencerelerinin Ay/Mars referanslarına topografik olarak ne kadar yaklaştığını ve bu karşılaştırmanın nerede bittiğini gösterir." how="Önce Kısaca kutusunu, sonra ilgilendiğin bölümü aç; her bölüm kapalı başlar." />
+      <div className="card brief">
+        <h2>Kısaca</h2>
+        <ul>
+          <li><strong>Ne karşılaştırılır:</strong> Dünya'daki 10×10 km arazi pencerelerinin eğim, yerel röleyf ve pürüzlülük dağılımı; Ay (Shackleton çevresi) veya Mars (Jezero çevresi) referans dağılımıyla.</li>
+          <li><strong>Hangi veri:</strong> Dünya NASADEM 30 m, Ay LOLA, Mars CTX DTM; ürün adı ve sürümü Veri envanteri bölümünde.</li>
+          <li><strong>Hangi ölçü:</strong> her değişken için dağılımlar arası Wasserstein mesafesi, referansın IQR'sine bölünür; üç değişkenin eşit ağırlıklı ortalaması <Term k="D">D</Term>'dir.</li>
+          <li><strong>D nasıl okunur:</strong> düşük D = dağılım referansa daha yakın. Sıralama içindir; mutlak bir "iyi/kötü" eşiği yoktur.</li>
+          <li><strong>Neden yüzde veya güven puanı yok:</strong> D bir mesafedir, olasılık değildir; istatistiksel anlamı olmayan tek bir puan üretmek yanıltıcı olurdu. Veri kapsamı (Evidence Coverage) ve güvenilirlik (Reliability) ayrı gösterilir.</li>
+        </ul>
       </div>
+      <Warn><strong>Dürüst not:</strong> pozitif kontrol ölçütü <strong>sağlanmadı</strong> (bilinen analogların medyan yüzdeliği ≤ %20 hedefine ulaşılamadı). Ayrıntı: Doğrulama bölümü. Bu yüzden yöntemin "doğrulandığı" söylenmez.</Warn>
+      <ol className="flow" aria-label="Yöntem adımları">
+        {STEPS.map((s, i) => <li key={s}><strong>{s}</strong><span>{STEP_D[i]}</span></li>)}
+      </ol>
 
-      <div className="card">
-        <h2>Doğrulama</h2>
+      <Sec title="Ortak ölçek ve ızgara">
+        <p><Tag kind="der" />Tüm DEM'ler 30 m eşit alanlı yerel projeksiyona alan ortalamasıyla; eğim 30 m ızgarada Horn 3×3 (etkin taban ≈ 60 m); pencere 10 × 10 km (333 × 333 piksel), adım 5 km. Hiçbir ürün inceltilmez; Ay ve Mars'ın ince detayı bu ölçekte kaybolur.</p>
+        <p>Sapma notu: bölge başına tek LAEA ızgarası kullanıldı (pencere merkezli değil); ≈ 500 km'de ölçek sapması %0,08.</p>
+      </Sec>
+      <Sec title="Değişkenler ve formüller">
+        <CopyPre text={FORMULA} />
+        <p>Duyarlılık analizi (pencere 5/20 km, ızgara 90 m, eşik 0,25/0,75, değişken çıkarma): <strong>yapılmadı</strong> (kesme listesi, süre). Eşikler bu sonuçlara göre ayarlanmadı.</p>
+      </Sec>
+      <Sec title="Filtre ve sıralama (O_k, d_k, D)">
+        <p>O_k: adayın P10–P90 aralığının referansın P10–P90 aralığıyla örtüşme oranı; her değişken için ≥ 0,5 ve geçerli piksel ≥ %90 olmayan pencere elenir. <Term k="d_slope">d_k</Term>: değişken başına W1/IQR. <Term k="D">D</Term>: üç d_k'nin eşit ağırlıklı ortalaması. Ağırlıklar sabittir.</p>
+      </Sec>
+      <Sec title="Termal değişkenler (neden puana girmiyor)">
+        <p>Termal değişkenler puana ve filtreye <strong>girmez</strong>: Dünya LST (yüzey, iki örnek), Ay Diviner PRP (2 cm derinlik, model) ve Mars THEMIS (kalibre değil) eşdeğer nicelikler değildir; yalnızca Characterize ve Gap panelinde, ürün adıyla gösterilir. Mars termal: Veri eksik.</p>
+      </Sec>
+      <Sec title="Aday üretimi ve referans profiller">
+        <p>Aday üretimi: ABD Güneybatı, Atacama, Hawaii Büyük Ada, Batı/Orta Anadolu. Bilinen analoglar aday üretiminde kullanılmaz; yalnızca pozitif kontrol ve "bilinen" etiketi içindir. Referans profilleri: Ay = Shackleton çevresi (LOLA, 3 ROI penceresi), Mars = Jezero çevresi (CTX DTM, R2).</p>
+      </Sec>
+      <Sec title="Doğrulama (pozitif ve negatif kontrol)">
         <h3>Pozitif kontrol <Tag kind="der" /></h3>
         <Warn><strong>Ölçüt sağlanmadı.</strong> Başarı ölçütü: bilinen analogların medyan yüzdeliği ≤ %20. Sonuç aşağıda olduğu gibi raporlanmıştır; parametreler veya eşikler bu sonuca göre ayarlanmadı. n = 5 test edildi (13 satırdan; 7 satırda koordinat yok, Salda su maskesi nedeniyle geçerli pencere dışı). Bölge dağılımı dengesiz (US-SW 4, HAW 1, ANA 1, ATA 0).</Warn>
         {pc && (
@@ -60,11 +89,10 @@ Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven
         <h3>Sabit doğrulama notları (validation.json)</h3>
         {valid?.positive_control?.limitations?.map((t, i) => <Warn key={i}>{t}</Warn>)}
         <p className="muted">{valid?.positive_control?.interpretation_rule}</p>
-      </div>
+      </Sec>
 
       {expl && (
-        <div className="card">
-          <h2>Sonradan yapılan keşifsel analiz — Ay referansı ayrı ayrı</h2>
+        <Sec title="Sonradan yapılan keşifsel analiz: Ay referansı ayrı ayrı">
           <Warn><strong>Keşifsel (post-hoc).</strong> Bu analiz ana sonuçlar alındıktan sonra, havuzlanmış Ay referansı yerine Site01, Site04 ve Site07'nin ayrı ayrı kullanılmasıyla yapıldı. Ana sıralamayı, eşikleri veya pozitif kontrol sonucunu <strong>değiştirmez</strong>; hipotez testi olarak okunmamalıdır.</Warn>
           {expl.sites && Object.entries(expl.sites).map(([s, v]) => (
             <div key={s}>
@@ -78,16 +106,14 @@ Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven
             </div>
           ))}
           <p className="muted">{expl.note}</p>
-        </div>
+        </Sec>
       )}
 
-      <div className="card">
-        <h2>Sınırlamalar (sabit)</h2>
+      <Sec title="Sınırlamalar (sabit)">
         <Limitations lim={lim} />
-      </div>
+      </Sec>
 
-      <div className="card">
-        <h2>Veri envanteri (data_inventory.csv)</h2>
+      <Sec title="Veri envanteri ve kaynaklar (data_inventory.csv)">
         <div style={{ overflowX: "auto" }}>
           <table>
             <thead><tr><th>ID</th><th>Cisim</th><th>Ürün</th><th>Sürüm</th><th>Çözünürlük</th><th>Birim</th><th>Lisans</th><th>Durum</th></tr></thead>
@@ -99,7 +125,7 @@ Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven
           </table>
         </div>
         <p><a href="data/data_inventory.csv">data_inventory.csv indir</a></p>
-      </div>
+      </Sec>
     </div>
   );
 }

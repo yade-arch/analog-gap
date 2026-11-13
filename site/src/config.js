@@ -1,11 +1,11 @@
 // Rota ve ayarlar tek yerde. Yeni sayfa = ROUTES'a satır + App.jsx'te eşleme.
 export const ROUTES = [
-  { id: "compare", key: "nav.compare" },
+  { id: "compare", key: "nav.mission", primary: true },
+  { id: "method", key: "nav.method", primary: true },
   { id: "map", key: "nav.map" },
   { id: "list", key: "nav.list" },
-  { id: "method", key: "nav.method" },
 ];
-export const DEFAULT_ROUTE = "compare";
+export const DEFAULT_ROUTE = "home";
 
 export const SETTINGS = {
   lang: "tr",
@@ -23,7 +23,9 @@ export const SETTINGS = {
   routeSamples: 80,                     // rota başına DEM örnek sayısı
   routeColor: "#f0b445",
   moveSpeedKmPerS: 1.6,                 // gösterim hızı (ekran); gerçek hız değil
-  followZoom: 0.6,                      // Takip modunda uzaklık (tüm pencereyi sığdıran mesafenin oranı)
+  autoMeasureMs: 1500,                  // otomatik görev: istasyonda "ölçüm" bekleme süresi (gösterim; Simülasyon varsayımı)
+  autoCardMs: 4500,                     // otomatik görev: kart açık kalma süresi (gösterim; Simülasyon varsayımı)
+  followZoom: 0.85,                      // Takip modunda uzaklık (tüm pencereyi sığdıran mesafenin oranı)
   // Profil -> varsayılan Dünya karşılaştırma referansı
   references: { moon: ["Site04", "Site01", "Site07"], mars: ["R2"] },
   // D gösterge ölçeği (sim.py: düşük = daha yakın)

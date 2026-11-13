@@ -69,3 +69,36 @@ tr.click { cursor: pointer; } tr.click:hover { background: var(--bg2); }
   .report .grid2 { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
   .report .card, .report table { max-width: 100%; }
 }
+
+/* Faz A: sadeleştirme (giriş kutusu, ipucu, ana sayfa, liste kartları) */
+header.top .brand { text-decoration: none; color: var(--ink); }
+nav { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
+nav a.minor { font-size: 13px; opacity: .85; }
+nav .sep { width: 1px; height: 18px; background: var(--line); margin: 0 6px; }
+.intro { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.intro p { margin: 2px 0; } .intro .purpose { font-weight: 600; } .intro .how { color: var(--muted); font-size: 13.5px; }
+.term { border-bottom: 1px dotted var(--muted); cursor: help; position: relative; }
+.term:hover::after, .term:focus::after { content: attr(data-tip); position: absolute; left: 0; top: 130%; z-index: 20; width: 260px; max-width: 70vw; white-space: normal; font-weight: 400; font-size: 12.5px; line-height: 1.4; background: var(--bg); color: var(--ink); border: 1px solid var(--accent); border-radius: 6px; padding: 6px 8px; text-align: left; }
+th.n .term:hover::after, th.n .term:focus::after { left: auto; right: 0; }
+.gloss { margin: 14px 0; } .gloss summary { cursor: pointer; color: var(--cool); }
+.gloss dl { display: grid; gap: 6px; } .gloss dt { font-weight: 600; } .gloss dd { margin: 0 0 4px; color: var(--muted); }
+.home { max-width: 860px; margin: 0 auto; }
+.home .big-p { font-size: 17px; line-height: 1.5; }
+.cta { font-size: 17px; padding: 10px 20px; margin: 6px 0 18px; }
+.steps { list-style: none; padding: 0; margin: 0 0 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.steps .card { margin: 0; } @media (max-width: 700px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.top3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.top3 .card { margin: 0; } @media (max-width: 700px) { .top3 { grid-template-columns: minmax(0, 1fr); } }
+.cand .big { font-size: 28px; }
+/* Yöntem sayfası: kapalı bölümler, adım şeması, kopyalanabilir formül */
+.msec { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+.msec > summary { cursor: pointer; padding: 10px 14px; list-style: none; } .msec > summary::-webkit-details-marker { display: none; }
+.msec > summary h2 { display: inline; margin: 0; } .msec > summary::before { content: "▸ "; color: var(--accent); } .msec[open] > summary::before { content: "▾ "; }
+.msec-body { padding: 0 14px 12px; overflow-x: auto; }
+.brief ul { margin: 0; padding-left: 20px; } .brief li { margin: 4px 0; }
+.flow { list-style: none; display: flex; gap: 6px; padding: 0; margin: 10px 0 14px; overflow-x: auto; }
+.flow li { flex: 1 0 130px; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; position: relative; font-size: 13px; }
+.flow li + li::before { content: "→"; position: absolute; left: -11px; top: 8px; color: var(--accent); }
+.flow li span { display: block; color: var(--muted); font-size: 12px; }
+.copypre { position: relative; } .copypre button { position: absolute; right: 6px; top: 6px; font-size: 12px; padding: 2px 8px; }
+pre.formula { white-space: pre-wrap; overflow-wrap: anywhere; padding-right: 80px; }

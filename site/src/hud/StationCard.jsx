@@ -19,7 +19,7 @@ export function StationTable({ res, refTitle, candTitle }) {
 }
 
 /** Karşılaştırma kartı (ekran). D her zaman Gap uyarısıyla yan yana. */
-export default function StationCard({ res, refTitle, candTitle, D, onClose, onNext, last }) {
+export default function StationCard({ res, refTitle, candTitle, D, onClose, onNext, last, nextLabel }) {
   const ref = useRef(null);
   const narrow = useNarrow();   // dar ekranda kart sahnenin (sticky) hemen altına kayar; geniş ekranda kart sahne üstünde, kaydırma yok
   useEffect(() => { if (narrow) ref.current?.scrollIntoView?.({ block: "start", behavior: "smooth" }); }, [res.v.id, narrow]);
@@ -29,7 +29,7 @@ export default function StationCard({ res, refTitle, candTitle, D, onClose, onNe
         <b>{t(res.v.titleKey)}</b>
         <span className="muted">{t("station." + res.status)}</span>
         <span className="spacer" />
-        {!last && <button className="hud-btn sm" onClick={onNext}>{t("station.next")}</button>}
+        {!last && <button className="hud-btn sm" onClick={onNext}>{nextLabel || t("station.next")}</button>}
         <button className="hud-btn sm" onClick={onClose} aria-label={t("station.close")}>✕</button>
       </div>
       <StationTable res={res} refTitle={refTitle} candTitle={candTitle} />

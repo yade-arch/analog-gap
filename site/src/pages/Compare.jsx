@@ -10,6 +10,8 @@ import { UnitPicker, CameraPicker, ObsLog, MiniMap, SlopeLegend } from "../hud/P
 import { fmt } from "../common.jsx";
 import StationCard from "../hud/StationCard.jsx";
 import MovePanel from "../hud/MovePanel.jsx";
+import AutoPanel from "../hud/AutoPanel.jsx";
+import { useAuto } from "../features/mission/useAuto.js";
 import Fold from "../hud/Fold.jsx";
 import { useMove } from "../features/mission/useMove.js";
 import { VARIABLES, stationResult } from "../features/variables/index.js";
@@ -58,19 +60,29 @@ export default function Compare({ D, profile, cand, selId }) {
     setLog((l) => [...l, { id, title: t(res.v.titleKey) + ":", text: r0 ? `${r0.label.split(" (")[0]} — aday ${r0.cand}, referans ${r0.ref} [${t("tag." + r0.tag)}]` : "Veri eksik; değer üretilmedi." }]);
   };
   const stLabel = (i) => `${t(u.labelKey)} → ${t(VARIABLES[i].titleKey)}`;
+  const autoRef = useRef(null);
+  const labels = useMemo(() => VARIABLES.map((v) => t(v.titleKey)), []);
   const move = useMove(rigRef, [L.dem, R.dem], VARIABLES.length, {
+    labels,
     onStart: (i) => { moved.current = true; addLog("go", stLabel(i) + ":", t("move.start")); },
-    onArrive: (i) => { if (moved.current) addLog("at", stLabel(i) + ":", t("move.arrive")); moved.current = false; visit(VARIABLES[i].id); },
+    onArrive: (i) => { if (moved.current) addLog("at", stLabel(i) + ":", t("move.arrive")); moved.current = false; if (!autoRef.current?.onArrive(i)) visit(VARIABLES[i].id); },
   });
+  const auto = useAuto(VARIABLES.length, {
+    go: (i) => { setCur(null); move.start(i); }, move: move.skip, cancelMove: move.cancel, close: () => setCur(null),
+    open: (i) => visit(VARIABLES[i].id), reset: () => { setVisited(new Set()); setLog([]); setCur(null); rigRef.current?.clearTrail(); },
+  });
+  autoRef.current = auto;
+  const states = useMemo(() => VARIABLES.map((v) => (v.availability(profile).status === "missing" ? "missing" : visited.has(v.id) ? "visited" : "pending")), [visited, profile]);
+  useEffect(() => { rigRef.current?.setStationStates(states); }, [states, L.dem, R.dem]);
   // İstasyona git (kart kapanır, hareket biter, varışta kart açılır). Hareket sürerken yeni istek yok sayılır.
-  const goStation = (id) => { if (!cp || move.moving) return; setCur(null); move.start(VARIABLES.findIndex((v) => v.id === id)); };
+  const goStation = (id) => { if (!cp || move.moving || auto.active) return; setCur(null); move.start(VARIABLES.findIndex((v) => v.id === id)); };
   const next = () => { const i = VARIABLES.findIndex((v) => v.id === cur); const n = VARIABLES.slice(i + 1).concat(VARIABLES.slice(0, i)).find((v) => !visited.has(v.id)); if (n) goStation(n.id); else setCur(null); };
   useEffect(() => {
     const h = (e) => {
       if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
       if (/^[1-9]$/.test(e.key) && +e.key <= VARIABLES.length) goStation(VARIABLES[+e.key - 1].id);
-      else if (e.key === "s" || e.key === "S") move.skip();
-      else if (e.key === "Escape") setCur(null);
+      else if (e.key === "s" || e.key === "S") (auto.active ? auto.skip : move.skip)();
+      else if (e.key === "Escape") { if (auto.active) auto.stop(); else setCur(null); }
     };
     addEventListener("keydown", h); return () => removeEventListener("keydown", h);
   });
@@ -83,7 +95,7 @@ export default function Compare({ D, profile, cand, selId }) {
     <div className="compare">
       <SceneView dems={[L.dem, R.dem]} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} />
       <div className="scene-tag">{t("exag.label")} ×{exag}</div>
-      {curRes && <StationCard res={curRes} refTitle={`${body} · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} · ${cid}`} D={cp?.D} onClose={() => setCur(null)} onNext={next} last={visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
+      {curRes && <StationCard res={curRes} refTitle={`${body} · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} · ${cid}`} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
       <div className="hud">
         <MovePanel moving={move.moving} label={move.moving ? stLabel(move.moving.idx) : ""} onSkip={move.skip} />
         <div className="hud-top">
@@ -112,11 +124,23 @@ export default function Compare({ D, profile, cand, selId }) {
             </Fold>
           </div>
         </div>
-        <div className="hud-left"><UnitPicker unit={unit} onPick={setUnit} limits={{ cur: lim }} /><ObsLog entries={log} /></div>
-        <div className="hud-right"><CameraPicker mode={mode} onPick={setMode} exag={exag} onExag={setExag} /><MiniMap regions={D.regions} point={cp && { lat: cp.center_lat, lon: cp.center_lon }} /></div>
-        <div className="hud-bottom">
+        <div className="hud-left">
+          <UnitPicker unit={unit} onPick={setUnit} limits={{ cur: lim }} />
+          <AutoPanel auto={auto} total={VARIABLES.length} label={auto.idx >= 0 ? labels[auto.idx] : ""} limitPending={!lim && unit === "astronaut"} hasScene={!!(L.dem && R.dem)} onReport={() => { location.hash = `#/report/${cid}/${profile}`; }} />
+        </div>
+        <details className="hud-right adv">
+          <summary className="hud-panel">{t("cmp.adv")}<small>{t("cmp.advHint")}</small></summary>
+          <div className="adv-body">
+          <p className="hud-note">{t("move.keys")}</p>
+          <CameraPicker mode={mode} onPick={setMode} exag={exag} onExag={setExag} />
+          <ObsLog entries={log} />
+          <MiniMap regions={D.regions} point={cp && { lat: cp.center_lat, lon: cp.center_lon }} />
           <SlopeLegend limit={lim} />
-          <StationBar profile={profile} cur={cur} visited={visited} onVisit={goStation} busy={!!move.moving} />
+          </div>
+        </details>
+        <div className="hud-bottom">
+          <div className="hud-center"><p className="hud-hint">{t("cmp.hint")}</p>
+          <StationBar profile={profile} cur={cur} visited={visited} onVisit={goStation} busy={!!move.moving || auto.active} /></div>
           <div className="hud-end">
             <span className="badge">{t("badge.stage")}</span>
             <button className="hud-btn" disabled={!done} title={done ? "" : t("mission.pending")} onClick={() => { location.hash = `#/report/${cid}/${profile}`; }}>{t("mission.done")}</button>

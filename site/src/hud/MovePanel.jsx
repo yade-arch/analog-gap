@@ -11,7 +11,7 @@ export default function MovePanel({ moving, label, onSkip }) {
         <button className="hud-btn sm" onClick={onSkip} disabled={!moving}>{t("move.skip")} (S)</button>
       </div>
       <p className="hud-note warn-amber">{t("move.assume")}</p>
-      {moving && moving.gaps > 0 ? <p className="hud-note">{t("move.gaps").replace("{n}", moving.gaps)}</p> : <p className="hud-note mv-keys">{t("move.keys")}</p>}
+      {moving && moving.gaps > 0 ? <p className="hud-note">{t("move.gaps").replace("{n}", moving.gaps)}</p> : <p className="hud-note mv-keys">{t("move.layout")}</p>}
     </div>
   );
 }

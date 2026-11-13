@@ -1,5 +1,7 @@
 // Tüm arayüz metinleri (Türkçe). Yeni metin = buraya anahtar ekle, en.js'e iskelet çevirisi.
+import pages from "./tr.pages.js";
 export default {
+  ...pages,
   "app.title": "ANALOG GAP",
   "app.sub": "Karşılaştırma Görevi",
   "nav.compare": "Karşılaştırma",
@@ -7,7 +9,7 @@ export default {
   "nav.list": "Aday listesi",
   "nav.method": "Yöntem ve Doğrulama",
   "nav.report": "Raporu aç",
-  "badge.stage": "AŞAMA F2b · birim hareketi",
+  "badge.stage": "Karşılaştırma Görevi",
   "profile.label": "Profil",
   "side.moon": "AY",
   "side.mars": "MARS",
@@ -17,7 +19,7 @@ export default {
   "units.title": "BİRİMLER",
   "units.rover": "Rover",
   "units.astronaut": "Astronot",
-  "units.limit.pending": "Eğim limiti: kaynak bekliyor (tarama yok)",
+  "units.limit.pending": "Eğim limiti kaynağı bekleniyor, tarama yok",
   "units.limit.src": "Eğim limiti",
   "units.schematic": "Birim modeli şematiktir, ölçeksiz.",
   "cam.title": "KAMERA",

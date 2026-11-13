@@ -80,7 +80,7 @@
   .side-card { flex: 1 1 220px; max-width: none; min-width: 0; }
   .dgauge { width: 200px; flex: none; padding: 6px 12px; } .dgauge .val { font-size: 26px; }
   .stations .cards { grid-template-columns: repeat(6, 1fr); gap: 6px; } .station { padding: 6px 2px; } .station b { font-size: 12px; }
-  .mv-keys { display: none; } .mv-now { min-width: 0; }
+  .mv-now { min-width: 0; }
 }
 @media (max-width: 640px) {
   .compare { --scene-h: clamp(260px, 42vh, 420px); }
@@ -116,3 +116,16 @@ button.station { font: inherit; color: inherit; cursor: pointer; }
 .move .hud-note { margin: 3px 0 0; }
 .station:disabled { opacity: .55; cursor: progress; }
 .sc-head .hud-btn { flex: none; width: auto; margin: 0; padding: 4px 12px; }
+
+/* Faz A/B: sade Karşılaştırma ekranı ("Gelişmiş" kapalı), otomatik görev kutusu */
+details.hud-right.adv { display: block; pointer-events: auto; }
+details.adv > summary { cursor: pointer; list-style: none; font-weight: 600; letter-spacing: .06em; } details.adv > summary::-webkit-details-marker { display: none; }
+details.adv > summary::after { content: " ▸"; color: var(--accent); } details.adv[open] > summary::after { content: " ▾"; }
+details.adv > summary small { display: block; font-weight: 400; letter-spacing: 0; color: var(--muted); font-size: 11.5px; }
+.adv-body { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; max-height: calc(100vh - 330px); overflow: auto; pointer-events: auto; }
+.hud-bottom { grid-template-columns: minmax(0, 1fr) 240px; }
+.hud-hint { margin: 0 0 6px; font-weight: 600; color: var(--accent); text-shadow: 0 1px 3px #000; }
+.hud-center { min-width: 0; }
+.auto { display: flex; flex-direction: column; gap: 6px; } .auto .row { display: flex; gap: 6px; flex-wrap: wrap; }
+.auto-status { color: var(--ink); font-weight: 600; } .auto-status.done { color: var(--good-edge); }
+@media (max-width: 1279px) { details.hud-right.adv { flex: 1 1 100%; } .hud-bottom { grid-template-columns: 1fr; } .adv-body { max-height: none; } }
