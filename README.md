@@ -52,6 +52,10 @@ Simülasyon parametreleri (ör. rover eğim limiti) yalnızca `parameters_source
 - Astronot yürüyüş sınırı, giysi ve genel Mars gezgin limiti "kaynak bekliyor" (seçilemez).
 - `site/src/hardware` (RoverLink, MockLink, Web Serial/WebSocket) bir **iskelettir**: arayüze bağlı değil, gerçek donanımla denenmedi (`docs/PROTOCOL.md`).
 
+## Nasıl atıf yapılır
+GitHub'daki **Cite this repository** düğmesi CITATION.cff dosyasını kullanır. Elle: *ANALOG GAP contributors (2026). ANALOG GAP, sürüm 0.1.0. https://github.com/yade-arch/analog-gap*. Veri ürünleri (NASADEM, LOLA, CTX DTM, MODIS, Diviner) kendi atıf kurallarına tabidir (yukarıdaki tablo).
+**DOI: bekliyor** (Zenodo bağlantısı kurulunca CITATION.cff ve bu bölüm güncellenecek; şimdilik DOI yoktur). .zenodo.json Zenodo için hazırdır. Sürüm notları: docs/RELEASE_NOTES_v0.1.0.md.
+
 ## Lisans
 Kod ve belgeler: **MIT** (`LICENSE`). Veri ürünleri yukarıdaki kaynaklarının kendi koşullarına tabidir; MIT onları kapsamaz. Üçüncü taraf kütüphaneler: React, three.js (MIT), MapLibre GL JS (BSD-3-Clause), Vite (MIT); lisansları `site/package-lock.json` ve paketlerinde.
 

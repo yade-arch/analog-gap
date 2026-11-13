@@ -1,0 +1,14 @@
+{
+  "title": "ANALOG GAP",
+  "upload_type": "software",
+  "description": "Static web application that compares less-studied Earth terrain windows (10x10 km, NASADEM 30 m) with Moon (LOLA) and Mars (CTX DTM) reference terrain by slope, local relief and roughness, and always shows the limits (Gap) of the comparison. NASA Space Apps Challenge 2026 project. Positive control criterion was not met (see Method page). Derived data keep the licenses of their source products.",
+  "creators": [ { "name": "ANALOG GAP contributors" } ],
+  "license": "MIT",
+  "version": "0.1.0",
+  "publication_date": "2026-11-13",
+  "keywords": ["planetary analog", "Moon", "Mars", "terrain analysis", "NASA Space Apps Challenge"],
+  "related_identifiers": [
+    { "identifier": "https://github.com/yade-arch/analog-gap", "relation": "isSupplementTo", "scheme": "url" },
+    { "identifier": "https://yade-arch.github.io/analog-gap/", "relation": "isDocumentedBy", "scheme": "url" }
+  ]
+}

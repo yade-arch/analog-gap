@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software or its derived data, please cite it as below. Data products (NASADEM, LOLA, CTX DTM, MODIS, Diviner) keep their own citation requirements; see README.md."
+title: "ANALOG GAP"
+abstract: "Static web application that compares less-studied Earth terrain windows (10x10 km, NASADEM 30 m) with Moon (LOLA) and Mars (CTX DTM) reference terrain by slope, local relief and roughness, and always shows the limits (Gap) of the comparison. NASA Space Apps Challenge 2026 project."
+type: software
+version: 0.1.0
+date-released: "2026-11-13"
+license: MIT
+repository-code: "https://github.com/yade-arch/analog-gap"
+url: "https://yade-arch.github.io/analog-gap/"
+authors:
+  - name: "ANALOG GAP contributors"
+keywords:
+  - planetary analog
+  - Moon
+  - Mars
+  - terrain
+  - NASA Space Apps Challenge
+# doi: bekliyor (Zenodo bağlantısı kurulunca eklenecek; şimdilik DOI yok)
