@@ -46,7 +46,7 @@ ref_m, js = summarize_ref(pool, "Lunar Base Analogs (Shackleton çevresi)",
 js["internal_spread_leave_one_out"] = loo(per)
 js["dem"] = "LOLA LDEM_80S_20M (M1), 20 m -> 30 m ortalama; LM1 dışarıda (ROI shapefile yok)"
 js["limitations"] = ["L01_psr_mask_missing", "L02_roughness_low_reliability", "L03_lola_interpolation"]
-json.dump(js, open("data/reference_moon.json", "w"), indent=1, ensure_ascii=False)
+json.dump(js, open("data/reference_moon.json", "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 np.savez_compressed("data_raw/ref_moon.npz", **{k: pool[k].astype("float32") for k in S.VARS})
 
 # ---------------- MARS
@@ -80,7 +80,7 @@ jr["dem"] = "USGS Mars 2020 TRN CTX DTM 20 m (R2), LAEA 30 m ortalama"
 jr["coverage_km"] = [round((b.right - b.left) / 1000, 2), round((b.top - b.bottom) / 1000, 2)]
 jr["note"] = "25 pencere %50 örtüşür; referans dağılımı pencere birleşimindeki tekil piksellerdir. Kapsam küçük (~32x30 km): referans tek bir arazi çevresini temsil eder."
 jr["limitations"] = ["L02_roughness_low_reliability"]
-json.dump(jr, open("data/reference_mars.json", "w"), indent=1, ensure_ascii=False)
+json.dump(jr, open("data/reference_mars.json", "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 np.savez_compressed("data_raw/ref_mars.npz", **{k: poolm[k].astype("float32") for k in S.VARS})
 for nm, j in (("MOON", js), ("MARS", jr)):
     print(nm, {k: (round(v["p10"], 2), round(v["p50"], 2), round(v["p90"], 2), "IQR", round(v["iqr"], 2)) for k, v in j["variables"].items()})

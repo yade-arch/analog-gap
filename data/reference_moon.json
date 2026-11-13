@@ -1,5 +1,5 @@
 {
- "label": "Lunar Base Analogs (Shackleton çevresi)",
+ "label": "Lunar Base Analogs (Shackleton Ã§evresi)",
  "windows": [
   {
    "id": "Site04",
@@ -432,7 +432,7 @@
    }
   }
  },
- "dem": "LOLA LDEM_80S_20M (M1), 20 m -> 30 m ortalama; LM1 dışarıda (ROI shapefile yok)",
+ "dem": "LOLA LDEM_80S_20M (M1), 20 m -> 30 m ortalama; LM1 dÄ±ÅŸarÄ±da (ROI shapefile yok)",
  "limitations": [
   "L01_psr_mask_missing",
   "L02_roughness_low_reliability",

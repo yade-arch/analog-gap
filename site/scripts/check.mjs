@@ -38,7 +38,11 @@ await step("i18n anahtarları (sabit kullanımlar tr.js'de var)", async () => {
 
 await step("veri dosyaları (JSON ayrışır, DEM dizini eşleşir)", () => {
   const all = walk(pub), js = all.filter((p) => /\.(json|geojson)$/.test(p));
-  for (const p of js) { try { JSON.parse(readFileSync(p, "utf8")); } catch (e) { throw new Error(`${rel(p)}: ${e.message}`); } }
+  for (const p of js) {
+    const txt = readFileSync(p, "utf8");
+    try { JSON.parse(txt); } catch (e) { throw new Error(`${rel(p)}: ${e.message}`); }
+    if (txt.includes("\uFFFD")) throw new Error(`${rel(p)}: bozuk karakter (U+FFFD); kaynak UTF-8 değil, betikte encoding="utf-8" kullanın`);
+  }
   const idxPath = join(pub, "dem", "index.json"); assert.ok(existsSync(idxPath), "dem/index.json yok");
   const idx = JSON.parse(readFileSync(idxPath, "utf8")), ids = Object.keys(idx.windows);
   const miss = ids.filter((id) => !existsSync(join(pub, "dem", id + ".bin.gz")));

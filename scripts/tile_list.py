@@ -24,7 +24,7 @@ for code, (name, (w, s, e, n)) in REGIONS.items():
                   "n_tiles": len(es)},
                   "geometry": {"type": "Polygon", "coordinates": [[[w, s], [e, s], [e, n], [w, n], [w, s]]]}})
     print(code, len(es), "karo", round(sum(float(x["granule_size"]) for x in es), 1), "MB")
-json.dump({"type": "FeatureCollection", "features": feats}, open("data/regions.geojson", "w"), ensure_ascii=False, indent=1)
+json.dump({"type": "FeatureCollection", "features": feats}, open("data/regions.geojson", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 with open("data/nasadem_tiles.csv", "w", newline="", encoding="utf-8") as f:
     wr = csv.DictWriter(f, fieldnames=["region", "granule", "size_mb", "url"]); wr.writeheader(); wr.writerows(rows)
 print("TOPLAM", len(rows), "karo", round(sum(r["size_mb"] for r in rows), 1), "MB (CMR granule_size)")

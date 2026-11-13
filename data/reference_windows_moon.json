@@ -43,6 +43,6 @@
  },
  "LM1": {
   "status": "kaynak bekliyor",
-  "note": "PGDA ürün 78 sayfasında LM1 için ROI shapefile yok; yalnızca LDEM/slp/ldec GeoTIFF listeli. Konum GeoTIFF başlığından okunabilir (indirilmedi)."
+  "note": "PGDA Ã¼rÃ¼n 78 sayfasÄ±nda LM1 iÃ§in ROI shapefile yok; yalnÄ±zca LDEM/slp/ldec GeoTIFF listeli. Konum GeoTIFF baÅŸlÄ±ÄŸÄ±ndan okunabilir (indirilmedi)."
  }
 }
