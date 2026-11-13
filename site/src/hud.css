@@ -129,3 +129,4 @@ details.adv > summary small { display: block; font-weight: 400; letter-spacing: 
 .auto { display: flex; flex-direction: column; gap: 6px; } .auto .row { display: flex; gap: 6px; flex-wrap: wrap; }
 .auto-status { color: var(--ink); font-weight: 600; } .auto-status.done { color: var(--good-edge); }
 @media (max-width: 1279px) { details.hud-right.adv { flex: 1 1 100%; } .hud-bottom { grid-template-columns: 1fr; } .adv-body { max-height: none; } }
+.units .hud-btn.lg { display: inline-block; width: calc(50% - 4px); padding: 6px 4px; margin: 0 2px 4px; }

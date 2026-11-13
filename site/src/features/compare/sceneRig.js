@@ -42,7 +42,9 @@ export function createRig(container) {
     raf = 0; if (dead) return;
     const w = container.clientWidth, h = container.clientHeight;
     if (!w || !h) return;
-    renderer.setSize(w, h, false); cam.aspect = w / 2 / h; cam.updateProjectionMatrix();
+    renderer.setSize(w, h, false); cam.aspect = w / 2 / h;
+    if (st.mode === "follow" && matchMedia("(min-width: 1280px)").matches) cam.setViewOffset(w / 2, h, 0, -h * 0.16, w / 2, h); else cam.clearViewOffset();   // geniş ekranda birim, üstteki şeridin altında kalsın
+    cam.updateProjectionMatrix();
     if (st.mode !== "free" && (w !== lastW || h !== lastH)) { lastW = w; lastH = h; fitCamera(); }
     renderer.setScissorTest(true);
     sides.forEach((s, k) => {
