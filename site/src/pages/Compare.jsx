@@ -61,7 +61,7 @@ export default function Compare({ D, profile, cand, selId }) {
   };
   const stLabel = (i) => `${t(u.labelKey)} → ${t(VARIABLES[i].titleKey)}`;
   const autoRef = useRef(null);
-  const labels = useMemo(() => VARIABLES.map((v) => t(v.titleKey)), []);
+  const labels = useMemo(() => VARIABLES.map((v) => t(v.titleKey) + (v.unit ? ` (${v.unit})` : "")), []);
   const move = useMove(rigRef, [L.dem, R.dem], VARIABLES.length, {
     labels,
     onStart: (i) => { moved.current = true; addLog("go", stLabel(i) + ":", t("move.start")); },

@@ -7,7 +7,7 @@ const LIFT = 0.03;                                   // km: çizginin arazi üç
 export const STATE_COLOR = { visited: "#6fb98f", pending: SETTINGS.routeColor, missing: "#8a94a3" };
 
 const spr = (c, w, h) => {
-  const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true }));
+  const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true, sizeAttenuation: false }));   // ekranda sabit boyut: yakınlaşınca büyümez
   m.scale.set(w, h, 1); m.renderOrder = 5; return m;
 };
 function numberSprite(n, col) {
@@ -15,20 +15,20 @@ function numberSprite(n, col) {
   const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.9)"; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
   g.strokeStyle = col; g.lineWidth = 5; g.stroke();
   g.fillStyle = "#f4f1e6"; g.font = "bold 34px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(n), 32, 34);
-  return spr(c, 0.5, 0.5);
+  return spr(c, 0.05, 0.05);
 }
 function labelSprite(text, col) {
   const c = document.createElement("canvas"); c.width = 256; c.height = 56;
   const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.88)"; g.beginPath(); g.roundRect(2, 2, 252, 52, 12); g.fill();
   g.strokeStyle = col; g.lineWidth = 3; g.stroke();
   g.fillStyle = "#f4f1e6"; g.font = "600 26px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 128, 30, 236);
-  return spr(c, 1.3, 0.28);
+  return spr(c, 0.2, 0.044);
 }
 function paint(m, state) {                            // işaret grubunu duruma göre (yeniden) çiz
   const col = STATE_COLOR[state] || STATE_COLOR.pending;
   for (const k of ["num", "lab"]) { const o = m.userData[k]; if (o) { m.remove(o); o.material.map.dispose(); o.material.dispose(); } }
   m.userData.num = numberSprite(m.userData.i + 1, col); m.userData.num.position.y = 1.7;
-  m.userData.lab = labelSprite(m.userData.text, col); m.userData.lab.position.y = 2.1;
+  m.userData.lab = labelSprite(m.userData.text, col); m.userData.lab.position.y = 1.7; m.userData.lab.center.set(0.5, -0.75);   // etiket numaranın hemen üstünde
   m.add(m.userData.num, m.userData.lab); m.userData.beam.material.color.set(col); m.userData.state = state;
 }
 
