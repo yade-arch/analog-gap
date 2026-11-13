@@ -155,4 +155,8 @@ Not: bu maddeler önceki STATUS.md'de planlı değildi (yalnızca README §5 ad�
 - **`npm run check`** (`site/scripts/check.mjs`): dosya < 300 satır; sabit i18n anahtarları `tr.js`'de var; JSON ayrışır + 299 DEM penceresi dizinle eşleşir; MockLink protokol testi (hello/ack/goto varışı/hatalı mesaj/zaman aşımı/parçalı satır); `vite build`. `--no-build` hızlı mod. Geçti; i18n kontrolü bilerek bozularak hata verdiği görüldü. Yok: ESLint, birim test çerçevesi, tarayıcı içi uçtan uca test.
 - **`README.md` + `LICENSE` (MIT, "ANALOG GAP contributors"):** kod/belge MIT; veri ürünleri kendi koşullarında (envanterden aktarıldı; "lisans beyanı yok" olanlar öyle yazıldı). Telif sahibi adı ve MIT seçimi kullanıcı onayına açık.
 - **`.gitignore`:** .venv, data_raw, node_modules, site/dist, __pycache__.
-- **Deploy: YAPILMADI.** Bu makinede git/gh/vercel kurulu değil; hizmet seçimi ve giriş/onay kullanıcıdan bekleniyor.
+- **Deploy: YAPILDI (GitHub Pages).** Adres: https://yade-arch.github.io/analog-gap/ · Depo: https://github.com/yade-arch/analog-gap · İş akışı `.github/workflows/pages.yml` (npm ci, npm run check, derleme, yayın).
+
+## Deploy sonrası düzeltme (2026-11-13)
+- **Bozuk Türkçe karakter:** `data/regions.geojson`, `reference_mars.json`, `reference_moon.json`, `reference_windows_moon.json` Windows yerel kod sayfasıyla (cp1254) yazılmıştı; site kopyaları "�" gösteriyordu (haritada bölge adları, Mars/Ay referans metinleri). Kaynaklar kayıpsız UTF-8'e çevrildi, yazan betikler (`build_references.py`, `tile_list.py`) `encoding="utf-8"` aldı, site verisi yeniden üretildi; `npm run check` artık JSON'da U+FFFD bulursa hata verir.
+- **Canlı doğrulama:** #/compare (iki DEM 200, 3D sahne, istasyon → kart), #/report, #/map, #/list, #/method açıldı; konsol hatası yok. Sunucudaki dosyalar temiz; tarayıcı önbelleği (Pages ~10 dk) eski kopyayı bir süre gösterebilir.
