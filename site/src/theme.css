@@ -27,16 +27,17 @@ header.top .sub { color: var(--muted); font-size: 13px; }
 nav a { padding: 6px 11px; border-radius: 8px; text-decoration: none; color: var(--muted); }
 nav a.on { background: var(--bg); color: var(--accent); border: 1px solid var(--accent); padding: 5px 10px; }
 .spacer { flex: 1; }
-main { padding: 16px; max-width: 1400px; margin: 0 auto; }
+main { padding: 16px; max-width: 1400px; width: 100%; min-width: 0; margin: 0 auto; }   /* width: auto kenar boşluğu flex sütununda içeriğe göre büyürdü */
 main.full { max-width: none; padding: 0; }
-footer { padding: 14px 18px 30px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); max-width: 1400px; margin: 0 auto; }
+footer { width: 100%; padding: 14px 18px 30px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); max-width: 1400px; margin: 0 auto; }
 
 /* içerik sayfaları (Harita, Aday listesi, Analog Card, Yöntem) */
-.card { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.card { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; min-width: 0; overflow-x: auto; }   /* geniş tablo kartın içinde kayar, sayfa taşmaz */
 .card h2, .card h3 { margin-top: 0; }
 h2 { font-size: 18px; } h3 { font-size: 15px; }
 .grid2 { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 14px; }
-@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.grid2 > * { min-width: 0; }
+@media (max-width: 900px) { .grid2 { grid-template-columns: minmax(0, 1fr); } }
 .tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-right: 6px; border: 1px solid var(--line); white-space: nowrap; }
 .tag.obs { background: var(--t-obs); } .tag.der { background: var(--t-der); } .tag.int { background: var(--t-int); }
 .warn { background: var(--warn-bg); border-left: 3px solid var(--warn-line); padding: 8px 10px; margin: 8px 0; font-size: 13.5px; }
@@ -50,10 +51,21 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .muted { color: var(--muted); }
 #map { height: calc(100vh - 150px); min-height: 440px; border: 1px solid var(--line); border-radius: 10px; background: #0f1722; }
 .maprow { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 14px; }
-@media (max-width: 900px) { .maprow { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .maprow { grid-template-columns: minmax(0, 1fr); } }
 .legend { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
 .legend .bar { width: 160px; height: 10px; background: linear-gradient(90deg, var(--seq1), var(--seq2), var(--seq3), var(--seq4)); border-radius: 3px; }
 pre.formula { background: var(--bg); border: 1px solid var(--line); padding: 8px 10px; overflow-x: auto; font-size: 13px; }
 tr.click { cursor: pointer; } tr.click:hover { background: var(--bg2); }
 .filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
 .btn-accent { display: inline-block; background: var(--accent); color: var(--accent-ink); border-radius: 8px; padding: 6px 12px; text-decoration: none; font-weight: 600; }
+
+/* Yazdırma: açık tema (koyu zemin varsayımı yok), yeterli kontrast, taşma yok. */
+@media print {
+  :root { color-scheme: light; --bg: #fff; --bg2: #f1f3f6; --panel: #fff; --panel-solid: #fff; --ink: #000; --muted: #333; --line: #999; --cool: #0b3d75; --accent: #6b4a00;
+    --warn-bg: #fff6dd; --warn-line: #8a6d00; --t-obs: #fff; --t-der: #fff; --t-int: #fff; }
+  html, body, #root { height: auto; }
+  main { max-width: 100%; padding: 0; }
+  .tag { color: #000; border-color: #555; }
+  .report .grid2 { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+  .report .card, .report table { max-width: 100%; }
+}

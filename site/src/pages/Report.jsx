@@ -14,10 +14,10 @@ import { StationTable } from "../hud/StationCard.jsx";
 export default function Report({ D, profile, cand, id }) {
   const p = cand.features.find((f) => f.properties.id === id)?.properties;
   const refId = SETTINGS.references[profile][0];
-  const [dem, setDem] = useState({ ref: null, cand: null });
+  const [dem, setDem] = useState({ ref: null, cand: null, done: false });
   useEffect(() => {
-    let live = true; setDem({ ref: null, cand: null });
-    Promise.all([loadDem(refId).catch(() => null), loadDem(id).catch(() => null)]).then(([a, b]) => live && setDem({ ref: a, cand: b }));
+    let live = true; setDem({ ref: null, cand: null, done: false });
+    Promise.all([loadDem(refId).catch(() => null), loadDem(id).catch(() => null)]).then(([a, b]) => live && setDem({ ref: a, cand: b, done: true }));
     return () => { live = false; };
   }, [id, refId]);
   const reference = profile === "moon" ? D.rm : D.rs;
@@ -42,7 +42,7 @@ export default function Report({ D, profile, cand, id }) {
           <div><div className="muted">Sıra (filtreyi geçen adaylar içinde)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
         <p className="muted">D = ortalama(d_eğim, d_röleyf, d_pürüzlülük), eşit ağırlık, değiştirilemez; d_k = W1 / IQR(referans). Benzerlik yüzdesi veya güven puanı üretilmez. Pencere "{body} karşılığı" değildir. Gap paneli yanda.</p>
-        <p className="noprint"><button onClick={() => window.print()}>Yazdır / PDF</button>{" "}<button onClick={download}>JSON indir</button>{" "}<a href={`#/compare/${p.id}/${profile}`}>Karşılaştırmaya dön</a></p>
+        <p className="noprint"><button onClick={() => window.print()} disabled={!dem.done}>Yazdır / PDF</button>{" "}<button onClick={download} disabled={!dem.done}>JSON indir</button>{!dem.done && <span className="muted"> DEM penceresi yükleniyor…</span>}{" "}<a href={`#/compare/${p.id}/${profile}`}>Karşılaştırmaya dön</a></p>
       </div>
       <div className="grid2">
         <div>

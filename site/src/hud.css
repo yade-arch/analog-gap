@@ -64,15 +64,15 @@
 /* Dar ekran (<1280 px): HUD mutlak konumdan akışa geçer; sahne her zaman görünür (üstte kalır), paneller açılır/kapanır. */
 @media (max-width: 1279px) {
   main.full { height: auto; }
-  .compare { height: auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 14px; overflow: visible; }
+  .compare { --scene-h: clamp(300px, 50vh, 520px); height: auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 14px; overflow: visible; }
   .compare::after { display: none; }
   .hud { position: static; display: contents; }
   .hud-top { order: 1; position: static; flex-wrap: wrap; justify-content: center; }
   .compare .move { order: 2; position: static; transform: none; width: auto; }
-  .scene { order: 3; position: sticky; top: 0; z-index: 4; inset: auto; height: clamp(300px, 50vh, 520px); background: #08101f; border-radius: 12px; overflow: hidden; }
+  .scene { order: 3; position: sticky; inset: auto; top: 0; z-index: 4; height: var(--scene-h); background: #08101f; border-radius: 12px; overflow: hidden; }
   .scene::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), rgba(240, 180, 69, .15)); pointer-events: none; }
   .scene-tag { order: 3; position: static; transform: none; align-self: center; }
-  .compare .station-card { order: 4; position: static; max-height: none; }
+  .compare .station-card { order: 4; position: static; max-height: none; scroll-margin-top: calc(var(--scene-h) + 12px); }
   .compare .hud-left, .compare .hud-right { order: 5; position: static; width: auto; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
   .hud-left > *, .hud-right > * { flex: 1 1 200px; min-width: 0; }
   .hud-bottom { order: 6; position: static; grid-template-columns: 1fr; }
@@ -83,6 +83,9 @@
   .mv-keys { display: none; } .mv-now { min-width: 0; }
 }
 @media (max-width: 640px) {
+  .compare { --scene-h: clamp(260px, 42vh, 420px); }
+  .compare .scene { order: 0; }   /* telefonda sahne ilk ekranda; kaydırınca üstte kalır */
+  .tag { white-space: normal; }
   .dgauge { order: -1; width: 100%; flex: 1 1 100%; }
   .stations .cards { grid-template-columns: repeat(3, 1fr); }
 }@media print { header.top, footer, .hud-left, .hud-right, .hud-bottom .hud-end { display: none; } .compare { height: 700px; } }

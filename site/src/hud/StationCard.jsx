@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { t } from "../i18n/index.js";
 import { TAG_KEYS } from "../features/mission/report.js";
+import { useNarrow } from "./Fold.jsx";
 
 /** Tablo: istasyon satırları (referans | aday | etiket). Kart ve rapor ortak kullanır. */
 export function StationTable({ res, refTitle, candTitle }) {
@@ -20,7 +21,8 @@ export function StationTable({ res, refTitle, candTitle }) {
 /** Karşılaştırma kartı (ekran). D her zaman Gap uyarısıyla yan yana. */
 export default function StationCard({ res, refTitle, candTitle, D, onClose, onNext, last }) {
   const ref = useRef(null);
-  useEffect(() => { ref.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" }); }, [res.v.id]);
+  const narrow = useNarrow();   // dar ekranda kart sahnenin (sticky) hemen altına kayar; geniş ekranda kart sahne üstünde, kaydırma yok
+  useEffect(() => { if (narrow) ref.current?.scrollIntoView?.({ block: "start", behavior: "smooth" }); }, [res.v.id, narrow]);
   return (
     <div ref={ref} className="hud-panel station-card" role="dialog" aria-label={t(res.v.titleKey)}>
       <div className="sc-head">
