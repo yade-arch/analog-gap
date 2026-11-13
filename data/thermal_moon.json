@@ -1,0 +1,56 @@
+{
+ "product": "Diviner Polar Resource Product (South) dlre_prp_south.tab, LRO-L-DLRE-5-PRP-V2.0 (oluşturma 2018-02-21)",
+ "provider": "UCLA / PDS Geosciences Node",
+ "labels": {
+  "observed": "yok (PRP gözlem değil model uydurması)",
+  "derived": "temp_avg (2 cm derinlik, yıllık ortalama), temp_max (yüzey yıllık maksimum)",
+  "interpretation": "Dünya MODIS LST ile eşdeğer değil: yüzey vs 2 cm derinlik, iki örnek vs model yıllık ortalama"
+ },
+ "window_rule": "daire yarıçap 5642 m (10x10 km karenin eşit alanı)",
+ "psr_note": "Site04 penceresi kalıcı gölgeli bölge içerir (L01); sıcaklık dağılımı bu yüzden geniş olabilir",
+ "dT_dn_moon": "Veri eksik (P2: PCP ltim kutuları yapılmadı)",
+ "windows": {
+  "Site04": {
+   "name": "Shackleton rim",
+   "n_triangles": 779,
+   "temp_avg_K_p10_p50_p90": [
+    54.0,
+    112.4,
+    145.1
+   ],
+   "temp_max_K_p10_p50_p90": [
+    88.0,
+    259.1,
+    315.3
+   ]
+  },
+  "Site01": {
+   "name": "Connecting ridge",
+   "n_triangles": 779,
+   "temp_avg_K_p10_p50_p90": [
+    83.2,
+    126.4,
+    153.3
+   ],
+   "temp_max_K_p10_p50_p90": [
+    208.7,
+    238.6,
+    281.7
+   ]
+  },
+  "Site07": {
+   "name": "Peak near Shackleton",
+   "n_triangles": 773,
+   "temp_avg_K_p10_p50_p90": [
+    83.7,
+    134.8,
+    161.2
+   ],
+   "temp_max_K_p10_p50_p90": [
+    195.5,
+    247.5,
+    281.7
+   ]
+  }
+ }
+}

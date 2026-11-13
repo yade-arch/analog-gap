@@ -1,0 +1,20 @@
+{
+  "source": "NASADEM User Guide V1.3 (January 2025), Table 2, p.4: https://lpdaac.usgs.gov/documents/2237/NASADEM_User_Guide_V13.pdf",
+  "retrieved": "2026-11-13",
+  "codes": [
+    {"range": [0, 0], "meaning": "Water in corrected SRTM water body data", "class": "water"},
+    {"range": [1, 23], "meaning": "SRTM, number of source observations 1-23", "class": "srtm"},
+    {"range": [41, 94], "meaning": "PRISM 1-50 (54 max polar, 37 max elsewhere)", "class": "prism"},
+    {"range": [110, 160], "meaning": "GDEM3 (saturated at 50)", "class": "gdem_fill"},
+    {"range": [170, 220], "meaning": "GDEM2 (saturated at 50)", "class": "gdem_fill"},
+    {"range": [231, 231], "meaning": "SRTMv3 from GDEM3", "class": "gdem_fill"},
+    {"range": [232, 232], "meaning": "SRTMv2 from GDEM3", "class": "gdem_fill"},
+    {"range": [233, 233], "meaning": "SRTMv2 from GDEM2", "class": "gdem_fill"},
+    {"range": [234, 234], "meaning": "SRTM-with-NGA-fill from GDEM2", "class": "gdem_fill"},
+    {"range": [241, 246], "meaning": "NED / CDED / Alaska DEM from GDEM2 or GDEM3 (USA, Canada, Alaska)", "class": "ext_fill"},
+    {"range": [250, 250], "meaning": "Interpolation", "class": "interpolation"},
+    {"range": [251, 251], "meaning": "Quad edge averaged where two neighboring quads disagreed (generally a GDEM error)", "class": "quad_edge"},
+    {"range": [255, 255], "meaning": "ERROR (if NUM is missing - none known to exist)", "class": "error"}
+  ],
+  "note": "Evidence Reliability: 'srtm' + 'prism' = doğrudan radar kökenli; 'gdem_fill', 'ext_fill', 'interpolation', 'quad_edge' = dolgu/türetilmiş oranı olarak raporlanır. 'water' pikselleri pencere hesabından maskelenir (kural: su yüzeyleri kapsam dışı)."
+}

@@ -1,0 +1,115 @@
+/* Karşılaştırma ekranı (taslak 6) yerleşimi. Renkler theme.css değişkenlerinden. */
+.compare { position: relative; height: 100%; min-height: 640px; overflow: hidden;
+  background: radial-gradient(ellipse at 78% 12%, rgba(240, 180, 69, .10), transparent 28%), linear-gradient(#060b17 0%, #0a1426 55%, #0d1a30 100%); }
+.compare::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), rgba(240, 180, 69, .15)); pointer-events: none; z-index: 1; }
+.scene { position: absolute; inset: 122px 226px 176px 226px; }   /* HUD panellerinin arasında; pencerenin tamamı bu alana sığdırılır */
+.scene-tag { position: absolute; left: 50%; bottom: 182px; transform: translateX(-50%); font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 3px 10px; pointer-events: none; z-index: 2; }
+.scene canvas { width: 100%; height: 100%; display: block; }
+.flatwrap { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 12px; }
+.flat2d { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+.fb { position: absolute; left: 50%; bottom: 150px; transform: translateX(-50%); }
+
+.hud { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.hud > * , .hud-top > * { pointer-events: none; }
+.hud-panel, .dgauge, .hud-legend, .badge { pointer-events: auto; }
+.hud-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; backdrop-filter: blur(4px); }
+.hud-panel h4 { margin: 0 0 8px; font-size: 11px; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+.hud-note { margin: 6px 0 0; font-size: 11.5px; color: var(--muted); }
+.warn-amber { color: var(--accent); }
+.err { color: #ffb3a1; }
+
+.hud-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.side-card { display: flex; flex-direction: column; gap: 3px; max-width: 360px; min-width: 240px; }
+.side-card b { font-size: 16px; } .side-card small { color: var(--muted); font-size: 12px; }
+.side-card.right b { color: #8fd6b0; }
+.side-card select { margin-top: 4px; }
+
+.dgauge { text-align: center; background: var(--panel); border: 2px solid var(--accent); border-radius: 22px; padding: 8px 18px; width: 270px; }
+.dgauge .lbl { font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+.dgauge .val { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.dgauge .bar { height: 5px; background: var(--line); border-radius: 3px; margin: 4px 0; overflow: hidden; }
+.dgauge .bar i { display: block; height: 100%; }
+.dgauge .hint, .dgauge .src { font-size: 11px; color: var(--muted); }
+
+.hud-left { position: absolute; top: 150px; left: 14px; width: 210px; display: flex; flex-direction: column; gap: 12px; }
+.hud-right { position: absolute; top: 150px; right: 14px; width: 210px; display: flex; flex-direction: column; gap: 12px; }
+.hud-btn { display: block; width: 100%; margin-bottom: 6px; text-align: center; border-radius: 10px; background: var(--bg2); }
+.hud-btn.lg { padding: 12px; font-weight: 600; }
+.hud-btn.on { border-color: var(--accent); color: var(--accent); }
+.hud-btn.sm { width: auto; flex: 1; margin: 0; }
+.row { display: flex; gap: 6px; }
+.mini canvas { width: 100%; background: #101a2e; border-radius: 6px; display: block; }
+
+.hud-bottom { position: absolute; left: 14px; right: 14px; bottom: 12px; display: grid; grid-template-columns: 280px minmax(0, 1fr) 240px; gap: 12px; align-items: end; }
+.hud-legend { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 11.5px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.hud-legend b { width: 100%; color: var(--ink); }
+.hud-legend .sw { display: inline-flex; flex-direction: column; min-width: 36px; height: 12px; border-radius: 3px; position: relative; margin-bottom: 14px; }
+.hud-legend .sw i { position: absolute; top: 13px; left: 0; font-style: normal; font-size: 10px; white-space: nowrap; }
+.hud-legend .sw.hatch { background: #2a3b57; border: 2px solid var(--limit-line, #f4f1e6); min-width: 150px; }
+.hud-legend small { width: 100%; font-size: 10.5px; }
+.stations .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.station { border: 1px solid var(--accent); border-radius: 10px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--bg2); }
+.station b { font-size: 13px; color: var(--accent); } .station small { font-size: 11px; color: var(--muted); }
+.station.missing { border-color: var(--line); } .station.missing b { color: var(--muted); }
+.station .dia { width: 14px; height: 14px; border: 2px solid currentColor; transform: rotate(45deg); color: var(--accent); margin: 4px 0 6px; }
+.station.missing .dia { color: var(--muted); }
+.hud-end { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.badge { font-size: 11px; color: var(--accent); border: 1px solid var(--accent); border-radius: 14px; padding: 4px 10px; text-align: center; background: var(--panel); }
+
+.hud-panel h4.sub { margin-top: 10px; }
+.fold-btn { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; background: none; border: 0; padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: inherit; text-align: left; cursor: pointer; }
+.fold-btn::after { content: "▸"; color: var(--accent); } .fold-btn[aria-expanded="true"]::after { content: "▾"; }
+.fold-h { margin: 0; } .fold-h.open { margin-bottom: 8px; }
+
+/* Dar ekran (<1280 px): HUD mutlak konumdan akışa geçer; sahne her zaman görünür (üstte kalır), paneller açılır/kapanır. */
+@media (max-width: 1279px) {
+  main.full { height: auto; }
+  .compare { height: auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 14px; overflow: visible; }
+  .compare::after { display: none; }
+  .hud { position: static; display: contents; }
+  .hud-top { order: 1; position: static; flex-wrap: wrap; justify-content: center; }
+  .compare .move { order: 2; position: static; transform: none; width: auto; }
+  .scene { order: 3; position: sticky; top: 0; z-index: 4; inset: auto; height: clamp(300px, 50vh, 520px); background: #08101f; border-radius: 12px; overflow: hidden; }
+  .scene::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), rgba(240, 180, 69, .15)); pointer-events: none; }
+  .scene-tag { order: 3; position: static; transform: none; align-self: center; }
+  .compare .station-card { order: 4; position: static; max-height: none; }
+  .compare .hud-left, .compare .hud-right { order: 5; position: static; width: auto; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+  .hud-left > *, .hud-right > * { flex: 1 1 200px; min-width: 0; }
+  .hud-bottom { order: 6; position: static; grid-template-columns: 1fr; }
+  .hud-end { flex-direction: row; } .hud-end > * { flex: 1; margin: 0; }
+  .side-card { flex: 1 1 220px; max-width: none; min-width: 0; }
+  .dgauge { width: 200px; flex: none; padding: 6px 12px; } .dgauge .val { font-size: 26px; }
+  .stations .cards { grid-template-columns: repeat(6, 1fr); gap: 6px; } .station { padding: 6px 2px; } .station b { font-size: 12px; }
+  .mv-keys { display: none; } .mv-now { min-width: 0; }
+}
+@media (max-width: 640px) {
+  .dgauge { order: -1; width: 100%; flex: 1 1 100%; }
+  .stations .cards { grid-template-columns: repeat(3, 1fr); }
+}@media print { header.top, footer, .hud-left, .hud-right, .hud-bottom .hud-end { display: none; } .compare { height: 700px; } }
+
+/* sayfa: üst gezinme sabit, ana ekran kalan yüksekliği doldurur (1366×768'de kayma yok) */
+#root { display: flex; flex-direction: column; min-height: 100%; }
+main.full { flex: 1 0 auto; height: calc(100vh - var(--hdr, 51px)); }
+main.full { width: 100%; margin: 0; }
+footer { width: 100%; }
+
+/* F2: istasyon kartı, günlük, rapor */
+button.station { font: inherit; color: inherit; cursor: pointer; }
+.station.cur { background: var(--accent); } .station.cur b, .station.cur small { color: var(--accent-ink); } .station.cur .dia { color: var(--accent-ink); }
+.station.seen { border-style: solid; box-shadow: inset 0 0 0 1px var(--good-edge); }
+.station-card { position: absolute; left: 238px; right: 238px; bottom: 182px; max-height: 290px; overflow: auto; z-index: 3; font-size: 12.5px; }
+.station-card table { font-size: 12.5px; } .station-card th, .station-card td { padding: 3px 6px; }
+.sc-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; } .sc-head b { font-size: 15px; }
+.log-list { margin: 0; padding-left: 16px; font-size: 11.5px; color: var(--muted); max-height: 150px; overflow: auto; } .log-list b { color: var(--ink); }
+.tag.real { background: var(--t-obs); } .tag.calc { background: var(--t-der); } .tag.sim { background: var(--t-int); }
+.report { max-width: 1400px; margin: 0 auto; }
+@media print { header.top, footer, .noprint { display: none !important; } body, .card { background: #fff; color: #000; } .card { border-color: #999; break-inside: avoid; } .grid2 { grid-template-columns: 3fr 2fr; } }
+.move { position: absolute; top: 184px; left: 50%; transform: translateX(-50%); width: min(560px, calc(100% - 470px)); padding: 6px 12px; z-index: 2; }
+.mv-row { display: flex; align-items: center; gap: 10px; } .mv-now { font-size: 12.5px; white-space: nowrap; min-width: 150px; }
+.move .bar { flex: 1; height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.move .bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; animation: mvfill linear forwards; }
+@keyframes mvfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.move .hud-btn.sm { flex: none; width: auto; margin: 0; padding: 3px 12px; }
+.move .hud-note { margin: 3px 0 0; }
+.station:disabled { opacity: .55; cursor: progress; }
+.sc-head .hud-btn { flex: none; width: auto; margin: 0; padding: 4px 12px; }

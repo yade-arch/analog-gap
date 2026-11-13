@@ -1,0 +1,295 @@
+{
+ "version": "0.1",
+ "generated": "2026-11-13",
+ "positive_control": {
+  "n_rows_in_csv": 13,
+  "n_tested": 5,
+  "median_percentile": 74.5,
+  "success_criterion": "medyan yüzdelik <= 20 (SPEC 7.1)",
+  "criterion_met": false,
+  "mann_whitney": {
+   "n_analog": 5,
+   "n_random": 1600,
+   "U": 4850.5,
+   "p_one_sided_(analog_lower_D_percentile)": 0.7948
+  },
+  "rows": [
+   {
+    "id": "K01",
+    "name": "SP Crater",
+    "region": "US-SW",
+    "profile": "Lunar Base Analogs (Shackleton çevresi)",
+    "window": "US-SW_r76_c116",
+    "D": null,
+    "has_D": false,
+    "O": {
+     "slope": 0.2468,
+     "relief": 0.1596,
+     "rough": 0.8807
+    },
+    "percentile_in_region": 74.5,
+    "passes_filter": false,
+    "match_status": "eşleşme yok (O_k<0.25)",
+    "percentile_matched_only": null,
+    "coord_source": "USGS The National Map Gazetteer (GNIS) gaz_id 33907 'S P Crater' https://carto.n",
+    "status_in_csv": "koordinat USGS kaynaklı; rol kaynağı özet düzeyinde"
+   },
+   {
+    "id": "K02",
+    "name": "Meteor Crater (Barringer)",
+    "region": "US-SW",
+    "profile": "Lunar Base Analogs (Shackleton çevresi)",
+    "window": "US-SW_r88_c127",
+    "D": null,
+    "has_D": false,
+    "O": {
+     "slope": 0.0,
+     "relief": 0.0,
+     "rough": 0.1761
+    },
+    "percentile_in_region": 74.5,
+    "passes_filter": false,
+    "match_status": "eşleşme yok (O_k<0.25)",
+    "percentile_matched_only": null,
+    "coord_source": "USGS The National Map Gazetteer (GNIS) gaz_id 7945 'Meteor Crater' (sorgu 2026-1",
+    "status_in_csv": "koordinat USGS kaynaklı; rol kaynağı Wikipedia atfı (kaynak zayıf)"
+   },
+   {
+    "id": "K03",
+    "name": "Mars Desert Research Station (MDRS)",
+    "region": "US-SW",
+    "profile": "Martian Landing & Exploration (Jezero)",
+    "window": "US-SW_r13_c129",
+    "D": 0.4577,
+    "has_D": true,
+    "O": {
+     "slope": 0.7779,
+     "relief": 0.6309,
+     "rough": 0.6103
+    },
+    "percentile_in_region": 27.1,
+    "passes_filter": true,
+    "match_status": "eşleşti, filtreyi geçti",
+    "percentile_matched_only": 27.1,
+    "coord_source": "https://en.wikipedia.org/wiki/Mars_Desert_Research_Station (koordinata atıf YOK)",
+    "status_in_csv": "kaynak bekliyor"
+   },
+   {
+    "id": "K04",
+    "name": "Salda Gölü",
+    "region": "ANA",
+    "status": "nokta geçerli pencere içinde değil (su/boşluk maskesi veya <%90 geçerli piksel)"
+   },
+   {
+    "id": "K05",
+    "name": "HI-SEAS (Mauna Loa yamacı)",
+    "region": "HAW",
+    "profile": "Martian Landing & Exploration (Jezero)",
+    "window": "HAW_r14_c12",
+    "D": 0.3962,
+    "has_D": true,
+    "O": {
+     "slope": 0.5027,
+     "relief": 0.4754,
+     "rough": 0.2807
+    },
+    "percentile_in_region": 23.1,
+    "passes_filter": false,
+    "match_status": "D var, filtreyi geçmedi (O_k<0.5)",
+    "percentile_matched_only": 23.1,
+    "coord_source": "https://en.wikipedia.org/wiki/HI-SEAS (atıf yok)",
+    "status_in_csv": "kaynak zayıf"
+   },
+   {
+    "id": "K06",
+    "name": "Black Point Lava Flow",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K07",
+    "name": "Cinder Lake Crater Field",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K08",
+    "name": "Amboy Crater",
+    "region": "US-SW",
+    "profile": "Lunar Base Analogs (Shackleton çevresi)",
+    "window": "US-SW_r99_c40",
+    "D": null,
+    "has_D": false,
+    "O": {
+     "slope": 0.0,
+     "relief": 0.0,
+     "rough": 0.0831
+    },
+    "percentile_in_region": 74.5,
+    "passes_filter": false,
+    "match_status": "eşleşme yok (O_k<0.25)",
+    "percentile_matched_only": null,
+    "coord_source": "USGS The National Map Gazetteer (GNIS) gaz_id 238580 'Amboy Crater' (sorgu 2026-",
+    "status_in_csv": "kaynak bekliyor (rol)"
+   },
+   {
+    "id": "K09",
+    "name": "Death Valley / Mojave Mars analog alanları",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K10",
+    "name": "Yungay (Atacama)",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K11",
+    "name": "Atacama rover saha testleri",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K12",
+    "name": "Mauna Kea (PISCES / Apollo Valley)",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   },
+   {
+    "id": "K13",
+    "name": "Kaʻū Çölü / Kīlauea",
+    "status": "koordinat yok (kaynak bekliyor), teste girmedi"
+   }
+  ],
+  "two_views": {
+   "view_A_no_match_counted_as_last_group": {
+    "n": 5,
+    "median_percentile": 74.5,
+    "note": "D'si olmayan analog, D'si olmayan pencerelerin ortak ortalama sırasını (74,5) alır"
+   },
+   "view_B_no_match_reported_separately": {
+    "n_tested": 5,
+    "n_matched_D_available": 2,
+    "n_no_match_O_lt_0.25": 3,
+    "no_match_rows": [
+     "K01 SP Crater",
+     "K02 Meteor Crater (Barringer)",
+     "K08 Amboy Crater"
+    ],
+    "matched_percentiles": {
+     "K03 Mars Desert Research Station (MDRS)": 27.1,
+     "K05 HI-SEAS (Mauna Loa yamacı)": 23.1
+    },
+    "median_percentile_matched_only": 25.1,
+    "note": "n_matched çok küçük; medyan istatistiksel anlam taşımaz. 'Eşleşme yok' bir sıralama sonucu değil, referansla örtüşme olmadığı bilgisidir."
+   }
+  },
+  "WARNING": "n=6 koordinatlı satır; Atacama 0, HAW 1, ANA 1. Bölge dağılımı dengesiz, istatistiksel güç zayıf. Geçse bile 'yöntem doğrulandı' denmez; HI-SEAS ve MDRS koordinatları zayıf kaynaklı. Bilinen analogların bir kısmı topografya dışı nedenlerle seçilmiştir.",
+  "percentile_definition": "analog noktasını içeren pencerenin bölgesindeki tüm pencereler arasında D'ye göre yüzdelik sırası (düşük = iyi); D'si olmayan pencereler son grupta ortak ortalama sıra alır."
+ },
+ "negative_control": {
+  "per_region": {
+   "US-SW": {
+    "moon": {
+     "n_random": 200,
+     "n_with_D": 91,
+     "n_pass_filter": 41,
+     "D_percentiles_(P10,P50,P90)": [
+      0.65,
+      0.774,
+      0.99
+     ]
+    },
+    "mars": {
+     "n_random": 200,
+     "n_with_D": 157,
+     "n_pass_filter": 108,
+     "D_percentiles_(P10,P50,P90)": [
+      0.3,
+      0.606,
+      1.795
+     ]
+    }
+   },
+   "ATA": {
+    "moon": {
+     "n_random": 200,
+     "n_with_D": 92,
+     "n_pass_filter": 37,
+     "D_percentiles_(P10,P50,P90)": [
+      0.37,
+      0.607,
+      0.791
+     ]
+    },
+    "mars": {
+     "n_random": 200,
+     "n_with_D": 166,
+     "n_pass_filter": 119,
+     "D_percentiles_(P10,P50,P90)": [
+      0.288,
+      0.547,
+      1.456
+     ]
+    }
+   },
+   "HAW": {
+    "moon": {
+     "n_random": 200,
+     "n_with_D": 38,
+     "n_pass_filter": 10,
+     "D_percentiles_(P10,P50,P90)": [
+      0.285,
+      0.566,
+      0.857
+     ]
+    },
+    "mars": {
+     "n_random": 200,
+     "n_with_D": 185,
+     "n_pass_filter": 54,
+     "D_percentiles_(P10,P50,P90)": [
+      0.314,
+      0.449,
+      0.986
+     ]
+    }
+   },
+   "ANA": {
+    "moon": {
+     "n_random": 200,
+     "n_with_D": 84,
+     "n_pass_filter": 22,
+     "D_percentiles_(P10,P50,P90)": [
+      0.549,
+      0.644,
+      0.785
+     ]
+    },
+    "mars": {
+     "n_random": 200,
+     "n_with_D": 150,
+     "n_pass_filter": 97,
+     "D_percentiles_(P10,P50,P90)": [
+      0.267,
+      0.516,
+      1.678
+     ]
+    }
+   }
+  },
+  "flat_windows_slope_p90_lt_2deg": {
+   "moon": {
+    "n_flat_windows": 51,
+    "n_with_D": 0,
+    "n_in_last_quarter_(percentile>=75)": 51,
+    "n_pass_filter": 0,
+    "expectation": "Shackleton profilinde son çeyrekte olmaları beklenir (SPEC 7.2); düşmezse uyarı",
+    "warning": false
+   },
+   "mars": {
+    "n_flat_windows": 51,
+    "n_with_D": 0,
+    "n_in_last_quarter_(percentile>=75)": 51,
+    "n_pass_filter": 0,
+    "expectation": "bilgi amaçlı"
+   }
+  }
+ },
+ "note": "Pencereler %50 örtüşür; komşu pencereler bağımsız değildir, p değerleri iyimser olabilir."
+}

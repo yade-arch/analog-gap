@@ -1,0 +1,146 @@
+{
+ "sites": {
+  "Site04": {
+   "reference": {
+    "slope": [
+     9.35,
+     18.96,
+     33.41
+    ],
+    "relief": [
+     62.28,
+     126.41,
+     243.95
+    ],
+    "rough": [
+     0.94,
+     1.88,
+     2.61
+    ]
+   },
+   "n_with_D": 10030,
+   "n_pass_filter": 3369,
+   "analogs": [
+    {
+     "id": "K01",
+     "name": "SP Crater",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 67.2
+    },
+    {
+     "id": "K02",
+     "name": "Meteor Crater (Barringer)",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 67.2
+    },
+    {
+     "id": "K08",
+     "name": "Amboy Crater",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 67.2
+    }
+   ],
+   "median_A": 67.2,
+   "median_B": null,
+   "n_matched": 0
+  },
+  "Site01": {
+   "reference": {
+    "slope": [
+     4.52,
+     10.66,
+     19.28
+    ],
+    "relief": [
+     32.47,
+     67.27,
+     126.23
+    ],
+    "rough": [
+     0.81,
+     1.26,
+     2.16
+    ]
+   },
+   "n_with_D": 19603,
+   "n_pass_filter": 13582,
+   "analogs": [
+    {
+     "id": "K01",
+     "name": "SP Crater",
+     "status": "eşleşti, filtreyi geçmedi (O_k<0.5)",
+     "D": 0.5748,
+     "percentile": 2.8
+    },
+    {
+     "id": "K02",
+     "name": "Meteor Crater (Barringer)",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 80.5
+    },
+    {
+     "id": "K08",
+     "name": "Amboy Crater",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 80.5
+    }
+   ],
+   "median_A": 80.5,
+   "median_B": 2.8,
+   "n_matched": 1
+  },
+  "Site07": {
+   "reference": {
+    "slope": [
+     4.48,
+     10.76,
+     17.28
+    ],
+    "relief": [
+     31.5,
+     70.1,
+     116.84
+    ],
+    "rough": [
+     0.74,
+     1.09,
+     1.78
+    ]
+   },
+   "n_with_D": 19311,
+   "n_pass_filter": 13043,
+   "analogs": [
+    {
+     "id": "K01",
+     "name": "SP Crater",
+     "status": "eşleşti, filtreyi geçmedi (O_k<0.5)",
+     "D": 0.7448,
+     "percentile": 4.5
+    },
+    {
+     "id": "K02",
+     "name": "Meteor Crater (Barringer)",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 79.8
+    },
+    {
+     "id": "K08",
+     "name": "Amboy Crater",
+     "status": "eşleşme yok (O_k<0.25)",
+     "D": null,
+     "percentile": 79.8
+    }
+   ],
+   "median_A": 79.8,
+   "median_B": 4.5,
+   "n_matched": 1
+  }
+ },
+ "note": "Post-hoc keşifsel analiz; aynı pencereler, aynı O_k/d_k/D kodu; referans yalnızca tek ROI penceresi (≈ 330 K piksel yerine ≈ 110 K piksel). Ana sıralamayı değiştirmez; eşikler (0,25/0,5) değiştirilmedi. n = 3 analog: istatistiksel anlam yok."
+}

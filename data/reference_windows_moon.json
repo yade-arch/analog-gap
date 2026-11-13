@@ -1,0 +1,48 @@
+{
+ "Site04": {
+  "name": "Shackleton rim",
+  "n_roi_polygons": 4,
+  "centroid_x_m": -2745.8,
+  "centroid_y_m": -6353.2,
+  "lon_deg_E": 203.374,
+  "lat_deg": -89.7718,
+  "roi_extent_m": [
+   215,
+   900
+  ],
+  "source": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site04/Site04_ROIs.tgz",
+  "crs": "south polar stereographic, sphere R=1737400 m, lon0=0 (from .prj)"
+ },
+ "Site01": {
+  "name": "Connecting ridge",
+  "n_roi_polygons": 7,
+  "centroid_x_m": -11125.9,
+  "centroid_y_m": -12099.8,
+  "lon_deg_E": 222.599,
+  "lat_deg": -89.4579,
+  "roi_extent_m": [
+   1490,
+   1145
+  ],
+  "source": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_ROIs.tgz",
+  "crs": "south polar stereographic, sphere R=1737400 m, lon0=0 (from .prj)"
+ },
+ "Site07": {
+  "name": "Peak near Shackleton",
+  "n_roi_polygons": 2,
+  "centroid_x_m": 30080.5,
+  "centroid_y_m": -20087.8,
+  "lon_deg_E": 123.735,
+  "lat_deg": -88.8072,
+  "roi_extent_m": [
+   240,
+   205
+  ],
+  "source": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site07/Site07_ROIs.tgz",
+  "crs": "south polar stereographic, sphere R=1737400 m, lon0=0 (from .prj)"
+ },
+ "LM1": {
+  "status": "kaynak bekliyor",
+  "note": "PGDA ürün 78 sayfasýnda LM1 için ROI shapefile yok; yalnýzca LDEM/slp/ldec GeoTIFF listeli. Konum GeoTIFF baþlýðýndan okunabilir (indirilmedi)."
+ }
+}
