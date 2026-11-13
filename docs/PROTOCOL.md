@@ -57,3 +57,18 @@ Bilinmeyen ek alanlar yok sayılır; zorunlu alan eksikse mesaj reddedilir.
 
 ## 7. Sürümleme
 Geriye uyumsuz değişiklikte `v` artırılır. v0 kararlı değildir; alanlar değişebilir.
+
+## 8. Taslak uzantılar (v0, yalnızca `docs/arduino/` taslakları için; arayüzde ve `protocol.js`'te YOK)
+> `site/src/hardware/protocol.js` bu türleri şu an **reddeder** (`bad_message`); `docs/ROADMAP.md` (a) maddesi bunları doğrulayıcıya ekler. Cihaz taslakları da denenmemiş taslaktır.
+
+**Ana bilgisayar → cihaz:** `show_d`: arayüzde Python sonucundan gelen D değerini fiziksel göstergeye iletir. `d` yalnızca Python (`sim.py`) çıktısından gelir; cihaz değeri değiştirmez.
+```json
+{"v":0,"type":"cmd","id":3,"cmd":"show_d","args":{"d":0.1596}}
+```
+`d`: sayı, `0 ≤ d`; geçersizse `ack.ok=false` ("d sayı olmalı") ve gösterge söner. D'nin ölçeği `config.js: dScaleMax` (1,2) ile aynıdır; D "düşük = yakın"dır, renk/LED sayısı iyi-kötü anlamı taşımaz.
+
+**Cihaz → ana bilgisayar:** `sensor` (yalnızca gerçekten bir sensör okunduysa):
+```json
+{"v":0,"type":"sensor","sensor":"MPU6050","t_ms":5200,"pitch_deg":3.4,"roll_deg":-1.2,"source":"hardware"}
+```
+`pitch_deg` ve `roll_deg`: ivmeölçerden **statik** eğim (cihaz hareketsizken anlamlıdır); cihaz saati `t_ms`. Sensör yoksa/okunamıyorsa **hiçbir `sensor` mesajı gönderilmez**; bunun yerine bir kez `{"v":0,"type":"error","code":"sensor_missing","message":"..."}` gönderilir. Tanımlı yeni hata kodu: `sensor_missing`. Hiçbir cihaz `source:"hardware"` dışında bir değer yazmaz; arayüz bu değerleri "Canlı donanım verisi (kullanıcı cihazı)" olarak etiketler ve D, kart, rapor sayılarına karıştırmaz.
