@@ -83,3 +83,13 @@ export function outcome(suit, left, flags) {
   if (!suit.tolerant && flags.length) return "risky";
   return "success";
 }
+
+/** Küre işaretçileri: Dünya aday pencereleri (candidates_*.geojson merkezleri). */
+export function candMarkers(cand) {
+  return (cand?.features || []).map((f) => { const p = f.properties; return { id: p.id, lat: p.center_lat, lon: p.center_lon, kind: p.region, label: p.id }; });
+}
+
+/** Hedef referans işaretçileri: yalnızca veride koordinatı olan pencereler (Ay: reference_moon.json lat/lon_E; Mars R2'de koordinat yok). */
+export function refMarkers(ref) {
+  return (ref?.windows || []).filter((w) => Number.isFinite(w.lat) && Number.isFinite(w.lon_E)).map((w) => ({ id: w.id, lat: w.lat, lon: w.lon_E, kind: "ref", label: `${w.id} · ${w.name || ""}` }));
+}

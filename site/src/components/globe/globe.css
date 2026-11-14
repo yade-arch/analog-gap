@@ -1,0 +1,14 @@
+/* Ortak küre: yalnızca .globe-* sınıfları; renkler theme.css değişkenlerinden. */
+.globe { position: relative; min-width: 0; }
+.globe-canvas { width: 100%; height: min(62vh, 560px); min-height: 300px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); overflow: hidden; touch-action: none; }
+.globe-canvas canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
+.globe-canvas canvas:active { cursor: grabbing; }
+.globe-flat { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.globe-grid { stroke: var(--line); stroke-width: 1; }
+.globe-mark { fill: var(--cool); cursor: pointer; }
+.globe-sel { fill: var(--accent); }
+.globe-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.globe-bar button { min-width: 36px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink); font-size: 1rem; cursor: pointer; }
+.globe-bar select { flex: 1 1 180px; min-width: 0; max-width: 100%; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink); }
+.globe-note { font-size: .8rem; color: var(--muted); margin: 4px 0 0; }
+@media (max-width: 900px) { .globe-canvas { height: 48vh; } }

@@ -20,3 +20,10 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - Gösterilen adayların hepsinde D var (filtreyi geçenler); D yoksa "Veri eksik" yolu kodda mevcut.
 - Haversine Card.jsx'te dışa aktarılmadığı için (dokunulmaz dosya) data.js'de küçük kopya var.
 - MapView onSelect ilk çizimde yakalanıyor (MapView.jsx dokunulmaz): Game.jsx'te ref + useCallback ile sarıldı.
+
+## Oyun 3D küre (dal: feature/oyun-3d-kure)
+- (a) D'siz pencere denendi: candidates_mars.geojson'da HAW pencerelerinin D/d'si geçici olarak null yapıldı (commit edilmedi, git'ten geri alındı). CompareCard ve sonuç ekranı "Veri eksik" gösterdi, sıfır saymadı; ölçüt "Veri eksik" oldu.
+- ORTAK KÜRE BU DALDA (origin'de GlobeView yoktu): site/src/components/GlobeView.jsx + components/globe/{geo.js,scene.js,globe.css}. Props: body, markers [{id,lat,lon,kind,label}], onPick(marker|{lat,lon}), selectedId, className. three + OrbitControls; WebGL yoksa düz SVG; klavye için <select>; doku yok.
+- Küre metinleri i18n/tr.globe.js, en.globe.js; tr.game.js/en.game.js üzerinden yüklenir (tr.js/en.js'ye dokunulmadı).
+- Aşama 1: hedef küre (Ay: reference_moon.json 3 pencere; Mars: R2 koordinatı veride yok → işaretçi yok, açıklama var). Aşama 2: Dünya küresi ↔ 2D MapView, "Küreye dön". Maliyet: mevcut inceleme maliyeti.
+- UYARI: Bu klasörde başka bir oturum aynı anda çalışıyor; dc0958f "Faz A" commit'i bu dala onun tarafından atıldı (oyun işi değil).
