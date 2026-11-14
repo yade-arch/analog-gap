@@ -1,5 +1,6 @@
 // Ana ekran kahraman bölümü metinleri. Sayılar registry.js'ten (NASA Planetary Fact Sheet) gelir; burada sayı yazılmaz.
 export default {
+  "nav.about": "Proje",
   "hero.aria": "Gezegen seçimi",
   "hero.kicker": "GEZEGEN",
   "hero.name.earth": "DÜNYA",
@@ -12,7 +13,7 @@ export default {
   "hero.src": "Kaynak: NASA Planetary Fact Sheet",
   "hero.start": "BAŞLA",
   "hero.goto": "{n} seç",
-  "hero.down": "Aşağı kaydır",
+  "hero.down": "Proje sayfası: amaç, adımlar, örnek sonuç",
   "hero.tex": "Doku",
   "hero.nowebgl": "Bu tarayıcıda 3B çizim (WebGL) yok; küre düz görsel olarak gösteriliyor.",
 };

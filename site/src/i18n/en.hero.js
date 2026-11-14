@@ -1,5 +1,6 @@
 // Home hero texts (English). Numbers come from registry.js (NASA Planetary Fact Sheet).
 export default {
+  "nav.about": "Project",
   "hero.aria": "Body selection",
   "hero.kicker": "PLANET",
   "hero.name.earth": "EARTH",
@@ -12,7 +13,7 @@ export default {
   "hero.src": "Source: NASA Planetary Fact Sheet",
   "hero.start": "START",
   "hero.goto": "Select {n}",
-  "hero.down": "Scroll down",
+  "hero.down": "Project page: purpose, steps, example result",
   "hero.tex": "Texture",
   "hero.nowebgl": "No 3D rendering (WebGL) in this browser; the globe is shown as a flat image.",
 };

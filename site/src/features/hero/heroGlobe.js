@@ -26,7 +26,7 @@ export function createHeroGlobe(host) {
   const glow = new THREE.Mesh(new THREE.SphereGeometry(1.06, 64, 32), glowMat);
   scene.add(globe, glow, new THREE.AmbientLight(0xffffff, 0.35));
   const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(-3, 2, 4); scene.add(sun);
-  let dist = 3.4, rotY = 0, rotX = 0.25, drag = null, pinch = null, raf = 0, alive = true;
+  let dist = 4.6, rotY = 0, rotX = 0.25, drag = null, pinch = null, raf = 0, alive = true;
   const fit = () => { const w = host.clientWidth, h = host.clientHeight || 1; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
   const loop = () => {
     if (!alive) return;
@@ -40,11 +40,11 @@ export function createHeroGlobe(host) {
   const down = (e) => { pts.set(e.pointerId, [e.clientX, e.clientY]); if (pts.size === 1) drag = [e.clientX, e.clientY]; else { drag = null; const [a, b] = [...pts.values()]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); } el.setPointerCapture?.(e.pointerId); };
   const move = (e) => {
     if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, [e.clientX, e.clientY]);
-    if (pinch && pts.size === 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); dist = Math.min(3.8, Math.max(2.6, dist * (pinch / d))); pinch = d; return; }
+    if (pinch && pts.size === 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); dist = Math.min(5.6, Math.max(4.4, dist * (pinch / d))); pinch = d; return; }
     if (drag) { rotY += (e.clientX - drag[0]) * 0.005; rotX = Math.max(-1.2, Math.min(1.2, rotX + (e.clientY - drag[1]) * 0.003)); drag = [e.clientX, e.clientY]; }
   };
   const up = (e) => { pts.delete(e.pointerId); drag = null; pinch = null; };
-  const wheel = (e) => { e.preventDefault(); dist = Math.min(3.8, Math.max(2.6, dist + e.deltaY * 0.0015)); };
+  const wheel = (e) => { e.preventDefault(); dist = Math.min(5.6, Math.max(4.4, dist + e.deltaY * 0.0015)); };
   el.addEventListener("pointerdown", down); el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
   el.addEventListener("wheel", wheel, { passive: false });
   const ro = new ResizeObserver(fit); ro.observe(host); fit(); loop();

@@ -63,7 +63,8 @@ export default function App() {
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={candR} candAll={cand} region={region} setRegion={setRegion} profile={profile} D={D} onSelect={go} />}
-            {page === "home" && <Home cand={cand} profile={profile} D={D} />}
+            {page === "home" && <Home hero />}
+            {page === "about" && <Home cand={cand} profile={profile} D={D} />}
             {page === "list" && <ListPage cand={cand} region={region} profile={profile} reference={reference} known={D.known} hasDem={dem ? (id) => id in dem : null} />}
             {page === "card" && (feature
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />

@@ -40,7 +40,7 @@ export default function Hero({ onStart }) {
       </div>
       {!gl && <p className="hero-note">{t("hero.nowebgl")}</p>}
       <p className="hero-credit">{t("hero.tex")}: {b.texSrc}</p>
-      <a className="hero-down" href="#hero-more" onClick={(e) => { e.preventDefault(); document.getElementById("hero-more")?.scrollIntoView({ behavior: "smooth" }); }} aria-label={t("hero.down")}>↓</a>
+      <a className="hero-down" href="#/about" aria-label={t("hero.down")} title={t("hero.down")}>↓</a>
     </section>
   );
 }
