@@ -25,7 +25,11 @@ export function createGlobe(el, opts = {}) {
   const land = new THREE.Group(), outl = new THREE.Group(); scene.add(land, outl);
   // Renk işaretçi başına (marker.color; yoksa --cool). Malzeme beyaz, köşe rengiyle çarpılır.
   const pts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color: 0xffffff, vertexColors: true, size: 6, sizeAttenuation: false }));
-  scene.add(pts);
+  // Kontrast halkası: her işaretçinin arkasında biraz büyük, zemin renginde nokta (dokulu kürede de okunur).
+  const halo = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color: css(el, "--panel-solid", "#ffffff"), size: 9, sizeAttenuation: false }));
+  halo.material.depthWrite = false; halo.renderOrder = 1; pts.renderOrder = 2;   // önce tüm halkalar, sonra işaretçiler (kümelerde renk görünür)
+  scene.add(halo, pts);
+  let hasTex = false;
   // Seçili işaretçi: amber halka + açık dış çerçeve; ekranda sabit boy (döngüde kamera uzaklığıyla ölçeklenir).
   const ring = (a, b, color) => new THREE.Mesh(new THREE.RingGeometry(a, b, 32), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }));
   const sel = new THREE.Group(); sel.add(ring(0.03, 0.05, C.sel), ring(0.05, 0.058, C.ink)); sel.renderOrder = 2;
@@ -60,9 +64,21 @@ export function createGlobe(el, opts = {}) {
   });
 
   return {
-    setLand(pos) { land.clear(); if (pos?.length) land.add(lines(pos, C.coast, 0.9)); },
+    setLand(pos) { land.clear(); if (pos?.length) land.add(lines(pos, C.coast, hasTex ? 0.3 : 0.9)); },   // dokulu kürede ince ve soluk
+    /** Doğrulanmış görüntü dokusu (URL). Yüklenince kara dolgusunun yerini alır; hata olursa false döner, dolgu kalır. */
+    setTexture(url) {
+      return new Promise((res) => {
+        if (!url) { res(false); return; }
+        new THREE.TextureLoader().load(url, (tx) => {
+          tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4;
+          const m = globe.material; m.map?.dispose(); m.map = tx; m.color.set(0xffffff); m.needsUpdate = true; hasTex = true;
+          land.children.forEach((l) => { l.material.opacity = 0.3; }); res(true);
+        }, undefined, () => res(false));
+      });
+    },
     /** Kara dolgusu: GeoJSON'dan çizilen düz renkli doku (okyanus + kara); uydu görüntüsü değildir. */
     setLandFill(geojson) {
+      if (hasTex) return;                                            // doku varsa dolgu çizilmez
       const m = globe.material; m.map?.dispose(); m.map = null;
       if (geojson) { const tx = new THREE.CanvasTexture(landCanvas(geojson, C.ocean, C.landFill)); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; m.map = tx; m.color.set(0xffffff); }
       m.needsUpdate = true;
@@ -72,6 +88,8 @@ export function createGlobe(el, opts = {}) {
       markers = list || [];
       pts.geometry.dispose(); pts.geometry = new THREE.BufferGeometry();
       pts.geometry.setAttribute("position", new THREE.Float32BufferAttribute(markers.flatMap((m) => toXYZ(m.lat, m.lon, 1.004)), 3));
+      halo.geometry.dispose(); halo.geometry = new THREE.BufferGeometry();
+      halo.geometry.setAttribute("position", new THREE.Float32BufferAttribute(markers.flatMap((m) => toXYZ(m.lat, m.lon, 1.003)), 3));
       const col = new THREE.Color(), def = new THREE.Color(C.mark);
       pts.geometry.setAttribute("color", new THREE.Float32BufferAttribute(markers.flatMap((m) => (m.color ? col.set(m.color) : def).toArray()), 3));
     },

@@ -52,6 +52,7 @@ export default {
   "theme.light": "Açık tema",
   "theme.dark": "Koyu tema",
   "theme.system": "Sistem ayarı",
+  "globe.tex.earth": "Görüntü: NASA Blue Marble NG (Topografya + Batimetri), Aralık 2004. Görsel amaçlıdır; analiz verisi değildir. Kıyı çizgisi: Natural Earth 110m.",
   "globe.legend.missing": "Veri eksik",
   "globe.legend.sel": "seçili",
   "globe.legend.ocean": "Okyanus",

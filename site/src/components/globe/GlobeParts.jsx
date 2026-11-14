@@ -3,7 +3,7 @@ import { t } from "../../i18n/index.js";
 import { gradient } from "./color.js";
 
 /** WebGL yoksa düz enlem/boylam görünümü: okyanus zemini, kara (Natural Earth), ızgara, çerçeveler, işaretçiler. */
-export function Flat({ markers, onPick, selectedId, outlines, land }) {
+export function Flat({ markers, onPick, selectedId, outlines, land, tex }) {
   const x = (lon) => ((((lon + 180) % 360) + 360) % 360) * 2, y = (lat) => (90 - lat) * 2;
   const rings = (outlines?.features || []).flatMap((f) => (f.geometry?.type === "Polygon" ? f.geometry.coordinates : []));
   const polys = (land?.features || []).flatMap((f) => (f.geometry?.type === "Polygon" ? [f.geometry.coordinates] : f.geometry?.type === "MultiPolygon" ? f.geometry.coordinates : []));
@@ -11,6 +11,7 @@ export function Flat({ markers, onPick, selectedId, outlines, land }) {
   return (
     <svg className={"globe-flat" + (land ? " globe-flat-earth" : "")} viewBox="0 0 720 360" role="img" aria-label={t("globe.flat")}>
       {polys.map((p, i) => <path key={"l" + i} d={path(p)} className="globe-landfill" fillRule="evenodd" />)}
+      {tex && <image href={tex} x="0" y="0" width="720" height="360" preserveAspectRatio="none" />}
       {[-60, -30, 0, 30, 60].map((l) => <line key={"a" + l} x1="0" x2="720" y1={y(l)} y2={y(l)} className="globe-grid" />)}
       {[-120, -60, 0, 60, 120].map((l) => <line key={"o" + l} y1="0" y2="360" x1={x(l)} x2={x(l)} className="globe-grid" />)}
       {rings.map((r, i) => <polygon key={"r" + i} points={r.map(([lo, la]) => `${x(lo)},${y(la)}`).join(" ")} className="globe-outline" />)}
