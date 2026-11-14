@@ -69,3 +69,13 @@ Tamamlayıcı (yalnızca NASA verisi eksikse): CSA RADARSAT, ESA Copernicus Data
 2. Küçük düzeltmeler tek commit'te toplanır; ara rapor yazılmaz, sonunda en fazla 5 satır.
 3. Büyük bir iş bitince kullanıcıya "yeni oturum aç" öner; yeni oturum yalnızca `STATUS.md` ve `docs/ISLER.md` son satırlarını okuyarak başlar.
 4. Basit düzeltmede kısa düşün, dosyanın yalnızca ilgili satırlarını oku; Opus yalnızca zor tasarım/hata için (model değişikliğini kullanıcı yapar).
+
+## TOKEN VERİMLİLİĞİ (kalıcı; kaliteden ve efordan ödün verilmez)
+Öncelik: 1) doğruluk ve kalite, 2) bilimsel dürüstlük (uydurma yok, NASA verisi önce), 3) token tasarrufu. Tasarruf kaliteyi düşürecekse yapılmaz; düşünme/efor düşürülmez, yalnızca gereksiz iş kaldırılır.
+- Okuma: önce grep/rg, sonra yalnızca ilgili satır aralığı; aynı dosya tekrar okunmaz; başarılı Edit/Write sonrası doğrulama okuması yok; büyük veri/log sohbete dökülmez (head/tail/wc/jq).
+- Araçlar: bağımsız çağrılar tek turda paralel; çıktılar kısaltılır (`--silent`, `| tail`, yalnız hata satırı); küçük değişiklikte Edit; alt ajan yalnız büyük bağımsız aramada.
+- Çalışma: ≤5 maddelik plan, ara rapor yok; aynı hata 3 denemede çözülmezse dur, neden + alternatif yaz; önce `npm run check`, tarayıcı/ekran görüntüsü yalnız görsel işin sonunda (en fazla 1 masaüstü + 1 mobil, en fazla 3 tur); web/curl doğrulaması bir kez yapılıp docs/ veya STATUS.md'ye yazılır; kapsam dışı iş yok; dosya <300 satır.
+- Yazım: kısa, sonuç odaklı (yapılan, test edilen, eksik); kod/dosya içeriği sohbette tekrarlanmaz.
+- Oturum: bağlam şişince /compact, ilişkisiz işte /clear önerilir; kapsam belirsizse tek soru sorulur.
+- Tasarruf YAPILMAZ: bilimsel değer/kaynak/birim/çözünürlük doğrulaması; değişen şeyin testi (test edilmeyen "çalışıyor" denmez); silme, force-push, birleştirme gibi riskli işler; hata ayıklamada gerçek neden.
+- Her iş sonunda 3 satır: (1) "Verimlilik: X dosya okundu, Y komut, Z test; atlanan gereksiz iş: …" (2) "Sıradaki iş için öneri: Model = Haiku/Sonnet/Opus 5.5, Zorluk = low/medium/high, Neden: …" — Haiku+low: salt okuma, durum, küçük metin, git; Sonnet+medium: bilinen kalıpta UI/metin, belge, küçük hata, test; Sonnet+high: çok dosyalı net iş, veri adaptörü, refaktör, çakışma; Opus+high: yeni mimari, 3B/koordinat/matematik, belirsiz hata, bilimsel doğruluk kritik iş (yalnız gerçekten gerekirse; emin değilsen bir alt seviye dene). (3) "Kalan iş büyüklüğü: küçük/orta/büyük".
