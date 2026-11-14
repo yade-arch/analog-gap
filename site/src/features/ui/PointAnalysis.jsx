@@ -3,6 +3,7 @@ import { fmt, Tag } from "../../common.jsx";
 import { t } from "../../i18n/index.js";
 import { analysePoint, pointId } from "../planet/pointAnalysis.js";
 import { TILE_URL } from "../planet/terrainTiles.js";
+import { addDiscovered } from "../planet/discovered.js";
 
 // "Selected place" panel section: on-demand landform check of a 10×10 km square at ANY point on Earth
 // (Terrain Tiles -> 30 m grid -> slope / height difference / roughness -> terrain distance D to the chosen reference).
@@ -13,7 +14,7 @@ export default function PointAnalysis({ sel, target, refs }) {
   const [st, setSt] = useState({ s: "load" }), [n, setN] = useState(0);
   useEffect(() => {
     let live = true; setSt({ s: "load" });
-    analysePoint(sel.lat, sel.lon, refs).then((r) => live && setSt({ s: "ok", r })).catch((e) => live && setSt({ s: "err", e: String(e.message || e) }));
+    analysePoint(sel.lat, sel.lon, refs).then((r) => { addDiscovered(r, sel.name); if (live) setSt({ s: "ok", r }); }).catch((e) => live && setSt({ s: "err", e: String(e.message || e) }));
     return () => { live = false; };
   }, [sel.lat, sel.lon, n, refs.moon, refs.mars]);
   const body = t("ui.body." + target), ref = refs[target]?.variables;

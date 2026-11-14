@@ -7,12 +7,13 @@ import { regionRanks, REGION_CODES } from "../features/world/state.js";
 import { knownIn } from "../features/world/known.js";
 import RefCard, { ICON } from "../features/ui/RefCard.jsx";
 import ReliefThumb from "../features/ui/ReliefThumb.jsx";
+import Discovered from "../features/ui/Discovered.jsx";
 import "../features/ui/glass.css";
 
 const fill = (s, o) => Object.entries(o).reduce((a, [k, v]) => a.replace(`{${k}}`, v), s);
 
 /** Aday kartı (referans tasarım): kabartma görseli (gerçek DEM), sıra, yer, arazi uzaklığı kutusu (yüzde değil), 3 değer, Seç. */
-function CandCard({ p, i, tE, hasDem, go }) {
+function CandCard({ p, i, tE, hasDem, go, profile }) {
   const T = tE?.windows?.[p.id]?.T_mean2_K_median;
   const st = [["slope", t("ui.slope"), `${fmt(p.derived_percentiles.slope.p50, 1)}°`, tipOf("slope")], ["relief", t("ui.relief"), `${fmt(p.derived_percentiles.relief.p50, 1)} m`, tipOf("relief")],
     ["temp", t("ui.temp"), T == null ? t("list.nodata") : `${fmt(T - 273.15, 0)} °C`, t("ui.tempNote")]];
@@ -24,6 +25,7 @@ function CandCard({ p, i, tE, hasDem, go }) {
         <div className="cand2-d" title={t("list.dnote")}><b>{fmt(p.D, 3)}</b><span>{t("gauge.title")}</span></div>
       </div>
       <div className="cand2-loc">📍 {regionLabel(p.region)}</div>
+      <div className="muted small">{t("disc.vs").replace("{b}", t("ui.body." + profile))}</div>
       <div className="stat3 cardstats">{st.map(([k, n, x, tip]) => <div key={k} title={tip}><span className="muted"><span className="ic">{ICON[k]}</span>{n}</span><b>{x}</b></div>)}</div>
       <button className={i === 0 ? "g-btn primary" : "g-btn"} onClick={() => go(p.id)}>{i === 0 ? "→ " : ""}{t("ui.select")}{i === 0 ? "" : " ›"}</button>
     </div>
@@ -38,8 +40,9 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
   return (
     <div className="glass">
       <RefCard target={profile} reference={reference} tM={tM} wide />
+      <Discovered />
       <details className="more">
-        <summary><h2 className="g-h">🌐 {t("ui.best")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
+        <summary><h2 className="g-h">🌐 {t("disc.scan")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
         <div className="g-card">
           <div className="regions">{REGION_CODES.map((r) => <button key={r} className={region === r ? "on" : ""} aria-pressed={region === r} onClick={() => setRegion(r)}>{r === "ALL" ? t("world.allRegions") : regionLabel(r)}</button>)}</div>
           <p className="muted small">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })} {t("list.shipped")} {t("list.dnote")} {t("ui.tempNote")} {t("ui.refSrc." + profile)}</p>
@@ -67,7 +70,7 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
           <Glossary />
         </div>
       </details>
-      <div className="top3">{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go }} />)}</div>
+      <div className="top3">{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go, profile }} />)}</div>
     </div>
   );
 }

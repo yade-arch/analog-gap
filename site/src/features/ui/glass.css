@@ -103,3 +103,9 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .pt-search { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: end; margin: 6px 0 8px; }
 .pt-search label { display: grid; gap: 2px; flex: 1 1 220px; } .pt-search input { padding: 7px 10px; border: 1px solid #c9d2e3; border-radius: 10px; font: inherit; }
 .pt-search .g-btn { width: auto; } .pt-src { flex-basis: 100%; }
+/* Places you have discovered (Discovered.jsx) */
+.disc-wrap { margin: 8px 0 18px; } .disc-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.disc-clear { width: auto; } .disc-top { position: relative; min-height: 64px; }
+.disc-body { display: inline-block; border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: 13px; background: #e6ebf5; color: #141b36; }
+.disc-body.moon { background: #dfe3ea; } .disc-body.mars { background: #f6dfd5; color: #6b2a12; }
+.disc-ds { margin: 6px 0; } .disc .g-btn { display: block; text-align: center; text-decoration: none; }
