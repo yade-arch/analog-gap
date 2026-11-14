@@ -49,6 +49,8 @@ export function createPairScene(host) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(36, 1, 0.05, 400);
   scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x5a6478, 1.25));
   const sun = new THREE.DirectionalLight(0xfff6e8, 2.4); sun.position.set(-7, 12, 10); scene.add(sun);
+  const floor = new THREE.GridHelper(80, 40, 0x3d7bff, 0x1f4fa8); floor.position.y = -4;          // faint reference grid (decoration)
+  Object.assign(floor.material, { transparent: true, opacity: 0.22, depthWrite: false }); scene.add(floor);
   const controls = new OrbitControls(camera, renderer.domElement);
   Object.assign(controls, { enableDamping: true, minDistance: 4, maxDistance: 140, maxPolarAngle: Math.PI * 0.49, screenSpacePanning: true });
   const tiles = [null, null];
@@ -56,7 +58,7 @@ export function createPairScene(host) {
   const home = () => {
     controls.target.set(0, 0, 0);
     const k = Math.max(1, 2.4 / (camera.aspect || 1));               // narrow screens: step back so both tiles fit
-    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 7.6 * k, 13.4 * k);
+    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 6.6 * k, 11.6 * k);
     controls.update();
   };
   const resize = () => { const w = host.clientWidth || 1, h = host.clientHeight || 1; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
