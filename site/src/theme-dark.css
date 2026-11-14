@@ -29,3 +29,7 @@ html .ov-more[open] > summary { margin-bottom: 8px; }
 html header.top.topx { background: #08101f; border-bottom: 1px solid var(--line-soft); } html .burger i { background: var(--ink); }
 html .gear-menu a { color: var(--ink); } html .gear-menu a:hover, html .gear-menu a[aria-current] { background: var(--bg2); }
 html .steps4 a, html .worldbar { color: var(--ink); }
+html, html #root { background: var(--bg); } html .tag { color: #0c1f4d; }
+/* Explore: the selected-place panel scrolls inside the screen height instead of running down the page */
+html .mapgrid > div:first-child { position: sticky; top: 12px; max-height: calc(100vh - var(--hdr, 64px) - 24px); overflow-y: auto; border-radius: 16px; }
+@media (max-width: 860px) { html .mapgrid > div:first-child { position: static; max-height: none; overflow: visible; } }
