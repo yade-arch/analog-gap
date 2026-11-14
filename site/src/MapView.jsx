@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
-import { fmt, D_STOPS } from "./common.jsx";
+import { cssVar, fmt, D_STOPS } from "./common.jsx";
 import { t } from "./i18n/index.js";
 import { regionLabel } from "./i18n/terms.js";
 
@@ -27,13 +27,16 @@ function declutter(labels, m) {
 }
 
 export default function MapView({ data, regions, onSelect, selectedId }) {
+  // Renkler theme.css değişkenlerinden (açık tema). MapLibre var() anlamaz: değer bir kez okunur.
+  const C = useRef(null); C.current ||= { bg: cssVar("--map-bg", "#d3e3f2"), land: cssVar("--globe-land", "#ede9df"), coast: cssVar("--globe-coast", "#6f839b"), ink: cssVar("--ink", "#14243a"), sel: cssVar("--accent", "#1d5fae") };
   const el = useRef(null), map = useRef(null), loaded = useRef(false), pickRef = useRef(onSelect);
   pickRef.current = onSelect;                                   // harita bir kez kurulur; tıklama her zaman güncel işlevi çağırır (profil değişince)
 
   useEffect(() => {
+    const c = C.current;
     const m = new maplibregl.Map({
       container: el.current, center: [-30, 28], zoom: 1.4, attributionControl: false,
-      style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#16273d" } }] },
+      style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": c.bg } }] },
     });
     let gibsFail = 0;
     m.on("error", (e) => {
@@ -50,21 +53,21 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
     m.on("load", () => {
       const base = import.meta.env.BASE_URL || "./";
       m.addSource("land", { type: "geojson", data: `${base}data/ne_110m_land.geojson` });
-      m.addLayer({ id: "land-fill", type: "fill", source: "land", paint: { "fill-color": "#2b3b4f" } });
+      m.addLayer({ id: "land-fill", type: "fill", source: "land", paint: { "fill-color": c.land } });
       if (!import.meta.env.VITE_OFFLINE) {                     // çevrimdışı derlemede dış istek yok: yalnızca kıyı çizgileri
         m.addSource("gibs", { type: "raster", tiles: [GIBS], tileSize: 256, maxzoom: 8, attribution: "" });
         m.addLayer({ id: "gibs", type: "raster", source: "gibs", paint: { "raster-opacity": 0.8, "raster-saturation": -0.3 } });
       }
-      m.addLayer({ id: "coast", type: "line", source: "land", paint: { "line-color": "#9fb6cf", "line-width": 0.7 } });
+      m.addLayer({ id: "coast", type: "line", source: "land", paint: { "line-color": c.coast, "line-width": 0.7 } });
       m.addSource("regions", { type: "geojson", data: regions });
-      m.addLayer({ id: "regions-line", type: "line", source: "regions", paint: { "line-color": "#e8eef7", "line-width": 1.2, "line-dasharray": [3, 2] } });
+      m.addLayer({ id: "regions-line", type: "line", source: "regions", paint: { "line-color": c.ink, "line-width": 1.2, "line-dasharray": [3, 2] } });
       m.addSource("cand", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       m.addSource("pts", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       m.addLayer({ id: "cand-fill", type: "fill", source: "cand", minzoom: 7, paint: { "fill-color": FILL, "fill-opacity": 0.9 } });
-      m.addLayer({ id: "cand-line", type: "line", source: "cand", minzoom: 7, paint: { "line-color": "#0a1020", "line-width": 0.6 } });
+      m.addLayer({ id: "cand-line", type: "line", source: "cand", minzoom: 7, paint: { "line-color": c.ink, "line-width": 0.6 } });
       m.addLayer({ id: "cand-pt", type: "circle", source: "pts", maxzoom: 7,
-        paint: { "circle-color": FILL, "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 3.5, 6, 7], "circle-stroke-color": "#ffffff", "circle-stroke-width": 0.8, "circle-opacity": 0.95 } });
-      m.addLayer({ id: "sel", type: "line", source: "cand", filter: ["==", ["get", "id"], ""], paint: { "line-color": "#f0b445", "line-width": 3 } });
+        paint: { "circle-color": FILL, "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 3.5, 6, 7], "circle-stroke-color": c.ink, "circle-stroke-width": 0.8, "circle-opacity": 0.95 } });
+      m.addLayer({ id: "sel", type: "line", source: "cand", filter: ["==", ["get", "id"], ""], paint: { "line-color": c.sel, "line-width": 3 } });
       const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
       for (const layer of ["cand-fill", "cand-pt"]) {
         m.on("click", layer, (e) => pickRef.current?.(e.features[0].properties.id));
@@ -79,7 +82,7 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
         const [w, , e, n] = f.properties.bbox_wsen;
         const d = document.createElement("div");
         d.textContent = f.properties.name || regionLabel(f.properties.code);
-        d.style.cssText = "font:600 11px system-ui;color:#1c2530;background:rgba(255,255,255,.88);padding:1px 5px;border-radius:3px;pointer-events:none;white-space:nowrap";
+        d.style.cssText = "font:600 11px system-ui;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:1px 5px;border-radius:3px;pointer-events:none;white-space:nowrap";
         const lngLat = [(w + e) / 2, n];
         new maplibregl.Marker({ element: d, anchor: "bottom", offset: [0, -4] }).setLngLat(lngLat).addTo(m);
         return { el: d, lngLat };

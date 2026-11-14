@@ -1,7 +1,7 @@
 /* Karşılaştırma ekranı (taslak 6) yerleşimi. Renkler theme.css değişkenlerinden. */
 .compare { position: relative; height: 100%; min-height: 640px; overflow: hidden;
-  background: radial-gradient(ellipse at 78% 12%, rgba(240, 180, 69, .10), transparent 28%), linear-gradient(#060b17 0%, #0a1426 55%, #0d1a30 100%); }
-.compare::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), rgba(240, 180, 69, .15)); pointer-events: none; z-index: 1; }
+  background: radial-gradient(ellipse at 78% 12%, var(--accent-soft), transparent 28%), linear-gradient(var(--scene-top) 0%, var(--scene-bottom) 100%); }
+.compare::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), var(--accent-soft)); pointer-events: none; z-index: 1; }
 .scene { position: absolute; inset: 122px 226px 176px 226px; }   /* HUD panellerinin arasında; pencerenin tamamı bu alana sığdırılır */
 .scene-tag { position: absolute; left: 50%; bottom: 182px; transform: translateX(-50%); font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 3px 10px; pointer-events: none; z-index: 2; }
 .scene canvas { width: 100%; height: 100%; display: block; }
@@ -16,12 +16,12 @@
 .hud-panel h4 { margin: 0 0 8px; font-size: 11px; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
 .hud-note { margin: 6px 0 0; font-size: 11.5px; color: var(--muted); }
 .warn-amber { color: var(--accent); }
-.err { color: #ffb3a1; }
+.err { color: var(--err); }
 
 .hud-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .side-card { display: flex; flex-direction: column; gap: 3px; max-width: 360px; min-width: 240px; }
 .side-card b { font-size: 16px; } .side-card small { color: var(--muted); font-size: 12px; }
-.side-card.right b { color: #8fd6b0; }
+.side-card.right b { color: var(--cool); }
 .side-card select { margin-top: 4px; }
 
 .dgauge { text-align: center; background: var(--panel); border: 2px solid var(--accent); border-radius: 22px; padding: 8px 18px; width: 270px; }
@@ -46,7 +46,8 @@
 .hud-legend b { width: 100%; color: var(--ink); }
 .hud-legend .sw { display: inline-flex; flex-direction: column; min-width: 36px; height: 12px; border-radius: 3px; position: relative; margin-bottom: 14px; }
 .hud-legend .sw i { position: absolute; top: 13px; left: 0; font-style: normal; font-size: 10px; white-space: nowrap; }
-.hud-legend .sw.hatch { background: #2a3b57; border: 2px solid var(--limit-line, #f4f1e6); min-width: 150px; }
+.hud-legend .sw { border: 1px solid var(--line); }
+.hud-legend .sw.hatch { background: var(--bg2); border: 2px solid var(--limit-line, var(--ink)); min-width: 150px; }
 .hud-legend small { width: 100%; font-size: 10.5px; }
 .stations .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
 .station { border: 1px solid var(--accent); border-radius: 10px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--bg2); }
@@ -70,8 +71,8 @@
   .hud { position: static; display: contents; }
   .hud-top { order: 1; position: static; flex-wrap: wrap; justify-content: center; }
   .compare .move { order: 2; position: static; transform: none; width: auto; }
-  .scene { order: 3; position: sticky; inset: auto; top: 0; z-index: 4; height: var(--scene-h); background: #08101f; border-radius: 12px; overflow: hidden; }
-  .scene::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), rgba(240, 180, 69, .15)); pointer-events: none; }
+  .scene { order: 3; position: sticky; inset: auto; top: 0; z-index: 4; height: var(--scene-h); background: linear-gradient(var(--scene-top), var(--scene-bottom)); border-radius: 12px; overflow: hidden; }
+  .scene::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), var(--accent-soft)); pointer-events: none; }
   .scene-tag { order: 3; position: static; transform: none; align-self: center; }
   .compare .station-card { order: 4; position: static; max-height: none; scroll-margin-top: calc(var(--scene-h) + 12px); }
   .compare .hud-left, .compare .hud-right { order: 5; position: static; width: auto; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
@@ -125,7 +126,7 @@ details.adv > summary::after { content: " ▸"; color: var(--accent); } details.
 details.adv > summary small { display: block; font-weight: 400; letter-spacing: 0; color: var(--muted); font-size: 11.5px; }
 .adv-body { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; max-height: calc(100vh - 330px); overflow: auto; pointer-events: auto; }
 .hud-bottom { grid-template-columns: minmax(0, 1fr) 240px; }
-.hud-hint { margin: 0 0 6px; font-weight: 600; color: var(--accent); text-shadow: 0 1px 3px #000; }
+.hud-hint { margin: 0 0 6px; font-weight: 600; color: var(--accent); text-shadow: 0 1px 2px var(--panel-solid); }
 .hud-center { min-width: 0; }
 .auto { display: flex; flex-direction: column; gap: 6px; } .auto .row { display: flex; gap: 6px; flex-wrap: wrap; }
 .auto-status { color: var(--ink); font-weight: 600; } .auto-status.done { color: var(--good-edge); }

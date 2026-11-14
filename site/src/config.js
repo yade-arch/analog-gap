@@ -14,15 +14,16 @@ export const SETTINGS = {
   exaggerations: [1, 3, 5],
   defaultExag: 1,
   cameraModes: ["follow", "free", "top"],
-  // Eğim sınıfı sınırları (derece), tek yönlü sıralı palet (iyi/kötü anlamı yok)
+  // Eğim sınıfı sınırları (derece), tek yönlü sıralı palet (iyi/kötü anlamı yok). Açık temada okunur (her renk beyaz zeminde ≥3:1).
+  // Piksel tuvali #hex ister; veri yok / kontur / rota renkleri theme.css --nodata / --ink ile aynı tutulur.
   slopeEdges: [5, 10, 15, 25],
-  slopeColors: ["#2f4b8f", "#2a8a9c", "#6fb98f", "#d9d36a", "#f2a65a"],
-  noDataColor: "#27303d",
-  limitLineColor: "#f4f1e6",            // limiti aşan bölge konturu
+  slopeColors: ["#2b4a8c", "#24808f", "#4c9a6a", "#968614", "#cf6f26"],
+  noDataColor: "#8a94a3",
+  limitLineColor: "#14243a",            // limiti aşan bölge konturu
   // F2b: birim hareketi (görsel; gerçek performans değildir)
   stationRing: 0.3,                     // istasyon halkası yarıçapı (pencere kenarı oranı) — gösterim düzeni
   routeSamples: 80,                     // rota başına DEM örnek sayısı
-  routeColor: "#f0b445",
+  routeColor: "#f4f1e6",                 // rota ve bekleyen istasyon: tüm eğim renklerine karşı ≥3:1 açık krem (anlam taşımaz)
   moveSpeedKmPerS: 1.6,                 // gösterim hızı (ekran); gerçek hız değil
   autoMeasureMs: 1500,                  // otomatik görev: istasyonda "ölçüm" bekleme süresi (gösterim; Simülasyon varsayımı)
   autoCardMs: 4500,                     // otomatik görev: kart açık kalma süresi (gösterim; Simülasyon varsayımı)

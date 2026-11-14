@@ -2,7 +2,32 @@
 
 Dal: `feature/ana-ekran-3d`. Oyun dalı: `feature/oyun-3d-kure` (ortak küre oradan geldi). Birleştirme sırası: önce oyun PR'ı, sonra bu dal.
 
+## YENİ TEMA DEĞİŞKENLERİ (açık tema, 2026-11-14) — oyun oturumu için
+theme.css `:root` (yalnızca bu oturum düzenler). Sabit renk yazmayın; CSS'te `var(--x)`, JS'te `cssVar("--x", yedek)` (common.jsx). Renkler 6 haneli #hex.
+| Değişken | Değer | Kullanım |
+|---|---|---|
+| `--bg` / `--bg2` | #f3f6fa / #e6edf6 | sayfa zemini / ikincil zemin (düğme, seçili satır) |
+| `--panel` / `--panel-solid` | rgba(255,255,255,.94) / #ffffff | panel, kart |
+| `--ink` / `--muted` | #14243a / #4b5e76 | metin (15,6:1) / ikincil metin (≥5,6:1) |
+| `--line` / `--line-soft` | #788aa1 / #d3dce7 | kenarlık ≥3:1 (düğme, kart) / ayırıcı (tablo satırı) |
+| `--accent` / `--accent-ink` / `--accent-soft` | #1d5fae / #ffffff / rgba(29,95,174,.14) | vurgu, etkin düğme, seçili / vurgu üstü metin (6,4:1) / yumuşak vurgu zemini |
+| `--cool` | #1a569e | bağlantı |
+| `--good-edge` | #2c7d57 | yalnızca "tamamlandı" çerçevesi |
+| `--err` | #a8321c | hata metni |
+| `--warn-bg` / `--warn-line` | #fff6de / #9a7300 | uyarı kutusu |
+| `--seq1..4` | #4a8dca #2f72b5 #1d5596 #0f3263 | D paleti: yakın → uzak (tek yönlü; common.jsx D_STOPS bunları okur) |
+| `--nodata` | #8a94a3 | "Veri eksik" rengi |
+| `--globe-ocean` / `--globe-land` / `--globe-coast` / `--map-bg` | #d3e3f2 / #ede9df / #6f839b / #d3e3f2 | küre ve 2D harita |
+| `--scene-top` / `--scene-bottom` | #f4f8fc / #d9e6f3 | 3D sahne degrade zemini (küre arka planı için de uygun) |
+| `--t-obs` / `--t-der` / `--t-int` | #dcebfa / #e7e4f6 / #f6ecd8 | etiket zeminleri (metin --ink) |
+Eğim paleti (config.js slopeColors) beyaz zeminde her renk ≥3:1: #2b4a8c #24808f #4c9a6a #968614 #cf6f26; veri yok #8a94a3, sınır konturu #14243a, rota #f4f1e6.
+
+## DURUM: HAZIR (açık tema, a0b66ab sonrası) — main'e birleştirme oyun dalından SONRA
+Doğrulandı (2026-11-14): `npm run check` temiz; Ana ekran, Görev, Harita (3D + 2D), Aday listesi, Analog Card, Yöntem, Rapor, #/game açık temada okunur; Ay ve Mars profili; 375 px'te tüm sekmelerde yatay taşma yok; WebGL'siz yedek (kara/okyanus dolgulu) çalışıyor. Kontrast: metin ≥5,6:1, kenarlık 3,0–3,3:1, eğim renkleri beyazda ≥3:1, D paletinin en açığı beyazda 3,5:1.
+Bilinen: küre noktalarında kontur yok (D en açık renk açık karada 2,9:1); oyun oturumu dokulu kürede kontrast halkası ekleyecek. game.css'te kalan sabit renkler oyun oturumunun işi.
+
 ## Bitti
+- **Açık tema:** theme.css değişkenleri yeniden tanımlandı; hud.css (Görev sahnesi), MapLibre (zemin, kara, kıyı, bölge, aday kenarı, seçim, etiket), common.jsx (D paleti, RangeBars SVG), 3D sahne etiketleri/iz (rigOverlay, trail) değişkene bağlandı. game.css ve oyun dosyalarına dokunulmadı.
 - Faz A (önceki oturum, dc0958f): sözlük, sade dil, etiketler.
 - Ortak küre geriye uyumlu genişletildi (GlobeView.jsx, globe/scene.js, globe/globe.css): `marker.color` (isteğe bağlı; yoksa `--cool`), `outlines` (GeoJSON Polygon çerçeve; WebGL'siz görünümde de çizilir), `compact` (küçük boy). Oyunun mevcut çağrıları değişmeden çalışır.
 - Ana ekran (Home): Dünya küresi (profilin aday pencereleri, D rengi, 4 arama bölgesi çerçevesi) + seçili aday paneli (sıra, D [Hesaplanmış], merkez, kart/görev bağlantıları) + hedef gövde küresi (Ay: reference_moon.json pencereleri; Mars: koordinat yok, "Veri eksik" notu). Küreler ayrı parça (lazy).
