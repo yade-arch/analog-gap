@@ -7,7 +7,7 @@ export default {
   "profile.mars.tr": "Earth terrain similar to a Mars landing site",
   "how.label": "What am I looking at?",
   "home.purpose": "Goal: use NASA data to find places on Earth whose landforms look like the Moon or Mars, especially places that are not yet in analog catalogs. Long-term vision: help prepare future exploration robots for work on the Moon and Mars. This version compares surface landforms only (slope, height difference, surface roughness); underground features are not covered yet.",
-  "home.start": "Start mission",
+  "home.start": "Choose a place on the map",
   "home.step1.t": "1 · Choose a target",
   "home.step1.d": "MOON or MARS from the top bar. Your choice applies on every page and is kept in the address.",
   "home.step2.t": "2 · Choose a place",
