@@ -15,8 +15,8 @@ export const GAME = {
 // Kıyafetler: dayanıklılık ve hız değerleri gerçek giysi performansı DEĞİLDİR (Simülasyon varsayımı).
 // parameters_sources.csv P06 (giysi parametreleri) kaynak beklediği için seçilemez; burada yalnızca oyun mekaniği var.
 export const SUITS = {
-  suit1: { id: "suit1", returnMin: 60, tolerant: true },   // yüksek dayanıklılık: yavaş, risk bayraklarına dayanır
-  suit2: { id: "suit2", returnMin: 25, tolerant: false },  // yüksek hareketlilik: hızlı, risk bayrağı varsa riskli dönüş
+  suit1: { id: "suit1", returnMin: 60, tolerant: true, stats: { dur: 90, spd: 80, o2: 85, cargo: 70 } },   // yüksek dayanıklılık: yavaş, risk bayraklarına dayanır
+  suit2: { id: "suit2", returnMin: 25, tolerant: false, stats: { dur: 70, spd: 95, o2: 90, cargo: 80 } },  // yüksek hareketlilik: hızlı, risk bayrağı varsa riskli dönüş
 };
 
 export const TESTS = ["thermal", "terrain", "surface"];

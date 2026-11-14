@@ -11,12 +11,10 @@ html[data-page="game"] main { padding: 0; margin: 0; max-width: none; }
 .g-half:active { cursor: grabbing; }
 .g-stage[data-layout="split"] .g-half-right { box-shadow: -1px 0 0 rgba(255, 255, 255, .18); }
 
-/* Oksijen: üstte tek ince çizgi */
-.g-o2 { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: min(360px, 60vw); height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .18); overflow: hidden; }
-.g-o2-fill { height: 100%; background: #cfe3ff; transition: width .9s linear; }
-.g-o2-warn .g-o2-fill { background: #ffd27a; animation: g-pulse 1.8s ease-in-out infinite; }
-.g-o2-crit .g-o2-fill { background: #ffb347; animation: g-pulse .7s ease-in-out infinite; }
-.g-o2-crit { box-shadow: 0 0 12px rgba(255, 179, 71, .7); }
+/* Oksijen: üstte küçük yazı */
+.g-o2 { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 3px 12px; border-radius: 999px; background: rgba(10, 16, 32, .55); color: #e8f1ff; font: 600 13px/1.4 var(--font, system-ui); font-variant-numeric: tabular-nums; }
+.g-o2-warn { color: #ffd27a; animation: g-pulse 1.8s ease-in-out infinite; }
+.g-o2-crit { color: #ffb347; box-shadow: 0 0 12px rgba(255, 179, 71, .7); animation: g-pulse .7s ease-in-out infinite; }
 @keyframes g-pulse { 50% { opacity: .35; } }
 
 /* Konuşma balonu: karakterin başında */
@@ -71,3 +69,57 @@ html[data-page="game"] main { padding: 0; margin: 0; max-width: none; }
 .g-acts { display: flex; gap: 8px; pointer-events: auto; }
 .g-acts button { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .45); background: rgba(10, 16, 32, .5); color: #fff; font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .g-root * { animation: none !important; transition: none !important; } }
+
+/* HUD (referans görsellere göre): konum, rover durumu, hız, mesafe etiketi, Dünya verileri, eşleşme */
+.g-loc { position: absolute; top: 10px; max-width: 46vw; padding: 6px 12px; border-radius: 12px; background: rgba(10, 16, 32, .62); border: 1px solid rgba(160, 190, 255, .25); color: #fff; font-size: 13px; }
+.g-loc-left { left: 10px; } .g-loc-right { right: 54px; }
+.g-mode-solo.g-drive .g-loc-left, .g-intro .g-loc-left { max-width: 70vw; }
+.g-rhud { position: absolute; top: 52px; width: 210px; padding: 8px 10px; border-radius: 12px; background: rgba(10, 16, 32, .62); border: 1px solid rgba(160, 190, 255, .25); display: grid; gap: 5px; font-size: 12px; }
+.g-rhud-left { left: 10px; } .g-rhud-right { right: 10px; }
+.g-bar { display: grid; grid-template-columns: 68px 1fr 38px; align-items: center; gap: 6px; }
+.g-bar i { height: 7px; border-radius: 4px; background: rgba(255, 255, 255, .15); overflow: hidden; }
+.g-bar b { display: block; height: 100%; border-radius: 4px; }
+.g-bar-battery b { background: #4cb4ff; } .g-bar-fuel b { background: #ff9d3b; } .g-bar-health b { background: #57d17a; }
+.g-bar em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+.g-speed { position: absolute; bottom: 52px; padding: 5px 12px; border-radius: 10px; background: rgba(10, 16, 32, .6); font-weight: 700; font-size: 13px; }
+.g-speed-left { left: 10px; } .g-speed-right { right: 10px; }
+.g-wtag { position: absolute; transform: translate(-50%, -100%); padding: 2px 8px; border-radius: 8px; background: rgba(10, 16, 32, .7); border: 1px solid #5fb4ff; color: #fff; font-size: 12px; pointer-events: none; white-space: nowrap; }
+.g-earth { position: absolute; top: 52px; right: 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; min-width: 200px; padding: 8px 12px; border-radius: 12px; background: rgba(10, 16, 32, .62); border: 1px solid rgba(160, 190, 255, .25); color: #fff; text-align: left; cursor: pointer; }
+.g-earth.closed { min-width: 0; }
+.g-earth-t { font-weight: 700; font-size: 13px; } .g-earth-s { grid-column: 1; font-size: 11px; color: #cfe0f5; }
+.g-ring { grid-column: 2; grid-row: 1 / span 2; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700;
+  background: radial-gradient(closest-side, #0d1526 78%, transparent 80% 100%), conic-gradient(#4cb4ff calc(var(--p) * 1%), rgba(255, 255, 255, .15) 0); }
+.g-link { position: absolute; top: 46px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: rgba(10, 16, 32, .7); border: 1px solid #5fb4ff; font-size: 13px; font-weight: 600; }
+.g-link i { width: 9px; height: 9px; border-radius: 50%; background: #57d17a; }
+.g-mode-multi .g-stage[data-layout="split"] .g-half-right { box-shadow: -2px 0 0 #5fb4ff; }
+.g-regions { position: absolute; left: 50%; bottom: 54px; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; width: min(720px, 96vw); }
+.g-regions button { padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .35); background: rgba(10, 16, 32, .6); color: #fff; font-size: 13px; cursor: pointer; }
+.g-land { position: absolute; right: 10px; bottom: 110px; display: grid; gap: 4px; width: min(300px, 92vw); padding: 12px 14px; border-radius: 14px; background: rgba(255, 255, 255, .95); color: #14243a; font-size: 13px; box-shadow: 0 8px 30px rgba(0, 0, 0, .35); }
+.g-land strong { font-size: 16px; } .g-land div { display: flex; gap: 6px; margin-top: 6px; }
+.g-land .g-go { flex: 1; } .g-btn2 { padding: 9px; border-radius: 10px; border: 1px solid #c9d5e3; background: #fff; color: #14243a; cursor: pointer; }
+
+/* Kıyafet seçimi ekranı */
+.g-suitscr { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 56px 20px 20px; background: radial-gradient(ellipse at 70% 40%, #1b2440, #05070d 70%); overflow: auto; }
+.g-suit-l h2 { margin: 0 0 12px; font-size: clamp(1.3rem, 3vw, 2rem); letter-spacing: .04em; }
+.g-suit-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; }
+.g-scard { display: grid; gap: 4px; padding: 10px; border-radius: 16px; border: 2px solid rgba(160, 190, 255, .25); background: rgba(16, 24, 44, .85); color: #fff; text-align: left; cursor: pointer; }
+.g-scard.on { border-color: #4cb4ff; box-shadow: 0 0 18px rgba(76, 180, 255, .45); }
+.g-scard img, .g-shot { width: 100%; aspect-ratio: 220 / 260; object-fit: contain; border-radius: 10px; background: rgba(255, 255, 255, .04); }
+.g-scard strong { font-size: 16px; padding: 2px 0; } .g-scard-suit1 strong { color: #ff6b5e; }
+.g-stat { display: grid; grid-template-columns: 1fr 90px 26px; gap: 6px; align-items: center; font-size: 12px; }
+.g-stat em { font-style: normal; } .g-stat i { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .15); overflow: hidden; } .g-stat b { display: block; height: 100%; }
+.g-stat-dur b { background: #ff5a4e; } .g-stat-spd b { background: #ffc43b; } .g-stat-o2 b { background: #4cb4ff; } .g-stat-cargo b { background: #a66bff; }
+.g-stat u { text-decoration: none; text-align: right; }
+.g-scard small { color: #b9c8de; font-size: 11px; } .g-scard .g-warnline { color: #ffc27a; }
+.g-pick { width: 100%; margin-top: 12px; padding: 13px; font-size: 16px; }
+.g-note { font-size: 11px; color: #9fb2cc; }
+.g-suit-big { min-height: 320px; }
+.g-suit-big canvas { width: 100% !important; height: 100% !important; display: block; }
+@media (max-width: 760px) { .g-suitscr { grid-template-columns: 1fr; } .g-suit-big { min-height: 240px; order: -1; } }
+
+/* Görev raporu (her yaşa uygun) */
+.g-rep-h { font-size: 1.6rem; margin: 4px 0 6px; } .g-rep-success { color: #2c7d57; } .g-rep-risky, .g-rep-nooxygen, .g-rep-timeout { color: #a85a00; }
+.g-rep-place { font-weight: 600; margin: 0 0 8px; }
+.g-rep-big { display: grid; gap: 2px; margin: 6px 0 10px; } .g-rep-big strong { font-size: 3rem; color: var(--accent, #1d5fae); line-height: 1; } .g-rep-big span { font-size: 13px; color: var(--muted, #4b5e76); }
+.g-stars { font-size: 1.6rem; color: #e0a300; margin: 0 0 8px; } .g-stars small { display: block; font-size: 12px; color: var(--muted, #4b5e76); }
+.g-rep-list { list-style: none; padding: 0; margin: 0 0 12px; text-align: left; font-size: 14px; } .g-rep-list li { margin: 4px 0; }
