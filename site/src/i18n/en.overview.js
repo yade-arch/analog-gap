@@ -5,7 +5,7 @@ export default {
   "ov.moreSim": "More similar", "ov.lessSim": "Less similar",
   "ov.pick": "Earth place:", "ov.onMap": "Choose on the map →",
   "ov.swap": "Swap sides", "ov.north": "Reset view",
-  "ov.exag": "Real elevation data, heights shown {x}× taller",
+  "ov.exag": "Real elevation data (90 m points, smoothed in between), heights shown {x}× taller",
   "ov.layers": "Layers",
   "ov.layer.dem": "Elevation", "ov.layer.dem.d": "Colour = height inside each window (light = higher), with shading.",
   "ov.layer.slope": "Slope", "ov.layer.slope.d": "Colour = how steep the ground is (blue flat → orange steep).",

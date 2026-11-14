@@ -13,7 +13,6 @@ import WorldBar from "./features/world/WorldBar.jsx";
 
 // Ağır paketler (three.js, MapLibre) yalnızca ilgili sayfada indirilir.
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
-const Compare = lazy(() => import("./pages/Compare.jsx"));
 const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
 const base = import.meta.env.BASE_URL;
@@ -57,12 +56,11 @@ export default function App() {
   return (
     <>
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
-      <main className={page === "mission" ? "full" : ""}>
+      <main>
         {D.cm && page !== "compare" && page !== "mission" && page !== "home" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
         {!D.cm ? <p>Loading data…</p> : (
           <Suspense fallback={<p>Loading page…</p>}>
-            {page === "compare" && <Overview D={D} profile={profile} cand={cand} reference={reference} selId={a1} />}
-            {page === "mission" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
+            {(page === "compare" || page === "mission") && <Overview D={D} profile={profile} cand={cand} reference={reference} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={candR} candAll={cand} region={region} setRegion={setRegion} profile={profile} D={D} onSelect={go} />}
             {page === "home" && <Overview D={D} profile={profile} cand={cand} reference={reference} selId={a1} />}
