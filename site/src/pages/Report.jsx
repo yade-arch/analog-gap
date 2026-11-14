@@ -38,7 +38,7 @@ export default function Report({ D, profile, cand, id }) {
         <h2>ANALOG GAP Report — {p.id}</h2>
         <div className="muted">{PROFILES[profile].name} · {p.region} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · {new Date().toISOString().slice(0, 10)}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
-          <div><div className="muted">Analog Mesafesi D (düşük = daha yakın) <Tag kind="der" /></div><div className="big">{fmt(p.D, 3)}</div></div>
+          <div><div className="muted">Arazi uzaklığı (teknik ad: D; 0 = aynı, düşük = daha benzer) <Tag kind="der" /></div><div className="big">{fmt(p.D, 3)}</div></div>
           <div><div className="muted">Sıra (filtreyi geçen adaylar içinde)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
         <p className="muted">D = ortalama(d_eğim, d_röleyf, d_pürüzlülük), eşit ağırlık, değiştirilemez; d_k = W1 / IQR(referans). Benzerlik yüzdesi veya güven puanı üretilmez. Pencere "{body} karşılığı" değildir. Gap paneli yanda.</p>

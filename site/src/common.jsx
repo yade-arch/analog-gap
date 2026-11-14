@@ -1,17 +1,18 @@
 import React from "react";
+import { TAGS } from "./i18n/terms.js";
 
 export const PROFILES = {
   moon: { name: "Lunar Base Analogs", sub: "Shackleton çevresi, güney kutbu (referans: LOLA LDEM_80S_20M, Site04/Site01/Site07)", reference: "reference_moon.json", cand: "candidates_moon.geojson" },
   mars: { name: "Martian Landing & Exploration", sub: "Jezero çevresi (referans: USGS Mars 2020 TRN CTX DTM 20 m, R2)", reference: "reference_mars.json", cand: "candidates_mars.geojson" },
 };
-export const VARS = { slope: ["Eğim", "°"], relief: ["Yerel röleyf (330 m)", "m"], rough: ["Pürüzlülük (150 m yüksek geçiren, RMS)", "m"] };
+export const VARS = { slope: ["Eğim", "°"], relief: ["Yükseklik farkı (330 m çevre)", "m"], rough: ["Pürüzlülük (150 m yüksek geçiren, RMS)", "m"] };
 export const SOURCES = "Dünya: NASADEM_HGT v001 (NASA LP DAAC, 30 m) · Ay: LOLA LDEM_80S_20M (NASA PDS) · Mars: Mars 2020 TRN CTX DTM (USGS) · Termal: MYD11A2 v061, Diviner PRP v2";
 
 export const fmt = (v, d = 2) => (v === null || v === undefined || Number.isNaN(v) ? "Veri eksik" : Number(v).toFixed(d));
 
 export function Tag({ kind }) {
-  const m = { obs: ["Observed Data", "obs"], der: ["Derived Parameter", "der"], int: ["Scientific Interpretation", "int"] }[kind];
-  return <span className={"tag " + m[1]}>{m[0]}</span>;
+  const m = TAGS[kind];
+  return <span className={"tag " + kind} title={m.tech}>{m.name}</span>;
 }
 
 export function Warn({ children }) {

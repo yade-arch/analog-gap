@@ -72,7 +72,7 @@ export function GapPanel({ p, profile, reference, lim, tE, tM }) {
       <p className="muted">d = 1: aday dağılımı, referansın çeyrekler arası genişliği kadar kaymış demektir.</p>
       {loo && (
         <>
-          <h3>Referansın kendi içindeki D'si (taban çizgisi) <Tag kind="der" /></h3>
+          <h3>Referansın kendi içindeki arazi uzaklığı (taban çizgisi; teknik ad: D) <Tag kind="der" /></h3>
           <table><tbody>{Object.entries(loo).map(([w, v]) => <tr key={w}><td>{w}</td><td className="n">{fmt(v.D, 2)}</td></tr>)}</tbody></table>
         </>
       )}
@@ -94,7 +94,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
         <h2>Analog Card — {p.id}</h2>
         <div className="muted">{p.region} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · profil: {prof.name}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
-          <div><div className="muted">Analog Mesafesi D (düşük = daha yakın)</div><div className="big">{fmt(p.D, 3)}</div></div>
+          <div><div className="muted">Arazi uzaklığı (teknik ad: D; 0 = aynı, düşük = daha benzer)</div><div className="big">{fmt(p.D, 3)}</div></div>
           <div><div className="muted">Sıra (filtreyi geçen {PROFILES[profile].name} adayları içinde)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
         <p><a className="btn-accent" href={`#/compare/${p.id}/${profile}`}>Karşılaştırma Görevi başlat</a></p>
