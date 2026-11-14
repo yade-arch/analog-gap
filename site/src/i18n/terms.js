@@ -24,7 +24,7 @@ export const TAGS = {
 };
 // Arama bölgeleri: kod veri anahtarı olarak kalır, ekranda sade ad gösterilir. Kaynak: public/data/regions.geojson
 // (name, n_tiles) ve STATUS.md karo sayıları (US-SW 45, ATA 24, ANA 18, HAW 6). Tam ad + kapsam: regions.geojson "name".
-export const REGIONS = { "US-SW": "ABD Güneybatı", ATA: "Atacama", ANA: "Anadolu", HAW: "Hawaii" };
+export const REGIONS = { "US-SW": "ABD Güneybatı", ATA: "Atacama ve Orta And Dağları (Güney Amerika)", ANA: "Batı/Orta Anadolu (Türkiye)", HAW: "Hawaii Büyük Ada (ABD)" };
 /** Bölge kodu -> sade ad (bilinmeyen kod olduğu gibi döner). Veri karşılaştırmalarında kodu kullan, yalnızca gösterimde bunu. */
 export const regionLabel = (code) => REGIONS[code] || code || "";
 export const tipOf = (k) => { const x = TERMS[k]; return x ? `${x.name}${x.unit ? " (" + x.unit + ")" : ""}: ${x.meaning}${x.tech ? " Teknik ad: " + x.tech + "." : ""}` : ""; };

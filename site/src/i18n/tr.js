@@ -2,6 +2,7 @@
 import pages from "./tr.pages.js";
 import game from "./tr.game.js";
 import anaekran from "./tr.anaekran.js";
+import world from "./tr.world.js";
 export default {
   ...pages,
   ...game,
@@ -81,4 +82,5 @@ export default {
   "tag.calc": "Hesaplanmış",
   "tag.sim": "Simülasyon varsayımı",
   ...anaekran,
+  ...world,
 };

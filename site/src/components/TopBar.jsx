@@ -1,6 +1,6 @@
 import React from "react";
 import { ROUTES } from "../config.js";
-import { PROFILES } from "../common.jsx";
+import { TargetSwitch } from "../features/world/WorldBar.jsx";
 import { t } from "../i18n/index.js";
 
 export default function TopBar({ page, profile, setProfile, reportId }) {
@@ -15,11 +15,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
         {ROUTES.filter((r) => !r.primary).map(link)}
       </nav>
       <div className="spacer" />
-      <label>{t("profile.label")}:{" "}
-        <select value={profile} onChange={(e) => setProfile(e.target.value)} aria-label={t("profile.label")}>
-          {Object.entries(PROFILES).map(([k, v]) => <option key={k} value={k}>{v.name} — {t(`profile.${k}.tr`)}</option>)}
-        </select>
-      </label>
+      <TargetSwitch target={profile} setTarget={setProfile} />
       {reportId ? <a className={"btn-accent" + (page === "report" ? " on" : "")} href={`#/report/${reportId}/${profile}`}>{t("nav.report")}</a> : <button disabled>{t("nav.report")}</button>}
     </header>
   );

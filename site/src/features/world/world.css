@@ -1,0 +1,18 @@
+/* Sabit cisim renkleri (iyi-kötü anlamı yok, yalnızca hangi cisim): AY gri, MARS turuncu-kızıl, DÜNYA mavi-yeşil. */
+:root { --c-moon: #6f7882; --c-mars: #b4472a; --c-earth: #1f7a71; }
+.tgt-switch { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.tgt-switch .tgt { border: 0; border-radius: 0; padding: 6px 14px; font-weight: 700; letter-spacing: .06em; background: transparent; color: var(--ink); cursor: pointer; }
+.tgt-switch .tgt.moon.on { background: var(--c-moon); color: #fff; }
+.tgt-switch .tgt.mars.on { background: var(--c-mars); color: #fff; }
+.tag-body { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .05em; color: #fff; border-radius: 4px; padding: 1px 7px; }
+.tag-body.moon { background: var(--c-moon); } .tag-body.mars { background: var(--c-mars); } .tag-body.earth { background: var(--c-earth); }
+.worldbar { margin: 0 0 12px; display: grid; gap: 8px; }
+.steps4 { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.steps4 li a { display: block; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; text-decoration: none; color: var(--muted); }
+.steps4 li.done a { color: var(--ink); }
+.steps4 li.on a { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.worldbar .here { margin: 0; }
+.regions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.regions button { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: transparent; color: var(--ink); cursor: pointer; }
+.regions button.on { border-color: var(--c-earth); background: var(--c-earth); color: #fff; }
+.side-moon { border-top: 3px solid var(--c-moon); } .side-mars { border-top: 3px solid var(--c-mars); } .side-earth { border-top: 3px solid var(--c-earth); }

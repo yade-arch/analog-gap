@@ -95,7 +95,7 @@ export default function Compare({ D, profile, cand, selId }) {
     <div className="compare">
       <SceneView dems={[L.dem, R.dem]} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} />
       <div className="scene-tag">{t("exag.label")} ×{exag}</div>
-      {curRes && <StationCard res={curRes} refTitle={`${body} · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} · ${cid}`} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
+      {curRes && <StationCard res={curRes} refTitle={`${body} (${t("side.ref")}) · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} (${t("side.cand")}) · ${cid}`} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
       <div className="hud">
         <MovePanel moving={move.moving} label={move.moving ? stLabel(move.moving.idx) : ""} onSkip={move.skip} />
         <div className="hud-top">
