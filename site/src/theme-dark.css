@@ -39,3 +39,8 @@ html .disc-img figcaption { font-size: 11px; color: var(--muted); margin-top: 4p
 html .kid-steps { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 12px; } html .kid-steps li { display: flex; gap: 12px; align-items: start; font-size: 16px; line-height: 1.5; }
 html .kid-steps b { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; }
 html .kid-line { font-size: 16px; line-height: 1.6; margin: 0 0 12px; } html .sci > summary { cursor: pointer; color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
+/* Explore: bigger, cleaner globe stage */
+html[data-page="map"] .globe-canvas { height: calc(100vh - var(--hdr, 64px) - 210px); min-height: 440px; border: 0; border-radius: 14px; }
+html[data-page="map"] .mappanel { padding: 12px; } html[data-page="map"] .darkstage { border: 1px solid var(--line-soft); }
+html[data-page="map"] .pick-hint { font-size: 14px; color: var(--ink); }
+html .viewtabs button { border-radius: 10px; }

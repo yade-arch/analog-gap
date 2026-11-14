@@ -13,7 +13,7 @@ import "../features/home/home.css";
 import "../features/ui/glass.css";
 
 const VIEWS = ["globe", "flat"];
-const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
+const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_5400.jpg";   // sharper NASA Blue Marble (same product, 5400 px)
 
 // Harita: solda referans kartı, sağda 3B küre / 2B harita; "Ek bilgiler" açılır kutusu gerçek sayılarla (meta). Bölge kartı ve uyarı altta.
 export default function MapPage({ cand, candAll, region, setRegion, profile, D, onSelect }) {
