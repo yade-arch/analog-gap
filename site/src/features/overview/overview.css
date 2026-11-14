@@ -79,3 +79,15 @@
 @media (max-width: 560px) { .ov-stations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .ov-stcard .station-card { position: static; max-height: none; width: auto; background: transparent; box-shadow: none; border: 0; color: #10224a; font-size: 13.5px; }
 .ov-stcard .station-card table { width: 100%; font-size: 13px; }
+/* Dark space theme (reference design): deep navy, glowing blue glass panels. Same structure, only colours. */
+.ov { --ov-ink: #e8f0ff; --ov-mut: #9fb3d9; --ov-line: rgba(90, 150, 255, .35); --ov-glass: rgba(10, 22, 52, .78); --ov-acc: #4d9bff;
+  background: radial-gradient(ellipse 90% 45% at 50% 62%, rgba(40, 110, 255, .35), transparent 70%), radial-gradient(ellipse 120% 60% at 50% 105%, #10306e, transparent 60%), linear-gradient(180deg, #030817, #06122e 60%, #040a1c); }
+.ov-card, .ov-dist, .ov-box, .ov-st { box-shadow: 0 0 0 1px rgba(77, 155, 255, .12), 0 8px 26px rgba(0, 10, 40, .6), inset 0 0 22px rgba(60, 130, 255, .08); }
+.ov-dist strong { color: #fff; text-shadow: 0 0 18px rgba(90, 160, 255, .55); }
+.ov-bar i { background: #fff; box-shadow: 0 0 0 2px #06122e; }
+.ov-pick select, .ov-stcard, .ov-stcard .station-card { background: #0b1a3d; color: var(--ov-ink); }
+.ov-swap { background: #0b1a3d; color: #8cc0ff; box-shadow: 0 0 22px rgba(77, 155, 255, .55); border-color: var(--ov-line); }
+.ov-stage::after { background: linear-gradient(transparent, rgba(110, 180, 255, .9), transparent); box-shadow: 0 0 14px rgba(77, 155, 255, .6); }
+.ov-modes button, .ov-acts button, .ov-acts a { background: rgba(20, 40, 90, .6); color: var(--ov-ink); }
+.ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(140, 180, 255, .15); } .ov-line-a { stroke: #4d9bff; } .ov-line-b { stroke: #3fd07a; }
+.ov-dot.a { background: #4d9bff; } .ov-dot.b { background: #3fd07a; }
