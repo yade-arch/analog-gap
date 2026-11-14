@@ -30,6 +30,18 @@ theme.css `:root` (yalnızca bu oturum düzenler). Sabit renk yazmayın; CSS'te 
 | `--t-obs` / `--t-der` / `--t-int` | #dcebfa / #e7e4f6 / #f6ecd8 | etiket zeminleri (metin --ink) |
 Eğim paleti (config.js slopeColors) beyaz zeminde her renk ≥3:1: #2b4a8c #24808f #4c9a6a #968614 #cf6f26; veri yok #8a94a3, sınır konturu #14243a, rota #f4f1e6.
 
+## AÇIK + KOYU TEMA VE YENİ ÇATI (2026-11-14) — DURUM: HAZIR, main'e oyun dalından SONRA
+Bitti (her faz ayrı commit): (1) tema sistemi + güneş/ay anahtarı (f3487d9); (2) üst çubuk + sol yan çubuk (Ana sayfa, Raporlar, Ayarlar, Yardım), Ayarlar = yalnızca tema (Açık/Koyu/Sistem), Yardım = sözlük + Yöntem bağlantısı (d067535); (3) Görev ekranı ızgara düzeni + yükselti görünümü (aecfe7e); (5) cila: köşe 6–8 px, 1px kenarlık, cam/parlama/gölge yok, başlıklar cümle düzeni (tr.anaekran.js üzerine yazar; tr.js'e dokunulmadı).
+- Görev ekranı: sol = referans paneli (ad, ürün, yükseklik aralığı, seçici) + Birimler (kaynaklı eğim limiti) + Otomatik görev; üst orta = D göstergesi; sağ = aday paneli + "Raporu aç" + Gelişmiş (kamera, günlük, mini küre); orta = araç çubuğu (Görünüm | Eğim, dikey abartı ×1/3/5, Sol ↔ sağ takas) + iki arazi + lejant; alt = değişken kartları + "Görev tamam → Rapor". useMove/useAuto/route/StationBar/StationCard mantığı aynı.
+- Yükselti görünümü (features/compare/reliefTexture.js): gerçek DEM'den gölge (ışık KB, 45°) × pencere içi en düşük→en yüksek renk rampası. Ay gri, Dünya ova yeşil → kahverengi → açık, Mars kızıl-kahverengi (theme.css --relief-*). Lejant gerçek min–max (m) ve "görsel; arazi örtüsü/uydu görüntüsü değildir" notu. Eğim katmanı (slopeColors + sınır konturu) "Eğim" seçeneğinde, veri katmanı olarak duruyor.
+- Doğrulandı: npm run check; iki temada Ana sayfa, Görev, Harita, Aday listesi, Yöntem, Rapor, Kart, Ayarlar, Yardım, #/game açılıyor; tema seçimi localStorage'da kalıcı, ilk boyamada titreme yok; Ay/Mars; 375 px'te taşma yok, hamburger menü; WebGL'siz yedek (Görev 2D, küre düz).
+- YAPILMADI / NEDEN:
+  - Harita küresi gerçekçi renk: Blue Marble NG dokusu oyun dalında henüz yok (origin/feature/oyun-3d-kure = main). Kural gereği kendim boyamadım, ikinci doku indirmedim. Doku gelince: merge et, GlobeView `texture`'ı kullan, kaynak notu "Görüntü: NASA Blue Marble NG, <ay/yıl>. Görsel amaçlıdır; analiz verisi değildir." ekle. Şimdilik küre alanına temaya uyumlu degrade zemin kondu.
+  - Taslak görseller bu oturuma ulaşmadı; düzen talimattaki metinden kuruldu.
+  - Görev sağ panelinde ayrı profil seçici yok: profil üst çubukta zaten var (aynı durumu iki seçici yönetmesin).
+  - Tema değişince Görev ekranı yeniden kurulur, görev ilerlemesi sıfırlanır (WebGL renkleri yeniden okunur).
+  - Raporlar/Ayarlar/Yardım içerikleri sonraki talimata bırakıldı (sahte özellik yok).
+
 ## DURUM: HAZIR (açık tema, a0b66ab sonrası) — main'e birleştirme oyun dalından SONRA
 Doğrulandı (2026-11-14): `npm run check` temiz; Ana ekran, Görev, Harita (3D + 2D), Aday listesi, Analog Card, Yöntem, Rapor, #/game açık temada okunur; Ay ve Mars profili; 375 px'te tüm sekmelerde yatay taşma yok; WebGL'siz yedek (kara/okyanus dolgulu) çalışıyor. Kontrast: metin ≥5,6:1, kenarlık 3,0–3,3:1, eğim renkleri beyazda ≥3:1, D paletinin en açığı beyazda 3,5:1.
 Bilinen: küre noktalarında kontur yok (D en açık renk açık karada 2,9:1); oyun oturumu dokulu kürede kontrast halkası ekleyecek. game.css'te kalan sabit renkler oyun oturumunun işi.

@@ -62,13 +62,13 @@ main.full { max-width: none; padding: 0; }
 footer { width: 100%; padding: 14px 18px 30px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); max-width: 1400px; margin: 0 auto; }
 
 /* içerik sayfaları (Harita, Aday listesi, Analog Card, Yöntem) */
-.card { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; min-width: 0; overflow-x: auto; }   /* geniş tablo kartın içinde kayar, sayfa taşmaz */
+.card { background: var(--panel-solid); border: 1px solid var(--line-soft); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 14px; min-width: 0; overflow-x: auto; }   /* geniş tablo kartın içinde kayar, sayfa taşmaz */
 .card h2, .card h3 { margin-top: 0; }
 h2 { font-size: 18px; } h3 { font-size: 15px; }
 .grid2 { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 14px; }
 .grid2 > * { min-width: 0; }
 @media (max-width: 900px) { .grid2 { grid-template-columns: minmax(0, 1fr); } }
-.tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-right: 6px; border: 1px solid var(--line); white-space: nowrap; }
+.tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: var(--radius); margin-right: 6px; border: 1px solid var(--line); white-space: nowrap; }
 .tag.obs { background: var(--t-obs); } .tag.der { background: var(--t-der); } .tag.int { background: var(--t-int); }
 .warn { background: var(--warn-bg); border-left: 3px solid var(--warn-line); padding: 8px 10px; margin: 8px 0; font-size: 13.5px; }
 table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
@@ -79,7 +79,7 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .big { font-size: 34px; font-weight: 650; font-variant-numeric: tabular-nums; }
 .muted { color: var(--muted); }
-#map { height: calc(100vh - 150px); min-height: 440px; border: 1px solid var(--line); border-radius: 10px; background: var(--map-bg); }
+#map { height: calc(100vh - 150px); min-height: 440px; border: 1px solid var(--line-soft); border-radius: var(--radius-lg); background: var(--map-bg); }
 .maprow { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 14px; }
 @media (max-width: 900px) { .maprow { grid-template-columns: minmax(0, 1fr); } }
 .legend { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
@@ -103,7 +103,7 @@ tr.click { cursor: pointer; } tr.click:hover { background: var(--bg2); }
 /* Faz A: sadeleştirme (giriş kutusu, ipucu, ana sayfa, liste kartları) */
 header.top .brand { text-decoration: none; color: var(--ink); }
 nav { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
-.intro { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.intro { background: var(--panel-solid); border: 1px solid var(--line-soft); border-radius: var(--radius-lg); padding: 10px 14px; margin-bottom: 14px; }
 .intro p { margin: 2px 0; } .intro .purpose { font-weight: 600; } .intro .how { color: var(--muted); font-size: 13.5px; }
 .term { border-bottom: 1px dotted var(--muted); cursor: help; position: relative; }
 .term:hover::after, .term:focus::after, .term.open::after { content: attr(data-tip); position: absolute; left: 0; top: 130%; z-index: 20; width: 260px; max-width: 70vw; white-space: normal; font-weight: 400; font-size: 12.5px; line-height: 1.4; background: var(--bg); color: var(--ink); border: 1px solid var(--accent); border-radius: 6px; padding: 6px 8px; text-align: left; }
@@ -119,7 +119,7 @@ th.n .term:hover::after, th.n .term:focus::after, th.n .term.open::after { left:
 .top3 .card { margin: 0; } @media (max-width: 700px) { .top3 { grid-template-columns: minmax(0, 1fr); } }
 .cand .big { font-size: 28px; }
 /* Yöntem sayfası: kapalı bölümler, adım şeması, kopyalanabilir formül */
-.msec { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+.msec { background: var(--panel-solid); border: 1px solid var(--line-soft); border-radius: var(--radius-lg); margin-bottom: 10px; }
 .msec > summary { cursor: pointer; padding: 10px 14px; list-style: none; } .msec > summary::-webkit-details-marker { display: none; }
 .msec > summary h2 { display: inline; margin: 0; } .msec > summary::before { content: "▸ "; color: var(--accent); } .msec[open] > summary::before { content: "▾ "; }
 .msec-body { padding: 0 14px 12px; overflow-x: auto; }

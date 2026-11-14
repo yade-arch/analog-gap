@@ -1,9 +1,9 @@
 /* Ortak küre: yalnızca .globe-* sınıfları; renkler theme.css değişkenlerinden. */
 .globe { position: relative; min-width: 0; }
-.globe-canvas { width: 100%; height: min(62vh, 560px); min-height: 300px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); overflow: hidden; touch-action: none; }
+.globe-canvas { width: 100%; height: min(62vh, 560px); min-height: 300px; border: 1px solid var(--line-soft); border-radius: 8px; background: linear-gradient(var(--scene-top), var(--scene-bottom)); overflow: hidden; touch-action: none; }
 .globe-canvas canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
 .globe-canvas canvas:active { cursor: grabbing; }
-.globe-flat { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.globe-flat { width: 100%; height: auto; border: 1px solid var(--line-soft); border-radius: 8px; background: linear-gradient(var(--scene-top), var(--scene-bottom)); }
 .globe-grid { stroke: var(--line); stroke-width: 1; }
 .globe-mark { fill: var(--cool); cursor: pointer; }
 .globe-sel { fill: var(--accent); }

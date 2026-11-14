@@ -37,6 +37,11 @@ export default {
   "help.intro": "Terimlerin sade anlamları aşağıdaki sözlükte. Formüller, eşikler, veri ürünleri ve sınırlamalar Yöntem sayfasında.",
   "help.method": "formüller, kontroller, veri ürünleri, sınırlamalar",
   "help.list": "adayların sıralı listesi ve sözlük",
+  // Sentence case (tr.js'deki büyük harfli başlıkların üzerine yazar; tr.js'e dokunulmadı)
+  "side.moon": "Ay", "side.mars": "Mars", "side.earth": "Dünya",
+  "units.title": "Birimler", "cam.title": "Kamera", "map.title": "Harita", "log.title": "Gözlem günlüğü",
+  "mission.done": "Görev tamam → Rapor", "move.title": "Hareket: beklemede",
+  "side.ref": "Referans", "side.cand": "Aday", "cmp.advHint": "Kamera, gözlem günlüğü, mini küre",
   "view.label": "Arazi görünümü",
   "view.relief": "Görünüm",
   "view.slope": "Eğim",
