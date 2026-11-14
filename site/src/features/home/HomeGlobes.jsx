@@ -5,7 +5,7 @@ import { regionLabel } from "../../i18n/terms.js";
 import GlobeView from "../../components/GlobeView.jsx";
 import DLegend from "./DLegend.jsx";
 import TargetPanel from "./TargetPanel.jsx";
-import { dMarkers } from "./markers.js";
+import { D_SCALE, dMarkers } from "./markers.js";
 
 /** Seçili adayın kısa özeti: sıra, bölge, merkez, D (Hesaplanmış) ve sonraki adım bağlantıları. */
 function Selected({ p, profile }) {
@@ -33,7 +33,7 @@ export default function HomeGlobes({ cand, regions, reference, profile }) {
     <div className="home-globes">
       <section className="card home-earth">
         <h3>{t("home.globe.earth.t")}</h3>
-        <GlobeView body="earth" markers={markers} outlines={regions} selectedId={p ? sel : null} onPick={(m) => m.id && setSel(m.id)} />
+        <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={regions} selectedId={p ? sel : null} onPick={(m) => m.id && setSel(m.id)} />
         <p className="muted small">{t("home.globe.earth.d")}</p>
       </section>
       <div className="home-side">

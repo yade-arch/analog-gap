@@ -27,4 +27,11 @@ export default {
   "map.warn": "Uzaklık yalnızca arazi şekli (topografya) dağılımlarının yakınlığıdır; sıcaklık, toprak (regolit), mineral, atmosfer, yerçekimi ve radyasyon karşılaştırılamaz. Bkz. Gap paneli.",
   "map.globe.flatNote": "2D harita: NASA GIBS altlığıyla ayrıntılı yakınlaştırma (yakında pencere kareleri görünür).",
   "map.mini.none": "Seçili aday yok",
+  "globe.legend.missing": "Veri eksik",
+  "globe.legend.sel": "seçili",
+  "globe.legend.ocean": "Okyanus",
+  "globe.legend.land": "Kara (Natural Earth 110m; uydu görüntüsü değil)",
+  "globe.legend.D": "D: düşük = daha yakın",
+  "globe.legend.near": "0 yakın",
+  "globe.legend.far": "1,2+ uzak",
 };

@@ -15,3 +15,14 @@
 .globe-outline { fill: none; stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 2; opacity: .75; }
 .globe-compact .globe-canvas { height: 180px; min-height: 160px; }
 .globe-compact .globe-note { display: none; }
+.globe-flat-earth { background: var(--globe-ocean); }
+.globe-landfill { fill: var(--globe-land); stroke: var(--globe-coast); stroke-width: .5; }
+.globe-sel { stroke: var(--ink); stroke-width: 1.5; }
+.globe-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; margin-top: 6px; font-size: .8rem; color: var(--muted); }
+.globe-lg-item { display: inline-flex; align-items: center; gap: 5px; min-width: 0; flex-wrap: wrap; }
+.globe-lg-item b { color: var(--ink); font-weight: 600; }
+.globe-lg-bar { display: inline-block; width: 90px; height: 9px; border-radius: 3px; border: 1px solid var(--line); }
+.globe-sw { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1px solid var(--line); }
+.globe-sw-sel { background: var(--accent); border: 2px solid var(--ink); }
+.globe-sw-ocean { background: var(--globe-ocean); border-radius: 2px; }
+.globe-sw-land { background: var(--globe-land); border-color: var(--globe-coast); border-radius: 2px; }

@@ -14,6 +14,9 @@ Dal: `feature/ana-ekran-3d`. Oyun dalı: `feature/oyun-3d-kure` (ortak küre ora
 
 - **regionLabel (site geneli):** `i18n/terms.js` → `REGIONS` ve `regionLabel(code)`. US-SW = ABD Güneybatı, ATA = Atacama, ANA = Anadolu, HAW = Hawaii; regions.geojson `name`/`n_tiles` ve STATUS.md karo sayılarıyla doğrulandı. Kodlar veri anahtarı olarak kaldı (filtre değeri, JSON). Kullanıldığı yerler: Home, HomeGlobes, markers (küre listesi), MapView (açılır kutu + bölge etiketi tam adı), ListPage (kart, tablo, filtre seçenekleri), Card, Report, Method. Oyun dosyalarına dokunulmadı: oyun oturumu `import { regionLabel } from "../../i18n/terms.js"` ile geçebilir.
 
+- **Küre renklendirme (yalnızca görsel, veriye dayalı):** theme.css'e `--globe-ocean`, `--globe-land`, `--globe-coast`, `--nodata` (1 satır). Dünya: okyanus zemini + kara dolgusu (Natural Earth 110m GeoJSON'dan tuvale çizilen düz renk; uydu dokusu DEĞİL, yüzey dokusu eklenmedi) + kıyı çizgisi. WebGL'siz düz görünüm de kara/okyanusu çizer (eski "Kıyı çizgisi" notu artık doğru). Seçili işaretçi: ekranda sabit boyda amber halka + açık çerçeve.
+- **Yeni GlobeView prop'ları (geriye uyumlu):** `marker.value` + `colorScale = {stops: [[değer, "#hex"]...], missing, label, loLabel?, hiLabel?}`. Renk önceliği: `marker.color` > ölçek (markerda `value` alanı varsa; null → `missing`). `colorScale` verilince lejant çıkar (ölçek çubuğu, "Veri eksik", seçili, okyanus/kara). colorScale'i sabit nesne ver (her çizimde yeni nesne kamerayı sıfırlar). Ana ekran ve Harita: `features/home/markers.js` `D_SCALE` (D_STOPS; D yoksa dColor(null) gri, etiket "D Veri eksik"). Oyun çağrıları değişmedi; oyun aynı ölçeği `import { D_SCALE } from "../home/markers.js"` + markerlara `value: p.D` ile kullanabilir. `createGlobe(el, {body})` ikinci argüman isteğe bağlı. Dosyalar: components/globe/{color.js, GlobeParts.jsx} yeni.
+
 ## Sırada
 - PR gözden geçirme. Oyun PR'ı birleşince `git merge origin/main`.
 

@@ -9,6 +9,7 @@
   --good-edge: #6fb98f;       /* yalnızca "tamamlandı" çerçevesi; iyi/kötü anlamı taşımaz */
   --warn-bg: #2a2619; --warn-line: #b59f5b;
   --seq1: #d6e9f8; --seq2: #7fb2e0; --seq3: #3b7fc0; --seq4: #2a5a96;   /* D: yakın -> uzak */
+  --globe-ocean: #0c1a2c; --globe-land: #3a3931; --globe-coast: #8fa2b8; --nodata: #9aa3ad;   /* küre: okyanus, kara (Natural Earth), kıyı, Veri eksik */
   --t-obs: #1f3550; --t-der: #2a2a4a; --t-int: #3a3020;
   --font: Inter, system-ui, "Segoe UI", sans-serif;
 }

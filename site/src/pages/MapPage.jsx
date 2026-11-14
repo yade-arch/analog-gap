@@ -4,7 +4,7 @@ import MapView from "../MapView.jsx";
 import GlobeView from "../components/GlobeView.jsx";
 import PageIntro from "../components/PageIntro.jsx";
 import DLegend from "../features/home/DLegend.jsx";
-import { dMarkers } from "../features/home/markers.js";
+import { D_SCALE, dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
 import "../features/home/home.css";
 
@@ -23,7 +23,7 @@ export default function MapPage({ cand, profile, D, onSelect }) {
       </div>
       <div className="maprow">
         {view === "globe"
-          ? <GlobeView body="earth" markers={markers} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
+          ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
           : <MapView data={cand} regions={D.regions} onSelect={onSelect} selectedId={null} />}
         <div>
           <div className="card">
