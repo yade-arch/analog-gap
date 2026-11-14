@@ -10,6 +10,7 @@ import { loadDem } from "../features/compare/demLoader.js";
 import { exceedFraction } from "../features/compare/stats.js";
 import { buildReport } from "../features/mission/report.js";
 import { StationTable } from "../hud/StationCard.jsx";
+import ReportOverview from "../features/ui/ReportOverview.jsx";
 
 /** Otomatik ANALOG GAP Report (yazdırılabilir). Ekrandaki istasyon kartlarıyla aynı hesap (stationResult). Rover limiti kullanılır. */
 export default function Report({ D, profile, cand, id }) {
@@ -35,7 +36,8 @@ export default function Report({ D, profile, cand, id }) {
   };
   return (
     <div className="report">
-      <div className="card">
+      <ReportOverview p={p} profile={profile} cand={cand} />
+      <div className="card" id="rep-sci">
         <h2>ANALOG GAP Report — {p.id}</h2>
         <div className="muted">{PROFILES[profile].name} · {regionLabel(p.region)} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · {new Date().toISOString().slice(0, 10)}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
