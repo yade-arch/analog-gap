@@ -6,3 +6,4 @@
 | 2026-11-14 | feature/ana-ekran-3d | Ana ekran, Harita ve Görev mini haritası 3D küreye çevrildi (ortak GlobeView) | PR bekliyor |
 | 2026-11-14 | feature/ana-ekran-3d | Açık tema (beyaz + mavi): theme.css değişkenleri, sabit koyu renkler değişkene, D/eğim paleti açık zeminde okunur | hazır (main: oyundan sonra) |
 | 2026-11-14 | sadelestirme | Mars LOLA notu, AY/MARS + bölge geçişi, sade liste, bölge kartı, Yöntem dili (main'e alındı) | tamam |
+| 2026-11-14 | gezegen-kesif | Ana ekran kahraman, referans tasarımda üst çubuk/liste/harita/rapor (main'e alındı); karşılaştırma ekranı ana-ekran-3d çakışması nedeniyle dokunulmadı | tamam |
