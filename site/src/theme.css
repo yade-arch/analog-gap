@@ -4,6 +4,10 @@
   color-scheme: light;
   --slope1: #2b4a8c; --slope2: #24808f; --slope3: #4c9a6a; --slope4: #968614; --slope5: #cf6f26;   /* eğim sınıfları (tek yönlü), zeminde ≥3:1 */
   --slope-nodata: #8a94a3; --slope-limit: #14243a; --route: #f4f1e6;                               /* veri yok, sınır konturu, rota */
+  /* Yükselti görünümü rampaları (GÖRSEL, iki temada aynı): pencere içi düşük -> yüksek. Arazi örtüsü/uydu görüntüsü değildir. */
+  --relief-earth-1: #4e7a46; --relief-earth-2: #8b9a58; --relief-earth-3: #9c7650; --relief-earth-4: #c4b49c; --relief-earth-5: #f1eee8;
+  --relief-moon-1: #4d4d4d; --relief-moon-2: #d0d0d0;
+  --relief-mars-1: #5a2a1a; --relief-mars-2: #9a4b2a; --relief-mars-3: #d4935f;
   --bg: #f3f6fa; --bg2: #e6edf6; --panel: rgba(255, 255, 255, .94); --panel-solid: #ffffff;   /* zemin, ikincil zemin, panel */
   --ink: #14243a; --muted: #4b5e76;                                   /* metin: koyu lacivert, ikincil gri-mavi */
   --line: #788aa1; --line-soft: #d3dce7;                              /* kenarlık (≥3:1, düğme/kart), ayırıcı çizgi (tablo satırı, ızgara) */

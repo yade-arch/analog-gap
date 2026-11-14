@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { buildSlopeCanvas } from "./slopeTexture.js";
+import { buildReliefCanvas } from "./reliefTexture.js";
 import { buildTerrain } from "./terrainMesh.js";
 import { MODELS } from "./unitModels.js";
 import { makeMarkers, setMarkerExag, setMarkerStates, makeRoute, disposeObj } from "./rigOverlay.js";
@@ -33,7 +34,7 @@ export function createRig(container) {
   const controls = new OrbitControls(cam, renderer.domElement);
   controls.enableDamping = false; controls.maxPolarAngle = Math.PI / 2.05; controls.target.set(0, 0.2, 0);
   const sides = [makeSide(), makeSide()];
-  const st = { exag: SETTINGS.defaultExag, mode: "follow", unit: "rover", limit: [null, null], dem: [null, null], labels: [[], []], states: [] };
+  const st = { exag: SETTINGS.defaultExag, mode: "follow", unit: "rover", view: "relief", pal: ["moon", "earth"], limit: [null, null], dem: [null, null], labels: [[], []], states: [] };
   const reduce = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fol = new THREE.Vector3();                      // yumuşatılmış takip hedefi
   let raf = 0, loopRaf = 0, lastMove = -1e9, lastTick = 0, dead = false, lastW = 0, lastH = 0;
@@ -84,12 +85,17 @@ export function createRig(container) {
     if (!s.mesh) return;
     s.unit = MODELS[st.unit](); s.scene.add(s.unit); place(s);
   }
+  // Doku: "relief" = gölgeli yükselti (görsel), "slope" = eğim sınıfı veri katmanı (sınır konturu yalnızca burada).
+  function makeTex(k) {
+    const slope = st.view === "slope", tx = new THREE.CanvasTexture(slope ? buildSlopeCanvas(st.dem[k], st.limit[k]) : buildReliefCanvas(st.dem[k], st.pal[k]));
+    tx.colorSpace = THREE.SRGBColorSpace; tx.magFilter = slope ? THREE.NearestFilter : THREE.LinearFilter; tx.minFilter = THREE.LinearMipmapLinearFilter; tx.anisotropy = 8;
+    return tx;
+  }
   function applySide(k) {
     const s = sides[k], dem = st.dem[k]; clearSide(s);
     if (!dem) { request(); return; }
     const { geometry, heightAt } = buildTerrain(dem);
-    s.tex = new THREE.CanvasTexture(buildSlopeCanvas(dem, st.limit[k]));
-    s.tex.colorSpace = THREE.SRGBColorSpace; s.tex.magFilter = THREE.NearestFilter; s.tex.minFilter = THREE.LinearMipmapLinearFilter; s.tex.anisotropy = 8;
+    s.tex = makeTex(k);
     s.mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ map: s.tex }));
     s.hf = heightAt(dem.G >> 1, dem.G >> 1); s.pos = { x: 0, z: 0, h: s.hf, heading: 0 };
     s.scene.add(s.mesh); applyUnit(k); applyExag(); request();
@@ -128,7 +134,8 @@ export function createRig(container) {
   loopRaf = requestAnimationFrame(loop);
 
   return {
-    setSide(k, dem, limit) { st.dem[k] = dem; st.limit[k] = limit; applySide(k); },
+    setSide(k, dem, limit, pal) { st.dem[k] = dem; st.limit[k] = limit; if (pal) st.pal[k] = pal; applySide(k); },
+    setView(v) { st.view = v; sides.forEach((s, k) => { if (!s.mesh) return; s.tex?.dispose(); s.tex = makeTex(k); s.mesh.material.map = s.tex; s.mesh.material.needsUpdate = true; }); request(); },
     setExag(v) { st.exag = v; applyExag(); request(); },
     setCamera(m) { st.mode = m; applyCamera(); },
     setUnit(u) { st.unit = u; applyUnit(0); applyUnit(1); request(); },

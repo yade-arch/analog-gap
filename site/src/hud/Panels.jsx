@@ -27,12 +27,12 @@ export function CameraPicker({ mode, onPick, exag, onExag }) {
       {SETTINGS.cameraModes.map((m) => (
         <button key={m} className={"hud-btn" + (mode === m ? " on" : "")} aria-pressed={mode === m} onClick={() => onPick(m)}>{t("cam." + m)}</button>
       ))}
-      <h4 className="sub">{t("exag.title")}</h4>
+      {onExag && <><h4 className="sub">{t("exag.title")}</h4>
       <div className="row">
         {SETTINGS.exaggerations.map((x) => (
           <button key={x} className={"hud-btn sm" + (exag === x ? " on" : "")} aria-pressed={exag === x} onClick={() => onExag(x)}>×{x}</button>
         ))}
-      </div>
+      </div></>}
       </Fold>
     </div>
   );

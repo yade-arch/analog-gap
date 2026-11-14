@@ -12,7 +12,7 @@ import StationCard from "../hud/StationCard.jsx";
 import MovePanel from "../hud/MovePanel.jsx";
 import AutoPanel from "../hud/AutoPanel.jsx";
 import { useAuto } from "../features/mission/useAuto.js";
-import Fold from "../hud/Fold.jsx";
+import { RefPanel, CandPanel, SceneBar, ReliefLegend } from "../features/compare/CompareParts.jsx";
 import { useMove } from "../features/mission/useMove.js";
 import { VARIABLES, stationResult } from "../features/variables/index.js";
 import { exceedFraction } from "../features/compare/stats.js";
@@ -32,6 +32,7 @@ export default function Compare({ D, profile, cand, selId }) {
   const [index, setIndex] = useState(null);
   const [refId, setRefId] = useState(SETTINGS.references[profile][0]);
   const [unit, setUnit] = useState("rover"), [mode, setMode] = useState("follow"), [exag, setExag] = useState(SETTINGS.defaultExag);
+  const [view, setView] = useState("relief"), [swap, setSwap] = useState(false);     // Görünüm (yükselti, görsel) | Eğim (veri); sol/sağ takas
   useEffect(() => { loadDemIndex().then(setIndex).catch(() => setIndex({ windows: {} })); }, []);
   useEffect(() => setRefId(SETTINGS.references[profile][0]), [profile]);
 
@@ -62,7 +63,8 @@ export default function Compare({ D, profile, cand, selId }) {
   const stLabel = (i) => `${t(u.labelKey)} → ${t(VARIABLES[i].titleKey)}`;
   const autoRef = useRef(null);
   const labels = useMemo(() => VARIABLES.map((v) => t(v.titleKey) + (v.unit ? ` (${v.unit})` : "")), []);
-  const move = useMove(rigRef, [L.dem, R.dem], VARIABLES.length, {
+  const dems = swap ? [R.dem, L.dem] : [L.dem, R.dem];
+  const move = useMove(rigRef, dems, VARIABLES.length, {
     labels,
     onStart: (i) => { moved.current = true; addLog("go", stLabel(i) + ":", t("move.start")); },
     onArrive: (i) => { if (moved.current) addLog("at", stLabel(i) + ":", t("move.arrive")); moved.current = false; if (!autoRef.current?.onArrive(i)) visit(VARIABLES[i].id); },
@@ -90,61 +92,47 @@ export default function Compare({ D, profile, cand, selId }) {
   const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
   const metaL = index?.windows[refId], metaR = hasDem ? index.windows[cid] : null;
   const body = profile === "moon" ? t("side.moon") : t("side.mars");
+  const refTitle = `${body} · ${metaL?.title || refId}`, candTitle = `${t("side.earth")} · ${cid || "—"}`;
+  const titles = swap ? [candTitle, refTitle] : [refTitle, candTitle], pals = swap ? ["earth", profile] : [profile, "earth"];
+  const report = () => { location.hash = `#/report/${cid}/${profile}`; };
 
   return (
-    <div className="compare">
-      <SceneView dems={[L.dem, R.dem]} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} />
-      <div className="scene-tag">{t("exag.label")} ×{exag}</div>
-      {curRes && <StationCard res={curRes} refTitle={`${body} · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} · ${cid}`} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
-      <div className="hud">
-        <MovePanel moving={move.moving} label={move.moving ? stLabel(move.moving.idx) : ""} onSkip={move.skip} />
-        <div className="hud-top">
-          <div className="hud-panel side-card">
-            <Fold Tag="b" title={`${body} · ${metaL?.title || refId}`}>
-            <small>{metaL?.product}</small>
-            <small>{t("side.ref")} · 10×10 km{metaL ? ` · ${t("cmp.elev")} ${fmt(metaL.z_min, 0)}–${fmt(metaL.z_max, 0)} m` : ""}</small>
-            {SETTINGS.references[profile].length > 1 && (
-              <select aria-label={t("cmp.ref")} value={refId} onChange={(e) => setRefId(e.target.value)}>{SETTINGS.references[profile].map((r) => <option key={r}>{r}</option>)}</select>
-            )}
-            {L.err && <small className="err">{t("cmp.err")}: {L.err}</small>}
-            </Fold>
-          </div>
-          <DGauge cand={cp} profile={profile} />
-          <div className="hud-panel side-card right">
-            <Fold Tag="b" title={`${t("side.earth")} · ${cid || "—"}`}>
-            <small>{metaR?.product || "NASADEM_HGT v001 (NASA LP DAAC), 30 m"}</small>
-            <small>{t("side.cand")} · 10×10 km{metaR ? ` · ${t("cmp.elev")} ${fmt(metaR.z_min, 0)}–${fmt(metaR.z_max, 0)} m` : ""}</small>
-            <select aria-label={t("cmp.cand")} value={cid || ""} onChange={(e) => go(e.target.value)}>
-              {!hasDem && cid && <option value={cid}>{cid} (DEM yok)</option>}
-              {list.map((p) => <option key={p.id} value={p.id}>#{p.rank} · {p.id}</option>)}
-            </select>
-            {cid && !hasDem && <small className="err">{t("cmp.nodem")}</small>}
-            {R.err && <small className="err">{t("cmp.err")}: {R.err}</small>}
-            {hasDem && !R.dem && !R.err && <small>{t("cmp.loading")}</small>}
-            </Fold>
-          </div>
-        </div>
-        <div className="hud-left">
-          <UnitPicker unit={unit} onPick={setUnit} limits={{ cur: lim }} />
-          <AutoPanel auto={auto} total={VARIABLES.length} label={auto.idx >= 0 ? labels[auto.idx] : ""} limitPending={!lim && unit === "astronaut"} hasScene={!!(L.dem && R.dem)} onReport={() => { location.hash = `#/report/${cid}/${profile}`; }} />
-        </div>
-        <details className="hud-right adv">
+    <div className="compare cmp-grid">
+      <aside className="cmp-left">
+        <RefPanel title={refTitle} meta={metaL} refId={refId} refs={SETTINGS.references[profile]} onRef={setRefId} err={L.err} />
+        <UnitPicker unit={unit} onPick={setUnit} limits={{ cur: lim }} />
+        <AutoPanel auto={auto} total={VARIABLES.length} label={auto.idx >= 0 ? labels[auto.idx] : ""} limitPending={!lim && unit === "astronaut"} hasScene={!!(L.dem && R.dem)} onReport={report} />
+      </aside>
+      <div className="cmp-gauge"><DGauge cand={cp} profile={profile} /></div>
+      <aside className="cmp-right">
+        <CandPanel cid={cid} meta={metaR} list={list} hasDem={hasDem} onPick={go} R={R} />
+        <button type="button" className="hud-btn lg" disabled={!cid} onClick={report}>{t("cmp.openReport")}</button>
+        <details className="adv">
           <summary className="hud-panel">{t("cmp.adv")}<small>{t("cmp.advHint")}</small></summary>
           <div className="adv-body">
-          <p className="hud-note">{t("move.keys")}</p>
-          <CameraPicker mode={mode} onPick={setMode} exag={exag} onExag={setExag} />
-          <ObsLog entries={log} />
-          <MiniMap regions={D.regions} point={cp && { lat: cp.center_lat, lon: cp.center_lon }} />
-          <SlopeLegend limit={lim} />
+            <p className="hud-note">{t("move.keys")}</p>
+            <CameraPicker mode={mode} onPick={setMode} />
+            <ObsLog entries={log} />
+            <MiniMap regions={D.regions} point={cp && { lat: cp.center_lat, lon: cp.center_lon }} />
           </div>
         </details>
-        <div className="hud-bottom">
-          <div className="hud-center"><p className="hud-hint">{t("cmp.hint")}</p>
+      </aside>
+      <section className="cmp-scene">
+        <SceneBar view={view} onView={setView} exag={exag} onExag={setExag} onSwap={() => setSwap(!swap)} />
+        <MovePanel moving={move.moving} label={move.moving ? stLabel(move.moving.idx) : ""} onSkip={move.skip} />
+        <div className="cmp-stage">
+          <div className="cmp-titles" aria-hidden="true"><span>{titles[0]}</span><span>{titles[1]}</span></div>
+          <SceneView dems={dems} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} view={view} pals={pals} />
+          {curRes && <StationCard res={curRes} refTitle={refTitle} candTitle={candTitle} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
+        </div>
+        {view === "relief" ? <ReliefLegend dems={dems} pals={pals} titles={titles} /> : <SlopeLegend limit={lim} />}
+      </section>
+      <div className="cmp-bottom">
+        <div className="hud-center"><p className="hud-hint">{t("cmp.hint")}</p>
           <StationBar profile={profile} cur={cur} visited={visited} onVisit={goStation} busy={!!move.moving || auto.active} /></div>
-          <div className="hud-end">
-            <span className="badge">{t("badge.stage")}</span>
-            <button className="hud-btn" disabled={!done} title={done ? "" : t("mission.pending")} onClick={() => { location.hash = `#/report/${cid}/${profile}`; }}>{t("mission.done")}</button>
-          </div>
+        <div className="hud-end">
+          <span className="badge">{t("badge.stage")}</span>
+          <button className="hud-btn" disabled={!done} title={done ? "" : t("mission.pending")} onClick={report}>{t("mission.done")}</button>
         </div>
       </div>
     </div>
