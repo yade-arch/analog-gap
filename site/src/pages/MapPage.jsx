@@ -1,26 +1,39 @@
-import React from "react";
-import { PROFILES, Tag, Warn } from "../common.jsx";
+import React, { useMemo, useState } from "react";
+import { PROFILES, Warn } from "../common.jsx";
 import MapView from "../MapView.jsx";
+import GlobeView from "../components/GlobeView.jsx";
 import PageIntro from "../components/PageIntro.jsx";
+import DLegend from "../features/home/DLegend.jsx";
+import { dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
+import "../features/home/home.css";
+
+const VIEWS = ["globe", "flat"];
 
 export default function MapPage({ cand, profile, D, onSelect }) {
   const P = PROFILES[profile];
+  const [view, setView] = useState("globe");
+  const markers = useMemo(() => dMarkers(cand), [cand]);
+  const shown = t("map.shown").replace("{n}", cand.features.length).replace("{total}", cand.meta.n_windows_total).replace("{pass}", cand.meta.n_pass_filter);
   return (
     <div>
       <PageIntro purpose={t("map.purpose")} how={t("map.how")} />
+      <div className="map-views" role="group" aria-label={t("map.view")}>
+        {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{t("map.view." + v)}</button>)}
+      </div>
       <div className="maprow">
-        <MapView data={cand} regions={D.regions} onSelect={onSelect} selectedId={null} />
+        {view === "globe"
+          ? <GlobeView body="earth" markers={markers} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
+          : <MapView data={cand} regions={D.regions} onSelect={onSelect} selectedId={null} />}
         <div>
           <div className="card">
             <h3>{P.name}</h3>
             <p className="muted">{t(`profile.${profile}.tr`)} · {P.sub}</p>
-            <div className="legend"><span>yakın</span><span className="bar" /><span>uzak (D)</span></div>
-            <p>{t("map.legend")} <Tag kind="der" /></p>
-            <p className="muted">Palet tek yönlüdür; iyi/kötü anlamı yoktur. Kesikli çizgi: arama bölgesi.</p>
-            <p>Gösterilen: bölge başına filtreyi geçen en iyi 250 pencere ({cand.features.length}). Toplam {cand.meta.n_windows_total} pencere tarandı; filtreyi geçen {cand.meta.n_pass_filter}.</p>
+            <DLegend />
+            <p>{shown}</p>
+            {view === "globe" && <p className="muted small">{t("map.globe.flatNote")}</p>}
           </div>
-          <Warn>Mesafe yalnızca topografik dağılım yakınlığıdır; termal, regolit, spektral, atmosfer, yerçekimi ve radyasyon karşılaştırılamaz. Bkz. Gap paneli.</Warn>
+          <Warn>{t("map.warn")}</Warn>
         </div>
       </div>
     </div>

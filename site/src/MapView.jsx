@@ -26,7 +26,8 @@ function declutter(labels, m) {
 }
 
 export default function MapView({ data, regions, onSelect, selectedId }) {
-  const el = useRef(null), map = useRef(null), loaded = useRef(false);
+  const el = useRef(null), map = useRef(null), loaded = useRef(false), pickRef = useRef(onSelect);
+  pickRef.current = onSelect;                                   // harita bir kez kurulur; tıklama her zaman güncel işlevi çağırır (profil değişince)
 
   useEffect(() => {
     const m = new maplibregl.Map({
@@ -65,7 +66,7 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
       m.addLayer({ id: "sel", type: "line", source: "cand", filter: ["==", ["get", "id"], ""], paint: { "line-color": "#f0b445", "line-width": 3 } });
       const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
       for (const layer of ["cand-fill", "cand-pt"]) {
-        m.on("click", layer, (e) => onSelect(e.features[0].properties.id));
+        m.on("click", layer, (e) => pickRef.current?.(e.features[0].properties.id));
         m.on("mouseenter", layer, () => (m.getCanvas().style.cursor = "pointer"));
         m.on("mousemove", layer, (e) => {
           const p = e.features[0].properties;
