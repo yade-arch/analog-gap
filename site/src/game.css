@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 /* Emergency Analog Mission: tam ekran oyun. Yalnızca .g-* sınıfları ve html[data-page="game"] kapsamı.
    Menü/duraklatma açık arayüz (theme.css değişkenleri); oyun sahnesi koyu uzay. */
 html[data-page="game"] header.top, html[data-page="game"] footer { display: none; }
@@ -127,3 +128,17 @@ html[data-page="game"] main { padding: 0; margin: 0; max-width: none; }
 .g-dir-left { left: 50%; transform: translateX(-50%); } .g-mode-multi .g-dir-left { left: 25%; } .g-dir-right { left: 75%; transform: translateX(-50%); }
 .g-dir i { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #5fb4ff; color: #06101f; font-style: normal; font-size: 16px; font-weight: 800; transition: transform .15s linear; }
 .g-drive .g-prompt { bottom: 12px; } .g-drive .g-dir { bottom: 46px; }
+/* Arcade opening screen (start menu only): starfield, pixel title, big PRESS START */
+.g-arcade { --px: "Press Start 2P", ui-monospace, monospace; background: #0b0d1e radial-gradient(1px 1px at 12% 18%, #fff, transparent) , radial-gradient(1px 1px at 82% 22%, #fff, transparent), radial-gradient(1.5px 1.5px at 30% 70%, #fff, transparent), radial-gradient(1px 1px at 64% 84%, #fff, transparent), radial-gradient(1.5px 1.5px at 90% 60%, #fff, transparent), radial-gradient(1px 1px at 45% 35%, #fff9, transparent), radial-gradient(1px 1px at 8% 88%, #fff9, transparent); }
+.g-arcade .g-hud-top { position: absolute; top: 16px; left: 24px; right: 24px; display: flex; justify-content: space-between; font-family: var(--px); font-size: 12px; color: #c9b8ff; text-align: center; }
+.g-arcade .g-hud-top span { display: grid; gap: 8px; } .g-arcade .g-hud-top b { color: #5fd3ff; font-weight: 400; }
+.g-arcade .g-menu-card { background: transparent; border: 0; box-shadow: none; text-align: center; }
+.g-arcade h1 { font-family: var(--px); font-size: clamp(18px, 3.4vw, 34px); line-height: 1.5; color: #ffe94a; text-shadow: 4px 4px 0 #ff2d78; letter-spacing: 0; }
+.g-arcade .g-kicker { font-family: var(--px); font-size: 10px; color: #8fa0d8; letter-spacing: .1em; }
+.g-arcade .g-start.g-press { display: grid; gap: 10px; margin: 20px auto; padding: 18px 28px; border: 0; background: none; box-shadow: none; font-family: var(--px); font-size: clamp(22px, 5vw, 52px); color: #ffe94a; text-shadow: 5px 5px 0 #ff2d78; cursor: pointer; }
+.g-arcade .g-start.g-press small { font-size: 10px; color: #c9b8ff; text-shadow: none; }
+.g-arcade .g-seg button { font-family: var(--px); font-size: 10px; }
+.g-arcade .g-menu-card { max-height: none; overflow: visible; scrollbar-width: none; }
+.g-arcade .g-kicker, .g-arcade .g-lead, .g-arcade .g-menu-card > .g-small:not(:has(a)) { display: none; }
+.g-arcade h1 { font-size: clamp(16px, 2.6vw, 28px); margin: 48px 0 16px; }
+.g-arcade .g-start.g-press { font-size: clamp(20px, 4vw, 40px); }

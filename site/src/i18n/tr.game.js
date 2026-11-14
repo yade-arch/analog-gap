@@ -4,6 +4,8 @@ export default {
   ...globe,
   "nav.game": "Emergency Analog Mission",
   "game.title": "EMERGENCY ANALOG MISSION",
+  "game.suit.effect": "Mission effect: each unknown danger adds {d} min to the trip back.", "game.suit.tol": "Can come back safely even if dangers are still unknown.", "game.suit.notol": "Mission fails if any danger is still unknown at the end (test first).",
+  "game.arc.press": "PRESS START", "game.arc.enter": "or press Enter", "game.arc.mission": "MISSION", "game.arc.ready": "READY",
   "game.target.moon": "Ay",
   "game.target.mars": "Mars",
   "game.lbl.sim": "Simülasyon varsayımı",

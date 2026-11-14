@@ -77,9 +77,11 @@ export function riskFlags(profile, done, ref, limit) {
 }
 
 /** Görev sonucu (oyun kuralı): süre yeterli mi + kıyafet risk bayraklarına dayanıklı mı. */
+/** Game rule: each still-unknown danger slows the trip back; a tougher suit (higher durability) loses less time. */
+export const dangerMin = (suit) => Math.round((100 - suit.stats.dur) / 2);
 export function outcome(suit, left, flags) {
   if (!suit || left <= 0) return "timeout";
-  if (left < suit.returnMin) return "nooxygen";
+  if (left < suit.returnMin + flags.length * dangerMin(suit)) return "nooxygen";
   if (!suit.tolerant && flags.length) return "risky";
   return "success";
 }
