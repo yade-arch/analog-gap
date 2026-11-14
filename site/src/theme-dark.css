@@ -44,3 +44,4 @@ html[data-page="map"] .globe-canvas { height: calc(100vh - var(--hdr, 64px) - 21
 html[data-page="map"] .mappanel { padding: 12px; } html[data-page="map"] .darkstage { border: 1px solid var(--line-soft); }
 html[data-page="map"] .pick-hint { font-size: 14px; color: var(--ink); }
 html .viewtabs button { border-radius: 10px; }
+html[data-page="map"] .globe-bar select, html[data-page="map"] .globe > :not(.globe-canvas):not(.globe-bar) { display: none; }
