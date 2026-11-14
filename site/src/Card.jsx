@@ -17,7 +17,7 @@ function Thermal({ p, profile, tE, tM }) {
   };
   return (
     <div>
-      <h3>Termal (puana ve filtreye girmez)</h3>
+      <h3>Temperature (not used in the distance or the filter)</h3>
       <p><Tag kind="obs" /><Tag kind="der" /> Earth: {tE?.product}, {tE?.year}, {tE?.n_composites} composites.</p>
       {e && e.dT_dn_K_median != null ? (
         <table>

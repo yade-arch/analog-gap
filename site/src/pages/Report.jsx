@@ -47,7 +47,7 @@ export default function Report({ D, profile, cand, id }) {
           <div><div className="muted">Rank (among candidates that passed the filter)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
         <p className="muted">D = mean(d_slope, d_relief, d_roughness), equal weights, fixed; d_k = W1 / IQR(reference). No similarity percentage or confidence score is produced. The window is not "a copy of {body}". Gap paneli yanda.</p>
-        <p className="noprint"><button onClick={() => window.print()} disabled={!dem.done}>Print / PDF</button>{" "}<button onClick={download} disabled={!dem.done}>Download JSON</button>{!dem.done && <span className="muted"> Loading terrain window…</span>}{" "}<a href={`#/compare/${p.id}/${profile}`}>Karşılaştırmaya dön</a></p>
+        <p className="noprint"><button onClick={() => window.print()} disabled={!dem.done}>Print / PDF</button>{" "}<button onClick={download} disabled={!dem.done}>Download JSON</button>{!dem.done && <span className="muted"> Loading terrain window…</span>}{" "}<a href={`#/compare/${p.id}/${profile}`}>Back to comparison</a></p>
       </div>
       <div className="grid2">
         <div>
@@ -57,7 +57,7 @@ export default function Report({ D, profile, cand, id }) {
               <div className="card" key={v.id}>
                 <h3>{t(v.titleKey)} <span className="muted">· {t("station." + res.status)}</span></h3>
                 {res.summary && <p>{res.summary}</p>}
-                <StationTable res={res} refTitle={`${body} (referans)`} candTitle={`${t("side.earth")} (${t("side.cand")}) · ${p.id}`} />
+                <StationTable res={res} refTitle={`${body} (${t("side.ref")})`} candTitle={`${t("side.earth")} (${t("side.cand")}) · ${p.id}`} />
                 {res.note && res.rows.length > 0 && <p className="muted">{res.note}</p>}
               </div>
             );
@@ -65,7 +65,7 @@ export default function Report({ D, profile, cand, id }) {
           <div className="card">
             <h3>Etiketler</h3>
             <p><Tag kind="obs" /> {p.labels?.observed}. <Tag kind="der" /> {p.labels?.derived}. <Tag kind="int" /> {p.labels?.interpretation}.</p>
-            <p><span className="tag real">{t("tag.real")}</span><span className="tag calc">{t("tag.calc")}</span><span className="tag sim">{t("tag.sim")}</span> Mission simulation labels. Slope limit{lim ? `: ${lim.value}° (${lim.id}, ${lim.source})` : ": kaynak bekliyor"}. Gerçek performans tahmini değildir.</p>
+            <p><span className="tag real">{t("tag.real")}</span><span className="tag calc">{t("tag.calc")}</span><span className="tag sim">{t("tag.sim")}</span> Mission simulation labels. Slope limit{lim ? `: ${lim.value}° (${lim.id}, ${lim.source})` : ": source pending"}. Not a prediction of real performance.</p>
             <p className="muted"><strong>Data products:</strong> {SOURCES}</p>
           </div>
         </div>
