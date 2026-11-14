@@ -1,12 +1,13 @@
 // Birimin arkasında kalan iz çizgisi (yüzeye yapışık: yükseklik DEM'den). Noktalar [x, h, z]; dikey abartı değişince yeniden yazılır.
 import * as THREE from "three";
+import { cssVar } from "../../common.jsx";
 
 const MAX = 4000, LIFT = 0.04, MIN_STEP2 = 0.02 * 0.02;
 
 export function makeTrail() {
   const attr = new THREE.BufferAttribute(new Float32Array(MAX * 3), 3), geo = new THREE.BufferGeometry(); geo.setAttribute("position", attr);
   geo.setDrawRange(0, 0);
-  const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: "#f4f1e6", transparent: true, opacity: 0.8, depthTest: false }));
+  const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: cssVar("--panel-solid", "#ffffff"), transparent: true, opacity: 0.8, depthTest: false }));
   line.renderOrder = 3; line.frustumCulled = false;
   const pts = [];
   const write = (i, exag) => { const p = pts[i]; attr.setXYZ(i, p[0], p[1] * exag + LIFT, p[2]); };

@@ -38,11 +38,14 @@ export function Limitations({ lim, profile }) {
   );
 }
 
-// D paleti (koyu tema): yakın = açık, uzak = koyu mavi; tek yönlü sıralı. theme.css --seq1..4 ile aynı.
-export const D_STOPS = [[0, "#d6e9f8"], [0.4, "#7fb2e0"], [0.8, "#3b7fc0"], [1.2, "#2a5a96"]];
+/** theme.css değişkenini oku (JS tüketiciler: MapLibre, three, tuval). Yoksa d. */
+export const cssVar = (name, d) => (typeof document !== "undefined" && getComputedStyle(document.documentElement).getPropertyValue(name).trim()) || d;
+
+// D paleti: yakın = açık mavi, uzak = koyu lacivert; tek yönlü sıralı. Renkler theme.css --seq1..4'ten (yedek değerler aynı).
+export const D_STOPS = [[0, cssVar("--seq1", "#4a8dca")], [0.4, cssVar("--seq2", "#2f72b5")], [0.8, cssVar("--seq3", "#1d5596")], [1.2, cssVar("--seq4", "#0f3263")]];
 
 export function dColor(D) {
-  if (D === null || D === undefined) return "#9aa3ad";
+  if (D === null || D === undefined) return cssVar("--nodata", "#8a94a3");
   const stops = D_STOPS.map(([v, hex]) => [v, [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))]);
   const x = Math.max(0, Math.min(1.2, D));
   for (let i = 1; i < stops.length; i++) {
@@ -60,15 +63,15 @@ export function RangeBars({ cand, reference, unit }) {
   const a = lo - pad, b = hi + pad, W = 420, x = (v) => 8 + ((v - a) / (b - a)) * (W - 16);
   const bar = (p10, p50, p90, y, color, label) => (
     <g>
-      <rect x={x(p10)} y={y} width={Math.max(2, x(p90) - x(p10))} height="12" fill={color} opacity="0.85" rx="2" />
-      <line x1={x(p50)} x2={x(p50)} y1={y - 2} y2={y + 14} stroke="#f0b445" strokeWidth="2" />
+      <rect x={x(p10)} y={y} width={Math.max(2, x(p90) - x(p10))} height="12" style={{ fill: color }} opacity="0.85" rx="2" />
+      <line x1={x(p50)} x2={x(p50)} y1={y - 2} y2={y + 14} style={{ stroke: "var(--ink)" }} strokeWidth="2" />
       <text x="8" y={y - 4} fontSize="10.5" fill="currentColor">{label}</text>
     </g>
   );
   return (
     <svg viewBox={`0 0 ${W} 70`} width="100%" role="img" aria-label={`P10-P50-P90 aday ve referans (${unit})`}>
-      {bar(cand.p10, cand.p50, cand.p90, 18, "#7fb2e0", `Aday${fmt(cand.p10, 1)} / ${fmt(cand.p50, 1)} / ${fmt(cand.p90, 1)} ${unit}`)}
-      {bar(reference.p10, reference.p50, reference.p90, 50, "#5d7390", `Referans${fmt(reference.p10, 1)} / ${fmt(reference.p50, 1)} / ${fmt(reference.p90, 1)} ${unit}`)}
+      {bar(cand.p10, cand.p50, cand.p90, 18, "var(--seq2)", `Aday${fmt(cand.p10, 1)} / ${fmt(cand.p50, 1)} / ${fmt(cand.p90, 1)} ${unit}`)}
+      {bar(reference.p10, reference.p50, reference.p90, 50, "var(--muted)", `Referans${fmt(reference.p10, 1)} / ${fmt(reference.p50, 1)} / ${fmt(reference.p90, 1)} ${unit}`)}
     </svg>
   );
 }

@@ -2,9 +2,13 @@
 // İşaret renkleri yalnızca durumu gösterir (ziyaret edildi / bekliyor / veri eksik); iyi-kötü anlamı yoktur.
 import * as THREE from "three";
 import { SETTINGS } from "../../config.js";
+import { cssVar } from "../../common.jsx";
+
+// Etiket renkleri theme.css'ten: koyu lacivert kabarcık (--ink) + açık metin (--panel-solid); her iki zeminde de okunur.
+const bubble = () => cssVar("--ink", "#14243a"), bubbleInk = () => cssVar("--panel-solid", "#ffffff");
 
 const LIFT = 0.03;                                   // km: çizginin arazi üçgenlerine gömülmemesi için sabit kaldırma
-export const STATE_COLOR = { visited: "#6fb98f", pending: SETTINGS.routeColor, missing: "#8a94a3" };
+export const STATE_COLOR = { visited: cssVar("--good-edge", "#2c7d57"), pending: SETTINGS.routeColor, missing: cssVar("--nodata", "#8a94a3") };
 
 const spr = (c, w, h) => {
   const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true, sizeAttenuation: false }));   // ekranda sabit boyut: yakınlaşınca büyümez
@@ -12,16 +16,16 @@ const spr = (c, w, h) => {
 };
 function numberSprite(n, col) {
   const c = document.createElement("canvas"); c.width = c.height = 64;
-  const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.9)"; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
-  g.strokeStyle = col; g.lineWidth = 5; g.stroke();
-  g.fillStyle = "#f4f1e6"; g.font = "bold 34px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(n), 32, 34);
+  const g = c.getContext("2d"); g.fillStyle = bubble(); g.globalAlpha = 0.92; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
+  g.globalAlpha = 1; g.strokeStyle = col; g.lineWidth = 5; g.stroke();
+  g.fillStyle = bubbleInk(); g.font = "bold 34px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(n), 32, 34);
   return spr(c, 0.05, 0.05);
 }
 function labelSprite(text, col) {
   const c = document.createElement("canvas"); c.width = 256; c.height = 56;
-  const g = c.getContext("2d"); g.fillStyle = "rgba(10,20,38,.88)"; g.beginPath(); g.roundRect(2, 2, 252, 52, 12); g.fill();
-  g.strokeStyle = col; g.lineWidth = 3; g.stroke();
-  g.fillStyle = "#f4f1e6"; g.font = "600 26px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 128, 30, 236);
+  const g = c.getContext("2d"); g.fillStyle = bubble(); g.globalAlpha = 0.9; g.beginPath(); g.roundRect(2, 2, 252, 52, 12); g.fill();
+  g.globalAlpha = 1; g.strokeStyle = col; g.lineWidth = 3; g.stroke();
+  g.fillStyle = bubbleInk(); g.font = "600 26px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 128, 30, 236);
   return spr(c, 0.2, 0.044);
 }
 function paint(m, state) {                            // işaret grubunu duruma göre (yeniden) çiz
@@ -38,7 +42,7 @@ export function makeMarkers(spots, exag, labels = [], states = []) {
   spots.forEach((p, i) => {
     if (!p) return;
     const m = new THREE.Group(); m.position.set(p.x, p.h * exag, p.z); m.userData = { h: p.h, i, text: `${i + 1} · ${labels[i] || ""}` };
-    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.1, 1.6, 8, 1, true), new THREE.MeshBasicMaterial({ color: "#fff", transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide }));
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.1, 1.6, 8, 1, true), new THREE.MeshBasicMaterial({ color: cssVar("--panel-solid", "#ffffff"), transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide }));
     beam.position.y = 0.8; m.add(beam); m.userData.beam = beam; paint(m, states[i] || "pending"); g.add(m);
   });
   return g;

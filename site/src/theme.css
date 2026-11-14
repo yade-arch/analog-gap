@@ -1,16 +1,22 @@
-/* Tek tema dosyası: koyu HUD (taslak 6 renkleri). Renk değiştirmek için yalnızca buradaki değişkenleri düzenleyin. */
+/* Tek tema dosyası: AÇIK tema (beyaz + mavi tonlar). Renk değiştirmek için yalnızca buradaki değişkenleri düzenleyin.
+   JS tarafı (MapLibre, three, tuval) bu değişkenleri getComputedStyle ile okur: renkleri 6 haneli #hex yazın. */
 :root {
-  color-scheme: dark;
-  --bg: #0a1020; --bg2: #101a2e; --panel: rgba(16, 26, 44, .92); --panel-solid: #101a2e;
-  --ink: #e8eef7; --muted: #9db0c6; --line: #2a3b57;
-  --accent: #f0b445;          /* amber: vurgu, etkin düğme */
-  --accent-ink: #1a1405;
-  --cool: #7fb2e0;            /* bağlantı / ikincil vurgu */
-  --good-edge: #6fb98f;       /* yalnızca "tamamlandı" çerçevesi; iyi/kötü anlamı taşımaz */
-  --warn-bg: #2a2619; --warn-line: #b59f5b;
-  --seq1: #d6e9f8; --seq2: #7fb2e0; --seq3: #3b7fc0; --seq4: #2a5a96;   /* D: yakın -> uzak */
-  --globe-ocean: #0c1a2c; --globe-land: #3a3931; --globe-coast: #8fa2b8; --nodata: #9aa3ad;   /* küre: okyanus, kara (Natural Earth), kıyı, Veri eksik */
-  --t-obs: #1f3550; --t-der: #2a2a4a; --t-int: #3a3020;
+  color-scheme: light;
+  --bg: #f3f6fa; --bg2: #e6edf6; --panel: rgba(255, 255, 255, .94); --panel-solid: #ffffff;   /* zemin, ikincil zemin, panel */
+  --ink: #14243a; --muted: #4b5e76;                                   /* metin: koyu lacivert, ikincil gri-mavi */
+  --line: #788aa1; --line-soft: #d3dce7;                              /* kenarlık (≥3:1, düğme/kart), ayırıcı çizgi (tablo satırı, ızgara) */
+  --accent: #1d5fae;          /* mavi: vurgu, etkin düğme, seçili */
+  --accent-ink: #ffffff;      /* vurgu üstündeki metin */
+  --accent-soft: rgba(29, 95, 174, .14);
+  --cool: #1a569e;            /* bağlantı / ikincil vurgu */
+  --good-edge: #2c7d57;       /* yalnızca "tamamlandı" çerçevesi; iyi/kötü anlamı taşımaz */
+  --err: #a8321c;             /* yükleme hatası metni */
+  --warn-bg: #fff6de; --warn-line: #9a7300;
+  --seq1: #4a8dca; --seq2: #2f72b5; --seq3: #1d5596; --seq4: #0f3263;   /* D: yakın -> uzak (tek yönlü, açık zeminde okunur) */
+  --globe-ocean: #d3e3f2; --globe-land: #ede9df; --globe-coast: #6f839b; --nodata: #8a94a3;   /* küre/harita: okyanus, kara (Natural Earth), kıyı, Veri eksik */
+  --map-bg: #d3e3f2;          /* 2D harita zemini (= okyanus) */
+  --scene-top: #f4f8fc; --scene-bottom: #d9e6f3;                     /* 3D görev sahnesi degrade zemini */
+  --t-obs: #dcebfa; --t-der: #e7e4f6; --t-int: #f6ecd8;              /* etiket zeminleri (metin --ink) */
   --font: Inter, system-ui, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
@@ -43,14 +49,14 @@ h2 { font-size: 18px; } h3 { font-size: 15px; }
 .tag.obs { background: var(--t-obs); } .tag.der { background: var(--t-der); } .tag.int { background: var(--t-int); }
 .warn { background: var(--warn-bg); border-left: 3px solid var(--warn-line); padding: 8px 10px; margin: 8px 0; font-size: 13.5px; }
 table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
-th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
 th { color: var(--muted); font-weight: 600; }
 td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
 .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .big { font-size: 34px; font-weight: 650; font-variant-numeric: tabular-nums; }
 .muted { color: var(--muted); }
-#map { height: calc(100vh - 150px); min-height: 440px; border: 1px solid var(--line); border-radius: 10px; background: #0f1722; }
+#map { height: calc(100vh - 150px); min-height: 440px; border: 1px solid var(--line); border-radius: 10px; background: var(--map-bg); }
 .maprow { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 14px; }
 @media (max-width: 900px) { .maprow { grid-template-columns: minmax(0, 1fr); } }
 .legend { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
