@@ -5,9 +5,10 @@ import PageIntro, { Term } from "./components/PageIntro.jsx";
 import CopyPre from "./components/CopyPre.jsx";
 
 const STEPS = ["Veri", "Hazırlık", "Özellik", "Karşılaştırılabilirlik", "Karşılaştırma", "Sonuç"];
-const STEP_D = ["NASADEM, LOLA, CTX DTM", "30 m ortak ızgara", "eğim, röleyf, pürüzlülük", "örtüşme filtresi O_k", "W1 / IQR → D", "sıralı liste + Gap"];
+const STEP_D = ["NASA yükseklik verisi: Dünya NASADEM, Ay LOLA, Mars CTX", "hepsi aynı 30 m ızgaraya", "eğim, yükseklik farkı, yüzey engebesi", "aralıkları örtüşmeyenler elenir", "dağılım farkı → arazi uzaklığı", "sıralı liste + eksik konular"];
 const Sec = ({ title, children }) => <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">{children}</div></details>;
-const FORMULA = `Değişkenler (yalnızca topografya): eğim, yerel röleyf (11×11, 330 m, max−min), pürüzlülük (z − ort_5x5(z) artığının 11×11 RMS'i)
+const FORMULA = `Teknik adlar: D = arazi uzaklığı, d_k = değişken uzaklığı (eğim / yükseklik farkı / yüzey engebesi), O_k = örtüşme, P10/P50/P90 = tipik değer ve aralık, W1 = Wasserstein mesafesi, IQR = çeyrekler arası genişlik.
+Değişkenler (yalnızca topografya): eğim, yerel röleyf (11×11, 330 m, max−min), pürüzlülük (z − ort_5x5(z) artığının 11×11 RMS'i)
 Filtre:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  her k için ve geçerli piksel >= %90
 d_k   =  W1(F_aday,k , F_ref,k) / IQR(F_ref,k)     (scipy wasserstein_distance, 20 000 piksellik alt örnek, seed = 42)
 D     =  (d_eğim + d_röleyf + d_pürüzlülük) / 3     eşit ağırlık; kullanıcı tarafından değiştirilemez
@@ -24,11 +25,11 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
       <div className="card brief">
         <h2>Kısaca</h2>
         <ul>
-          <li><strong>Ne karşılaştırılır:</strong> Dünya'daki 10×10 km arazi pencerelerinin eğim, yerel röleyf ve pürüzlülük dağılımı; Ay (Shackleton çevresi) veya Mars (Jezero çevresi) referans dağılımıyla.</li>
-          <li><strong>Hangi veri:</strong> Dünya NASADEM 30 m, Ay LOLA, Mars CTX DTM; ürün adı ve sürümü Veri envanteri bölümünde.</li>
-          <li><strong>Hangi ölçü:</strong> her değişken için dağılımlar arası Wasserstein mesafesi, referansın IQR'sine bölünür; üç değişkenin eşit ağırlıklı ortalaması <Term k="D">D</Term>'dir.</li>
-          <li><strong>D nasıl okunur:</strong> düşük D = dağılım referansa daha yakın. Sıralama içindir; mutlak bir "iyi/kötü" eşiği yoktur.</li>
-          <li><strong>Neden yüzde veya güven puanı yok:</strong> D bir mesafedir, olasılık değildir; istatistiksel anlamı olmayan tek bir puan üretmek yanıltıcı olurdu. Veri kapsamı (Evidence Coverage) ve güvenilirlik (Reliability) ayrı gösterilir.</li>
+          <li><strong>Ne karşılaştırılır:</strong> Dünya'daki 10×10 km arazi parçalarının <Term k="slope" />, <Term k="relief" /> ve <Term k="rough" /> değerleri; Ay'da Shackleton krateri çevresi veya Mars'ta Jezero krateri çevresiyle.</li>
+          <li><strong>Hangi veri:</strong> NASA yükseklik ölçümleri (Dünya NASADEM 30 m, Ay LOLA, Mars CTX); ürün adı ve sürümü Veri envanteri bölümünde.</li>
+          <li><strong>Hangi ölçü:</strong> her özellik için Dünya parçasındaki değerlerin dağılımı referansınkiyle kıyaslanır; üç farkın eşit ağırlıklı ortalaması <Term k="D" />dır (teknik ad: D).</li>
+          <li><strong>Nasıl okunur:</strong> 0 = aynı, düşük = arazi şekli daha benzer. Fiziksel mesafe değil, arazi şekillerinin farkıdır. Sıralama içindir; "iyi/kötü" eşiği yoktur.</li>
+          <li><strong>Neden yüzde veya güven puanı yok:</strong> arazi uzaklığı bir olasılık değildir; anlamı olmayan tek bir puan yanıltıcı olurdu. <Term k="coverage" /> ve <Term k="reliability" /> ayrı gösterilir.</li>
         </ul>
       </div>
       <Warn><strong>Dürüst not:</strong> pozitif kontrol ölçütü <strong>sağlanmadı</strong> (bilinen analogların medyan yüzdeliği ≤ %20 hedefine ulaşılamadı). Ayrıntı: Doğrulama bölümü. Bu yüzden yöntemin "doğrulandığı" söylenmez.</Warn>
@@ -44,7 +45,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
         <CopyPre text={FORMULA} />
         <p>Duyarlılık analizi (pencere 5/20 km, ızgara 90 m, eşik 0,25/0,75, değişken çıkarma): <strong>yapılmadı</strong> (kesme listesi, süre). Eşikler bu sonuçlara göre ayarlanmadı.</p>
       </Sec>
-      <Sec title="Filtre ve sıralama (O_k, d_k, D)">
+      <Sec title="Filtre ve sıralama (örtüşme, değişken uzaklıkları, arazi uzaklığı)">
         <p>O_k: adayın P10–P90 aralığının referansın P10–P90 aralığıyla örtüşme oranı; her değişken için ≥ 0,5 ve geçerli piksel ≥ %90 olmayan pencere elenir. <Term k="d_slope">d_k</Term>: değişken başına W1/IQR. <Term k="D">D</Term>: üç d_k'nin eşit ağırlıklı ortalaması. Ağırlıklar sabittir.</p>
       </Sec>
       <Sec title="Termal değişkenler (neden puana girmiyor)">

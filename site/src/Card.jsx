@@ -88,11 +88,11 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
   const [tab, setTab] = useState("char");
   const prof = PROFILES[profile];
   const near = (known || []).filter((k) => k.lat).map((k) => ({ ...k, km: hav(p.center_lat, p.center_lon, +k.lat, +k.lon) })).sort((a, b) => a.km - b.km)[0];
-  const tabs = [["char", "Characterize"], ["cmp", "Compare"], ["ev", "Evidence"], ["nov", "Novelty"]];
+  const tabs = [["char", "Özellikler"], ["cmp", "Karşılaştır"], ["ev", "Kanıt"], ["nov", "Katalogda mı?"]];
   return (
     <div>
       <div className="card">
-        <h2>Analog Card — {p.id}</h2>
+        <h2><span className="tag-body earth">DÜNYA (aday)</span> {regionLabel(p.region)} <span className="muted small">· pencere kodu {p.id}</span></h2>
         <div className="muted">{regionLabel(p.region)} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · profil: {prof.name}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
           <div><div className="muted">Arazi uzaklığı (teknik ad: D; 0 = aynı, düşük = daha benzer)</div><div className="big">{fmt(p.D, 3)}</div></div>
@@ -106,10 +106,10 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           <div className="tabs">{tabs.map(([k, l]) => <button key={k} className={tab === k ? "on" : ""} onClick={() => setTab(k)}>{l}</button>)}</div>
           {tab === "char" && (
             <div className="card">
-              <h3>Characterize — topografya (30 m, Horn 3×3 eğim)</h3>
+              <h3>Özellikler: arazi şekli <span className="muted small">(teknik ad: Characterize; 30 m, Horn 3×3 eğim)</span></h3>
               <p><Tag kind="obs" />NASADEM yüksekliği &nbsp; <Tag kind="der" />eğim, röleyf, pürüzlülük (P10 / P50 / P90)</p>
               <table>
-                <thead><tr><th>Değişken</th><th className="n">P10</th><th className="n">P50</th><th className="n">P90</th></tr></thead>
+                <thead><tr><th>Değişken</th><th className="n">Düşük uç (P10)</th><th className="n">Tipik (P50)</th><th className="n">Yüksek uç (P90)</th></tr></thead>
                 <tbody>
                   {Object.keys(VARS).map((k) => (
                     <tr key={k}><td>{VARS[k][0]} ({VARS[k][1]})</td><td className="n">{fmt(p.derived_percentiles[k].p10, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p50, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p90, 2)}</td></tr>
@@ -121,7 +121,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           )}
           {tab === "cmp" && (
             <div className="card">
-              <h3>Compare — aday ve referans dağılımı</h3>
+              <h3>Karşılaştır: aday ve referansın tipik aralığı <span className="muted small">(teknik ad: Compare)</span></h3>
               <p><Tag kind="der" />Çubuk: P10–P90; siyah çizgi: P50. Referans: {reference?.label}.</p>
               <table>
                 <thead><tr><th>Değişken</th><th className="n">O_k (örtüşme)</th><th className="n">d_k</th></tr></thead>
@@ -137,10 +137,10 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           )}
           {tab === "ev" && (
             <div className="card">
-              <h3>Evidence — Coverage ve Reliability ayrı</h3>
+              <h3>Kanıt: kapsam ve güvenilirlik ayrı <span className="muted small">(teknik ad: Evidence Coverage / Reliability)</span></h3>
               <div className="grid2">
                 <div>
-                  <h3>Evidence Coverage</h3>
+                  <h3>Kanıt kapsamı</h3>
                   <table><tbody>
                     <tr><td>Geçerli piksel oranı</td><td className="n">{fmt(p.evidence_coverage.valid_pixel_fraction * 100, 1)} %</td></tr>
                     <tr><td>SRTM kökenli piksel oranı (NUM)</td><td className="n">{fmt(p.evidence_coverage.nasadem_srtm_fraction * 100, 1)} %</td></tr>
@@ -148,7 +148,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
                   </tbody></table>
                 </div>
                 <div>
-                  <h3>Evidence Reliability</h3>
+                  <h3>Güvenilirlik</h3>
                   <table><tbody>
                     <tr><td>NASADEM dolgu/interpolasyon oranı (NUM)</td><td className="n">{fmt(p.evidence_reliability.nasadem_fill_or_interp_fraction * 100, 1)} %</td></tr>
                     <tr><td>Yeniden örnekleme</td><td className="n">1″ → 30 m (alan ortalaması)</td></tr>
@@ -161,7 +161,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           )}
           {tab === "nov" && (
             <div className="card">
-              <h3>Novelty — bilinen analog kataloğuna uzaklık</h3>
+              <h3>Katalogda mı? Bilinen analoglara uzaklık <span className="muted small">(teknik ad: Novelty)</span></h3>
               <p><Tag kind="der" />{near ? <>Koordinatı olan en yakın bilinen analog: <strong>{near.name}</strong>, {fmt(near.km, 0)} km.</> : "Veri eksik"}</p>
               <Warn>Katalog çok küçük (yalnızca 6 koordinatlı satır). Bu pencere "keşfedilmemiş" değil, "bu kısa katalogda yok" olarak okunmalıdır; başka çalışmalarca incelenmiş olabilir.</Warn>
             </div>
