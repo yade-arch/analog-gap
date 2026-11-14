@@ -25,7 +25,7 @@ export default function TargetGlobe({ D, profile }) {
             {w.source && <p className="muted"><a href={w.source} target="_blank" rel="noreferrer">{t("game.globe.src")}</a></p>}
           </>
         ) : markers.length ? <p className="muted">{t("game.globe.pick")}</p> : (
-          <p className="muted">{ref?.label} · {ref?.dem}{ref?.coverage_km ? ` · ${ref.coverage_km.join(" × ")} km` : ""}</p>
+          <p className="muted">{ref?.label}{ref?.coverage_km ? ` · ${ref.coverage_km.join(" × ")} km` : ""}</p>
         )}
         <p className="muted">{ref?.dem}</p>
       </div>

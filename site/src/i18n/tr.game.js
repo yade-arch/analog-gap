@@ -73,6 +73,7 @@ export default {
   "game.scout.to2d": "2D haritaya geç",
   "game.scout.toglobe": "Küreye dön",
   "game.scout.globehint": "Küreden bir aday pencereye bas: 2D harita ve karşılaştırma kartı açılır (inceleme maliyeti aynı).",
+  "game.scout.nomap": "WebGL yok: 2D harita açılamıyor; karşılaştırma kartı düz görünümün yanında açılır.",
   "game.scout.choose": "Bu pencereyi analog olarak seç",
   "game.scout.empty": "Haritadan bir aday pencere seç.",
   "game.scout.count": "İncelenen pencere: {n}",

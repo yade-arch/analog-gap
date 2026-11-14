@@ -9,7 +9,7 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - Dosyalar: pages/Game.jsx, features/game/*, game.css, i18n/tr.game.js, en.game.js.
 
 ## Sırada
-- PR açıldı; gözden geçirme bekleniyor.
+- feature/oyun-3d-kure PR'ı (tarayıcıdan). Ana ekran oturumu GlobeView'u bu daldan alabilir.
 
 ## Varsayımlar (PR'a da yazıldı)
 - Süre/maliyet/kıyafet değerleri `rules.js` içinde, hepsi "Simülasyon varsayımı"; RulesPanel'de görünür.
@@ -26,4 +26,7 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - ORTAK KÜRE BU DALDA (origin'de GlobeView yoktu): site/src/components/GlobeView.jsx + components/globe/{geo.js,scene.js,globe.css}. Props: body, markers [{id,lat,lon,kind,label}], onPick(marker|{lat,lon}), selectedId, className. three + OrbitControls; WebGL yoksa düz SVG; klavye için <select>; doku yok.
 - Küre metinleri i18n/tr.globe.js, en.globe.js; tr.game.js/en.game.js üzerinden yüklenir (tr.js/en.js'ye dokunulmadı).
 - Aşama 1: hedef küre (Ay: reference_moon.json 3 pencere; Mars: R2 koordinatı veride yok → işaretçi yok, açıklama var). Aşama 2: Dünya küresi ↔ 2D MapView, "Küreye dön". Maliyet: mevcut inceleme maliyeti.
-- UYARI: Bu klasörde başka bir oturum aynı anda çalışıyor; dc0958f "Faz A" commit'i bu dala onun tarafından atıldı (oyun işi değil).
+- Dal temizlendi: "Faz A" (dc0958f) ve ÇALIŞMA DÜZENİ (0acdac4) commit'leri feature/ana-ekran-3d dalında; bu dalda yalnızca oyun commit'leri var (force-with-lease).
+- WebGL yoksa: GlobeView düz SVG gösterir; oyunda 2D MapView açılmaz (MapLibre WebGL'siz çöküyor, MapView'a dokunulmadı), karşılaştırma kartı düz görünümün yanında açılır.
+- Tarayıcıda doğrulandı: Ay küresi + referans bilgisi, Mars küresi (işaretçi yok + açıklama), Mars baştan sona (SUIT 1 başarılı, termal Veri eksik), Dünya küresi → 2D → geri, seçim kutusu (klavye), WebGL'siz yedek, 375 px taşma yok, diğer sekmeler içerik çiziyor.
+- Yapılmadı: Ay/Mars yüzey dokusu (doğrulanmış ürün yok); Mars R2 koordinatı veri hattında yok (reference_mars.json'a merkez enlem/boylam eklenmeli, veri işi).
