@@ -1,32 +1,41 @@
 # Emergency Analog Mission — çalışma notları
 
-Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
+Dal: `feature/oyun-3d-kure`. Rota: `#/game`. main'e push YOK (ön talimattaki "birleştirme kapısı" metni kesik geldi; yalnızca bu dal). main'e almak için kullanıcının "main'e al" demesi gerekir.
 
-## Bitti
-- Paylaşılan dosyalara minimum satır: config.js (ROUTES +1), App.jsx (+2), i18n/tr.js (+2), i18n/en.js (+2).
-- Tarayıcıda doğrulandı (Ay SUIT1 başarılı, Mars SUIT2 riskli, HAW termal Veri eksik, süre doldu, 375 px taşma yok).
-- Aşama 1–6: Brifing, Harita keşfi (MapView yeniden kullanıldı), 3 rover testi, kıyafet, sayaç, sonuç.
-- Dosyalar: pages/Game.jsx, features/game/*, game.css, i18n/tr.game.js, en.game.js.
+## Mimari (3D oyun, 2026-11-14)
+- `pages/Game.jsx`: aşama makinesi menu → intro → explore → drive → suit → result; Esc/II = duraklat (saat durur).
+- `features/game/GameView.jsx`: sahne köprüsü. `engine/stage.js` tek renderer + iki görünüm (scissor), yarım ekran div'lerde OrbitControls.
+- `engine/planetView.js`: dokulu küre + güneş + atmosfer (Dünya mavi, Mars ince kızıl, Ay yok), işaretçiler (hot = öncelikli seçim), uçuş.
+- `engine/terrainView.js`: yalnızca gerçek DEM (features/compare buildTerrain/sampleH/layout), dikey abartı 2×, test noktaları = layout() istasyonları.
+- `engine/rover.js`: WASD sürüş; veri boşluğuna girmez; yerel eğim > kaynaklı limit (parameters_sources.json) ise dik yöne gitmez.
+- `script.js`: diyaloglar ve tek cümlelik nitel test sonuçları (ekranda sayı yok). `Hud.jsx`, `Menus.jsx`, `useKeys.js`.
+- Korunan bilimsel mantık: `rules.js`, `data.js` (Ela'nın ana ekranı candMarkers/refMarkers kullanıyor), `useClock.js`.
+- Eski panel bileşenleri silindi (StageBrief/Scout/Tests/Suit/Result, CompareCard, Tests, RulesPanel, TargetGlobe).
+- GlobeView (ortak küre) oyunda artık kullanılmıyor; Ela'nın ana ekranı kullanıyor, değiştirilmedi.
+
+## Dokular (data_inventory.csv T1–T4, site/public/data/tex, toplam 1,1 MB)
+- T1 Dünya BMNG topo+bati Aralık 2004 (assets.science.nasa.gov) 2048×1024.
+- T2/T3 Ay SVS 4720 CGI Moon Kit LROC renk + LOLA 8 bit kabartma.
+- T4 Mars USGS Viking renkli küresel mozaik 925 m (overview yok; 1024 satır uzaktan okunup küçültüldü).
+- Küçültme rasterio ile (.venv), blok ortalama, JPEG q85. Yön kontrolü: Mars'ta Olympus Mons ~−134°, Ay'da yakın yüz ortada.
+
+## Biten (A, B, C, D-sade) — tarayıcıda Ay ve Mars ile doğrulandı
+- A: tam ekran (Fullscreen API, reddedilirse alanı doldurur), TopBar/footer yalnızca #/game'de gizli, açık renkli başlangıç + duraklatma menüsü, rapor bağlantısı (#/report/<id>/<profil>), Kaynaklar.
+- B: ikili 3D (sol Dünya, sağ Ay/Mars), sürükle/yakınlaş, adaya uçuş; DEM'i olan aday parlak ve öncelikli seçilir; DEM yoksa "Bu bölge için arazi verisi yok".
+- C: rover sürüşü, 3 test noktası (sıcaklık/eğim/yüzey; maliyet rules.js), ekipman seçimi sahnede (astronot boyu/rengi), sonuç konuşması + rapor/yeniden oyna; süre bitişi.
+- D (sade): hedef küreye kamera yaklaşması → referans DEM'e alçalma → astronot konuşma balonları (3 replik) → bölünmüş ekran.
+- Test: Ay (ATA, eğim testi, SUIT 1 → başarılı), Mars (ATA, sıcaklık testi "Mars verisi yok", SUIT 2 → riskli), duraklatma + Kaynaklar, 375 px taşma yok, diğer sekmeler açılıyor.
+
+## Yapılmayanlar ve nedenleri
+- Uzay aracı, roket yolculuğu ve iniş animasyonu: lisansı doğrulanmış glTF model eklenmedi (süre). Kamera sinematiğiyle sade bırakıldı.
+- Gerçek astronot/rover glTF modelleri: eklenmedi; mevcut şematik modeller kullanılıyor, Kaynaklar'da "şematik" yazıyor.
+- Bulut katmanı: doğrulanmış NASA bulut dokusu indirilemedi (Visible Earth eski adresi zaman aşımı) → yok.
+- Yakın arazide görüntü dokusu yok (küre dokuları 10 km pencerede ~1 piksel); tek renk gölgeleme.
+- Astronotun yürümesi/animasyonları, Dünya'da ayrı yaya karakter, karakter değiştirme: yapılmadı (öncelik C).
+- Multiplayer: yok (statik site, sunucu yok; sahte düğme konmadı). Durum Game.jsx'te sade nesnelerde (sel, done, suit); ileride serileştirilebilir.
+- Mars küresinde referans işaretçisi yok (R2 koordinatı veride yok); intro Mars'ta koordinatsız genel görünüme yaklaşır.
+- WebGL'siz tarayıcı: oyun başlamaz, menü rapora/siteye yönlendirir (eski 2D yedek oyun akışı kaldırıldı). Denenmedi.
+- Gerçek dokunmatik cihaz denenmedi (ped yalnızca pointer: coarse cihazlarda çıkar).
 
 ## Sırada
-- feature/oyun-3d-kure PR'ı (tarayıcıdan). Ana ekran oturumu GlobeView'u bu daldan alabilir.
-
-## Varsayımlar (PR'a da yazıldı)
-- Süre/maliyet/kıyafet değerleri `rules.js` içinde, hepsi "Simülasyon varsayımı"; RulesPanel'de görünür.
-- Rover limiti: parameters_sources.json `selectable_in_ui` "yes" ile başlayan satır (Ay P01 15°, Mars P03 30° yatış).
-- Termal her iki profilde risk bayrağı: Ay (LST ≠ PRP, doğrulanamaz), Mars (Veri eksik).
-- Eğim testi yalnızca P50/P90'dan kesin bant (%10'dan az / %10–50 / %50'den fazla) verir.
-- "Düşük D" eşiği sabit değil: profil adaylarının alt çeyreği (veriden).
-- Gösterilen adayların hepsinde D var (filtreyi geçenler); D yoksa "Veri eksik" yolu kodda mevcut.
-- Haversine Card.jsx'te dışa aktarılmadığı için (dokunulmaz dosya) data.js'de küçük kopya var.
-- MapView onSelect ilk çizimde yakalanıyor (MapView.jsx dokunulmaz): Game.jsx'te ref + useCallback ile sarıldı.
-
-## Oyun 3D küre (dal: feature/oyun-3d-kure)
-- (a) D'siz pencere denendi: candidates_mars.geojson'da HAW pencerelerinin D/d'si geçici olarak null yapıldı (commit edilmedi, git'ten geri alındı). CompareCard ve sonuç ekranı "Veri eksik" gösterdi, sıfır saymadı; ölçüt "Veri eksik" oldu.
-- ORTAK KÜRE BU DALDA (origin'de GlobeView yoktu): site/src/components/GlobeView.jsx + components/globe/{geo.js,scene.js,globe.css}. Props: body, markers [{id,lat,lon,kind,label}], onPick(marker|{lat,lon}), selectedId, className. three + OrbitControls; WebGL yoksa düz SVG; klavye için <select>; doku yok.
-- Küre metinleri i18n/tr.globe.js, en.globe.js; tr.game.js/en.game.js üzerinden yüklenir (tr.js/en.js'ye dokunulmadı).
-- Aşama 1: hedef küre (Ay: reference_moon.json 3 pencere; Mars: R2 koordinatı veride yok → işaretçi yok, açıklama var). Aşama 2: Dünya küresi ↔ 2D MapView, "Küreye dön". Maliyet: mevcut inceleme maliyeti.
-- Dal temizlendi: "Faz A" (dc0958f) ve ÇALIŞMA DÜZENİ (0acdac4) commit'leri feature/ana-ekran-3d dalında; bu dalda yalnızca oyun commit'leri var (force-with-lease).
-- WebGL yoksa: GlobeView düz SVG gösterir; oyunda 2D MapView açılmaz (MapLibre WebGL'siz çöküyor, MapView'a dokunulmadı), karşılaştırma kartı düz görünümün yanında açılır.
-- Tarayıcıda doğrulandı: Ay küresi + referans bilgisi, Mars küresi (işaretçi yok + açıklama), Mars baştan sona (SUIT 1 başarılı, termal Veri eksik), Dünya küresi → 2D → geri, seçim kutusu (klavye), WebGL'siz yedek, 375 px taşma yok, diğer sekmeler içerik çiziyor.
-- Yapılmadı: Ay/Mars yüzey dokusu (doğrulanmış ürün yok); Mars R2 koordinatı veri hattında yok (reference_mars.json'a merkez enlem/boylam eklenmeli, veri işi).
+- Uzay aracı/astronot glTF (NASA 3D Resources, lisans + CREDITS), bulut dokusu, astronot yürüyüşü.
