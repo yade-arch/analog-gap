@@ -1,6 +1,7 @@
 /* Tek tema dosyası: AÇIK tema (beyaz + mavi tonlar). Renk değiştirmek için yalnızca buradaki değişkenleri düzenleyin.
    JS tarafı (MapLibre, three, tuval) bu değişkenleri getComputedStyle ile okur: renkleri 6 haneli #hex yazın. */
 :root {
+  --panel-radius: 2px; --panel-border: 1px solid #b9c7da; --panel-shadow: 0 1px 2px rgba(16, 34, 74, .08);   /* Karşılaştırma ekranı panelleri: kare köşe, ince kenarlık, hafif gölge */
   color-scheme: light;
   --bg: #f3f6fa; --bg2: #e6edf6; --panel: rgba(255, 255, 255, .94); --panel-solid: #ffffff;   /* zemin, ikincil zemin, panel */
   --ink: #14243a; --muted: #4b5e76;                                   /* metin: koyu lacivert, ikincil gri-mavi */

@@ -7,8 +7,8 @@ const S = 4;                                                         // hücre b
 const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 const L = [-0.7071, -0.7071];                                        // ışık kuzeybatıdan (görüntü düzleminde)
 
-function rng(seed) { let s = seed >>> 0 || 1; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
-const hashStr = (t) => [...t].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+export function rng(seed) { let s = seed >>> 0 || 1; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+export const hashStr = (t) => [...t].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 /** Hücre başına gölge (0–1) ve göreli yükseklik (0–1); veri yoksa NaN. */
 function cellFields(dem) {
@@ -28,11 +28,18 @@ function cellFields(dem) {
   return { shade, rel };
 }
 
-/** Görsel krater izleri: [cx, cy, R] (piksel), tohum = DEM kimliği (her açılışta aynı). */
-function craterField(n, W, seed) {
-  const r = rng(seed), out = [];
-  for (let i = 0; i < n; i++) out.push([r() * W, r() * W, 3 + Math.pow(r(), 2.2) * W * 0.09]);
-  return out;
+/** Görsel krater izleri -> piksel başına renk çarpanı (W×W). Tohum = DEM kimliği (her açılışta aynı). Yalnızca renk/gölge. */
+export function craterMultiplier(n, W, seed) {
+  const r = rng(seed), mult = new Float32Array(W * W).fill(1);
+  for (let c = 0; c < n; c++) {
+    const cx = r() * W, cy = r() * W, R = 3 + Math.pow(r(), 2.2) * W * 0.09;
+    for (let y = Math.max(0, cy - R * 1.3 | 0); y < Math.min(W, cy + R * 1.3); y++) for (let x = Math.max(0, cx - R * 1.3 | 0); x < Math.min(W, cx + R * 1.3); x++) {
+      const dx = (x - cx) / R, dy = (y - cy) / R, d = Math.hypot(dx, dy);
+      if (d < 1) mult[y * W + x] *= 0.86 + 0.22 * (dx * -L[0] + dy * -L[1]) * d;   // iç yamaç: ışığa bakan taraf açık, öteki ince gölge
+      else if (d < 1.3) mult[y * W + x] *= 1 + 0.12 * (1.3 - d) / 0.3;            // açık kenar
+    }
+  }
+  return mult;
 }
 
 /** dem + yüzey anahtarı -> HTMLCanvasElement (G*S kare). */
@@ -40,14 +47,7 @@ export function buildSurfaceCanvas(dem, key, nodataHex = "#8a94a3") {
   const m = SURFACE[surfaceKey(key)], G = dem.G, W = G * S, cv = document.createElement("canvas"); cv.width = cv.height = W;
   const ctx = cv.getContext("2d"), img = ctx.createImageData(W, W), px = img.data;
   const pal = m.colors.map(rgb), green = m.green ? rgb(m.green) : null, nod = rgb(nodataHex), { shade, rel } = cellFields(dem), r = rng(hashStr(dem.id));
-  const mult = new Float32Array(W * W).fill(1);
-  for (const [cx, cy, R] of craterField(m.craters, W, hashStr(dem.id) ^ 0x9e37)) {
-    for (let y = Math.max(0, cy - R * 1.3 | 0); y < Math.min(W, cy + R * 1.3); y++) for (let x = Math.max(0, cx - R * 1.3 | 0); x < Math.min(W, cx + R * 1.3); x++) {
-      const dx = (x - cx) / R, dy = (y - cy) / R, d = Math.hypot(dx, dy);
-      if (d < 1) mult[y * W + x] *= 0.86 + 0.22 * (dx * -L[0] + dy * -L[1]) * d;   // iç yamaç: ışığa bakan taraf açık, öteki ince gölge
-      else if (d < 1.3) mult[y * W + x] *= 1 + 0.12 * (1.3 - d) / 0.3;            // açık kenar
-    }
-  }
+  const mult = craterMultiplier(m.craters, W, hashStr(dem.id) ^ 0x9e37);
   for (let y = 0; y < W; y++) for (let x = 0; x < W; x++) {
     const k = ((y / S) | 0) * G + ((x / S) | 0), p = (y * W + x) * 4;
     let c = nod;

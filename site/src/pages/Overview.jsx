@@ -24,6 +24,8 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   const refId = SETTINGS.references[profile][0], ready = !!p && !pt?.loading && !pt?.error;
   const [dems, setDems] = useState({}), [idx, setIdx] = useState(null);
   const [layer, setLayer] = useState("dem"), [mode, setMode] = useState("3d"), [open, setOpen] = useState(true), [swapped, setSwapped] = useState(false);
+  // Dünya yüzey malzemesi anahtarı: aday bölge kodu; haritadan seçilen nokta için enlem < -60° = Antarktika (buz), aksi nötr toprak.
+  const earthKey = p ? (p.onDemand ? (p.center_lat < -60 ? "ANT" : "neutral") : p.region) : "neutral";
   const names = [t("ui.body." + profile), t("side.earth").charAt(0) + t("side.earth").slice(1).toLowerCase()];
 
   useEffect(() => { loadDemIndex().then(setIdx).catch(() => setIdx({ windows: {} })); }, []);
@@ -35,9 +37,9 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   useEffect(() => { if (!gl || !host.current) return undefined; sc.current = createPairScene(host.current); return () => { sc.current.dispose(); sc.current = null; }; }, [gl, ready]);
   useEffect(() => {
     const s = sc.current; if (!s) return;
-    const L = [[dems.r, profile], [dems.c, "earth"]]; if (swapped) L.reverse();
+    const L = [[dems.r, profile], [dems.c, earthKey]]; if (swapped) L.reverse();
     L.forEach(([dem, body], i) => s.setTile(i, dem || null, layer, body));
-  }, [dems, swapped, ready]);
+  }, [dems, swapped, ready, earthKey]);
   useEffect(() => { sc.current?.setLayer(layer); }, [layer]);
   useEffect(() => { sc.current?.setMode(mode === "2d" ? "2d" : "3d"); }, [mode]);
 
@@ -63,6 +65,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
       <CandPicker list={list} value={p.id} onPick={setPick} />
     </PlaceCard>
   );
+  const tileLabels = [t("surf." + profile), t("surf.earth") + (p.onDemand ? "" : " · " + regionLabel(p.region))];
   const cards = swapped ? [earthCard, refCard] : [refCard, earthCard];
   const profA = dems.r ? centreProfile(dems.r) : [], profB = dems.c ? centreProfile(dems.c) : [];
   const download = () => {
@@ -84,6 +87,8 @@ export default function Overview({ D, profile, cand, reference, selId }) {
           <button onClick={() => sc.current?.zoom(0.8)} aria-label={t("globe.zoomin")}>+</button>
           <button onClick={() => sc.current?.zoom(1.25)} aria-label={t("globe.zoomout")}>−</button>
         </div>
+        <div className="surf-labels ov-labels" aria-hidden="true">{(swapped ? tileLabels.slice().reverse() : tileLabels).map((l) => <span key={l}>{l}</span>)}</div>
+        <details className="surf-info ov-info"><summary aria-label={t("surf.info")} title={t("surf.info")}>ⓘ</summary><p>{t("surf.note")}</p></details>
         <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
       <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
