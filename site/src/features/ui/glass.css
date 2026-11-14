@@ -40,7 +40,7 @@ html[data-page="list"] main, html[data-page="map"] main { max-width: 1320px; }
 .darkstage .globe-note { color: #cfd6e0; }
 /* Rapor özeti */
 html[data-page="report"] body { background: linear-gradient(160deg, #eef2fb 0%, #f6f7fc 55%, #e9eef9 100%); }
-.rep-ov { display: grid; grid-template-columns: 190px 1.6fr 1fr; grid-template-areas: "nav main best" "nav main concl"; gap: 16px; align-items: start; margin-bottom: 16px; }
+.rep-ov { display: grid; grid-template-columns: 190px 1.6fr 1fr; grid-template-areas: "nav main best" "nav sci concl"; gap: 16px; align-items: start; margin-bottom: 16px; }
 .rep-nav { grid-area: nav; display: flex; flex-direction: column; gap: 6px; }
 .rep-nav a { padding: 10px 14px; border-radius: 12px; text-decoration: none; color: #2a3558; font-weight: 600; }
 .rep-nav a:first-child { background: #1f5fe0; color: #fff; }
@@ -53,5 +53,31 @@ html[data-page="report"] body { background: linear-gradient(160deg, #eef2fb 0%, 
 .rep-row.me { background: #eaf1ff; } .rep-row b { font-size: 18px; }
 .g-badge-s { width: 26px; height: 26px; border-radius: 50%; background: #1f5fe0; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
 a.g-btn { display: block; text-align: center; text-decoration: none; }
-@media (max-width: 980px) { .rep-ov { grid-template-columns: 1fr; grid-template-areas: "nav" "main" "best" "concl"; } .rep-nav { flex-direction: row; flex-wrap: wrap; } .rep-gauge { grid-template-columns: 1fr; } .rep-ring { border: 0; } }
-@media print { .rep-nav { display: none; } .rep-ov { grid-template-columns: 1fr 1fr; grid-template-areas: "main main" "best concl"; } }
+@media (max-width: 980px) { .rep-ov { grid-template-columns: 1fr; grid-template-areas: "nav" "main" "best" "sci" "concl"; } .rep-nav { flex-direction: row; flex-wrap: wrap; } .rep-gauge { grid-template-columns: 1fr; } .rep-ring { border: 0; } }
+@media print { .rep-nav { display: none; } .rep-ov { grid-template-columns: 1fr 1fr; grid-template-areas: "main main" "best concl" "sci sci"; } }
+/* Referans tasarım ayrıntıları */
+.g-h.big { font-size: 30px; margin: 6px 0 10px; }
+.ref-img { position: relative; } .ref-img .relief { border-radius: 16px; }
+.body-pill { position: absolute; left: 12px; top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(20, 24, 40, .72); color: #fff; font-weight: 600; }
+.body-pill i { width: 12px; height: 12px; border-radius: 50%; background: #e2412b; } .body-pill.moon i { background: #c9d0d8; }
+.ref-sub { font-size: 18px; color: #3a4466; margin: 0 0 12px; }
+.refcard hr { border: 0; border-top: 1px solid #e3e8f3; margin: 12px 0; }
+.prop-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 4px; border-bottom: 1px solid #edf0f7; font-size: 17px; } .prop-row b { font-size: 18px; }
+.ic { display: inline-block; width: 28px; color: #1f3a8a; }
+.refcard-stats { background: #f3f6fc; border-radius: 16px; padding: 14px; }
+.stat3 { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.stat3 > div { display: grid; gap: 6px; padding: 6px; } .stat3 > div + div { border-left: 1px solid #e3e8f3; } .stat3 b { font-size: 18px; }
+.cardstats { margin: 12px 0 4px; border-top: 1px solid #edf0f7; padding-top: 10px; }
+.cand2-loc { font-size: 17px; }
+details.more > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin: 18px 4px 12px; }
+details.more > summary::-webkit-details-marker { display: none; }
+.more-btn { padding: 10px 20px; border-radius: 999px; background: rgba(255, 255, 255, .9); border: 1px solid #e3e8f3; font-weight: 600; }
+.extra[open] { max-height: 70vh; overflow: auto; width: min(420px, 90vw); }
+.mapgrid .refcard { margin: 0; }
+.rep-sci { grid-area: sci; } .rep-lead { font-size: 17px; }
+.sci-tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.sci-tabs button { border: 1px solid #d5dbe8; background: #fff; border-radius: 999px; padding: 6px 14px; cursor: pointer; } .sci-tabs button.on { background: #1f5fe0; color: #fff; border-color: #1f5fe0; }
+.sci-tabs button:disabled { opacity: .5; cursor: not-allowed; }
+.sci-leg { margin-left: auto; display: inline-flex; gap: 6px; align-items: center; font-size: 13px; } .lg { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: #7b5cf0; } .lg.mars { background: #c4532f; } .lg.moon { background: #6f7882; }
+.darkstage .globe-note { display: none; }
+details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px; }

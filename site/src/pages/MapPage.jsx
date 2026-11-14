@@ -23,11 +23,10 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
       <div className="mapgrid">
         <div>
           <RefCard target={profile} reference={profile === "moon" ? D.rm : D.rs} tM={D.tM} />
-          <RegionCard code={region} regions={D.regions} cand={candAll || cand} target={profile} tE={D.tE} known={D.known} onSelect={onSelect} />
         </div>
         <div className="g-card mappanel">
           <div className="viewtabs" role="group" aria-label={t("map.view")}>
-            {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 " : "🗺 "}{t("map.view." + v)}</button>)}
+            {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 3D Küre" : "🗺 2D Harita"}</button>)}
           </div>
           <details className="g-card extra">
             <summary>ⓘ {t("ui.extra")}</summary>
@@ -37,17 +36,17 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
               <div><dt>{t("ui.shown")}</dt><dd>{cand.features.length}</dd></div>
             </dl>
             <DLegend />
-            {view === "globe" && <p className="muted small">{t("map.globe.flatNote")}</p>}
+            <p className="muted small">{t("map.how")} {t("ui.photoSrc")} {view === "globe" ? t("map.globe.flatNote") : ""}</p>
+            <RegionCard code={region} regions={D.regions} cand={candAll || cand} target={profile} tE={D.tE} known={D.known} onSelect={onSelect} />
+            <Warn>{t("map.warn")}</Warn>
           </details>
           <div className="darkstage">
             {view === "globe"
               ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => x.id && onSelect(x.id)} />
               : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} selectedId={null} />}
           </div>
-          <p className="muted small">{t("map.how")} {t("ui.photoSrc")}</p>
         </div>
       </div>
-      <Warn>{t("map.warn")}</Warn>
     </div>
   );
 }

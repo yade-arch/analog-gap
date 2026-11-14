@@ -1,0 +1,24 @@
+/* Sade üst çubuk (referans tasarım). Ana ekranda (kahraman) koyu, diğer sayfalarda açık zemin üzerinde saydam. */
+header.top.topx { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 14px 28px; background: transparent; border: 0; }
+.topx .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #141b36; }
+.topx .brand h1 { font-size: 26px; letter-spacing: 0; font-weight: 800; margin: 0; color: inherit; }
+.stepx { display: flex; align-items: center; gap: 12px; list-style: none; margin: 0 auto; padding: 0; }
+.stepx li { display: flex; align-items: center; gap: 12px; }
+.stepx li + li::before { content: ""; width: 34px; height: 2px; background: #c9d1e3; }
+.stepx a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #5a6482; font-weight: 600; font-size: 16px; }
+.stepx .dot { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #dfe5f2; color: #4a5475; font-weight: 700; }
+.stepx li.on a { color: #1f5fe0; } .stepx li.on .dot, .stepx li.done .dot { background: #1f5fe0; color: #fff; }
+.conn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: rgba(255, 255, 255, .85); border: 1px solid #e3e8f3; font-weight: 600; color: #141b36; font-size: 14px; }
+.conn i { width: 11px; height: 11px; border-radius: 50%; background: #22b35e; } .conn.off i { background: #9aa3b5; }
+.gear { position: relative; } .gear summary { list-style: none; cursor: pointer; font-size: 26px; color: #1f3a8a; line-height: 1; padding: 4px; }
+.gear summary::-webkit-details-marker { display: none; }
+.gear-menu { position: absolute; right: 0; top: 40px; z-index: 50; min-width: 240px; display: grid; gap: 6px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid #e3e8f3; box-shadow: 0 12px 34px rgba(40, 60, 120, .18); }
+.gear-menu a { text-decoration: none; color: #141b36; padding: 6px 8px; border-radius: 8px; } .gear-menu a:hover, .gear-menu a[aria-current] { background: #eaf1ff; }
+.gear-menu .g-sub { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #5a6482; margin-top: 4px; }
+body { background: linear-gradient(160deg, #eef2fb 0%, #f6f7fc 55%, #e9eef9 100%); }
+main .worldbar, .worldbar { display: none !important; }
+html[data-page="home"] header.top.topx { background: #05070d; }
+html[data-page="home"] .topx .brand, html[data-page="home"] .stepx a { color: #e8edf5; }
+html[data-page="home"] .topx svg ellipse { stroke: #9cc0ff; } html[data-page="home"] .topx svg circle { fill: #9cc0ff; } html[data-page="home"] .gear summary { color: #e8edf5; }
+@media (max-width: 760px) { header.top.topx { padding: 10px 14px; gap: 10px; } .stepx { order: 3; width: 100%; justify-content: center; } .stepx li + li::before { width: 14px; } .stepx a { font-size: 13px; gap: 6px; } .stepx .dot { width: 26px; height: 26px; } .topx .brand h1 { font-size: 20px; } .conn { margin-left: auto; } }
+@media print { header.top.topx { display: none; } }

@@ -36,8 +36,10 @@ export default function Report({ D, profile, cand, id }) {
   };
   return (
     <div className="report">
-      <ReportOverview p={p} profile={profile} cand={cand} />
-      <div className="card" id="rep-sci">
+      <ReportOverview p={p} profile={profile} cand={cand} reference={reference} />
+      <details className="g-card more-rep" id="rep-detail">
+      <summary>📄 {t("ui.repDetail")}</summary>
+      <div className="card">
         <h2>ANALOG GAP Report — {p.id}</h2>
         <div className="muted">{PROFILES[profile].name} · {regionLabel(p.region)} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · {new Date().toISOString().slice(0, 10)}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
@@ -69,6 +71,7 @@ export default function Report({ D, profile, cand, id }) {
         </div>
         <GapPanel p={p} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} />
       </div>
+      </details>
     </div>
   );
 }
