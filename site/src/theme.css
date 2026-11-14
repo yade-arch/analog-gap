@@ -1,7 +1,9 @@
-/* Tek tema dosyası: AÇIK tema (beyaz + mavi tonlar). Renk değiştirmek için yalnızca buradaki değişkenleri düzenleyin.
-   JS tarafı (MapLibre, three, tuval) bu değişkenleri getComputedStyle ile okur: renkleri 6 haneli #hex yazın. */
-:root {
+/* Tek tema dosyası: AÇIK (varsayılan) ve KOYU tema. html[data-theme] index.html'deki küçük betikle ilk boyamadan önce ayarlanır (src/theme.js).
+   Renk değiştirmek için yalnızca buradaki değişkenleri düzenleyin. JS tarafı (MapLibre, three, tuval) getComputedStyle ile okur: 6 haneli #hex yazın. */
+:root, html[data-theme="light"] {
   color-scheme: light;
+  --slope1: #2b4a8c; --slope2: #24808f; --slope3: #4c9a6a; --slope4: #968614; --slope5: #cf6f26;   /* eğim sınıfları (tek yönlü), zeminde ≥3:1 */
+  --slope-nodata: #8a94a3; --slope-limit: #14243a; --route: #f4f1e6;                               /* veri yok, sınır konturu, rota */
   --bg: #f3f6fa; --bg2: #e6edf6; --panel: rgba(255, 255, 255, .94); --panel-solid: #ffffff;   /* zemin, ikincil zemin, panel */
   --ink: #14243a; --muted: #4b5e76;                                   /* metin: koyu lacivert, ikincil gri-mavi */
   --line: #788aa1; --line-soft: #d3dce7;                              /* kenarlık (≥3:1, düğme/kart), ayırıcı çizgi (tablo satırı, ızgara) */
@@ -18,6 +20,23 @@
   --scene-top: #f4f8fc; --scene-bottom: #d9e6f3;                     /* 3D görev sahnesi degrade zemini */
   --t-obs: #dcebfa; --t-der: #e7e4f6; --t-int: #f6ecd8;              /* etiket zeminleri (metin --ink) */
   --font: Inter, system-ui, "Segoe UI", sans-serif;
+  --radius: 6px; --radius-lg: 8px;                                    /* köşe yarıçapı (düz yüzey, 1px kenarlık) */
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1220; --bg2: #18243a; --panel: #111b2d; --panel-solid: #111b2d;
+  --ink: #e6edf6; --muted: #a3b3c7;
+  --line: #5d7290; --line-soft: #22314a;
+  --accent: #5b9be6; --accent-ink: #0b1220; --accent-soft: rgba(91, 155, 230, .16);
+  --cool: #8ab8ee; --good-edge: #5fb98a; --err: #ff9c87;
+  --warn-bg: #2a2416; --warn-line: #c9a227;
+  --seq1: #cfe4f7; --seq2: #8dbbe8; --seq3: #5591d4; --seq4: #3a72bd;   /* D: yakın (açık) -> uzak (koyu mavi), koyu zeminde okunur */
+  --globe-ocean: #12233a; --globe-land: #2a313d; --globe-coast: #8aa0bb; --nodata: #7d8796;
+  --map-bg: #12233a;
+  --scene-top: #132036; --scene-bottom: #0a111e;
+  --t-obs: #1d3552; --t-der: #2b2950; --t-int: #3d3220;
+  --slope1: #4a6fb8; --slope2: #2f9aa8; --slope3: #5bb07c; --slope4: #c4b43a; --slope5: #e08a3c;
+  --slope-nodata: #7d8796; --slope-limit: #f4f1e6; --route: #f4f1e6;
 }
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
@@ -112,3 +131,9 @@ pre.formula { white-space: pre-wrap; overflow-wrap: anywhere; padding-right: 80p
 header.top label { flex: 1 1 200px; min-width: 0; display: flex; align-items: center; gap: 6px; } header.top select { flex: 1; min-width: 0; max-width: 100%; text-overflow: ellipsis; }
 
 summary:focus-visible, .term:focus-visible, tr.click:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Tema anahtarı (üst çubuk sağı): güneş = açık, ay = koyu */
+.theme-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.theme-toggle button { border: 0; border-radius: 0; background: transparent; color: var(--muted); padding: 5px 8px; line-height: 0; }
+.theme-toggle button + button { border-left: 1px solid var(--line); }
+.theme-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }

@@ -5,7 +5,7 @@ import { regionLabel } from "../../i18n/terms.js";
 import GlobeView from "../../components/GlobeView.jsx";
 import DLegend from "./DLegend.jsx";
 import TargetPanel from "./TargetPanel.jsx";
-import { D_SCALE, dMarkers } from "./markers.js";
+import { dScale, dMarkers } from "./markers.js";
 
 /** Seçili adayın kısa özeti: sıra, bölge, merkez, D (Hesaplanmış) ve sonraki adım bağlantıları. */
 function Selected({ p, profile }) {
@@ -26,14 +26,14 @@ function Selected({ p, profile }) {
 
 /** Ana ekran küreleri: Dünya (aday pencereler, D rengi, arama bölgeleri) + hedef gövde. Ayrı parça: three.js yalnızca burada yüklenir. */
 export default function HomeGlobes({ cand, regions, reference, profile }) {
-  const markers = useMemo(() => dMarkers(cand), [cand]);
+  const markers = useMemo(() => dMarkers(cand), [cand]), scale = useMemo(dScale, []);
   const [sel, setSel] = useState(null);
   const p = useMemo(() => cand?.features.find((f) => f.properties.id === sel)?.properties, [cand, sel]);
   return (
     <div className="home-globes">
       <section className="card home-earth">
         <h3>{t("home.globe.earth.t")}</h3>
-        <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={regions} selectedId={p ? sel : null} onPick={(m) => m.id && setSel(m.id)} />
+        <GlobeView body="earth" markers={markers} colorScale={scale} outlines={regions} selectedId={p ? sel : null} onPick={(m) => m.id && setSel(m.id)} />
         <p className="muted small">{t("home.globe.earth.d")}</p>
       </section>
       <div className="home-side">

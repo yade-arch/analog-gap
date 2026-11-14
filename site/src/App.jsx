@@ -8,6 +8,7 @@ import Method from "./Method.jsx";
 import Report from "./pages/Report.jsx";
 import TopBar from "./components/TopBar.jsx";
 import { DEFAULT_ROUTE } from "./config.js";
+import { useTheme } from "./theme.js";
 
 // Ağır paketler (three.js, MapLibre) yalnızca ilgili sayfada indirilir.
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
@@ -28,6 +29,7 @@ function useHash() {
 
 export default function App() {
   const hash = useHash();
+  const { theme } = useTheme();
   useEffect(() => {                                   // üst gezinme yüksekliği -> --hdr (ana ekran kalan yüksekliği doldurur)
     const el = document.querySelector("header.top"); if (!el) return;
     const set = () => document.documentElement.style.setProperty("--hdr", el.offsetHeight + "px");
@@ -56,7 +58,7 @@ export default function App() {
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
       <main className={page === "compare" ? "full" : ""}>
         {!D.cm ? <p>Veri yükleniyor…</p> : (
-          <Suspense fallback={<p>Sayfa yükleniyor…</p>}>
+          <Suspense key={theme} fallback={<p>Sayfa yükleniyor…</p>}>{/* tema değişince tuval/WebGL sayfaları yeni renklerle yeniden kurulur */}
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={cand} profile={profile} D={D} onSelect={go} />}

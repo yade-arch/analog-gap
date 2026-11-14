@@ -8,7 +8,7 @@ import { cssVar } from "../../common.jsx";
 const bubble = () => cssVar("--ink", "#14243a"), bubbleInk = () => cssVar("--panel-solid", "#ffffff");
 
 const LIFT = 0.03;                                   // km: çizginin arazi üçgenlerine gömülmemesi için sabit kaldırma
-export const STATE_COLOR = { visited: cssVar("--good-edge", "#2c7d57"), pending: SETTINGS.routeColor, missing: cssVar("--nodata", "#8a94a3") };
+const stateColor = (s) => ({ visited: cssVar("--good-edge", "#2c7d57"), missing: cssVar("--nodata", "#8a94a3") })[s] || SETTINGS.routeColor;
 
 const spr = (c, w, h) => {
   const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true, sizeAttenuation: false }));   // ekranda sabit boyut: yakınlaşınca büyümez
@@ -29,7 +29,7 @@ function labelSprite(text, col) {
   return spr(c, 0.2, 0.044);
 }
 function paint(m, state) {                            // işaret grubunu duruma göre (yeniden) çiz
-  const col = STATE_COLOR[state] || STATE_COLOR.pending;
+  const col = stateColor(state);
   for (const k of ["num", "lab"]) { const o = m.userData[k]; if (o) { m.remove(o); o.material.map.dispose(); o.material.dispose(); } }
   m.userData.num = numberSprite(m.userData.i + 1, col); m.userData.num.position.y = 1.7;
   m.userData.lab = labelSprite(m.userData.text, col); m.userData.lab.position.y = 1.7; m.userData.lab.center.set(0.5, -0.75);   // etiket numaranın hemen üstünde

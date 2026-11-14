@@ -2,7 +2,15 @@
 
 Dal: `feature/ana-ekran-3d`. Oyun dalı: `feature/oyun-3d-kure` (ortak küre oradan geldi). Birleştirme sırası: önce oyun PR'ı, sonra bu dal.
 
-## YENİ TEMA DEĞİŞKENLERİ (açık tema, 2026-11-14) — oyun oturumu için
+## TEMA SİSTEMİ: AÇIK + KOYU (2026-11-14) — oyun oturumu için, ÖNCE BUNU OKU
+- `html[data-theme="light"|"dark"]`; değişken ADLARI iki temada aynı, değerleri farklı (theme.css). Aşağıdaki tablo açık tema değerleri; koyu değerler theme.css `html[data-theme="dark"]` bloğunda.
+- Yeni: `--slope1..5`, `--slope-nodata`, `--slope-limit`, `--route` (eğim katmanı), `--radius` 6px / `--radius-lg` 8px.
+- İlk tema index.html betiğiyle boyamadan önce (localStorage "ag-theme", yoksa prefers-color-scheme). `src/theme.js`: `useTheme()` → {theme, pref, setPref}; değişince window "themechange" olayı.
+- JS'te renk okuma: `cssVar("--x", yedek)` (src/cssVar.js; common.jsx de dışa verir). Modül düzeyinde SABİTLEMEYİN; çizim anında okuyun. `dStops()`, `dScale()` (features/home/markers.js), `SETTINGS.slopeColors/noDataColor/limitLineColor/routeColor` artık okunduğu anda tema rengini veren getter/işlev.
+- App içerikleri tema değişince yeniden kurulur (`<Suspense key={theme}>`), tuval/WebGL yeni renkleri alır. Görev ekranında tema değişirse görev durumu sıfırlanır (bilinen).
+- Oyun sayfası: game.css'te sabit renk varsa bu değişkenlere geçin; tema anahtarı üst çubukta.
+
+## YENİ TEMA DEĞİŞKENLERİ (açık tema değerleri)
 theme.css `:root` (yalnızca bu oturum düzenler). Sabit renk yazmayın; CSS'te `var(--x)`, JS'te `cssVar("--x", yedek)` (common.jsx). Renkler 6 haneli #hex.
 | Değişken | Değer | Kullanım |
 |---|---|---|

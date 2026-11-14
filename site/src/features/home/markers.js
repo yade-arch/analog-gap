@@ -1,13 +1,13 @@
 // Ana ekran ve Harita küresi için işaretçiler. Yalnızca mevcut veri: aday pencere merkezleri (candidates_*.geojson) ve referans pencereleri.
-import { D_STOPS, dColor, fmt } from "../../common.jsx";
+import { dStops, dColor, fmt } from "../../common.jsx";
 import { t } from "../../i18n/index.js";
 import { regionLabel } from "../../i18n/terms.js";
 import { candMarkers, refMarkers } from "../game/data.js";
 
 export { refMarkers };
 
-/** Küre renk ölçeği: D, tek yönlü sıralı palet (common.jsx D_STOPS = theme --seq1..4); D yoksa "Veri eksik" rengi (dColor(null)). Sabit nesne: küre kamerası sıfırlanmasın. */
-export const D_SCALE = { stops: D_STOPS, missing: dColor(null), label: t("globe.legend.D"), loLabel: t("globe.legend.near"), hiLabel: t("globe.legend.far") };
+/** Küre renk ölçeği: D, tek yönlü sıralı palet (common.jsx D_STOPS = theme --seq1..4); D yoksa "Veri eksik" rengi (dColor(null)). Bileşende useMemo ile bir kez al (sabit nesne: küre kamerası sıfırlanmasın; tema değişince bileşen yeniden kurulur). */
+export const dScale = () => ({ stops: dStops(), missing: dColor(null), label: t("globe.legend.D"), loLabel: t("globe.legend.near"), hiLabel: t("globe.legend.far") });
 
 /** Aday işaretçileri: value = arazi uzaklığı D (null -> Veri eksik), sıra numarasına göre dizili. Renk GlobeView'da D_SCALE ile. */
 export function dMarkers(cand) {

@@ -38,15 +38,15 @@ export function Limitations({ lim, profile }) {
   );
 }
 
-/** theme.css değişkenini oku (JS tüketiciler: MapLibre, three, tuval). Yoksa d. */
-export const cssVar = (name, d) => (typeof document !== "undefined" && getComputedStyle(document.documentElement).getPropertyValue(name).trim()) || d;
+import { cssVar } from "./cssVar.js";
+export { cssVar };
 
-// D paleti: yakın = açık mavi, uzak = koyu lacivert; tek yönlü sıralı. Renkler theme.css --seq1..4'ten (yedek değerler aynı).
-export const D_STOPS = [[0, cssVar("--seq1", "#4a8dca")], [0.4, cssVar("--seq2", "#2f72b5")], [0.8, cssVar("--seq3", "#1d5596")], [1.2, cssVar("--seq4", "#0f3263")]];
+// D paleti: yakın = açık, uzak = koyu mavi; tek yönlü sıralı. Renkler o anki temanın theme.css --seq1..4 değerlerinden (tema değişince yeniden çağır).
+export const dStops = () => [[0, cssVar("--seq1", "#4a8dca")], [0.4, cssVar("--seq2", "#2f72b5")], [0.8, cssVar("--seq3", "#1d5596")], [1.2, cssVar("--seq4", "#0f3263")]];
 
 export function dColor(D) {
   if (D === null || D === undefined) return cssVar("--nodata", "#8a94a3");
-  const stops = D_STOPS.map(([v, hex]) => [v, [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))]);
+  const ds = dStops(), stops = ds.map(([v, hex]) => [v, [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))]);
   const x = Math.max(0, Math.min(1.2, D));
   for (let i = 1; i < stops.length; i++) {
     if (x <= stops[i][0]) {
@@ -54,7 +54,7 @@ export function dColor(D) {
       return "rgb(" + ca.map((c, k) => Math.round(c + (cb[k] - c) * t)).join(",") + ")";
     }
   }
-  return D_STOPS[3][1];
+  return ds[3][1];
 }
 
 /** Aday P10-P50-P90 ile referans P10-P90 aralığı, ortak eksen. */

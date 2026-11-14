@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
-import { cssVar, fmt, D_STOPS } from "./common.jsx";
+import { cssVar, fmt, dStops } from "./common.jsx";
 import { t } from "./i18n/index.js";
 import { regionLabel } from "./i18n/terms.js";
 
-const FILL = ["interpolate", ["linear"], ["coalesce", ["get", "D"], 1.2], ...D_STOPS.flat()];
+const fill = () => ["interpolate", ["linear"], ["coalesce", ["get", "D"], 1.2], ...dStops().flat()];   // tema değişince harita yeniden kurulur (App key)
 // NASA GIBS WMTS (EPSG:3857, GoogleMapsCompatible_Level8), katman BlueMarble_ShadedRelief_Bathymetry; adres canlı doğrulandı (HTTP 200, CORS *).
 const GIBS = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg";
 const toPoints = (data) => ({
@@ -33,7 +33,7 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
   pickRef.current = onSelect;                                   // harita bir kez kurulur; tıklama her zaman güncel işlevi çağırır (profil değişince)
 
   useEffect(() => {
-    const c = C.current;
+    const c = C.current, FILL = fill();
     const m = new maplibregl.Map({
       container: el.current, center: [-30, 28], zoom: 1.4, attributionControl: false,
       style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": c.bg } }] },

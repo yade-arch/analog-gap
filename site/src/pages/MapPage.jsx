@@ -4,7 +4,7 @@ import MapView from "../MapView.jsx";
 import GlobeView from "../components/GlobeView.jsx";
 import PageIntro from "../components/PageIntro.jsx";
 import DLegend from "../features/home/DLegend.jsx";
-import { D_SCALE, dMarkers } from "../features/home/markers.js";
+import { dScale, dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
 import "../features/home/home.css";
 
@@ -13,7 +13,7 @@ const VIEWS = ["globe", "flat"];
 export default function MapPage({ cand, profile, D, onSelect }) {
   const P = PROFILES[profile];
   const [view, setView] = useState("globe");
-  const markers = useMemo(() => dMarkers(cand), [cand]);
+  const markers = useMemo(() => dMarkers(cand), [cand]), scale = useMemo(dScale, []);
   const shown = t("map.shown").replace("{n}", cand.features.length).replace("{total}", cand.meta.n_windows_total).replace("{pass}", cand.meta.n_pass_filter);
   return (
     <div>
@@ -23,7 +23,7 @@ export default function MapPage({ cand, profile, D, onSelect }) {
       </div>
       <div className="maprow">
         {view === "globe"
-          ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
+          ? <GlobeView body="earth" markers={markers} colorScale={scale} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
           : <MapView data={cand} regions={D.regions} onSelect={onSelect} selectedId={null} />}
         <div>
           <div className="card">

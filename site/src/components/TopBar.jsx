@@ -2,6 +2,7 @@ import React from "react";
 import { ROUTES } from "../config.js";
 import { PROFILES } from "../common.jsx";
 import { t } from "../i18n/index.js";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 export default function TopBar({ page, profile, setProfile, reportId }) {
   const active = page === "card" ? "list" : page;
@@ -21,6 +22,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
         </select>
       </label>
       {reportId ? <a className={"btn-accent" + (page === "report" ? " on" : "")} href={`#/report/${reportId}/${profile}`}>{t("nav.report")}</a> : <button disabled>{t("nav.report")}</button>}
+      <ThemeToggle />
     </header>
   );
 }
