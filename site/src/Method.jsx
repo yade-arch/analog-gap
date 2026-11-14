@@ -22,15 +22,15 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
   return (
     <div>
       <PageIntro purpose="Shows how close less-studied land windows on Earth come to the Moon/Mars references in landform, and where this comparison stops." how="Open the In short box first, then any section you are interested in; every section starts closed." />
-      <div className="card brief">
-        <h2>In short</h2>
-        <ul>
-          <li><strong>What is compared:</strong> the <Term k="slope" />, <Term k="relief" /> and <Term k="rough" /> of 10×10 km pieces of land on Earth, with the area around Shackleton crater on the Moon or Jezero crater on Mars.</li>
-          <li><strong>Which data:</strong> NASA elevation measurements (Earth NASADEM 30 m, Moon LOLA, Mars CTX); product names and versions are in the Data inventory section.</li>
-          <li><strong>Which measure:</strong> for each property, the spread of values in the Earth piece is compared with the reference; the equal-weight average of the three differences is the <Term k="D" /> (technical name: D).</li>
-          <li><strong>How to read it:</strong> 0 = identical, lower = more similar landforms. It is the difference in landforms, not a physical distance. It is for ranking; there is no "good/bad" cut-off.</li>
-          <li><strong>Why no percentage or confidence score:</strong> terrain distance is not a probability; a single number without meaning would be misleading. <Term k="coverage" /> and <Term k="reliability" /> are shown separately.</li>
-        </ul>
+      <div className="card brief kid">
+        <h2>How it works</h2>
+        <ol className="kid-steps">
+          <li><b>1</b><span><strong>Pick a place.</strong> Choose any spot on Earth. We look at a square of land 10 km wide.</span></li>
+          <li><b>2</b><span><strong>Measure the ground.</strong> NASA height maps tell us three things: how steep it is (<Term k="slope" />), how high the bumps are (<Term k="relief" />) and how rocky and bumpy it feels (<Term k="rough" />).</span></li>
+          <li><b>3</b><span><strong>Do the same on the Moon or Mars.</strong> We measure the land around Shackleton crater (Moon) or Jezero crater (Mars) the same way.</span></li>
+          <li><b>4</b><span><strong>Get one number.</strong> The <Term k="D" /> says how different the two grounds are. 0 means the same, a small number means very alike, a big number means very different.</span></li>
+        </ol>
+        <p className="muted small">It is not a percentage and not a score of "good" or "bad". It only compares the shape of the land, not air, cold or soil. Data names and versions are in the sections below.</p>
       </div>
       <Warn><strong>Honest note:</strong> the positive-control target was <strong>not met</strong> (the median percentile of known analogs did not reach ≤ 20%). Details: Validation section. So we do not claim the method is "validated".</Warn>
       <ol className="flow" aria-label="Method steps">
