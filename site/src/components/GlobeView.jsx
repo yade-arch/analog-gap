@@ -14,7 +14,7 @@ import { Flat, Legend } from "./globe/GlobeParts.jsx";
 let landCache = null;
 const loadLand = () => (landCache ||= fetch(import.meta.env.BASE_URL + "data/ne_110m_land.geojson").then((r) => (r.ok ? r.json() : null)).catch(() => null));
 
-export default function GlobeView({ body = "earth", markers = [], onPick, selectedId = null, className = "", outlines = null, compact = false, colorScale = null }) {
+export default function GlobeView({ body = "earth", markers = [], onPick, selectedId = null, className = "", outlines = null, compact = false, colorScale = null, photo = null }) {
   const box = useRef(null), api = useRef(null), pickRef = useRef(onPick);
   const [gl] = useState(() => webglOK());
   const [landJ, setLandJ] = useState(null);
@@ -33,7 +33,7 @@ export default function GlobeView({ body = "earth", markers = [], onPick, select
     g.onPick((p) => pickRef.current?.(p));
     return () => { g.dispose(); api.current = null; };
   }, [gl, body]);
-  useEffect(() => { const g = api.current; if (g) { g.setLand(land ? coastlines(land) : null); g.setLandFill(land); } }, [land, gl, body]);
+  useEffect(() => { const g = api.current; if (g) { g.setLand(land ? coastlines(land) : null); g.setLandFill(land); if (photo) g.setPhoto(photo); } }, [land, gl, body, photo]);
   useEffect(() => {
     const g = api.current; if (!g) return;
     g.setMarkers(shown); g.setSelected(selectedId);

@@ -4,52 +4,49 @@ import { Term, Glossary } from "../components/PageIntro.jsx";
 import { t } from "../i18n/index.js";
 import { regionLabel } from "../i18n/terms.js";
 import { regionRanks } from "../features/world/state.js";
-import { knownIn, REF_NAME } from "../features/world/known.js";
+import { knownIn } from "../features/world/known.js";
+import RefCard from "../features/ui/RefCard.jsx";
+import ReliefThumb from "../features/ui/ReliefThumb.jsx";
+import "../features/ui/glass.css";
 
 const fill = (s, o) => Object.entries(o).reduce((a, [k, v]) => a.replace(`{${k}}`, v), s);
+const C = (k) => (k == null ? null : k - 273.15);
 
-/** Dünya adayı ile referansın tipik (ortanca) değeri yan yana. */
-function Pair({ k, unit, p, reference, target }) {
-  const r = reference?.variables?.[k]?.p50;
+/** Aday kartı: gerçek DEM kabartması, sıra, yer, arazi uzaklığı (yüzde değil), tipik eğim / yükseklik farkı / sıcaklık. */
+function CandCard({ p, i, rr, profile, known, tE, hasDem, go }) {
+  const k = knownIn(p, known), T = C(tE?.windows?.[p.id]?.T_mean2_K_median);
   return (
-    <div className="pair">
-      <div className="muted"><Term k={k} /> · <Term k="typical">tipik</Term> ({unit})</div>
-      <div><span className="tag-body earth">{t("side.earth")}</span> {fmt(p.derived_percentiles[k].p50, 1)} {unit} &nbsp; <span className={"tag-body " + target}>{t("side." + target)}</span> {r == null ? t("list.nodata") : `${fmt(r, 1)} ${unit}`}</div>
+    <div className={"g-card cand2" + (i === 0 ? " first" : "")}>
+      <div className="cand2-img">
+        <ReliefThumb id={hasDem && hasDem(p.id) ? p.id : null} body="earth" h={150} />
+        <span className="g-badge">{i + 1}. {t("ui.rank")}</span>
+        <div className="cand2-d" title={t("list.dnote")}><b>{fmt(p.D, 3)}</b><span>{t("gauge.title")}</span></div>
+      </div>
+      <div className="cand2-loc">📍 {regionLabel(p.region)}</div>
+      <div className="muted small">{fill(t("world.regRank"), { r: rr[p.id], g: p.rank })} · {t("list.code")} {p.id}</div>
+      <dl className="stats three">
+        <div><dt><Term k="slope" /></dt><dd>{fmt(p.derived_percentiles.slope.p50, 1)}°</dd></div>
+        <div><dt><Term k="relief" /></dt><dd>{fmt(p.derived_percentiles.relief.p50, 1)} m</dd></div>
+        <div><dt>{t("ui.temp")}</dt><dd>{T == null ? <span className="muted small">{t("list.nodata")}</span> : `${fmt(T, 0)} °C`}</dd></div>
+      </dl>
+      <div className="muted small">{k ? `${t("list.known")}: ${k.name}` : t("list.notInCatalog")} <Tag kind="der" /></div>
+      <button className={i === 0 ? "g-btn primary" : "g-btn"} onClick={() => go(p.id)}>{t("ui.select")} →</button>
     </div>
   );
 }
 
-export default function ListPage({ cand, region, profile, reference, known, hasDem }) {
+export default function ListPage({ cand, region, profile, reference, known, hasDem, tE, tM }) {
   const all = cand.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank);
   const rr = regionRanks(all);
   const rows = all.filter((p) => region === "ALL" || p.region === region).slice(0, 200);
   const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
-  const rank = (p) => fill(t("world.regRank"), { r: rr[p.id], g: p.rank });
   return (
-    <div>
-      <h2><span className={"tag-body " + profile}>{t("side." + profile)} ({t("side.ref")})</span> {REF_NAME[profile]}</h2>
-      <p className="muted">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })} {t("list.shipped")}</p>
-      <p className="muted">{t("list.dnote")}</p>
-      <div className="top3" aria-label={t("list.top3")}>
-        {rows.slice(0, 3).map((p) => {
-          const k = knownIn(p, known);
-          return (
-            <div className="card cand side-earth" key={p.id}>
-              <div><span className="tag-body earth">{t("side.earth")} ({t("side.cand")})</span> <strong>{regionLabel(p.region)}</strong></div>
-              <div className="muted">{rank(p)}</div>
-              <div className="muted">{t("list.vs")} {t("side." + profile)} · {REF_NAME[profile]}</div>
-              <div className="dline"><Term k="D" />: <span className="big">{fmt(p.D, 3)}</span> <Tag kind="der" /></div>
-              <div className="muted small">{t("list.dmeaning")}</div>
-              <Pair k="slope" unit="°" p={p} reference={reference} target={profile} />
-              <Pair k="relief" unit="m" p={p} reference={reference} target={profile} />
-              <div>{k ? <span className="badge">{t("list.known")}: {k.name}</span> : <span className="badge">{t("list.notInCatalog")}</span>}</div>
-              <div className="muted small">{t("list.code")}: {p.id}{hasDem && !hasDem(p.id) ? ` · ${t("list.noDem")}` : ""}</div>
-              <button className="btn-accent" onClick={() => go(p.id)}>{t("list.compare")}</button>
-            </div>
-          );
-        })}
-      </div>
-      <details className="card">
+    <div className="glass">
+      <RefCard target={profile} reference={reference} tM={tM} wide />
+      <div className="g-row"><h2 className="g-h">🌍 {t("ui.best")}</h2><span className="muted small">{t("ui.tempNote")}</span></div>
+      <div className="top3">{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, rr, profile, known, tE, hasDem, go }} />)}</div>
+      <p className="muted small">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })} {t("list.shipped")} {t("list.dnote")}</p>
+      <details className="g-card">
         <summary><strong>{t("list.showAll")}</strong> <span className="muted">({rows.length})</span></summary>
         <p className="muted">{t("list.rowHint")}</p>
         <div className="tablewrap">

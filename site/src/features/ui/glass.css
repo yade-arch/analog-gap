@@ -1,0 +1,40 @@
+/* Açık "cam" arayüz (liste, harita): yumuşak degrade zemin, beyaz yarı saydam kartlar, yuvarlak köşeler. Renk anlamı yok; cisim renkleri world.css'ten. */
+html[data-page="list"] body, html[data-page="map"] body { background: linear-gradient(160deg, #eef2fb 0%, #f6f7fc 55%, #e9eef9 100%); }
+html[data-page="list"] main, html[data-page="map"] main { max-width: 1320px; }
+.g-card { background: rgba(255, 255, 255, .82); backdrop-filter: blur(10px); border: 1px solid #e3e8f3; border-radius: 20px; box-shadow: 0 8px 30px rgba(40, 60, 120, .08); padding: 16px; margin-bottom: 16px; color: #1b2340; }
+.g-kicker { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #5a6482; }
+.g-h { font-size: 22px; margin: 4px 0 8px; color: #141b36; }
+.g-sub { font-weight: 700; margin-bottom: 6px; }
+.g-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 6px 4px 10px; }
+.g-badge { position: absolute; left: 10px; top: 10px; background: rgba(15, 22, 45, .78); color: #fff; border-radius: 999px; padding: 3px 12px; font-weight: 700; font-size: 13px; }
+.g-btn { width: 100%; margin-top: 10px; padding: 10px; border-radius: 999px; border: 1px solid #2a3558; background: #fff; color: #141b36; font-weight: 700; cursor: pointer; }
+.g-btn.primary { background: #1f5fe0; border-color: #1f5fe0; color: #fff; }
+.relief { position: relative; border-radius: 14px; overflow: hidden; background: #d9dde6; display: grid; place-items: center; }
+.relief canvas { width: 100%; height: 100%; object-fit: cover; }
+.relief.mars { background: #b98a6e; } .relief.moon { background: #b9bdc4; }
+.relief-empty { font-size: 12px; color: #2b3350; padding: 0 12px; text-align: center; }
+.relief-tag { position: absolute; left: 10px; top: 10px; background: rgba(15, 22, 45, .78); color: #fff; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; }
+.refcard.wide { display: grid; grid-template-columns: minmax(220px, 1.1fr) 1.4fr 1.2fr; gap: 20px; align-items: center; }
+.refcard-main { border-left: 1px solid #e3e8f3; border-right: 1px solid #e3e8f3; padding: 0 18px; }
+.refcard:not(.wide) .refcard-main { border: 0; padding: 12px 0 0; }
+.stats { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
+.stats div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid #edf0f7; padding: 4px 0; }
+.stats dt { color: #4a5475; } .stats dd { margin: 0; font-weight: 700; }
+.refcard.wide .stats, .stats.three { grid-template-columns: repeat(3, 1fr); }
+.refcard.wide .stats div, .stats.three div { display: block; border: 0; text-align: center; }
+.top3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.cand2.first { border: 2px solid #1f5fe0; }
+.cand2-img { position: relative; }
+.cand2-d { position: absolute; right: 8px; bottom: -10px; background: #fff; border-radius: 14px; padding: 6px 12px; text-align: center; box-shadow: 0 4px 14px rgba(40, 60, 120, .15); }
+.cand2-d b { display: block; font-size: 24px; color: #141b36; } .cand2-d span { font-size: 11px; color: #4a5475; }
+.cand2-loc { font-weight: 700; margin: 14px 0 2px; }
+.mapgrid { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 16px; align-items: start; }
+.mappanel { position: relative; }
+.viewtabs { display: flex; gap: 8px; margin-bottom: 10px; }
+.viewtabs button { border-radius: 999px; padding: 8px 18px; border: 1px solid #d5dbe8; background: #fff; font-weight: 600; cursor: pointer; }
+.viewtabs button[aria-pressed="true"] { background: #1f5fe0; border-color: #1f5fe0; color: #fff; }
+.extra { position: absolute; right: 16px; top: 14px; z-index: 5; min-width: 260px; }
+.extra summary { cursor: pointer; font-weight: 700; }
+@media (max-width: 860px) { .refcard.wide, .mapgrid { grid-template-columns: 1fr; } .refcard-main { border: 0; padding: 0; } .extra { position: static; } }
+.darkstage { border-radius: 16px; overflow: hidden; background: radial-gradient(1px 1px at 20% 30%, #fff8, transparent), radial-gradient(1px 1px at 70% 20%, #fff7, transparent), radial-gradient(1px 1px at 85% 75%, #fff6, transparent), radial-gradient(ellipse at 50% 50%, #0d1830, #05070d 75%); }
+.darkstage .globe-note { color: #cfd6e0; }

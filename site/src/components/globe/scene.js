@@ -67,6 +67,11 @@ export function createGlobe(el, opts = {}) {
       if (geojson) { const tx = new THREE.CanvasTexture(landCanvas(geojson, C.ocean, C.landFill)); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; m.map = tx; m.color.set(0xffffff); }
       m.needsUpdate = true;
     },
+    /** NASA görüntü dokusu (data/tex, envanter T1): kara dolgusunun yerine geçer; yalnızca görsel. */
+    setPhoto(url) {
+      if (!url) return;
+      new THREE.TextureLoader().load(url, (tx) => { tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; const m = globe.material; m.map?.dispose(); m.map = tx; m.color.set(0xffffff); m.needsUpdate = true; });
+    },
     setOutlines(pos) { outl.children.forEach((o) => { o.geometry.dispose(); o.material.dispose(); }); outl.clear(); if (pos?.length) outl.add(lines(pos, C.ink, 0.75)); },
     setMarkers(list) {
       markers = list || [];

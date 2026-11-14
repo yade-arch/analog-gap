@@ -1,43 +1,53 @@
 import React, { useMemo, useState } from "react";
-import { PROFILES, Warn } from "../common.jsx";
+import { Warn } from "../common.jsx";
 import MapView from "../MapView.jsx";
 import GlobeView from "../components/GlobeView.jsx";
-import PageIntro from "../components/PageIntro.jsx";
 import DLegend from "../features/home/DLegend.jsx";
 import { D_SCALE, dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
 import RegionCard from "../features/world/RegionCard.jsx";
+import RefCard from "../features/ui/RefCard.jsx";
 import "../features/home/home.css";
+import "../features/ui/glass.css";
 
 const VIEWS = ["globe", "flat"];
+const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
 
+// Harita: solda referans kartı, sağda 3B küre / 2B harita; "Ek bilgiler" açılır kutusu gerçek sayılarla (meta). Bölge kartı ve uyarı altta.
 export default function MapPage({ cand, candAll, region, setRegion, profile, D, onSelect }) {
-  const P = PROFILES[profile];
   const [view, setView] = useState("globe");
   const markers = useMemo(() => dMarkers(cand), [cand]);
-  const shown = t("map.shown").replace("{n}", cand.features.length).replace("{total}", cand.meta.n_windows_total).replace("{pass}", cand.meta.n_pass_filter);
+  const m = cand.meta;
   return (
-    <div>
-      <PageIntro purpose={t("map.purpose")} how={t("map.how")} />
-      <div className="map-views" role="group" aria-label={t("map.view")}>
-        {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{t("map.view." + v)}</button>)}
-      </div>
-      <div className="maprow">
-        {view === "globe"
-          ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
-          : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} selectedId={null} />}
+    <div className="glass">
+      <div className="mapgrid">
         <div>
-          <div className="card">
-            <h3>{P.name}</h3>
-            <p className="muted">{t(`profile.${profile}.tr`)} · {P.sub}</p>
-            <DLegend />
-            <p>{shown}</p>
-            {view === "globe" && <p className="muted small">{t("map.globe.flatNote")}</p>}
-          </div>
+          <RefCard target={profile} reference={profile === "moon" ? D.rm : D.rs} tM={D.tM} />
           <RegionCard code={region} regions={D.regions} cand={candAll || cand} target={profile} tE={D.tE} known={D.known} onSelect={onSelect} />
-          <Warn>{t("map.warn")}</Warn>
+        </div>
+        <div className="g-card mappanel">
+          <div className="viewtabs" role="group" aria-label={t("map.view")}>
+            {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 " : "🗺 "}{t("map.view." + v)}</button>)}
+          </div>
+          <details className="g-card extra">
+            <summary>ⓘ {t("ui.extra")}</summary>
+            <dl className="stats three">
+              <div><dt>{t("ui.scanned")}</dt><dd>{m.n_windows_total}</dd></div>
+              <div><dt>{t("ui.passed")}</dt><dd>{m.n_pass_filter}</dd></div>
+              <div><dt>{t("ui.shown")}</dt><dd>{cand.features.length}</dd></div>
+            </dl>
+            <DLegend />
+            {view === "globe" && <p className="muted small">{t("map.globe.flatNote")}</p>}
+          </details>
+          <div className="darkstage">
+            {view === "globe"
+              ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => x.id && onSelect(x.id)} />
+              : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} selectedId={null} />}
+          </div>
+          <p className="muted small">{t("map.how")} {t("ui.photoSrc")}</p>
         </div>
       </div>
+      <Warn>{t("map.warn")}</Warn>
     </div>
   );
 }
