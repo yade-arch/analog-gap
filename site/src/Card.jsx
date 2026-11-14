@@ -98,7 +98,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           <div><div className="muted">Terrain distance (technical name: D; 0 = identical, lower = more similar)</div><div className="big">{fmt(p.D, 3)}</div></div>
           <div><div className="muted">Rank (among {PROFILES[profile].name} candidates that passed the filter)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
-        <p><a className="btn-accent" href={`#/compare/${p.id}/${profile}`}>Start comparison mission</a></p>
+        <p><a className="btn-accent" href={`#/compare/${p.id}/${profile}`}>Compare with the reference</a></p>
         <p className="muted">No similarity percentage or confidence score is produced. This window is not "a copy of the Moon/Mars"; it only shows how close the landform patterns are.</p>
       </div>
       <div className="grid2">

@@ -9,6 +9,8 @@ import { createPairScene, EXAG } from "../features/overview/pairScene.js";
 import { centreProfile } from "../features/overview/layers.js";
 import { PlaceCard, DistanceCard, CandPicker } from "../features/overview/Cards.jsx";
 import Panel, { statRows } from "../features/overview/Panel.jsx";
+import Stations from "../features/overview/Stations.jsx";
+import { ClimateBox, LinksBox } from "../features/overview/Climate.jsx";
 import "../features/overview/overview.css";
 
 /** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
@@ -75,9 +77,11 @@ export default function Overview({ D, profile, cand, reference, selId }) {
         </div>
         <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
+      <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
       <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
         stats={statRows(reference, p, mr, mc, names)} actions={{ report: `#/report/${p.id}/${profile}`, download }} />
+      {open && <div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div>}
     </div>
   );
 }

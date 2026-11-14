@@ -23,4 +23,7 @@ export default {
   "ov.hide": "Hide tools", "ov.show": "Show tools",
   "ov.d.coord": "Centre", "ov.d.product": "Data product",
   "ov.dlNote": "Values come from the ANALOG GAP data files. Terrain distance D: 0 = identical, lower = more similar; it is not a percentage.",
+  "ov.climate": "Earth climate at this place",
+  "ov.climateNote": "NASA POWER climate normal ({range}); average of a grid cell about 50 km wide, not a measurement at this exact window.",
+  "ov.links": "NASA data links",
 };

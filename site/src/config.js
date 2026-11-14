@@ -1,6 +1,6 @@
 // Rota ve ayarlar tek yerde. Yeni sayfa = ROUTES'a satır + App.jsx'te eşleme.
 export const ROUTES = [
-  { id: "compare", key: "nav.mission", primary: true },
+  { id: "mission", key: "nav.mission", primary: true },
   { id: "method", key: "nav.method", primary: true },
   { id: "about", key: "nav.about", primary: true },
   { id: "map", key: "nav.map" },

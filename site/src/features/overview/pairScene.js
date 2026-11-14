@@ -6,8 +6,20 @@ import { buildTerrain } from "../compare/terrainMesh.js";
 import { SETTINGS } from "../../config.js";
 import { layerCanvas } from "./layers.js";
 
-export const EXAG = 3;
+export const EXAG = 1.5;
 const W = SETTINGS.windowKm, GAP = 1.6, OFF = (W + GAP) / 2;
+
+/** Closed side walls ("cut block" look): from the real edge heights of the window down to a flat base. Decoration only. */
+function walls(geometry, G, base) {
+  const p = geometry.attributes.position, pos = [], idx = [];
+  const edges = [[...Array(G).keys()].map((j) => j), [...Array(G).keys()].map((i) => i * G + G - 1), [...Array(G).keys()].map((j) => (G - 1) * G + G - 1 - j), [...Array(G).keys()].map((i) => (G - 1 - i) * G)];
+  for (const e of edges) {
+    const s = pos.length / 3;
+    e.forEach((k, n) => { pos.push(p.getX(k), p.getY(k) * EXAG, p.getZ(k), p.getX(k), base, p.getZ(k)); if (n) { const a = s + (n - 1) * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } });
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0x24324f, roughness: 1, side: THREE.DoubleSide }));
+}
 
 function tile(dem, layer, body) {
   const { geometry } = buildTerrain(dem);
@@ -16,9 +28,11 @@ function tile(dem, layer, body) {
   const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, metalness: 0 }));
   mesh.scale.y = EXAG; g.add(mesh);
   geometry.computeBoundingBox();
-  const lo = geometry.boundingBox.min.y * EXAG;
-  const slab = new THREE.Mesh(new THREE.BoxGeometry(W, 0.35, W), new THREE.MeshStandardMaterial({ color: 0x1b2440, roughness: 1 }));
-  slab.position.y = lo - 0.2; g.add(slab);
+  const base = geometry.boundingBox.min.y * EXAG - 0.5;
+  g.add(walls(geometry, dem.G, base));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(W, W), new THREE.MeshStandardMaterial({ color: 0x1b2440, roughness: 1 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = base; g.add(floor);
+  g.position.y = -(geometry.boundingBox.min.y + geometry.boundingBox.max.y) * EXAG / 2;     // centre the block vertically
   g.userData = { mesh, tex, dem, body };
   return g;
 }
@@ -44,7 +58,7 @@ export function createPairScene(host) {
   const ro = new ResizeObserver(resize); ro.observe(host); resize(); home();
   const loop = () => { controls.update(); renderer.render(scene, camera); raf = requestAnimationFrame(loop); };
   loop();
-  const place = () => tiles.forEach((t, i) => t && t.position.set(i === 0 ? -OFF : OFF, 0, 0));
+  const place = () => tiles.forEach((t, i) => { if (t) t.position.x = i === 0 ? -OFF : OFF; });
   const drop = (t) => { if (!t) return; scene.remove(t); t.traverse((o) => { o.geometry?.dispose(); o.material?.map?.dispose(); o.material?.dispose(); }); };
 
   return {

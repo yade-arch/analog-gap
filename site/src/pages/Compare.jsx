@@ -87,7 +87,7 @@ export default function Compare({ D, profile, cand, selId }) {
     addEventListener("keydown", h); return () => removeEventListener("keydown", h);
   });
   const done = visited.size === VARIABLES.length;
-  const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
+  const go = (id) => { location.hash = `#/mission/${id}/${profile}`; };
   const metaL = index?.windows[refId], metaR = hasDem ? index.windows[cid] : null;
   const body = profile === "moon" ? t("side.moon") : t("side.mars");
 
