@@ -1,5 +1,5 @@
 // DEM pencereleri (scripts/export_dem_windows.py): gzip -> Int16 yükseklik [G*G] + Uint8 eğim [G*G]. Pencere başına tembel yüklenir.
-const base = import.meta.env.BASE_URL + "data/dem/";
+const base = (import.meta.env?.BASE_URL ?? "./") + "data/dem/";   // Node (değişmezlik testi) için yedek; tarayıcıda Vite değeri
 let indexP = null;
 const cache = new Map();
 
