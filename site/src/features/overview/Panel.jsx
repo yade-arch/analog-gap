@@ -41,7 +41,7 @@ export default function Panel({ layer, setLayer, mode, setMode, profile, stats, 
           <Box title={t("ov.actions")}>
             <div className="ov-acts">
               <button onClick={() => setMode("profile")}><b>∿</b>{t("ov.act.cut")}</button>
-              <a href={actions.report}><b>▤</b>{t("ov.act.report")}</a>
+              {actions.report && <a href={actions.report}><b>▤</b>{t("ov.act.report")}</a>}
               <button onClick={actions.download}><b>⤓</b>{t("ov.act.download")}</button>
               <button onClick={share}><b>⇪</b>{t("ov.act.share")}</button>
               <a href="#/method"><b>ⓘ</b>{t("ov.act.method")}</a>

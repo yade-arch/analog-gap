@@ -5,13 +5,14 @@ import { regionLabel } from "../../i18n/terms.js";
 import { fetchPower, gibsImg, worldviewUrl, POWER_URL } from "../planet/power.js";
 import { surfaceKm } from "../planet/coords.js";
 import { queryTerrain } from "../planet/globalTerrain.js";
+import PointAnalysis from "./PointAnalysis.jsx";
 
 // Dünya'da herhangi bir yere basınca açılan "Seçilen bölge" paneli: NASA GIBS görüntüsü + NASA POWER iklim normali (hücre ortalaması)
 // + bu hedefe göre taranmış en yakın 3 pencere (arazi uzaklığı yalnız taranmış pencerelerde vardır; yeni değer üretilmez).
 const ROWS = [["elev", "⛰", 0], ["t2m", "🌡", 1], ["tRange", "↕", 1], ["t2mMax", "☀", 1], ["t2mMin", "❄", 1], ["rain", "🌧", 0], ["sun", "🔆", 1], ["wind", "🌬", 1], ["rh", "💧", 0]];
 const LAYERS = [["BlueMarble_ShadedRelief_Bathymetry", "ui.imgColor"], ["ASTER_GDEM_Greyscale_Shaded_Relief", "ui.imgRelief"]];
 
-export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
+export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose }) {
   const [st, setSt] = useState({ s: "load" }), [lay, setLay] = useState(0), [n, setN] = useState(0);
   useEffect(() => { let live = true; setSt({ s: "load" }); fetchPower(sel.lat, sel.lon).then((r) => live && setSt({ s: "ok", r })).catch((e) => live && setSt({ s: "err", e: String(e.message || e) })); return () => { live = false; }; }, [sel.lat, sel.lon, n]);
   const near = useMemo(() => (cand?.features || []).map((f) => f.properties).map((p) => ({ ...p, km: surfaceKm(sel, { lat: p.center_lat, lon: p.center_lon }, 6371) })).sort((a, b) => a.km - b.km).slice(0, 3), [cand, sel]);
@@ -28,6 +29,7 @@ export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
         <img src={gibsImg(sel.lat, sel.lon, LAYERS[lay][0])} alt={t(LAYERS[lay][1])} width="360" height="360" loading="lazy" />
         <div className="rp-tabs">{LAYERS.map(([, k], i) => <button key={k} className={lay === i ? "on" : ""} onClick={() => setLay(i)}>{t(k)}</button>)}</div>
       </div>
+      {refs && <PointAnalysis sel={sel} target={target} refs={refs} />}
       <div className="g-sub">⛰ {t("ui.terrain")}</div>
       {tr.s === "load" && <p className="muted">{t("ui.loading")}</p>}
       {tr.s === "err" && <p>{t("ui.terrErr")}</p>}

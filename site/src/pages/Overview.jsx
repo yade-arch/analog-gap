@@ -11,6 +11,7 @@ import { PlaceCard, DistanceCard, CandPicker } from "../features/overview/Cards.
 import Panel, { statRows } from "../features/overview/Panel.jsx";
 import Stations from "../features/overview/Stations.jsx";
 import { ClimateBox, LinksBox } from "../features/overview/Climate.jsx";
+import { usePoint } from "../features/overview/usePoint.js";
 import "../features/overview/overview.css";
 
 /** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
@@ -18,9 +19,9 @@ import "../features/overview/overview.css";
 export default function Overview({ D, profile, cand, reference, selId }) {
   const host = useRef(null), sc = useRef(null), [gl] = useState(() => webglOK());
   const list = useMemo(() => (cand?.features || []).map((f) => f.properties).sort((a, b) => a.rank - b.rank).slice(0, 40), [cand]);
-  const [pick, setPick] = useState(null);
-  const p = list.find((x) => x.id === (pick || selId)) || list[0];
-  const refId = SETTINGS.references[profile][0];
+  const [pick, setPick] = useState(null), pt = usePoint(pick ? null : selId, profile, D);
+  const p = pt?.p || list.find((x) => x.id === (pick || selId)) || list[0];
+  const refId = SETTINGS.references[profile][0], ready = !!p && !pt?.loading && !pt?.error;
   const [dems, setDems] = useState({}), [idx, setIdx] = useState(null);
   const [layer, setLayer] = useState("dem"), [mode, setMode] = useState("3d"), [open, setOpen] = useState(true), [swapped, setSwapped] = useState(false);
   const names = [t("ui.body." + profile), t("side.earth").charAt(0) + t("side.earth").slice(1).toLowerCase()];
@@ -28,26 +29,34 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   useEffect(() => { loadDemIndex().then(setIdx).catch(() => setIdx({ windows: {} })); }, []);
   useEffect(() => {
     if (!p) return undefined; let live = true; setDems({});
-    Promise.all([loadDem(refId).catch(() => null), loadDem(p.id).catch(() => null)]).then(([r, c]) => live && setDems({ r, c }));
+    Promise.all([loadDem(refId).catch(() => null), p.onDemand ? Promise.resolve(pt.dem) : loadDem(p.id).catch(() => null)]).then(([r, c]) => live && setDems({ r, c }));
     return () => { live = false; };
   }, [refId, p?.id]);
-  useEffect(() => { if (!gl || !host.current) return undefined; sc.current = createPairScene(host.current); return () => sc.current.dispose(); }, [gl]);
+  useEffect(() => { if (!gl || !host.current) return undefined; sc.current = createPairScene(host.current); return () => { sc.current.dispose(); sc.current = null; }; }, [gl, ready]);
   useEffect(() => {
     const s = sc.current; if (!s) return;
     const L = [[dems.r, profile], [dems.c, "earth"]]; if (swapped) L.reverse();
     L.forEach(([dem, body], i) => s.setTile(i, dem || null, layer, body));
-  }, [dems, swapped]);
+  }, [dems, swapped, ready]);
   useEffect(() => { sc.current?.setLayer(layer); }, [layer]);
   useEffect(() => { sc.current?.setMode(mode === "2d" ? "2d" : "3d"); }, [mode]);
 
+  if (pt?.loading) return <p>{t("pt.loading")}</p>;
+  if (pt?.error) return <p>{t("pt.err")} <a href="#/map">{t("ov.onMap")}</a></p>;
   if (!p) return <p>{t("ui.loading")}</p>;
-  const mr = idx?.windows?.[refId], mc = idx?.windows?.[p.id];
+  const mr = idx?.windows?.[refId], mc = p.onDemand ? pt.dem.meta : idx?.windows?.[p.id];
   const refCard = (
     <PlaceCard key="r" body={profile} title={`${names[0]} – ${mr?.title || refId}`} sub={reference?.label}
       chips={[["grid", "30 m"], ["product", profile === "moon" ? "LDEM_80S_20M" : "CTX DTM (R2)"], ["src", profile === "moon" ? "NASA PDS" : "USGS"]]}
       details={[[t("ov.d.coord"), mr ? `${fmt(mr.lat, 3)}°, ${fmt(mr.lon, 3)}°` : null], [t("cmp.elev"), mr ? `${fmt(mr.z_min, 0)} – ${fmt(mr.z_max, 0)} m` : null], [t("ov.d.product"), mr?.product]]} />
   );
-  const earthCard = (
+  const earthCard = p.onDemand ? (
+    <PlaceCard key="e" body="earth" title={t("ov.pt.title")} sub={`${t("ov.pt.sub")} · ${t("pt.approx")}`}
+      chips={[["grid", "30 m"], ["product", "Terrain Tiles"], ["src", t("ov.pt.approx")], ["range", mc.z_min != null ? `${fmt(mc.z_min, 0)}–${fmt(mc.z_max, 0)} m` : null]]}
+      details={[[t("ov.d.coord"), `${fmt(p.center_lat, 4)}°, ${fmt(p.center_lon, 4)}°`], [t("ov.d.product"), mc.product]]}>
+      <CandPicker list={list} value="" onPick={setPick} />
+    </PlaceCard>
+  ) : (
     <PlaceCard key="e" body="earth" title={`${names[1]} – ${regionLabel(p.region)}`} sub={`${t("list.code")}: ${p.id}`}
       chips={[["grid", "30 m"], ["product", "NASADEM_HGT v001"], ["src", "NASA LP DAAC"], ["range", mc ? `${fmt(mc.z_min, 0)}–${fmt(mc.z_max, 0)} m` : null]]}
       details={[[t("ov.d.coord"), `${fmt(p.center_lat, 3)}°, ${fmt(p.center_lon, 3)}°`], [t("map.rank"), `#${p.rank}`], [t("ov.d.product"), mc?.product]]}>
@@ -80,7 +89,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
       <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
       <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
-        stats={statRows(reference, p, mr, mc, names)} actions={{ report: `#/report/${p.id}/${profile}`, download }} />
+        stats={statRows(reference, p, mr, mc, names)} actions={{ report: p.onDemand ? null : `#/report/${p.id}/${profile}`, download }} />
       {open && <div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div>}
     </div>
   );

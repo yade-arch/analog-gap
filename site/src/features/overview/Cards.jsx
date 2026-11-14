@@ -46,6 +46,7 @@ export function CandPicker({ list, value, onPick }) {
     <label className="ov-pick">
       <span>{t("ov.pick")}</span>
       <select value={value} onChange={(e) => onPick(e.target.value)}>
+        {!list.some((p) => p.id === value) && <option value="">—</option>}
         {list.map((p) => <option key={p.id} value={p.id}>#{p.rank} · {regionLabel(p.region)} · D {fmt(p.D, 3)}</option>)}
       </select>
       <a href="#/map">{t("ov.onMap")}</a>

@@ -6,7 +6,7 @@ import { nasaPower } from "./power.js";
 
 export const ADAPTERS = [localScan, nasaPower];   // nasaPower: Dünya'nın her noktası (iklim normali, hücre ortalaması)
 // Faz 0 kararı: küresel yükseklik adapter'ı ertelendi (CORS'lu NASA nokta sorgu servisi doğrulanmadı; docs/PLAN-GEZEGEN.md §3).
-export const DEFERRED = [{ id: "globalElevation", reason: "No browser-accessible (CORS) NASA elevation point service verified (MOLA/LOLA/NASADEM)" }];
+export const DEFERRED = [];   // globalElevation: done as an on-demand Terrain Tiles window (terrainTiles.js + pointAnalysis.js), labelled approximate
 
 export async function queryAll(body, lat, lon, data, adapters = ADAPTERS) {
   const run = adapters.filter((a) => a.bodies.includes(body)).map(async (a) => {
