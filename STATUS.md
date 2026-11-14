@@ -188,3 +188,13 @@ Yöntem: puppeteer-core + Edge (SwiftShader), önce canlı adreste, düzeltmeler
 3. **`docs/arduino/`:** `d_gostergesi` (sensörsüz LED/servo D göstergesi), `mpu6050_egim` (statik eğim; sensör yoksa yalnızca `sensor_missing` hatası, değer yok), kablolama tabloları, kütüphaneler, yükleme. `docs/PROTOCOL.md` §8'e taslak uzantılar eklendi (`show_d`, `sensor`, `sensor_missing`) — **`protocol.js` bunları henüz reddeder**; taslaklar derlenmedi ve cihazla **denenmedi**.
 4. **`CITATION.cff`, `.zenodo.json`** (MIT, "ANALOG GAP contributors", ORCID yok), README'de "Nasıl atıf yapılır" ve **DOI: bekliyor**, `docs/RELEASE_NOTES_v0.1.0.md`. **`v0.1.0` tag'i** (açıklamalı) push edildi. GitHub **Release** nesnesi oluşturulmadı (token yok/istenmedi): Releases → "Draft a new release" → tag v0.1.0 → notları yapıştır; Zenodo bağlantısı kullanıcıda.
 Her madde sonrası `npm run check` geçti, commit + push yapıldı.
+
+## Sadeleştirme (2026-11-14, dal `sadelestirme`, her faz main'e alındı)
+- Mars kartındaki Ay'a özgü "LOLA interpolasyonu" notu düzeltildi (`features/variables/rough.js`, hedefe göre not). Yerelde doğrulandı: Mars kartında/görevinde LOLA yok, Ay'da var.
+- Küresel AY | MARS anahtarı (üst çubuk) + Dünya bölge düğmeleri; adreste `?t=&r=` ve localStorage (`features/world/state.js`). Eski "Profil" açılır listesi kaldırıldı.
+- 4 adımlı ilerleme + her sayfada "Burada ne görüyorum?" (`features/world/WorldBar.jsx`); sabit renkler AY gri, MARS turuncu-kızıl, DÜNYA mavi-yeşil (`world.css`).
+- Seçimler: ATA bölgesi "Atacama ve Orta And Dağları (Güney Amerika)" diye adlandırıldı (kutu Şili dışına da taşıyor; "Şili" tek başına yanlış olurdu). "Bilinen analog" = koordinatlı katalog noktası 10×10 km pencerenin içinde (merkezden ±5 km); değilse "katalogda yok".
+- Aday listesi: bölgeye göre en iyi 3 kart (tipik eğim ve yükseklik farkı Dünya/referans yan yana), tablo "Tüm adayları göster" içinde. Karşılaştırma kartı tek okunur cümle + açılır ayrıntı.
+- Harita: bölge kartı (ad, karo sayısı, jeoloji "belirtilmemiş", arazi ortancası, MODIS sıcaklık ortancası, en benzer 3 pencere, katalogdaki analoglar). `features/world/events.js`: boş olay/günlük altyapısı.
+- Yöntem: Kısaca ve adım şeması sade dille; teknik adlar formül kutusunda. Aday kartı sekmeleri Türkçe.
+- Denenmedi: gerçek dokunmatik cihaz, yazdırma önizlemesi, canlıda tam sayfa taraması. Sonraki iş: gezegen keşfi (Faz 0–3), `feature/ana-ekran-3d` ile TopBar/Compare/MapPage çakışması birleştirmede çözülmeli.
