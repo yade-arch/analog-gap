@@ -81,7 +81,6 @@ export default function Game({ D, profile, setProfile }) {
   });
 
   const prompt = speech || paused ? null
-    <div className="g-story" role="note"><svg className="g-pxman" viewBox="0 0 8 12" width="32" height="48" aria-hidden="true" shapeRendering="crispEdges"><rect x="2" y="0" width="4" height="3" fill="#ffd9b0"/><rect x="2" y="3" width="4" height="4" fill="#4d8fe6"/><rect x="0" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="6" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="2" y="7" width="1.6" height="4" fill="#2b3a5c"/><rect x="4.4" y="7" width="1.6" height="4" fill="#2b3a5c"/></svg><p>{t("game.story.find")}</p></div>
     : phase === "explore" ? (sel ? null : t("game.prompt.pick"))
     : phase === "drive" ? t(tests.length >= 3 ? "game.prompt.suit" : mode === "multi" ? "game.prompt.drive.multi" : "game.prompt.drive")
     : null;
@@ -101,6 +100,7 @@ export default function Game({ D, profile, setProfile }) {
       {phase === "drive" && mode === "multi" && <><RoverHud hud={hud} who="p2" side="right" /><Location text={regionLabel(sel?.region)} side="right" /><LinkBadge n={tests.length} of={3} /></>}
       <Speech text={speech?.lines[speech.i]} anchorRef={anchor} onNext={next} />
       <Toast text={toast} />
+      {phase === "explore" && !sel && !paused && (<div className="g-story" role="note"><svg className="g-pxman" viewBox="0 0 8 12" width="32" height="48" aria-hidden="true" shapeRendering="crispEdges"><rect x="2" y="0" width="4" height="3" fill="#ffd9b0"/><rect x="2" y="3" width="4" height="4" fill="#4d8fe6"/><rect x="0" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="6" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="2" y="7" width="1.6" height="4" fill="#2b3a5c"/><rect x="4.4" y="7" width="1.6" height="4" fill="#2b3a5c"/></svg><p>{t("game.story.find")}</p></div>)}
       <Prompt text={prompt} />
       {phase === "suit" && !paused && <SuitScreen suit={suit} setSuit={setSuit} onConfirm={confirmSuit} left={clock.left} />}
       {phase === "result" && ended && <MissionReport result={final?.result || "timeout"} p={sel} D={D} profile={profile} cand={cand} suit={suit} left={final?.left ?? 0} reportHref={reportHref} onAgain={reset} />}
