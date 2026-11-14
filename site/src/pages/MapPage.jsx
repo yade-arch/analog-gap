@@ -6,11 +6,12 @@ import PageIntro from "../components/PageIntro.jsx";
 import DLegend from "../features/home/DLegend.jsx";
 import { D_SCALE, dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
+import RegionCard from "../features/world/RegionCard.jsx";
 import "../features/home/home.css";
 
 const VIEWS = ["globe", "flat"];
 
-export default function MapPage({ cand, profile, D, onSelect }) {
+export default function MapPage({ cand, candAll, region, setRegion, profile, D, onSelect }) {
   const P = PROFILES[profile];
   const [view, setView] = useState("globe");
   const markers = useMemo(() => dMarkers(cand), [cand]);
@@ -24,7 +25,7 @@ export default function MapPage({ cand, profile, D, onSelect }) {
       <div className="maprow">
         {view === "globe"
           ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} onPick={(m) => m.id && onSelect(m.id)} />
-          : <MapView data={cand} regions={D.regions} onSelect={onSelect} selectedId={null} />}
+          : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} selectedId={null} />}
         <div>
           <div className="card">
             <h3>{P.name}</h3>
@@ -33,6 +34,7 @@ export default function MapPage({ cand, profile, D, onSelect }) {
             <p>{shown}</p>
             {view === "globe" && <p className="muted small">{t("map.globe.flatNote")}</p>}
           </div>
+          <RegionCard code={region} regions={D.regions} cand={candAll || cand} target={profile} tE={D.tE} known={D.known} onSelect={onSelect} />
           <Warn>{t("map.warn")}</Warn>
         </div>
       </div>

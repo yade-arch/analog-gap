@@ -2,6 +2,7 @@
 // Ay ve Mars hiçbir ekranda karışmaz: sayfalar bu hedefe göre süzülür.
 import { useEffect, useState } from "react";
 import { DEFAULT_ROUTE } from "../../config.js";
+import { emit } from "./events.js";
 
 export const TARGETS = ["moon", "mars"];
 export const REGION_CODES = ["ALL", "ATA", "HAW", "ANA", "US-SW"];
@@ -28,6 +29,7 @@ export function useWorld(hash, page, a2) {
     const h = p + "?" + n.toString();
     if (h !== location.hash) history.replaceState(null, "", h);
   }, [target, region, hash]);
+  useEffect(() => { emit({ type: "select-region", target, id: region }); }, [region, target]);
   return { target, setTarget, region, setRegion };
 }
 

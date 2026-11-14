@@ -62,7 +62,7 @@ export default function App() {
           <Suspense fallback={<p>Sayfa yükleniyor…</p>}>
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
-            {page === "map" && <MapPage cand={candR} profile={profile} D={D} onSelect={go} />}
+            {page === "map" && <MapPage cand={candR} candAll={cand} region={region} setRegion={setRegion} profile={profile} D={D} onSelect={go} />}
             {page === "home" && <Home cand={cand} profile={profile} D={D} />}
             {page === "list" && <ListPage cand={cand} region={region} profile={profile} reference={reference} known={D.known} hasDem={dem ? (id) => id in dem : null} />}
             {page === "card" && (feature

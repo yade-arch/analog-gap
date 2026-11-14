@@ -26,7 +26,7 @@ function declutter(labels, m) {
   }
 }
 
-export default function MapView({ data, regions, onSelect, selectedId }) {
+export default function MapView({ data, regions, onSelect, onRegion, selectedId }) {
   // Renkler theme.css değişkenlerinden (açık tema). MapLibre var() anlamaz: değer bir kez okunur.
   const C = useRef(null); C.current ||= { bg: cssVar("--map-bg", "#d3e3f2"), land: cssVar("--globe-land", "#ede9df"), coast: cssVar("--globe-coast", "#6f839b"), ink: cssVar("--ink", "#14243a"), sel: cssVar("--accent", "#1d5fae") };
   const el = useRef(null), map = useRef(null), loaded = useRef(false), pickRef = useRef(onSelect);
@@ -60,6 +60,8 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
       }
       m.addLayer({ id: "coast", type: "line", source: "land", paint: { "line-color": c.coast, "line-width": 0.7 } });
       m.addSource("regions", { type: "geojson", data: regions });
+      m.addLayer({ id: "regions-fill", type: "fill", source: "regions", paint: { "fill-color": "#000", "fill-opacity": 0.01 } });
+      m.on("click", "regions-fill", (e) => { if (!m.queryRenderedFeatures(e.point, { layers: ["cand-fill", "cand-pt"] }).length) onRegion?.(e.features[0].properties.code); });
       m.addLayer({ id: "regions-line", type: "line", source: "regions", paint: { "line-color": c.ink, "line-width": 1.2, "line-dasharray": [3, 2] } });
       m.addSource("cand", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       m.addSource("pts", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
@@ -74,7 +76,7 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
         m.on("mouseenter", layer, () => (m.getCanvas().style.cursor = "pointer"));
         m.on("mousemove", layer, (e) => {
           const p = e.features[0].properties;
-          pop.setLngLat(e.lngLat).setHTML(`<b>${regionLabel(p.region)}</b> · ${t("map.rank")} ${p.rank}<br/>D = ${fmt(p.D, 3)}<br/><i>${t("map.clickHint")}</i>`).addTo(m);
+          pop.setLngLat(e.lngLat).setHTML(`<b>${regionLabel(p.region)}</b> · ${t("map.rank")} ${p.rank}<br/>${t("gauge.title")} = ${fmt(p.D, 3)} <small>(${t("list.dmeaning")})</small><br/><i>${t("map.clickHint")}</i>`).addTo(m);
         });
         m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; pop.remove(); });
       }
