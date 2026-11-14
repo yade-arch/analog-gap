@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./theme.css";
 import "./features/ui/topx.css";
 import "./hud.css";
+import "./theme-dark.css";
 import App from "./App.jsx";
 
 // After a new deploy, an already open (cached) page may ask for old file names that no longer exist and go blank.

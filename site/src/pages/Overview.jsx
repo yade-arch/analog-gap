@@ -90,7 +90,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
       <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
         stats={statRows(reference, p, mr, mc, names)} actions={{ report: p.onDemand ? null : `#/report/${p.id}/${profile}`, download }} />
-      {open && <div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div>}
+      <details className="ov-more"><summary>{t("ov.moreInfo")}</summary><div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div></details>
     </div>
   );
 }

@@ -1,0 +1,31 @@
+/* One design system for every page: calm dark navy (from the compare screen), simple solid panels, one blue accent.
+   Loaded last; overrides the older light theme. Body colours: Moon grey, Mars rust, Earth blue-green (small accents only). */
+:root { --bg: #0b1426; --bg2: #121d33; --panel: #131f37; --panel-solid: #131f37; --ink: #e6ecf5; --muted: #a2b0c6;
+  --line: #4a5d7d; --line-soft: rgba(230, 236, 245, .1); --accent: #4d8fe6; --accent-ink: #fff; --accent-soft: rgba(77, 143, 230, .18); --cool: #7fb0f0;
+  --warn-bg: #2a2412; --warn-line: #c9a227; --t-obs: #cfe3f8; --t-der: #ddd8f3; --t-int: #f1e3c6; --scene-top: #0e1a30; --scene-bottom: #0b1426; color-scheme: dark; }
+html body, html[data-page] body { background: var(--bg); color: var(--ink); }
+html .g-card, html .card, html .gear-menu, html .refcard-stats, html .rep-row.me, html .pt-d, html .rp-near, html .rp-grid > div, html .pt-vars > div, html .cand2-d, html .more-btn, html .sci-tabs button, html .viewtabs button, html .conn {
+  background: var(--panel); color: var(--ink); border-color: var(--line-soft); box-shadow: none; backdrop-filter: none; }
+html .g-card { border: 1px solid var(--line-soft); }
+html .rp-near, html .rp-grid > div, html .pt-vars > div, html .refcard-stats, html .pt-d { background: var(--bg2); }
+html .rp-x { background: var(--bg2); color: var(--ink); }
+html .cand2-d b, html .g-h, html .glass h2, html .glass h3, html .cand2-loc { color: var(--ink); } html .cand2-d span, html .muted, html .small.muted { color: var(--muted); }
+html .rep-bar .bar { background: var(--bg2); } html .pt-note { color: #e3c56b; }
+html .g-btn { background: var(--bg2); color: var(--ink); border: 1px solid var(--line-soft); } html .g-btn.primary, html .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+html .viewtabs button[aria-pressed="true"], html .regions button.on, html .sci-tabs button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+html input, html select, html textarea { background: var(--bg2); color: var(--ink); border-color: var(--line); }
+html table th, html table td { border-color: var(--line-soft); } html a { color: var(--cool); }
+html .disc-body.moon { background: #2a3140; color: #d7dde8; } html .disc-body.mars { background: #3a2219; color: #f0c2ad; } html .disc-body.none { background: var(--bg2); }
+html header.top, html header.topx { background: #08101f; border-bottom: 1px solid var(--line-soft); }
+html .mainnav { display: flex; gap: 4px; margin: 0 auto; } html .mainnav a { padding: 8px 14px; border-radius: 10px; color: var(--muted); text-decoration: none; font-weight: 500; }
+html .mainnav a:hover { color: var(--ink); background: var(--bg2); } html .mainnav a.on { color: var(--ink); background: var(--accent-soft); box-shadow: inset 0 -2px 0 var(--accent); }
+@media (max-width: 720px) { .mainnav { order: 3; width: 100%; overflow-x: auto; } html .mainnav a { padding: 6px 10px; font-size: 14px; } }
+/* compare screen: fewer glows, same structure */
+html .ov { --ov-glass: #131f37; --ov-line: rgba(230, 236, 245, .12); background: radial-gradient(ellipse 80% 40% at 50% 60%, rgba(40, 90, 180, .25), transparent 70%), var(--bg); }
+html .ov-card, html .ov-dist, html .ov-box, html .ov-st { box-shadow: none; backdrop-filter: none; } html .ov-dist strong { text-shadow: none; }
+html .ov-swap, html .ov-ctrl button, html .ov-modes button.on { box-shadow: none; } html .ov-stage::after { box-shadow: none; width: 1px; }
+html .ov-more { margin-top: 4px; } html .ov-more > summary { cursor: pointer; padding: 10px 14px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line-soft); color: var(--ink); font-weight: 500; }
+html .ov-more[open] > summary { margin-bottom: 8px; }
+html header.top.topx { background: #08101f; border-bottom: 1px solid var(--line-soft); } html .burger i { background: var(--ink); }
+html .gear-menu a { color: var(--ink); } html .gear-menu a:hover, html .gear-menu a[aria-current] { background: var(--bg2); }
+html .steps4 a, html .worldbar { color: var(--ink); }
