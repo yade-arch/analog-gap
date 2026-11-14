@@ -4,6 +4,7 @@ export const ROUTES = [
   { id: "method", key: "nav.method", primary: true },
   { id: "map", key: "nav.map" },
   { id: "list", key: "nav.list" },
+  { id: "game", key: "nav.game" },
 ];
 export const DEFAULT_ROUTE = "home";
 

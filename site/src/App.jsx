@@ -12,6 +12,7 @@ import { DEFAULT_ROUTE } from "./config.js";
 // Ağır paketler (three.js, MapLibre) yalnızca ilgili sayfada indirilir.
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
 const Compare = lazy(() => import("./pages/Compare.jsx"));
+const Game = lazy(() => import("./pages/Game.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
@@ -64,6 +65,7 @@ export default function App() {
             {page === "card" && (feature
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
               : <div className="card">Bu pencere seçili profilin aday dosyasında yok (yalnızca bölge başına en iyi 250 aday dosyaya konur). <a href="#/list">Listeye dön</a></div>)}
+            {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>
         )}
