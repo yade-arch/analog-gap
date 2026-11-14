@@ -132,3 +132,11 @@ details.adv > summary small { display: block; font-weight: 400; letter-spacing: 
 .auto-status { color: var(--ink); font-weight: 600; } .auto-status.done { color: var(--good-edge); }
 @media (max-width: 1279px) { details.hud-right.adv { flex: 1 1 100%; } .hud-bottom { grid-template-columns: 1fr; } .adv-body { max-height: none; } }
 .units .hud-btn.lg { display: inline-block; width: calc(50% - 4px); padding: 6px 4px; margin: 0 2px 4px; }
+/* Yüzey etiketleri, eğim katmanı anahtarı ve ⓘ not (sahne üstü; araziyi örtmeyen küçük şeritler) */
+.surf-labels { position: absolute; top: 6px; left: 0; right: 0; display: grid; grid-template-columns: 1fr 1fr; pointer-events: none; z-index: 2; }
+.surf-labels span { justify-self: center; max-width: 92%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; font-weight: 600; color: var(--ink); background: var(--panel-solid); border: 1px solid var(--line); border-radius: 2px; padding: 2px 8px; }
+.surf-tools { position: absolute; left: 8px; bottom: 8px; z-index: 3; display: flex; gap: 10px; align-items: center; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 2px; padding: 4px 8px; font-size: 12.5px; }
+.surf-tools label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; min-height: 28px; }
+.surf-info { position: relative; } .surf-info summary { cursor: pointer; list-style: none; font-size: 15px; line-height: 1; padding: 2px 4px; } .surf-info summary::-webkit-details-marker { display: none; }
+.surf-info p { position: absolute; left: -4px; bottom: calc(100% + 8px); width: min(320px, 70vw); margin: 0; padding: 8px 10px; font-size: 12px; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 2px; color: var(--ink); }
+.surf-legend { position: absolute; right: 8px; bottom: 8px; z-index: 3; max-width: min(60%, 560px); }

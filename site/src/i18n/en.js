@@ -3,6 +3,7 @@ import pages from "./en.pages.js";
 import world from "./en.world.js";
 import game from "./en.game.js";
 import anaekran from "./en.anaekran.js";
+import compare from "./en.compare.js";
 import hero from "./en.hero.js";
 import overview from "./en.overview.js";
 import point from "./en.point.js";
@@ -10,6 +11,7 @@ export default {
   ...pages,
   ...game,
   ...anaekran,
+  ...compare,
   ...world,
   ...hero,
   ...overview,

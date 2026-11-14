@@ -16,6 +16,7 @@ import Fold from "../hud/Fold.jsx";
 import { useMove } from "../features/mission/useMove.js";
 import { VARIABLES, stationResult } from "../features/variables/index.js";
 import { exceedFraction } from "../features/compare/stats.js";
+import { regionLabel } from "../i18n/terms.js";
 
 function useDem(id) {
   const [s, set] = useState({ id: null, dem: null, err: null });
@@ -31,6 +32,7 @@ function useDem(id) {
 export default function Compare({ D, profile, cand, selId }) {
   const [index, setIndex] = useState(null);
   const [refId, setRefId] = useState(SETTINGS.references[profile][0]);
+  const [view, setView] = useState("surface");          // gösterim malzemesi | eğim katmanı (geometri aynı)
   const [unit, setUnit] = useState("rover"), [mode, setMode] = useState("follow"), [exag, setExag] = useState(SETTINGS.defaultExag);
   useEffect(() => { loadDemIndex().then(setIndex).catch(() => setIndex({ windows: {} })); }, []);
   useEffect(() => setRefId(SETTINGS.references[profile][0]), [profile]);
@@ -93,7 +95,14 @@ export default function Compare({ D, profile, cand, selId }) {
 
   return (
     <div className="compare">
-      <SceneView dems={[L.dem, R.dem]} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} />
+      <SceneView dems={[L.dem, R.dem]} limits={[lv, lv]} exag={exag} mode={mode} unit={unit} rigRef={rigRef} view={view} kinds={[profile, cp?.region]}
+        labels={[t("surf." + profile), t("surf.earth") + (cp ? " · " + regionLabel(cp.region) : "")]}>
+        <div className="surf-tools">
+          <label><input type="checkbox" checked={view === "slope"} onChange={(e) => setView(e.target.checked ? "slope" : "surface")} /> {t("surf.slope")}</label>
+          <details className="surf-info"><summary aria-label={t("surf.info")} title={t("surf.info")}>ⓘ</summary><p>{t("surf.note")}</p></details>
+        </div>
+        {view === "slope" && <div className="surf-legend"><SlopeLegend limit={lim} /></div>}
+      </SceneView>
       <div className="scene-tag">{t("exag.label")} ×{exag}</div>
       {curRes && <StationCard res={curRes} refTitle={`${body} (${t("side.ref")}) · ${metaL?.title || refId}`} candTitle={`${t("side.earth")} (${t("side.cand")}) · ${cid}`} D={cp?.D} onClose={auto.active ? auto.stop : () => setCur(null)} onNext={auto.active ? auto.next : next} nextLabel={auto.active ? t("auto.next") : undefined} last={!auto.active && visited.size === VARIABLES.length && !VARIABLES.some((v) => !visited.has(v.id) && v.id !== cur)} />}
       <div className="hud">

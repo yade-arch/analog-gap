@@ -46,8 +46,8 @@ export async function snapshot() {
 /** check.mjs adımı: tabanla birebir aynı mı. Taban yoksa hata. */
 export async function invarianceTest() {
   if (!existsSync(BASE)) throw new Error("taban yok: node scripts/invariance.mjs --write");
-  const now = JSON.stringify(await snapshot(), null, 1), base = readFileSync(BASE, "utf8").trim();
-  if (now.trim() !== base) throw new Error("bilimsel veri/ağ özeti DEĞİŞTİ (scripts/invariance.baseline.json ile farkı inceleyin)");
+  const now = JSON.stringify(await snapshot()), base = JSON.stringify(JSON.parse(readFileSync(BASE, "utf8")));   // satır sonundan bağımsız
+  if (now !== base) throw new Error("bilimsel veri/ağ özeti DEĞİŞTİ (scripts/invariance.baseline.json ile farkı inceleyin)");
   const s = JSON.parse(now);
   return `${s.scenarios.length} senaryo aynı; sınırlar ${JSON.stringify(s.limits)}`;
 }

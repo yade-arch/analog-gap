@@ -6,6 +6,7 @@ import world from "./tr.world.js";
 import hero from "./tr.hero.js";
 import overview from "./tr.overview.js";
 import point from "./tr.point.js";
+import compare from "./tr.compare.js";
 export default {
   ...pages,
   ...game,
@@ -86,6 +87,7 @@ export default {
   "tag.calc": "Hesaplanmış",
   "tag.sim": "Simülasyon varsayımı",
   ...anaekran,
+  ...compare,
   ...world,
   ...hero,
   ...overview,
