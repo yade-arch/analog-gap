@@ -9,6 +9,7 @@ import { slopeDeg, elev } from "../../compare/demLoader.js";
 import { SETTINGS } from "../../../config.js";
 import { disposeScene, tex } from "./stage.js";
 import { rocks } from "./voxel.js";
+import { scenery } from "./scenery.js";
 
 export const EXAG = 2;
 const LOOK = {
@@ -55,6 +56,7 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   base.position.y = ((zmin - zmed) / 1000) * EXAG - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
   const h = (x, z) => sampleH(dem, x, z) * EXAG;
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));
+  scene.add(scenery(body, base.position.y));
   if (body !== "earth") scene.add(stars());
   if (body === "moon") {                               // Ay güney kutbundan Dünya ufka yakın görünür (görsel)
     const earth = new THREE.Mesh(new THREE.SphereGeometry(3, 48, 32), new THREE.MeshStandardMaterial({ map: tex("earth_bmng_200412_2048.jpg"), roughness: 1, fog: false }));
