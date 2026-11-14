@@ -56,3 +56,10 @@ Tamamlayıcı (yalnızca NASA verisi eksikse): CSA RADARSAT, ESA Copernicus Data
 ## Kalıcı kurallar (veri kaynağı ve dil)
 1. VERİ KAYNAĞI: Önce NASA ve yarışma kaynakları (Earthdata Search, Worldview/GIBS, PDS, LRO/LOLA/Diviner, Mars CTX/MOLA). Başka kaynak yalnızca NASA'da yoksa ve gerekliyse; kullanıldığında kaynak adı, lisans/atıf ve "NASA verisi değil" etiketi görünür, arazi uzaklığına (D) ve sıralamaya karıştırılmaz. NASA verisi başka sağlayıcıda barınıyorsa (örn. NASADEM'in Planetary Computer kopyası) ürün adı ve sürüm NASA olarak yazılır. Her yeni veri data_inventory.csv'ye (sürüm, çözünürlük, tarih, erişim yolu) yazılır.
 2. ANLAŞILIR DİL: Site her yaştan insanın anlayacağı sade Türkçeyle yazılır; bilimsel değer düşmez. Her sayısal değer ekranda adı, birimi ve tek cümlelik anlamıyla (nasıl okunacağı) gelir. Jargon ve kısaltma (ATA, HAW, ANA, US-SW, P10/P50/P90, O_k, d_k, W1, IQR, LST, DEM, röleyf) kullanıcıya çıplak görünmez; ayrıntıda "teknik ad: ..." olarak geçebilir. Metinlerin tek kaynağı src/i18n (terms.js sözlüğü).
+
+## ÇALIŞMA DÜZENİ (çoklu bilgisayar ve kişi)
+1. Oturum başında: `git fetch`; geçerli dalı ve main ile farkını yaz; çalışılacak işin dalını sor/belirle (iş adıyla: sadelestirme, oyun-3d-kure, hava-katmanlari; kişi adıyla değil). Dal yoksa main'den aç, varsa `git pull` ile güncelle.
+2. Başkasının dalında olduğu düşünülen (son commit kullanıcıdan değilse ya da son 24 saatte başka makineden push edilmişse) bir dala commit atmadan önce dur ve kullanıcıya sor.
+3. Her anlamlı iş bitince commit ve push (yarım iş bırakma; başka bilgisayar görsün).
+4. main'e yalnızca `npm run check` geçince ve kullanıcı "main'e al" dediğinde ya da komutta açıkça yazıyorsa birleştir; çakışma varsa dur ve yaz.
+5. Oturum sonunda `docs/ISLER.md`'ye bir satır ekle: tarih, dal, ne yapıldı, durum (devam/tamam).
