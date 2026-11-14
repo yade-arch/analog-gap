@@ -9,7 +9,7 @@ import { grid, layerCanvas, zAt } from "./layers.js";
 export const EXAG = 1.5, DENSE = 3;
 const W = SETTINGS.windowKm, GAP = 1.6, OFF = (W + GAP) / 2;
 
-function denseTerrain(dem) {
+export function denseTerrain(dem) {   // dışa açık: değişmezlik testi (scripts/invariance.mjs) ağ özetini alır
   const g = grid(dem), N = (g.G - 1) * DENSE + 1, mid = (g.lo + g.hi) / 2;
   const pos = new Float32Array(N * N * 3), uv = new Float32Array(N * N * 2), ok = new Uint8Array(N * N), idx = [];
   for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {

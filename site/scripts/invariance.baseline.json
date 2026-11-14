@@ -1,6 +1,8 @@
 {
  "scale": {
   "windowKm": 10,
+  "overviewExag": 1.5,
+  "overviewDense": 3,
   "grid": 111,
   "cell_m": 90,
   "slope_step_deg": 0.25
@@ -17,6 +19,10 @@
    "region": "ATA",
    "ref": {
     "id": "Site04",
+    "overviewMesh": "8b8ae1c7c09b41691f0765b09c8a6755c1f4c2f29b65391f786c3e6bcf5ea206",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 2.24325,
+    "overviewBottom": -2.8432500000000003,
     "z": "405085cae04f77c6b98cee25d7875bb8eccbb94d3bee4ead9beaa57eb358d4e1",
     "slope": "60ddbb43526e8be487b65fa16c32c194e427535fb7ba49f1741d4f9412693bd0",
     "mesh": "8d5fe962ba302ca5a57e6430d3101eba8fc2ea736e853f15e4c37cc86ff72617",
@@ -26,6 +32,10 @@
    },
    "cand": {
     "id": "ATA_r119_c61",
+    "overviewMesh": "226d4e61dcc84753e5b0dee98fa4ac3b3760df839446144efcd8afde000fc30e",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 1.1557499999999998,
+    "overviewBottom": -1.75575,
     "z": "0b3e6c2ac393901d4e7407ed6d4758df5a84b810c0a7b9de12719be8ddfc4bd7",
     "slope": "40f3bce66f19bf7eaadd9a650b4b6e19b8a0337b36e2f2341a878e3a2d56ba1c",
     "mesh": "463bacd3a87e67d22e6a0121b71652cc7cbe296ac1e422a48353e693aa9b44f1",
@@ -421,6 +431,10 @@
    "region": "ANA",
    "ref": {
     "id": "Site04",
+    "overviewMesh": "8b8ae1c7c09b41691f0765b09c8a6755c1f4c2f29b65391f786c3e6bcf5ea206",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 2.24325,
+    "overviewBottom": -2.8432500000000003,
     "z": "405085cae04f77c6b98cee25d7875bb8eccbb94d3bee4ead9beaa57eb358d4e1",
     "slope": "60ddbb43526e8be487b65fa16c32c194e427535fb7ba49f1741d4f9412693bd0",
     "mesh": "8d5fe962ba302ca5a57e6430d3101eba8fc2ea736e853f15e4c37cc86ff72617",
@@ -430,6 +444,10 @@
    },
    "cand": {
     "id": "ANA_r57_c57",
+    "overviewMesh": "05b388d3e9bba3f15fe4e63f5422d8c57065dce90b7eda6e83829938ee584309",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 0.7020000000000001,
+    "overviewBottom": -1.302,
     "z": "d45436f10038bb0ae709c1412fb7dc4f6bcd4da2f3f24d34b2e2da7af0ac8a31",
     "slope": "8c2b28ca962db757fc5e1416044d67a4874998367bcecbbec7970f7329aa80f1",
     "mesh": "e82d65d615092c572f5db3daeb80d93996d72e4f0e0af02fc5eea4a00417d237",
@@ -825,6 +843,10 @@
    "region": "ANA",
    "ref": {
     "id": "R2",
+    "overviewMesh": "984d099d2668f2feb94ac60b82511529a1b283cf4de5e943040950cd0fea8746",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 0.25425000000000003,
+    "overviewBottom": -0.85425,
     "z": "4c6db77c48d06ccc983259de2351c24d7d4d7909df6832cdd6098a4ac357d90d",
     "slope": "774a61122aa1b2a627a853156a20313bf908535dfd35f8f23e2c929ba59da34d",
     "mesh": "c058adc124a3ed57ffdb02810b59e0360ece158e86df609834b95b4f61c88b07",
@@ -834,6 +856,10 @@
    },
    "cand": {
     "id": "ANA_r15_c33",
+    "overviewMesh": "b42623bf89fb9fc70b85fbeec8159def7c81e3fbc86ae9120f9873507b5bbfc7",
+    "overviewIndex": "9a55aebf8e70530b8ca5041097d5dcc0e7031129f30d61bfb8a24160b699a9a9",
+    "overviewTop": 0.46950000000000003,
+    "overviewBottom": -1.0695000000000001,
     "z": "e4ffd08518b55a3b42675cf7e291e26fb2959291237c9ddd50e59d6cca65284a",
     "slope": "84959332ef4e38f05f7760d90e829939bb854f95b495b43c029b558cfe01fbdd",
     "mesh": "3c6150f3b05ca4b968258aeb506513d15c908ebef9cce6828aa7c946ddd880f2",

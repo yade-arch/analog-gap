@@ -22,6 +22,7 @@ function loadDem(idx, id) {
 
 export async function snapshot() {
   const { buildTerrain } = await imp("features/compare/terrainMesh.js");
+  const { denseTerrain, EXAG, DENSE } = await imp("features/overview/pairScene.js");      // canlı Karşılaştırma (Overview) ağı
   const { exceedFraction } = await imp("features/compare/stats.js");
   const { UNITS, slopeLimit } = await imp("features/units/index.js");
   const { SETTINGS } = await imp("config.js");
@@ -30,13 +31,13 @@ export async function snapshot() {
   const refs = { moon: json("reference_moon.json"), mars: json("reference_mars.json") };
   const pick = (profile, region) => cands[profile].features.map((f) => f.properties).filter((p) => idx.windows[p.id] && (!region || p.region === region)).sort((a, b) => a.rank - b.rank)[0];
   const scen = [["moon", "Site04", "ATA"], ["moon", "Site04", "ANA"], ["mars", "R2", null]];
-  const out = { scale: { windowKm: SETTINGS.windowKm, grid: idx.grid, cell_m: idx.cell_m, slope_step_deg: idx.slope_step_deg }, limits: {}, scenarios: [] };
+  const out = { scale: { windowKm: SETTINGS.windowKm, overviewExag: EXAG, overviewDense: DENSE, grid: idx.grid, cell_m: idx.cell_m, slope_step_deg: idx.slope_step_deg }, limits: {}, scenarios: [] };
   for (const pf of ["moon", "mars"]) for (const u of UNITS) out.limits[`${u.id}.${pf}`] = slopeLimit(u, pf, params)?.value ?? null;
   for (const [pf, refId, region] of scen) {
     const p = pick(pf, region), lim = slopeLimit(UNITS[0], pf, params)?.value ?? null, side = {};
     for (const [k, id] of [["ref", refId], ["cand", p.id]]) {
-      const dem = loadDem(idx, id), { geometry, zmed } = buildTerrain(dem);
-      side[k] = { id, z: sha(dem.z), slope: sha(dem.slope), mesh: sha(geometry.attributes.position.array), index: sha(new Uint32Array(geometry.index.array)), zmed, exceed: exceedFraction(dem, lim) };
+      const dem = loadDem(idx, id), { geometry, zmed } = buildTerrain(dem), dt = denseTerrain(dem);
+      side[k] = { id, overviewMesh: sha(dt.geo.attributes.position.array), overviewIndex: sha(new Uint32Array(dt.geo.index.array)), overviewTop: dt.top, overviewBottom: dt.bottom, z: sha(dem.z), slope: sha(dem.slope), mesh: sha(geometry.attributes.position.array), index: sha(new Uint32Array(geometry.index.array)), zmed, exceed: exceedFraction(dem, lim) };
     }
     out.scenarios.push({ profile: pf, region: p.region, ...side, D: p.D, d: p.d, O: p.O, cand_pct: p.derived_percentiles, ref_vars: refs[pf].variables });
   }
