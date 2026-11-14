@@ -9,7 +9,7 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - Dosyalar: pages/Game.jsx, features/game/*, game.css, i18n/tr.game.js, en.game.js.
 
 ## Sırada
-- PR açıklaması ve push. (Tarayıcı testi bitti: Ay, Mars, Veri eksik termal, süre bitişi, dar ekran.)
+- PR açıldı; gözden geçirme bekleniyor.
 
 ## Varsayımlar (PR'a da yazıldı)
 - Süre/maliyet/kıyafet değerleri `rules.js` içinde, hepsi "Simülasyon varsayımı"; RulesPanel'de görünür.
@@ -20,4 +20,3 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - Gösterilen adayların hepsinde D var (filtreyi geçenler); D yoksa "Veri eksik" yolu kodda mevcut.
 - Haversine Card.jsx'te dışa aktarılmadığı için (dokunulmaz dosya) data.js'de küçük kopya var.
 - MapView onSelect ilk çizimde yakalanıyor (MapView.jsx dokunulmaz): Game.jsx'te ref + useCallback ile sarıldı.
-- Gösterilen adayların tümünde D var; "D'si olmayan pencere" yolu (N/Missing) yalnızca kodda.
