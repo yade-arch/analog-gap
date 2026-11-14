@@ -6,7 +6,12 @@ import CopyPre from "./components/CopyPre.jsx";
 
 const STEPS = ["Data", "Preparation", "Properties", "Comparability", "Comparison", "Result"];
 const STEP_D = ["NASA elevation data: Earth NASADEM, Moon LOLA, Mars CTX", "all put on the same 30 m grid", "slope, height difference, surface roughness", "places whose ranges do not overlap are removed", "difference in spread → terrain distance", "ranked list + missing topics"];
-const Sec = ({ title, children }) => <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">{children}</div></details>;
+const Sec = ({ title, kid, children }) => (
+  <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">
+    {kid && <p className="kid-line">{kid}</p>}
+    {kid ? <details className="sci"><summary>Details for scientists</summary>{children}</details> : children}
+  </div></details>
+);
 const FORMULA = `Technical names: D = terrain distance, d_k = distance per property (slope / height difference / surface roughness), O_k = overlap, P10/P50/P90 = typical value and range, W1 = Wasserstein distance, IQR = interquartile range (width of the middle half).
 Properties (landform only): slope, local relief (11×11, 330 m, max−min), roughness (11×11 RMS of z − mean_5x5(z))
 Filter:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  for every k, and valid pixels >= 90%
@@ -37,24 +42,24 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
         {STEPS.map((s, i) => <li key={s}><strong>{s}</strong><span>{STEP_D[i]}</span></li>)}
       </ol>
 
-      <Sec title="Common scale and grid">
+      <Sec title="Same size squares everywhere" kid="All maps are cut into the same small 30 m squares, so the Moon, Mars and Earth are measured with the same ruler.">
         <p><Tag kind="der" />All elevation models are averaged onto a 30 m equal-area local projection; slope uses Horn 3×3 on the 30 m grid (effective baseline ≈ 60 m); window 10 × 10 km (333 × 333 pixels), step 5 km. No product is sharpened; fine Moon and Mars detail is lost at this scale.</p>
         <p>Distortion note: one LAEA grid per region was used (not centred on each window); scale error ≈ 0.08% at ≈ 500 km.</p>
       </Sec>
-      <Sec title="Properties and formulas">
+      <Sec title="What we measure and how" kid="For every little square we check how steep it is, how big the bumps are and how rough it feels. Then we compare these numbers with the Moon or Mars and turn the difference into one number.">
         <CopyPre text={FORMULA} />
         <p>Sensitivity analysis (window 5/20 km, grid 90 m, threshold 0.25/0.75, dropping a property): <strong>not done</strong> (cut list, time). Thresholds were not tuned to these results.</p>
       </Sec>
-      <Sec title="Filter and ranking (overlap, property distances, terrain distance)">
+      <Sec title="Which places make the list" kid="A place only makes the list if its ground is at least a bit like the Moon or Mars ground. Then places are sorted: the smallest terrain distance comes first.">
         <p>O_k: how much the candidate's P10–P90 range overlaps the reference's P10–P90 range; a window is removed unless this is ≥ 0.5 for every property and valid pixels are ≥ 90%. <Term k="d_slope">d_k</Term>: W1/IQR per property. <Term k="D">D</Term>: the equal-weight average of the three d_k. Weights are fixed.</p>
       </Sec>
-      <Sec title="Temperature (why it is not in the distance)">
+      <Sec title="Why temperature is kept apart" kid="Hot and cold are shown, but they do not change the terrain distance, because the Moon and Mars are much colder than any place on Earth.">
         <p>Temperature is <strong>not used</strong> in the distance or the filter: Earth LST (surface, two samples), Moon Diviner PRP (2 cm below the surface, model) and Mars THEMIS (not calibrated) are not the same quantities; they are only shown, with product names, in Properties and the Gap panel. Mars temperature: data missing.</p>
       </Sec>
-      <Sec title="How candidates are made and the reference targets">
+      <Sec title="Where the places come from" kid="We looked at four big areas on Earth and cut them into 10 km squares, then compared each square with the Moon or Mars area.">
         <p>Candidates are scanned in: Southwestern USA, Atacama, Island of Hawaiʻi, Western/Central Anatolia. Places anywhere else on Earth can be analysed on demand from the map. Known analogs are not used to make candidates; they are only for the positive control and the "known" label. Reference targets: Moon = around Shackleton (LOLA, 3 ROI windows), Mars = around Jezero (CTX DTM, R2).</p>
       </Sec>
-      <Sec title="Validation (positive and negative control)">
+      <Sec title="Did we check our work?" kid="We tested if places that scientists already use as Moon or Mars practice sites end up near the top. They did not always, so we say honestly that the method is not proven yet.">
         <h3>Pozitif kontrol <Tag kind="der" /></h3>
         <Warn><strong>Target not met.</strong> Success target: median percentile of known analogs ≤ 20%. The result below is reported as it is; parameters and thresholds were not tuned to it. n = 5 tested (of 13 rows; 7 rows have no coordinates, Salda falls outside a valid window because of the water mask). The regions are unbalanced (US-SW 4, HAW 1, ANA 1, ATA 0).</Warn>
         {pc && (
@@ -94,7 +99,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
       </Sec>
 
       {expl && (
-        <Sec title="Exploratory analysis done afterwards: each Moon reference separately">
+        <Sec title="Extra check: each Moon spot alone" kid="We also compared Earth with each of the three Moon spots one by one, to see if the results change.">
           <Warn><strong>Exploratory (post-hoc).</strong> This was done after the main results, using Site01, Site04 and Site07 separately instead of the pooled Moon reference. It does <strong>not change</strong> the main ranking, thresholds or the positive-control result, and should not be read as a hypothesis test.</Warn>
           {expl.sites && Object.entries(expl.sites).map(([s, v]) => (
             <div key={s}>
@@ -111,11 +116,11 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
         </Sec>
       )}
 
-      <Sec title="Limitations">
+      <Sec title="What this cannot tell you" kid="It only compares the shape of the ground. It cannot say anything about air, cold, dust, radiation or what the rocks are made of.">
         <Limitations lim={lim} />
       </Sec>
 
-      <Sec title="Data inventory and sources (data_inventory.csv)">
+      <Sec title="Where the data comes from" kid="A list of every map and measurement we used, mostly from NASA, with where to download it.">
         <div style={{ overflowX: "auto" }}>
           <table>
             <thead><tr><th>ID</th><th>Body</th><th>Product</th><th>Version</th><th>Resolution</th><th>Units</th><th>License</th><th>Status</th></tr></thead>

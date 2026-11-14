@@ -38,3 +38,4 @@ html .disc-img::after { content: ""; position: absolute; left: 50%; top: 75px; w
 html .disc-img figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; } html .disc-body { color: var(--ink); }
 html .kid-steps { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 12px; } html .kid-steps li { display: flex; gap: 12px; align-items: start; font-size: 16px; line-height: 1.5; }
 html .kid-steps b { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; }
+html .kid-line { font-size: 16px; line-height: 1.6; margin: 0 0 12px; } html .sci > summary { cursor: pointer; color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
