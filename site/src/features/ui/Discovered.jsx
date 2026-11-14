@@ -3,6 +3,7 @@ import { fmt } from "../../common.jsx";
 import { t } from "../../i18n/index.js";
 import { listDiscovered, clearDiscovered, closer } from "../planet/discovered.js";
 import { pointId } from "../planet/pointAnalysis.js";
+import { gibsImg } from "../planet/power.js";
 
 // "Places you have discovered": every point this viewer checked on the map (kept in this browser). Under each card:
 // which reference (Moon or Mars) it is closer to, the terrain distance to both (not a percentage) and the three typical values.
@@ -14,6 +15,7 @@ function DiscCard({ x }) {
   const vals = [["slope", t("pt.v.slope"), x.p50.slope, "°", 1], ["relief", t("pt.v.relief"), x.p50.relief, "m", 0], ["rough", t("pt.v.rough"), x.p50.rough, "m", 2]];
   return (
     <div className="g-card disc">
+      <figure className="disc-img"><img src={gibsImg(x.lat, x.lon, "BlueMarble_ShadedRelief_Bathymetry", 0.25, 320)} alt={t("disc.imgAlt")} width="320" height="320" loading="lazy" /><figcaption>{t("disc.imgSrc")}</figcaption></figure>
       <div className="disc-top">
         <span className={"disc-body " + (b || "none")}>{b ? t("disc.closer").replace("{b}", body) : t("disc.none")}</span>
         <div className="cand2-d" title={t("list.dnote")}><b>{b ? fmt(x[b].D, 3) : "—"}</b><span>{t("gauge.title")}</span></div>
