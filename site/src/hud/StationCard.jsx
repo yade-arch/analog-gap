@@ -11,7 +11,7 @@ export function StationTable({ res, refTitle, candTitle }) {
       <thead><tr><th>Ölçüt</th><th className="n">{refTitle}</th><th className="n">{candTitle}</th><th>Etiket</th></tr></thead>
       <tbody>
         {res.rows.map((r) => (
-          <tr key={r.label}><td>{r.label}</td><td className="n">{r.ref}</td><td className="n">{r.cand}</td><td><span className={"tag " + r.tag}>{t(TAG_KEYS[r.tag])}</span></td></tr>
+          <tr key={r.label}><td>{r.label}</td>{r.single != null ? <td className="n" colSpan={2}>{r.single}</td> : <><td className="n">{r.ref}</td><td className="n">{r.cand}</td></>}<td><span className={"tag " + r.tag}>{t(TAG_KEYS[r.tag])}</span></td></tr>
         ))}
       </tbody>
     </table>
@@ -32,7 +32,10 @@ export default function StationCard({ res, refTitle, candTitle, D, onClose, onNe
         {!last && <button className="hud-btn sm" onClick={onNext}>{nextLabel || t("station.next")}</button>}
         <button className="hud-btn sm" onClick={onClose} aria-label={t("station.close")}>✕</button>
       </div>
-      <StationTable res={res} refTitle={refTitle} candTitle={candTitle} />
+      {res.summary && <p className="sc-summary">{res.summary}</p>}
+      {res.summary
+        ? <details className="sc-more"><summary>{t("station.more")}</summary><StationTable res={res} refTitle={refTitle} candTitle={candTitle} /></details>
+        : <StationTable res={res} refTitle={refTitle} candTitle={candTitle} />}
       {res.note && res.rows.length > 0 && <p className="hud-note">{res.note}</p>}
       <p className="hud-note warn-amber"><b>Gap:</b> {t("station.gap")}{D != null ? ` Arazi uzaklığı = ${D.toFixed(3)} (0 = aynı, düşük = daha benzer; fiziksel mesafe değil, arazi şekillerinin farkı).` : ""}</p>
     </div>

@@ -15,4 +15,7 @@
 .regions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .regions button { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: transparent; color: var(--ink); cursor: pointer; }
 .regions button.on { border-color: var(--c-earth); background: var(--c-earth); color: #fff; }
+.cand .pair { margin: 4px 0; } .cand .dline { margin-top: 6px; } .small { font-size: 12px; }
+.badge { display: inline-block; border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 12.5px; margin: 4px 0; }
+.tablewrap { overflow-x: auto; }
 .side-moon { border-top: 3px solid var(--c-moon); } .side-mars { border-top: 3px solid var(--c-mars); } .side-earth { border-top: 3px solid var(--c-earth); }

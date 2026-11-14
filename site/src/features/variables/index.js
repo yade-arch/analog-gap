@@ -16,5 +16,5 @@ export function stationResult(v, profile, ctx) {
   const a = v.availability(profile);
   if (a.status === "missing" || !v.compute) return { v, a, status: "missing", rows: [], note: a.note };
   const r = v.compute(ctx);
-  return { v, a, status: a.status, rows: r.rows, note: [a.note, r.note].filter(Boolean).join(" · ") };
+  return { v, a, status: a.status, rows: r.rows, summary: r.summary, note: [a.note, r.note].filter(Boolean).join(" · ") };
 }

@@ -64,7 +64,7 @@ export default function App() {
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={candR} profile={profile} D={D} onSelect={go} />}
             {page === "home" && <Home cand={cand} profile={profile} D={D} />}
-            {page === "list" && <ListPage cand={cand} region={region} profile={profile} hasDem={dem ? (id) => id in dem : null} />}
+            {page === "list" && <ListPage cand={cand} region={region} profile={profile} reference={reference} known={D.known} hasDem={dem ? (id) => id in dem : null} />}
             {page === "card" && (feature
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
               : <div className="card">Bu pencere seçili profilin aday dosyasında yok (yalnızca bölge başına en iyi 250 aday dosyaya konur). <a href="#/list">Listeye dön</a></div>)}

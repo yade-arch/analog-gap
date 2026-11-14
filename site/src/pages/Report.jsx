@@ -52,6 +52,7 @@ export default function Report({ D, profile, cand, id }) {
             return (
               <div className="card" key={v.id}>
                 <h3>{t(v.titleKey)} <span className="muted">· {t("station." + res.status)}</span></h3>
+                {res.summary && <p>{res.summary}</p>}
                 <StationTable res={res} refTitle={`${body} (referans)`} candTitle={`${t("side.earth")} (${t("side.cand")}) · ${p.id}`} />
                 {res.note && res.rows.length > 0 && <p className="muted">{res.note}</p>}
               </div>

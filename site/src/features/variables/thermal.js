@@ -12,8 +12,8 @@ function compute({ p, tE, tM }) {
   return {
     status: "limited",
     rows: [
-      { label: "dT_dn = LST_Day − LST_Night, yıllık medyan (günlük aralık vekili, iki örnek)", ref: "Veri eksik (Ay günlük aralığı işlenmedi)", cand: ok ? `${fmt(e.dT_dn_K_median, 1)} K (P10–P90: ${e.dT_dn_K_p10_p90.join(" – ")})` : "Veri eksik", tag: "calc" },
-      { label: "Yıllık ortalama sıcaklık: Dünya T_mean2 (yüzey, iki örnek) / Ay temp_avg (2 cm derinlik, model; 3 saha P50 medyanı)", ref: m == null ? "Veri eksik" : fmt(m, 1) + " K", cand: ok && e.T_mean2_K_median != null ? fmt(e.T_mean2_K_median, 1) + " K" : "Veri eksik", tag: "calc" },
+      { label: "Gündüz–gece yüzey sıcaklığı farkı, yıllık ortanca (teknik ad: dT_dn = LST_Day − LST_Night; iki ölçüm anı)", ref: "Veri eksik (Ay günlük aralığı işlenmedi)", cand: ok ? `${fmt(e.dT_dn_K_median, 1)} K (P10–P90: ${e.dT_dn_K_p10_p90.join(" – ")})` : "Veri eksik", tag: "calc" },
+      { label: "Yıllık ortalama sıcaklık: Dünya yüzeyi (teknik ad: T_mean2, iki ölçüm anı) / Ay 2 cm derinlik (model, teknik ad: temp_avg; eşdeğer değil)", ref: m == null ? "Veri eksik" : fmt(m, 1) + " K", cand: ok && e.T_mean2_K_median != null ? fmt(e.T_mean2_K_median, 1) + " K" : "Veri eksik", tag: "calc" },
     ],
     note: "Nicelikler eşdeğer değil (yüzey LST ile 2 cm derinlikte model ortalama). Fark benzerlik puanına girmez.",
   };
