@@ -142,3 +142,5 @@ html[data-page="game"] main { padding: 0; margin: 0; max-width: none; }
 .g-arcade .g-kicker, .g-arcade .g-lead, .g-arcade .g-menu-card > .g-small:not(:has(a)) { display: none; }
 .g-arcade h1 { font-size: clamp(16px, 2.6vw, 28px); margin: 48px 0 16px; }
 .g-arcade .g-start.g-press { font-size: clamp(20px, 4vw, 40px); }
+.g-story { position: absolute; right: 16px; top: 56px; z-index: 5; display: flex; gap: 10px; align-items: center; max-width: 320px; padding: 10px 12px; border-radius: 12px; background: rgba(8, 14, 30, .82); color: #e6ecf5; font-size: 13px; }
+.g-story p { margin: 0; } .g-pxman { flex: none; image-rendering: pixelated; }
