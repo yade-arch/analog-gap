@@ -80,6 +80,11 @@ await step("rover protokolü (MockLink)", async () => {
   return `${tele.length} telemetri`;
 });
 
+await step("gezegen çekirdeği (coords, picking, registry, provider)", async () => {
+  const { planetTests } = await import(pathToFileURL(join(root, "scripts", "planet.test.mjs")).href);
+  return planetTests((p) => import(pathToFileURL(join(src, p)).href));
+});
+
 if (process.argv.includes("--no-build")) console.log("--   derleme atlandı (--no-build)");
 else await step("vite build", () => {
   const r = spawnSync(process.execPath, [join(root, "node_modules", "vite", "bin", "vite.js"), "build"], { cwd: root, encoding: "utf8" });
