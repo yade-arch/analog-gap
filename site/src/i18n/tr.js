@@ -1,7 +1,9 @@
 // Tüm arayüz metinleri (Türkçe). Yeni metin = buraya anahtar ekle, en.js'e iskelet çevirisi.
 import pages from "./tr.pages.js";
+import game from "./tr.game.js";
 export default {
   ...pages,
+  ...game,
   "app.title": "ANALOG GAP",
   "app.sub": "Karşılaştırma Görevi",
   "nav.compare": "Karşılaştırma",

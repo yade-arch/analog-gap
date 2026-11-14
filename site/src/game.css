@@ -1,0 +1,91 @@
+/* Emergency Analog Mission: yalnızca .g-* sınıfları; renkler theme.css değişkenlerinden (yeni global stil yok). */
+.g-page { max-width: 1400px; margin: 0 auto; }
+.g-head { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.g-head h2 { margin: 0; letter-spacing: .12em; font-size: 1.25rem; }
+.g-head p { margin: 2px 0 0; }
+
+/* Aşama çubuğu */
+.g-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0 0 14px; }
+.g-steps li { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: .85rem; color: var(--muted); }
+.g-steps li.on { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.g-steps li.past { color: var(--ink); border-color: var(--cool); }
+
+/* Oksijen sayacı: düşük seviyede renk (amber) ve ritim artar; kırmızı/yeşil yok */
+.g-o2 { min-width: min(100%, 360px); flex: 1 1 320px; max-width: 520px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: var(--panel-solid); }
+.g-o2-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.g-o2-title { letter-spacing: .14em; font-size: .8rem; color: var(--muted); }
+.g-o2-val { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.g-o2-track { height: 10px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; margin-top: 6px; }
+.g-o2-fill { height: 100%; background: var(--seq2); transition: width .9s linear; }
+.g-o2-note { font-size: .8rem; margin-top: 4px; }
+.g-o2-warn { border-color: var(--warn-line); }
+.g-o2-warn .g-o2-fill { background: var(--accent); }
+.g-o2-warn .g-o2-val { color: var(--accent); animation: g-pulse 2s ease-in-out infinite; }
+.g-o2-crit { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; animation: g-glow .8s ease-in-out infinite; }
+.g-o2-crit .g-o2-fill { background: var(--accent); }
+.g-o2-crit .g-o2-val { color: var(--accent); animation: g-pulse .8s ease-in-out infinite; }
+@keyframes g-pulse { 50% { opacity: .45; } }
+@keyframes g-glow { 50% { box-shadow: 0 0 0 1px var(--warn-line) inset; } }
+@media (prefers-reduced-motion: reduce) { .g-o2 *, .g-o2 { animation: none !important; transition: none !important; } }
+
+/* Etiketler */
+.g-lbl { display: inline-block; font-size: .72rem; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; margin-left: 4px; vertical-align: middle; white-space: nowrap; }
+.g-lbl-real { background: var(--t-obs); }
+.g-lbl-calc { background: var(--t-der); }
+.g-lbl-sim { background: var(--t-int); border-style: dashed; }
+.g-missing { color: var(--muted); font-style: italic; border-bottom: 1px dotted var(--muted); }
+
+/* Brifing */
+.g-alert { border: 1px solid var(--warn-line); background: var(--warn-bg); border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; }
+.g-alert strong { letter-spacing: .08em; color: var(--accent); }
+.g-alert p { margin: 6px 0 0; }
+.g-choice { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.g-choice button { flex: 1 1 200px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink); font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+.g-choice button small { font-weight: 400; color: var(--muted); font-size: .8rem; }
+.g-choice button.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.g-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 14px; }
+.g-big { font-size: 1rem; padding: 9px 16px; border: 0; cursor: pointer; margin-top: 6px; }
+.g-hint { color: var(--muted); margin: 0 0 10px; }
+
+/* Tablolar ve listeler */
+.g-table { width: 100%; border-collapse: collapse; font-size: .88rem; font-variant-numeric: tabular-nums; }
+.g-table th, .g-table td { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; }
+.g-table th { color: var(--muted); font-weight: 500; }
+.g-list { padding-left: 18px; margin: 6px 0; }
+.g-list li { margin: 3px 0; }
+.g-sim { color: var(--cool); font-weight: 600; }
+.g-diff { color: var(--accent); font-weight: 600; }
+
+/* Keşif */
+.g-maprow { grid-template-columns: minmax(0, 1fr) minmax(0, 480px); }
+.g-page #map { height: 62vh; min-height: 360px; }
+@media (max-width: 900px) { .g-maprow { grid-template-columns: minmax(0, 1fr); } .g-page #map { height: 48vh; } }
+
+/* Testler */
+.g-tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.g-test.done { border-color: var(--cool); }
+.g-test h3 { display: flex; gap: 8px; align-items: center; }
+.g-test h5 { margin: 10px 0 2px; }
+.g-run { width: 100%; padding: 14px; border-radius: 8px; border: 1px dashed var(--accent); background: transparent; color: var(--accent); font-weight: 700; cursor: pointer; }
+.g-run:hover { background: var(--warn-bg); }
+.g-result { font-weight: 600; }
+.g-strips { width: 100%; height: 56px; display: block; margin: 6px 0; }
+.g-strip-0 { fill: var(--seq2); } .g-strip-1 { fill: var(--seq4); } .g-strip-2 { fill: var(--seq3); } .g-strip-3 { fill: var(--seq1); }
+.g-strip-mid { fill: var(--ink); }
+.g-limit { fill: var(--accent); }
+.g-legend { list-style: none; padding: 0; margin: 0; font-size: .82rem; }
+.g-sw { display: inline-block; width: 12px; height: 8px; margin-right: 6px; background: currentColor; }
+.g-legend .g-strip-0 { background: var(--seq2); } .g-legend .g-strip-1 { background: var(--seq4); } .g-legend .g-strip-2 { background: var(--seq3); } .g-legend .g-strip-3 { background: var(--seq1); }
+
+/* Kıyafet */
+.g-suitcard h3 { color: var(--accent); }
+.g-pros, .g-cons { list-style: none; padding: 0; margin: 4px 0; }
+.g-cons { color: var(--muted); }
+
+/* Sonuç */
+.g-out-success { border-color: var(--cool); }
+.g-out-risky, .g-out-nooxygen, .g-out-timeout { border-color: var(--accent); }
+
+.g-rules { margin-top: 14px; }
+.g-rules summary { cursor: pointer; font-weight: 600; }
+.g-foot { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; font-size: .88rem; overflow-wrap: anywhere; }
