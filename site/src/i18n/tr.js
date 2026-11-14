@@ -4,6 +4,7 @@ import game from "./tr.game.js";
 import anaekran from "./tr.anaekran.js";
 import world from "./tr.world.js";
 import hero from "./tr.hero.js";
+import overview from "./tr.overview.js";
 export default {
   ...pages,
   ...game,
@@ -85,4 +86,5 @@ export default {
   ...anaekran,
   ...world,
   ...hero,
+  ...overview,
 };

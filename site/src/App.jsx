@@ -14,6 +14,7 @@ import WorldBar from "./features/world/WorldBar.jsx";
 // Ağır paketler (three.js, MapLibre) yalnızca ilgili sayfada indirilir.
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
 const Compare = lazy(() => import("./pages/Compare.jsx"));
+const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -63,7 +64,7 @@ export default function App() {
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={candR} candAll={cand} region={region} setRegion={setRegion} profile={profile} D={D} onSelect={go} />}
-            {page === "home" && <Home hero />}
+            {page === "home" && <Overview D={D} profile={profile} cand={cand} reference={reference} selId={a1} />}
             {page === "about" && <Home cand={cand} profile={profile} D={D} />}
             {page === "list" && <ListPage cand={cand} region={region} setRegion={setRegion} profile={profile} reference={reference} known={D.known} tE={D.tE} tM={D.tM} hasDem={dem ? (id) => id in dem : null} />}
             {page === "card" && (feature

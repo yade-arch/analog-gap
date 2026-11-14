@@ -1,0 +1,83 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { t } from "../i18n/index.js";
+import { regionLabel } from "../i18n/terms.js";
+import { fmt } from "../common.jsx";
+import { SETTINGS } from "../config.js";
+import { loadDem, loadDemIndex } from "../features/compare/demLoader.js";
+import { webglOK } from "../features/compare/sceneRig.js";
+import { createPairScene, EXAG } from "../features/overview/pairScene.js";
+import { centreProfile } from "../features/overview/layers.js";
+import { PlaceCard, DistanceCard, CandPicker } from "../features/overview/Cards.jsx";
+import Panel, { statRows } from "../features/overview/Panel.jsx";
+import "../features/overview/overview.css";
+
+/** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
+ *  middle, collapsible tool panel below. Values come from the data files; nothing here is simulated. */
+export default function Overview({ D, profile, cand, reference, selId }) {
+  const host = useRef(null), sc = useRef(null), [gl] = useState(() => webglOK());
+  const list = useMemo(() => (cand?.features || []).map((f) => f.properties).sort((a, b) => a.rank - b.rank).slice(0, 40), [cand]);
+  const [pick, setPick] = useState(null);
+  const p = list.find((x) => x.id === (pick || selId)) || list[0];
+  const refId = SETTINGS.references[profile][0];
+  const [dems, setDems] = useState({}), [idx, setIdx] = useState(null);
+  const [layer, setLayer] = useState("dem"), [mode, setMode] = useState("3d"), [open, setOpen] = useState(true), [swapped, setSwapped] = useState(false);
+  const names = [t("ui.body." + profile), t("side.earth").charAt(0) + t("side.earth").slice(1).toLowerCase()];
+
+  useEffect(() => { loadDemIndex().then(setIdx).catch(() => setIdx({ windows: {} })); }, []);
+  useEffect(() => {
+    if (!p) return undefined; let live = true; setDems({});
+    Promise.all([loadDem(refId).catch(() => null), loadDem(p.id).catch(() => null)]).then(([r, c]) => live && setDems({ r, c }));
+    return () => { live = false; };
+  }, [refId, p?.id]);
+  useEffect(() => { if (!gl || !host.current) return undefined; sc.current = createPairScene(host.current); return () => sc.current.dispose(); }, [gl]);
+  useEffect(() => {
+    const s = sc.current; if (!s) return;
+    const L = [[dems.r, profile], [dems.c, "earth"]]; if (swapped) L.reverse();
+    L.forEach(([dem, body], i) => s.setTile(i, dem || null, layer, body));
+  }, [dems, swapped]);
+  useEffect(() => { sc.current?.setLayer(layer); }, [layer]);
+  useEffect(() => { sc.current?.setMode(mode === "2d" ? "2d" : "3d"); }, [mode]);
+
+  if (!p) return <p>{t("ui.loading")}</p>;
+  const mr = idx?.windows?.[refId], mc = idx?.windows?.[p.id];
+  const refCard = (
+    <PlaceCard key="r" body={profile} title={`${names[0]} – ${mr?.title || refId}`} sub={reference?.label}
+      chips={[["grid", "30 m"], ["product", profile === "moon" ? "LDEM_80S_20M" : "CTX DTM (R2)"], ["src", profile === "moon" ? "NASA PDS" : "USGS"]]}
+      details={[[t("ov.d.coord"), mr ? `${fmt(mr.lat, 3)}°, ${fmt(mr.lon, 3)}°` : null], [t("cmp.elev"), mr ? `${fmt(mr.z_min, 0)} – ${fmt(mr.z_max, 0)} m` : null], [t("ov.d.product"), mr?.product]]} />
+  );
+  const earthCard = (
+    <PlaceCard key="e" body="earth" title={`${names[1]} – ${regionLabel(p.region)}`} sub={`${t("list.code")}: ${p.id}`}
+      chips={[["grid", "30 m"], ["product", "NASADEM_HGT v001"], ["src", "NASA LP DAAC"], ["range", mc ? `${fmt(mc.z_min, 0)}–${fmt(mc.z_max, 0)} m` : null]]}
+      details={[[t("ov.d.coord"), `${fmt(p.center_lat, 3)}°, ${fmt(p.center_lon, 3)}°`], [t("map.rank"), `#${p.rank}`], [t("ov.d.product"), mc?.product]]}>
+      <CandPicker list={list} value={p.id} onPick={setPick} />
+    </PlaceCard>
+  );
+  const cards = swapped ? [earthCard, refCard] : [refCard, earthCard];
+  const profA = dems.r ? centreProfile(dems.r) : [], profB = dems.c ? centreProfile(dems.c) : [];
+  const download = () => {
+    const out = { product: "ANALOG GAP overview", generated: new Date().toISOString(), target: profile, reference: refId, candidate: p.id, terrain_distance_D: p.D,
+      d: p.d, candidate_percentiles: p.derived_percentiles, reference_percentiles: reference?.variables && Object.fromEntries(Object.entries(reference.variables).map(([k, v]) => [k, { p10: v.p10, p50: v.p50, p90: v.p90 }])),
+      sources: [mr?.product, mc?.product], note: t("ov.dlNote") };
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" })); a.download = `analog-gap-${profile}-${p.id}.json`; a.click();
+  };
+
+  return (
+    <div className={"ov" + (open ? "" : " ov-full")}>
+      <div className="ov-top">{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
+      <div className="ov-stage">
+        {gl ? <div ref={host} className="ov-canvas" aria-label={t("ov.aria")} /> : <p className="ov-nogl">{t("cmp.fallback")}</p>}
+        {(!dems.r || !dems.c) && <p className="ov-load">{t("cmp.loading")}</p>}
+        <button className="ov-swap" onClick={() => setSwapped(!swapped)} aria-label={t("ov.swap")} title={t("ov.swap")}>⇄</button>
+        <div className="ov-ctrl">
+          <button onClick={() => sc.current?.north()} aria-label={t("ov.north")} title={t("ov.north")}>N</button>
+          <button onClick={() => sc.current?.zoom(0.8)} aria-label={t("globe.zoomin")}>+</button>
+          <button onClick={() => sc.current?.zoom(1.25)} aria-label={t("globe.zoomout")}>−</button>
+        </div>
+        <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
+      </div>
+      <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
+        profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
+        stats={statRows(reference, p, mr, mc, names)} actions={{ report: `#/report/${p.id}/${profile}`, download }} />
+    </div>
+  );
+}

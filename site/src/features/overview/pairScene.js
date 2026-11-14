@@ -1,0 +1,62 @@
+// Two real terrain windows side by side (left: Moon/Mars reference, right: Earth candidate) in one three.js scene.
+// Heights come only from the DEMs (buildTerrain); the dark base slab under each tile is decoration. Height exaggeration EXAG.
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { buildTerrain } from "../compare/terrainMesh.js";
+import { SETTINGS } from "../../config.js";
+import { layerCanvas } from "./layers.js";
+
+export const EXAG = 3;
+const W = SETTINGS.windowKm, GAP = 1.6, OFF = (W + GAP) / 2;
+
+function tile(dem, layer, body) {
+  const { geometry } = buildTerrain(dem);
+  const tex = new THREE.CanvasTexture(layerCanvas(dem, layer, body)); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const g = new THREE.Group();
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, metalness: 0 }));
+  mesh.scale.y = EXAG; g.add(mesh);
+  geometry.computeBoundingBox();
+  const lo = geometry.boundingBox.min.y * EXAG;
+  const slab = new THREE.Mesh(new THREE.BoxGeometry(W, 0.35, W), new THREE.MeshStandardMaterial({ color: 0x1b2440, roughness: 1 }));
+  slab.position.y = lo - 0.2; g.add(slab);
+  g.userData = { mesh, tex, dem, body };
+  return g;
+}
+
+export function createPairScene(host) {
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); renderer.outputColorSpace = THREE.SRGBColorSpace;
+  host.appendChild(renderer.domElement);
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, 0.05, 400);
+  scene.add(new THREE.HemisphereLight(0xcfe0ff, 0x1a2030, 0.9));
+  const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(-8, 10, 6); scene.add(sun);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  Object.assign(controls, { enableDamping: true, minDistance: 4, maxDistance: 140, maxPolarAngle: Math.PI * 0.49, screenSpacePanning: true });
+  const tiles = [null, null];
+  let mode = "3d", raf = 0;
+  const home = () => {
+    controls.target.set(0, 0, 0);
+    const k = Math.max(1, 1.7 / (camera.aspect || 1));               // narrow screens: step back so both tiles fit
+    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 10.5 * k, 17 * k);
+    controls.update();
+  };
+  const resize = () => { const w = host.clientWidth || 1, h = host.clientHeight || 1; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+  const ro = new ResizeObserver(resize); ro.observe(host); resize(); home();
+  const loop = () => { controls.update(); renderer.render(scene, camera); raf = requestAnimationFrame(loop); };
+  loop();
+  const place = () => tiles.forEach((t, i) => t && t.position.set(i === 0 ? -OFF : OFF, 0, 0));
+  const drop = (t) => { if (!t) return; scene.remove(t); t.traverse((o) => { o.geometry?.dispose(); o.material?.map?.dispose(); o.material?.dispose(); }); };
+
+  return {
+    /** side 0 = left, 1 = right */
+    setTile(side, dem, layer, body) { drop(tiles[side]); tiles[side] = dem ? tile(dem, layer, body) : null; if (tiles[side]) scene.add(tiles[side]); place(); },
+    setLayer(layer) {
+      for (const t of tiles) if (t) { const u = t.userData; u.tex.dispose(); u.tex = new THREE.CanvasTexture(layerCanvas(u.dem, layer, u.body)); u.tex.colorSpace = THREE.SRGBColorSpace; u.mesh.material.map = u.tex; u.mesh.material.needsUpdate = true; }
+    },
+    swap() { tiles.reverse(); place(); },
+    setMode(m) { mode = m; controls.enableRotate = m !== "2d"; home(); },
+    zoom(f) { const d = camera.position.clone().sub(controls.target).multiplyScalar(f); camera.position.copy(controls.target).add(d); },
+    north() { home(); },
+    dispose() { cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); tiles.forEach(drop); renderer.dispose(); renderer.domElement.remove(); },
+  };
+}
