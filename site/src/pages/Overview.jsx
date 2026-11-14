@@ -78,7 +78,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
     <div className={"ov" + (open ? "" : " ov-full")}>
       <div className="ov-top">{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
       {!zoomed ? (
-      <div className="ov-stage ov-intro" onWheelCapture={(e) => { if (e.deltaY < 0) setZoomed(true); }} onDoubleClick={() => setZoomed(true)}>
+      <div className="ov-stage ov-intro" onDoubleClick={() => setZoomed(true)}>
         <div className="ov-globes">
           <GlobeView body={profile} compact photo={import.meta.env.BASE_URL + "data/tex/" + (profile === "moon" ? "moon_lroc_color_2048.jpg" : "mars_viking_clr_2048.jpg")} markers={mr ? [{ id: "", lat: mr.lat, lon: mr.lon, kind: "ref", label: mr.title }] : []} />
           <GlobeView body="earth" compact photo={PHOTO} markers={[{ id: "", lat: p.center_lat, lon: p.center_lon, kind: "cand", label: p.id }]} />
