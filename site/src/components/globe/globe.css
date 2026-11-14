@@ -12,3 +12,6 @@
 .globe-bar select { flex: 1 1 180px; min-width: 0; max-width: 100%; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink); }
 .globe-note { font-size: .8rem; color: var(--muted); margin: 4px 0 0; }
 @media (max-width: 900px) { .globe-canvas { height: 48vh; } }
+.globe-outline { fill: none; stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 2; opacity: .75; }
+.globe-compact .globe-canvas { height: 180px; min-height: 160px; }
+.globe-compact .globe-note { display: none; }

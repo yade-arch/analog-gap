@@ -1,6 +1,7 @@
 // Tüm arayüz metinleri (Türkçe). Yeni metin = buraya anahtar ekle, en.js'e iskelet çevirisi.
 import pages from "./tr.pages.js";
 import game from "./tr.game.js";
+import anaekran from "./tr.anaekran.js";
 export default {
   ...pages,
   ...game,
@@ -79,4 +80,5 @@ export default {
   "tag.real": "Gerçek ölçüm",
   "tag.calc": "Hesaplanmış",
   "tag.sim": "Simülasyon varsayımı",
+  ...anaekran,
 };

@@ -10,7 +10,7 @@ const lines = (pos, color, opacity) => {
 };
 
 export function createGlobe(el) {
-  const C = { body: css(el, "--bg2", "#101a2e"), line: css(el, "--line", "#2a3b57"), land: css(el, "--muted", "#9db0c6"), mark: css(el, "--cool", "#7fb2e0"), sel: css(el, "--accent", "#f0b445") };
+  const C = { body: css(el, "--bg2", "#101a2e"), line: css(el, "--line", "#2a3b57"), land: css(el, "--muted", "#9db0c6"), mark: css(el, "--cool", "#7fb2e0"), sel: css(el, "--accent", "#f0b445"), ink: css(el, "--ink", "#e8eef7") };
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
   el.appendChild(renderer.domElement);
@@ -18,8 +18,9 @@ export function createGlobe(el) {
   camera.position.set(0, 0, 3.2);
   scene.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 48), new THREE.MeshBasicMaterial({ color: C.body })));
   scene.add(lines(graticule(30), C.line, 0.9));
-  const land = new THREE.Group(); scene.add(land);
-  const pts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color: C.mark, size: 6, sizeAttenuation: false }));
+  const land = new THREE.Group(), outl = new THREE.Group(); scene.add(land, outl);
+  // Renk işaretçi başına (marker.color; yoksa --cool). Malzeme beyaz, köşe rengiyle çarpılır.
+  const pts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color: 0xffffff, vertexColors: true, size: 6, sizeAttenuation: false }));
   scene.add(pts);
   const sel = new THREE.Mesh(new THREE.RingGeometry(0.018, 0.03, 24), new THREE.MeshBasicMaterial({ color: C.sel, side: THREE.DoubleSide }));
   sel.visible = false; scene.add(sel);
@@ -54,10 +55,13 @@ export function createGlobe(el) {
 
   return {
     setLand(pos) { land.clear(); if (pos?.length) land.add(lines(pos, C.land, 0.8)); },
+    setOutlines(pos) { outl.children.forEach((o) => { o.geometry.dispose(); o.material.dispose(); }); outl.clear(); if (pos?.length) outl.add(lines(pos, C.ink, 0.75)); },
     setMarkers(list) {
       markers = list || [];
       pts.geometry.dispose(); pts.geometry = new THREE.BufferGeometry();
       pts.geometry.setAttribute("position", new THREE.Float32BufferAttribute(markers.flatMap((m) => toXYZ(m.lat, m.lon, 1.004)), 3));
+      const col = new THREE.Color(), def = new THREE.Color(C.mark);
+      pts.geometry.setAttribute("color", new THREE.Float32BufferAttribute(markers.flatMap((m) => (m.color ? col.set(m.color) : def).toArray()), 3));
     },
     setSelected(id) {
       const m = markers.find((x) => x.id === id); sel.visible = !!m; if (!m) return;
