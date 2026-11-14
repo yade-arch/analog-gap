@@ -29,12 +29,12 @@ export async function planetTests(imp) {
   const { localScan } = await imp("features/planet/localScan.js");
   const r = await queryAll("mars", 18, 77, {}, [bad, localScan]);
   assert.equal(r.results[0].error, "CORS"); assert.equal(r.results[1].found, false); assert.ok(r.results[1].missingReason);
-  const e = await queryAll("earth", 0, 0, { cand: { features: [] }, regions: { features: [] } });
+  const e = await queryAll("earth", 0, 0, { cand: { features: [] }, regions: { features: [] } }, [localScan]);
   assert.equal(e.results[0].found, false);
   // Gerçek veri: en iyi Ay-profil adayının merkezi -> aynı pencere ve dosyadaki D; Ay Site04 merkezi -> bulunur.
   const rd = (f) => JSON.parse(readFileSync(new URL("../public/data/" + f, import.meta.url), "utf8"));
   const cand = rd("candidates_moon.geojson"), best = cand.features.map((f) => f.properties).sort((x, y) => x.rank - y.rank)[0];
-  const er = (await queryAll("earth", best.center_lat, best.center_lon, { cand, regions: rd("regions.geojson") })).results[0];
+  const er = (await queryAll("earth", best.center_lat, best.center_lon, { cand, regions: rd("regions.geojson") }, [localScan])).results[0];
   assert.ok(er.found && er.place.windowId === best.id && er.variables.find((x) => x.id === "D").value === best.D, "localScan Dünya");
   const rm = rd("reference_moon.json"), s4 = rm.windows[0];
   assert.ok((await queryAll("moon", s4.lat, s4.lon_E, { rm })).results[0].found, "localScan Ay");

@@ -2,8 +2,9 @@
 // variable = { id, value|null, unit, source, resolution_m, kind: 'obs'|'der'|'sim'|'int', note?, missingReason? }. value null ise missingReason zorunlu.
 // queryAll: adapter'lar paralel çalışır; biri hata verirse diğerleri sürer (hata satır olarak döner). Değer üretilmez, yalnızca dosyadan okunur.
 import { localScan } from "./localScan.js";
+import { nasaPower } from "./power.js";
 
-export const ADAPTERS = [localScan];
+export const ADAPTERS = [localScan, nasaPower];   // nasaPower: Dünya'nın her noktası (iklim normali, hücre ortalaması)
 // Faz 0 kararı: küresel yükseklik adapter'ı ertelendi (CORS'lu NASA nokta sorgu servisi doğrulanmadı; docs/PLAN-GEZEGEN.md §3).
 export const DEFERRED = [{ id: "globalElevation", reason: "CORS'lu NASA yükseklik nokta servisi doğrulanmadı (MOLA/LOLA/NASADEM)" }];
 

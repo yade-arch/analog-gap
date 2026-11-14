@@ -7,6 +7,7 @@ import { D_SCALE, dMarkers } from "../features/home/markers.js";
 import { t } from "../i18n/index.js";
 import RegionCard from "../features/world/RegionCard.jsx";
 import RefCard from "../features/ui/RefCard.jsx";
+import RegionPanel from "../features/ui/RegionPanel.jsx";
 import "../features/home/home.css";
 import "../features/ui/glass.css";
 
@@ -15,18 +16,20 @@ const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
 
 // Harita: solda referans kartı, sağda 3B küre / 2B harita; "Ek bilgiler" açılır kutusu gerçek sayılarla (meta). Bölge kartı ve uyarı altta.
 export default function MapPage({ cand, candAll, region, setRegion, profile, D, onSelect }) {
-  const [view, setView] = useState("globe");
+  const [view, setView] = useState("globe"), [sel, setSel] = useState(null);
   const markers = useMemo(() => dMarkers(cand), [cand]);
   const m = cand.meta;
   return (
     <div className="glass">
       <div className="mapgrid">
         <div>
-          <RefCard target={profile} reference={profile === "moon" ? D.rm : D.rs} tM={D.tM} />
+          {sel ? <RegionPanel sel={sel} cand={candAll || cand} target={profile} onSelect={onSelect} onClose={() => setSel(null)} />
+            : <RefCard target={profile} reference={profile === "moon" ? D.rm : D.rs} tM={D.tM} />}
         </div>
         <div className="g-card mappanel">
           <div className="viewtabs" role="group" aria-label={t("map.view")}>
             {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 3D Küre" : "🗺 2D Harita"}</button>)}
+            <span className="muted small pick-hint">{t("ui.pickHint")}</span>
           </div>
           <details className="g-card extra">
             <summary>ⓘ {t("ui.extra")}</summary>
@@ -42,8 +45,8 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
           </details>
           <div className="darkstage">
             {view === "globe"
-              ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => x.id && onSelect(x.id)} />
-              : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} selectedId={null} />}
+              ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => (x.id ? onSelect(x.id) : x.lat != null && setSel({ lat: x.lat, lon: x.lon }))} />
+              : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} onPoint={setSel} selectedId={null} />}
           </div>
         </div>
       </div>

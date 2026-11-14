@@ -81,3 +81,11 @@ details.more > summary::-webkit-details-marker { display: none; }
 .sci-leg { margin-left: auto; display: inline-flex; gap: 6px; align-items: center; font-size: 13px; } .lg { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: #7b5cf0; } .lg.mars { background: #c4532f; } .lg.moon { background: #6f7882; }
 .darkstage .globe-note { display: none; }
 details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px; }
+.regpanel .rp-head { display: flex; justify-content: space-between; align-items: start; }
+.rp-x { border: 0; background: #eef2fa; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; }
+.rp-img { position: relative; margin: 8px 0 12px; } .rp-img img { width: 100%; height: auto; border-radius: 14px; display: block; background: #d9dde6; }
+.rp-tabs { position: absolute; left: 8px; bottom: 8px; display: flex; gap: 6px; } .rp-tabs button { border: 0; border-radius: 999px; padding: 4px 10px; background: rgba(15, 22, 45, .7); color: #fff; cursor: pointer; font-size: 12px; } .rp-tabs button.on { background: #1f5fe0; }
+.rp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; } .rp-grid > div { display: grid; gap: 4px; padding: 8px; background: #f3f6fc; border-radius: 12px; font-size: 13px; } .rp-grid b { font-size: 16px; }
+.rp-near { width: 100%; border: 0; background: #f3f6fc; margin-bottom: 6px; cursor: pointer; text-align: left; font: inherit; }
+.rp-src summary { cursor: pointer; font-weight: 600; margin-top: 8px; }
+.pick-hint { align-self: center; margin-left: 6px; }
