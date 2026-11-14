@@ -84,7 +84,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
           <button onClick={() => sc.current?.zoom(0.8)} aria-label={t("globe.zoomin")}>+</button>
           <button onClick={() => sc.current?.zoom(1.25)} aria-label={t("globe.zoomout")}>−</button>
         </div>
-        <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")} · {t("ov.bg")}</p>
+        <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
       <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
       <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}

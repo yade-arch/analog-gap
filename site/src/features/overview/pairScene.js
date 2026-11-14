@@ -41,21 +41,6 @@ function tile(dem, layer, body) {
   return g;
 }
 
-/** Decorative Earth horizon behind the tiles (reference look): NASA Blue Marble texture + thin blue atmosphere rim. */
-function horizon(scene) {
-  const R = 90, y = -R - 16, z = -60, g = new THREE.Group();
-  const tex = new THREE.TextureLoader().load(import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg"); tex.colorSpace = THREE.SRGBColorSpace;
-  const earth = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 64), new THREE.MeshBasicMaterial({ map: tex, color: 0x4a5f8c }));
-  earth.rotation.set(0.5, 2.2, 0);
-  const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.035, 96, 64), new THREE.ShaderMaterial({
-    transparent: true, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false,
-    vertexShader: "varying vec3 n; varying vec3 v; void main(){ vec4 w = modelViewMatrix * vec4(position,1.0); n = normalize(normalMatrix*normal); v = normalize(-w.xyz); gl_Position = projectionMatrix*w; }",
-    fragmentShader: "varying vec3 n; varying vec3 v; void main(){ float f = pow(1.0 - abs(dot(n, v)), 3.0); gl_FragColor = vec4(0.25, 0.55, 1.0, 1.0) * f * 1.6; }",
-  }));
-  g.add(earth, glow); g.position.set(0, y, z); scene.add(g);
-  return () => { tex.dispose(); earth.geometry.dispose(); earth.material.dispose(); glow.geometry.dispose(); glow.material.dispose(); };
-}
-
 export function createPairScene(host) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -64,7 +49,6 @@ export function createPairScene(host) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(36, 1, 0.05, 400);
   scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x5a6478, 1.25));
   const sun = new THREE.DirectionalLight(0xfff6e8, 2.4); sun.position.set(-7, 12, 10); scene.add(sun);
-  const dropHorizon = horizon(scene);
   const controls = new OrbitControls(camera, renderer.domElement);
   Object.assign(controls, { enableDamping: true, minDistance: 4, maxDistance: 140, maxPolarAngle: Math.PI * 0.49, screenSpacePanning: true });
   const tiles = [null, null];
@@ -92,6 +76,6 @@ export function createPairScene(host) {
     setMode(m) { mode = m; controls.enableRotate = m !== "2d"; home(); },
     zoom(f) { const d = camera.position.clone().sub(controls.target).multiplyScalar(f); camera.position.copy(controls.target).add(d); },
     north() { home(); },
-    dispose() { cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); tiles.forEach(drop); dropHorizon(); renderer.dispose(); renderer.domElement.remove(); },
+    dispose() { cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); tiles.forEach(drop); renderer.dispose(); renderer.domElement.remove(); },
   };
 }
