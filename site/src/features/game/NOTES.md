@@ -39,3 +39,8 @@ Dal: `feature/oyun-3d-kure`. Rota: `#/game`. main'e push YOK (ön talimattaki "b
 
 ## Sırada
 - Uzay aracı/astronot glTF (NASA 3D Resources, lisans + CREDITS), bulut dokusu, astronot yürüyüşü.
+
+## Durum 2026-11-14
+- main'e girildi (11d67fa); Pages yayını başarılı, site ve dokular 200.
+- Yapılmayanlar: uzay aracı/iniş, gerçek glTF modeller, bulut, astronot yürüyüşü, multiplayer (ayrıntı yukarıda).
+- Sıradaki: NASA 3D Resources glTF (lisans + CREDITS), bulut dokusu, astronot animasyonu.
