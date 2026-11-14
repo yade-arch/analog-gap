@@ -79,23 +79,24 @@
 @media (max-width: 560px) { .ov-stations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .ov-stcard .station-card { position: static; max-height: none; width: auto; background: transparent; box-shadow: none; border: 0; color: #10224a; font-size: 13.5px; }
 .ov-stcard .station-card table { width: 100%; font-size: 13px; }
-/* Dark theme, unslopped: neutral ink ramp, one accent, hairlines instead of glows; colour lives in the 3D terrain tiles. */
-.ov { --ov-ink: #e6ebf2; --ov-mut: #a3adbb; --ov-line: rgba(230, 236, 245, .09); --ov-glass: #161a21; --ov-acc: #6ea8ff; background: #0e1116; }
-.ov-card, .ov-dist, .ov-box, .ov-st { box-shadow: none; backdrop-filter: none; border-radius: 16px; }
-.ov-orb { box-shadow: -10px -6px 22px rgba(0, 0, 0, .55) inset; }
-.ov-dist strong { color: var(--ov-ink); font-weight: 500; font-variant-numeric: tabular-nums; }
-.ov-bar i { background: var(--ov-ink); box-shadow: 0 0 0 2px #0e1116; }
-.ov-pick select, .ov-stcard, .ov-stcard .station-card { background: #1d222b; color: var(--ov-ink); }
-.ov-swap { background: #1d222b; color: var(--ov-ink); border-color: var(--ov-line); box-shadow: none; transition: background-color .15s ease; }
-.ov-swap:hover, .ov-ctrl button:hover, .ov-st:hover { background: #232934; }
-.ov-stage::after { width: 1px; background: linear-gradient(transparent, rgba(230, 236, 245, .22), transparent); box-shadow: none; }
-.ov-ctrl button { background: #161a21; transition: background-color .15s ease; }
-.ov-chips span:nth-child(3) { border-color: rgba(110, 168, 255, .4); }
-.ov-modes button, .ov-acts button, .ov-acts a { background: #1d222b; color: var(--ov-ink); border-radius: 10px; }
-.ov-modes button.on { background: #e6ebf2; border-color: #e6ebf2; color: #0e1116; } .ov-modes button.on b { color: #0e1116; }
-.ov-st { box-shadow: none; } .ov-st b { color: var(--ov-mut); } .ov-st.on { border-color: var(--ov-acc); box-shadow: none; background: #1d222b; }
-.ov-st:focus-visible, .ov button:focus-visible, .ov a:focus-visible { outline: 2px solid var(--ov-acc); outline-offset: 2px; }
-.ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(230, 236, 245, .08); } .ov-line-a { stroke: #6ea8ff; } .ov-line-b { stroke: #a3adbb; }
-.ov-dot.a { background: #6ea8ff; } .ov-dot.b { background: #a3adbb; }
-.ov { gap: 8px; padding-top: 8px; } .ov-top { gap: 8px; } .ov-orb { width: 56px; height: 56px; }
+/* Space theme (reference design): deep navy, Earth horizon glow behind the tiles, blue-edged glass panels. */
+.ov { --ov-ink: #e8f0ff; --ov-mut: #9fb3d9; --ov-line: rgba(90, 150, 255, .38); --ov-glass: rgba(8, 20, 50, .82); --ov-acc: #4d9bff; gap: 8px; padding-top: 8px;
+  background: radial-gradient(ellipse 75% 22% at 50% 64%, rgba(70, 150, 255, .55), rgba(20, 70, 200, .18) 45%, transparent 70%),
+    radial-gradient(ellipse 140% 55% at 50% 118%, #0b2a6b 0 58%, rgba(40, 110, 255, .5) 60%, transparent 64%),
+    radial-gradient(1px 1px at 20% 20%, #fff8, transparent), radial-gradient(1px 1px at 70% 12%, #fff6, transparent), radial-gradient(1px 1px at 85% 40%, #fff5, transparent),
+    linear-gradient(180deg, #020611, #050f2a 55%, #03081a); }
+.ov-top { gap: 8px; } .ov-orb { width: 64px; height: 64px; box-shadow: -10px -6px 22px rgba(0, 0, 0, .6) inset, 0 0 18px rgba(80, 150, 255, .35); }
 .ov-stage { min-height: 420px; }
+.ov-card, .ov-dist, .ov-box, .ov-st { backdrop-filter: blur(6px); box-shadow: 0 0 0 1px rgba(77, 155, 255, .15), 0 8px 26px rgba(0, 8, 30, .6), inset 0 0 24px rgba(60, 130, 255, .1); }
+.ov-dist strong { color: #fff; font-variant-numeric: tabular-nums; text-shadow: 0 0 16px rgba(90, 160, 255, .5); }
+.ov-bar i { background: #fff; box-shadow: 0 0 0 2px #050f2a; }
+.ov-pick select, .ov-stcard, .ov-stcard .station-card { background: #0b1a3d; color: var(--ov-ink); }
+.ov-swap { background: #0b1a3d; color: #8cc0ff; border-color: var(--ov-line); box-shadow: 0 0 22px rgba(77, 155, 255, .6); }
+.ov-stage::after { width: 2px; background: linear-gradient(rgba(110, 180, 255, .2), rgba(150, 200, 255, .95) 45%, rgba(110, 180, 255, .2)); box-shadow: 0 0 14px rgba(77, 155, 255, .8); }
+.ov-ctrl button { background: rgba(8, 20, 50, .82); color: var(--ov-ink); box-shadow: 0 0 12px rgba(77, 155, 255, .35); }
+.ov-modes button, .ov-acts button, .ov-acts a { background: rgba(20, 40, 90, .6); color: var(--ov-ink); }
+.ov-modes button.on { background: #1f63d6; border-color: #4d9bff; color: #fff; box-shadow: 0 0 14px rgba(77, 155, 255, .55); } .ov-modes button.on b { color: #fff; }
+.ov-st b { color: var(--ov-acc); } .ov-st.on { border-color: var(--ov-acc); background: rgba(20, 50, 110, .7); }
+.ov-st:focus-visible, .ov button:focus-visible, .ov a:focus-visible { outline: 2px solid var(--ov-acc); outline-offset: 2px; }
+.ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(140, 180, 255, .15); } .ov-line-a { stroke: #4d9bff; } .ov-line-b { stroke: #3fd07a; }
+.ov-dot.a { background: #4d9bff; } .ov-dot.b { background: #3fd07a; }

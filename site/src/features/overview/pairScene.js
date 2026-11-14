@@ -1,6 +1,6 @@
 // Two real terrain windows side by side (left: Moon/Mars reference, right: Earth candidate) in one three.js scene.
 // Heights come only from the DEMs; the mesh is a 3× denser bilinear interpolation between the 90 m points (display
-// smoothing, no new detail). Triangles touching no-data are not drawn. Side walls and base are decoration. Exaggeration EXAG.
+// smoothing, no new detail). Triangles touching no-data are not drawn. No side walls. Exaggeration EXAG.
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { SETTINGS } from "../../config.js";
@@ -29,30 +29,14 @@ function denseTerrain(dem) {
   return { geo, N, bottom: ((g.lo - mid) / 1000) * EXAG - 0.6, top: ((g.hi - mid) / 1000) * EXAG };
 }
 
-/** Closed side walls fading from dark grey at the terrain edge to the page background at the base (dark theme). */
-function walls(geo, N, base) {
-  const p = geo.attributes.position, pos = [], col = [], idx = [];
-  const r = [...Array(N).keys()];
-  const edges = [r.map((j) => j), r.map((i) => i * N + N - 1), r.map((j) => (N - 1) * N + N - 1 - j), r.map((i) => (N - 1 - i) * N)];
-  for (const e of edges) {
-    const s = pos.length / 3;
-    e.forEach((k, n) => {
-      pos.push(p.getX(k), p.getY(k), p.getZ(k), p.getX(k), base, p.getZ(k)); col.push(0.028, 0.034, 0.045, 0.004, 0.005, 0.007);   // linear (sRGB about 2e333b at the edge, 0e1116 at the base)
-      if (n) { const a = s + (n - 1) * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
-    });
-  }
-  const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("color", new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx);
-  return new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide, toneMapped: false }));
-}
-
 function texture(dem, layer, body) {
   const t = new THREE.CanvasTexture(layerCanvas(dem, layer, body)); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 16; return t;
 }
 
 function tile(dem, layer, body) {
-  const { geo, N, bottom } = denseTerrain(dem), tex = texture(dem, layer, body), g = new THREE.Group();
+  const { geo } = denseTerrain(dem), tex = texture(dem, layer, body), g = new THREE.Group();
   const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
-  g.add(mesh, walls(geo, N, bottom));
+  g.add(mesh);                                                       // no side walls (reference design)
   g.userData = { mesh, tex, dem, body };
   return g;
 }
@@ -72,7 +56,7 @@ export function createPairScene(host) {
   const home = () => {
     controls.target.set(0, 0, 0);
     const k = Math.max(1, 1.7 / (camera.aspect || 1));               // narrow screens: step back so both tiles fit
-    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 6.8 * k, 12 * k);
+    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 8.2 * k, 13.6 * k);
     controls.update();
   };
   const resize = () => { const w = host.clientWidth || 1, h = host.clientHeight || 1; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
