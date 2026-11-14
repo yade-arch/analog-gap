@@ -29,6 +29,7 @@ export function RoverHud({ hud, who, side = "left" }) {
     <>
       <div className={"g-rhud g-rhud-" + side}><Bar k="battery" v={s.battery} /><Bar k="fuel" v={s.fuel} /><Bar k="health" v={s.health} /></div>
       <div className={"g-speed g-speed-" + side}>{tf("game.hud.speed", { v: Math.round(s.speed * 100) })}</div>
+      {s.dir && <div className={"g-dir g-dir-" + side}><i style={{ transform: `rotate(${-s.dir.a}rad)` }}>↑</i>{tf("game.hud.next", { m: s.dir.m })}</div>}
     </>
   );
 }

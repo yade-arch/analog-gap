@@ -123,3 +123,7 @@ html[data-page="game"] main { padding: 0; margin: 0; max-width: none; }
 .g-rep-big { display: grid; gap: 2px; margin: 6px 0 10px; } .g-rep-big strong { font-size: 3rem; color: var(--accent, #1d5fae); line-height: 1; } .g-rep-big span { font-size: 13px; color: var(--muted, #4b5e76); }
 .g-stars { font-size: 1.6rem; color: #e0a300; margin: 0 0 8px; } .g-stars small { display: block; font-size: 12px; color: var(--muted, #4b5e76); }
 .g-rep-list { list-style: none; padding: 0; margin: 0 0 12px; text-align: left; font-size: 14px; } .g-rep-list li { margin: 4px 0; }
+.g-dir { position: absolute; bottom: 52px; display: flex; align-items: center; gap: 8px; padding: 5px 12px 5px 6px; border-radius: 999px; background: rgba(10, 16, 32, .7); border: 1px solid #5fb4ff; font-size: 13px; font-weight: 600; }
+.g-dir-left { left: 50%; transform: translateX(-50%); } .g-mode-multi .g-dir-left { left: 25%; } .g-dir-right { left: 75%; transform: translateX(-50%); }
+.g-dir i { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #5fb4ff; color: #06101f; font-style: normal; font-size: 16px; font-weight: 800; transition: transform .15s linear; }
+.g-drive .g-prompt { bottom: 12px; } .g-drive .g-dir { bottom: 46px; }

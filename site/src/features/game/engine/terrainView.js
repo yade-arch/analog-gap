@@ -88,7 +88,7 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
     /** Takip kamerası: aracın arkasından (sürüş). */
     chase(o) { chase = o; follow = null; controls.enabled = false; },
     orbit(o) { chase = null; follow = o; controls.enabled = true; },
-    markDone(i) { const p = points[i]; if (p) { p.done = true; p.obj.children.forEach((c) => c.material.color.set(0x9db0c6)); p.obj.children[0].material.opacity = 0.1; } },
+    markDone(i) { const p = points[i]; if (p) { p.done = true; p.obj.children[0].visible = false; p.obj.children[1].material.color.set(0x57d17a); } },   // biten: ışık söner, halka yeşil
     descend(target, dur = 3) { dive = { t: 0, dur, a: new THREE.Vector3(target.x + 6, target.y + 12, target.z + 10), b: new THREE.Vector3(target.x + 2.4, target.y + 1.3, target.z + 2.6), target }; },
     update(dt) {
       for (const o of scene.children) o.userData.tick?.(dt);

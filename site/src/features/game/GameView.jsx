@@ -93,7 +93,9 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
       }
       const next = tv.points.filter((p) => p && !c.done[k]?.includes(p.i)).sort((a, b) => r.dist(a) - r.dist(b))[0];
       const pos = next && st.project(side, next.obj.position.clone().add(new THREE.Vector3(0, 3.1, 0)));
-      out[k] = { ...r.stats, speed: Math.abs(r.stats.v), tag: next && pos ? { ...pos, m: Math.round(r.dist(next) * 1000) } : null };
+      let dir = null;                                   // sıradaki noktanın yönü (aracın burnuna göre) ve uzaklığı
+      if (next) { let a = Math.atan2(-(next.z - r.stats.z), next.x - r.stats.x) - r.stats.heading; a = Math.atan2(Math.sin(a), Math.cos(a)); dir = { a, m: Math.round(r.dist(next) * 1000) }; }
+      out[k] = { ...r.stats, speed: Math.abs(r.stats.v), dir, tag: next && pos ? { ...pos, m: dir.m } : null };
     }
     if (hud) hud.current = out;
     if (anchors) anchors.current = f.astro ? st.project("left", f.astro.position.clone().add(UP)) : null;

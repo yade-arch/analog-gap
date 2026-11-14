@@ -142,4 +142,5 @@ export default {
   "game.rep.unknown.mars": "Bilinmeyen: Mars sıcaklık verisi yok.",
   "game.rep.nosuit": "Kıyafet seçilmedi",
   "game.rep.note": "Bu bir oyundur. Ayrıntılı bilimsel değerler 'Bilimsel raporu aç' bölümündedir.",
+  "game.hud.next": "Sıradaki ışık: {m} m",
 };
