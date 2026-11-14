@@ -7,8 +7,8 @@ import ProfileChart from "./ProfileChart.jsx";
 
 const MODES = [["3d", "◆"], ["2d", "▦"], ["profile", "∿"]];
 
-function Box({ title, children, cls = "" }) {
-  return <section className={"ov-box " + cls}><h3>{title}</h3>{children}</section>;
+function Box({ title, hint, children, cls = "" }) {
+  return <section className={"ov-box " + cls}><h3>{title}</h3>{hint && <p className="ov-hint">{hint}</p>}{children}</section>;
 }
 
 /** Collapsible bottom panel: layers, view mode, profile, statistics, actions. Every button does something real. */
@@ -23,7 +23,7 @@ export default function Panel({ layer, setLayer, mode, setMode, profile, stats, 
       <button className="ov-tab" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={t(open ? "ov.hide" : "ov.show")}>{open ? "⌄" : "⌃"}</button>
       {open && (
         <div className="ov-grid">
-          <Box title={t("ov.layers")}>
+          <Box title={t("ov.layers")} hint={t("ov.hint.layers")}>
             {LAYERS.map((k) => (
               <label key={k} className="ov-radio" title={t("ov.layer." + k + ".d")}>
                 <input type="radio" name="ov-layer" checked={layer === k} onChange={() => setLayer(k)} />
@@ -31,14 +31,14 @@ export default function Panel({ layer, setLayer, mode, setMode, profile, stats, 
               </label>
             ))}
           </Box>
-          <Box title={t("ov.mode")}>
+          <Box title={t("ov.mode")} hint={t("ov.hint.mode")}>
             <div className="ov-modes">{MODES.map(([k, ic]) => <button key={k} className={mode === k ? "on" : ""} aria-pressed={mode === k} onClick={() => setMode(k)}><b>{ic}</b>{t("ov.mode." + k)}</button>)}</div>
           </Box>
-          <Box title={t("ov.prof")} cls="ov-wide"><ProfileChart {...profile} /></Box>
-          <Box title={<>{t("ov.stats")} <Tag kind="der" /></>}>
+          <Box title={t("ov.prof")} hint={t("ov.hint.prof")} cls="ov-wide"><ProfileChart {...profile} /></Box>
+          <Box title={<>{t("ov.stats")} <Tag kind="der" /></>} hint={t("ov.hint.stats")}>
             <ul className="ov-stats">{stats.map(([k, v, tip]) => <li key={k} title={tip}><span>{k}</span><b>{v ?? t("ui.noData")}</b></li>)}</ul>
           </Box>
-          <Box title={t("ov.actions")}>
+          <Box title={t("ov.actions")} hint={t("ov.hint.actions")}>
             <div className="ov-acts">
               <button onClick={() => setMode("profile")}><b>∿</b>{t("ov.act.cut")}</button>
               {actions.report && <a href={actions.report}><b>▤</b>{t("ov.act.report")}</a>}

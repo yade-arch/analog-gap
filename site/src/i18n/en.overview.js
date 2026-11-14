@@ -1,5 +1,10 @@
 // Main screen (overview) texts in English. tr.overview.js re-exports this file (English is the interface language).
 export default {
+  "ov.hint.layers": "Choose what the colours on the 3D tiles show",
+  "ov.hint.mode": "3D = tilted view, 2D = seen from above, Profile = a cut through the middle of both places",
+  "ov.hint.prof": "Height along a straight line through the middle of each 10 km square. Same shape = similar terrain",
+  "ov.hint.stats": "Key numbers for both places side by side",
+  "ov.hint.actions": "Open the full report or save the results as a file",
   "ov.aria": "Two 3D terrain tiles: Moon/Mars reference on the left, Earth place on the right. Drag to turn, scroll to zoom.",
   "ov.more": "Show details", "ov.less": "Hide details",
   "ov.moreSim": "More similar", "ov.lessSim": "Less similar",

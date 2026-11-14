@@ -100,3 +100,4 @@
 .ov-st:focus-visible, .ov button:focus-visible, .ov a:focus-visible { outline: 2px solid var(--ov-acc); outline-offset: 2px; }
 .ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(140, 180, 255, .15); } .ov-line-a { stroke: #4d9bff; } .ov-line-b { stroke: #3fd07a; }
 .ov-dot.a { background: #4d9bff; } .ov-dot.b { background: #3fd07a; }
+.ov-hint { margin: 0 0 8px; font-size: 12px; color: var(--ov-mut); } .ov .tag { color: #0c1f4d; }
