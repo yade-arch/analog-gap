@@ -37,16 +37,16 @@ function walls(geo, N, base) {
   for (const e of edges) {
     const s = pos.length / 3;
     e.forEach((k, n) => {
-      pos.push(p.getX(k), p.getY(k), p.getZ(k), p.getX(k), base, p.getZ(k)); col.push(0.17, 0.19, 0.23, 0.07, 0.08, 0.1);
+      pos.push(p.getX(k), p.getY(k), p.getZ(k), p.getX(k), base, p.getZ(k)); col.push(0.028, 0.034, 0.045, 0.004, 0.005, 0.007);   // linear (sRGB about 2e333b at the edge, 0e1116 at the base)
       if (n) { const a = s + (n - 1) * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
     });
   }
   const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("color", new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx);
-  return new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }));
+  return new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide, toneMapped: false }));
 }
 
 function texture(dem, layer, body) {
-  const t = new THREE.CanvasTexture(layerCanvas(dem, layer, body)); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+  const t = new THREE.CanvasTexture(layerCanvas(dem, layer, body)); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 16; return t;
 }
 
 function tile(dem, layer, body) {
@@ -72,7 +72,7 @@ export function createPairScene(host) {
   const home = () => {
     controls.target.set(0, 0, 0);
     const k = Math.max(1, 1.7 / (camera.aspect || 1));               // narrow screens: step back so both tiles fit
-    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 5.6 * k, 10 * k);
+    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 6.8 * k, 12 * k);
     controls.update();
   };
   const resize = () => { const w = host.clientWidth || 1, h = host.clientHeight || 1; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
