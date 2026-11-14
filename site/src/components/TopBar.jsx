@@ -3,8 +3,8 @@ import { ROUTES } from "../config.js";
 import { TargetSwitch } from "../features/world/WorldBar.jsx";
 import { t } from "../i18n/index.js";
 
-// Sade üst çubuk (referans tasarım): logo, 3 adım (Bölge seç → Karşılaştır → Rapor), bağlantı durumu, ayarlar (⚙) menüsü.
-// Diğer sayfalar ve Ay/Mars seçimi ⚙ menüsünde. "Bağlantı aktif" tarayıcının gerçek çevrimiçi durumudur (navigator.onLine).
+// Sade üst çubuk (referans tasarım): logo, 3 adım (Bölge seç → Karşılaştır → Rapor), bağlantı durumu, üç çizgili menü (☰).
+// Diğer sayfalar ve Ay/Mars seçimi ☰ menüsünde. "Bağlantı aktif" tarayıcının gerçek çevrimiçi durumudur (navigator.onLine).
 const STEP = { list: 1, map: 1, card: 1, compare: 2, report: 3 };
 const Logo = () => (
   <svg width="40" height="28" viewBox="0 0 40 28" aria-hidden="true"><ellipse cx="20" cy="15" rx="18" ry="6" fill="none" stroke="#1f3a8a" strokeWidth="2.4" transform="rotate(-18 20 15)" /><circle cx="20" cy="14" r="9" fill="#1f3a8a" /></svg>
@@ -27,7 +27,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
       </ol>
       <span className={"conn" + (online ? "" : " off")}><i />{t(online ? "ui.online" : "ui.offline")}</span>
       <details className="gear">
-        <summary aria-label={t("ui.menu")} title={t("ui.menu")}>⚙</summary>
+        <summary aria-label={t("ui.menu")} title={t("ui.menu")}><span className="burger" aria-hidden="true"><i /><i /><i /></span></summary>
         <div className="gear-menu">
           <div className="g-sub">{t("world.target")}</div>
           <TargetSwitch target={profile} setTarget={setProfile} />

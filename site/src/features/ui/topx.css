@@ -12,6 +12,8 @@ header.top.topx { display: flex; flex-wrap: wrap; align-items: center; gap: 18px
 .conn i { width: 11px; height: 11px; border-radius: 50%; background: #22b35e; } .conn.off i { background: #9aa3b5; }
 .gear { position: relative; } .gear summary { list-style: none; cursor: pointer; font-size: 26px; color: #1f3a8a; line-height: 1; padding: 4px; }
 .gear summary::-webkit-details-marker { display: none; }
+.burger { display: grid; gap: 5px; width: 26px; padding: 6px 2px; } .burger i { display: block; height: 3px; border-radius: 2px; background: #1f3a8a; transition: transform .2s, opacity .2s; }
+.gear[open] .burger i:nth-child(1) { transform: translateY(8px) rotate(45deg); } .gear[open] .burger i:nth-child(2) { opacity: 0; } .gear[open] .burger i:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 .gear-menu { position: absolute; right: 0; top: 40px; z-index: 50; min-width: 240px; display: grid; gap: 6px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid #e3e8f3; box-shadow: 0 12px 34px rgba(40, 60, 120, .18); }
 .gear-menu a { text-decoration: none; color: #141b36; padding: 6px 8px; border-radius: 8px; } .gear-menu a:hover, .gear-menu a[aria-current] { background: #eaf1ff; }
 .gear-menu .g-sub { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #5a6482; margin-top: 4px; }
