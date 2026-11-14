@@ -7,6 +7,9 @@ import Card from "./Card.jsx";
 import Method from "./Method.jsx";
 import Report from "./pages/Report.jsx";
 import TopBar from "./components/TopBar.jsx";
+import SideBar from "./components/SideBar.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
+import HelpPage from "./pages/HelpPage.jsx";
 import { DEFAULT_ROUTE } from "./config.js";
 import { useTheme } from "./theme.js";
 
@@ -30,6 +33,7 @@ function useHash() {
 export default function App() {
   const hash = useHash();
   const { theme } = useTheme();
+  const [menu, setMenu] = useState(false);                // dar ekranda yan çubuk (hamburger)
   useEffect(() => {                                   // üst gezinme yüksekliği -> --hdr (ana ekran kalan yüksekliği doldurur)
     const el = document.querySelector("header.top"); if (!el) return;
     const set = () => document.documentElement.style.setProperty("--hdr", el.offsetHeight + "px");
@@ -52,10 +56,15 @@ export default function App() {
   useEffect(() => { if ((page === "card" || page === "compare" || page === "report") && a2 && a2 !== profile && PROFILES[a2]) setProfile(a2); }, [hash]);
   const go = (id) => { location.hash = `#/card/${id}/${profile}`; };
   const feature = useMemo(() => cand?.features.find((f) => f.properties.id === sel)?.properties, [cand, sel]);
+  const best = cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id;
+  const reportId = (["compare", "card", "report"].includes(page) && a1) || best;
 
   return (
     <>
-      <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
+      <TopBar page={page} profile={profile} setProfile={setProfile} reportId={reportId} menuOpen={menu} onMenu={() => setMenu(!menu)} />
+      <div className="shell">
+      <SideBar page={page} reportHref={reportId ? `#/report/${reportId}/${profile}` : "#/list"} open={menu} onNavigate={() => setMenu(false)} />
+      <div className="shell-main">
       <main className={page === "compare" ? "full" : ""}>
         {!D.cm ? <p>Veri yükleniyor…</p> : (
           <Suspense key={theme} fallback={<p>Sayfa yükleniyor…</p>}>{/* tema değişince tuval/WebGL sayfaları yeni renklerle yeniden kurulur */}
@@ -68,6 +77,8 @@ export default function App() {
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
               : <div className="card">Bu pencere seçili profilin aday dosyasında yok (yalnızca bölge başına en iyi 250 aday dosyaya konur). <a href="#/list">Listeye dön</a></div>)}
             {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
+            {page === "settings" && <SettingsPage />}
+            {page === "help" && <HelpPage />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>
         )}
@@ -76,6 +87,8 @@ export default function App() {
         <div><strong>Veri ürünleri:</strong> {SOURCES}</div>
         <div>Yöntem ve sınırlamalar: <a href="#/method">Yöntem ve Doğrulama</a>. Hiçbir pencere Ay/Mars'ın tam karşılığı olarak sunulmaz; "daha az incelenmiş / katalogda yok" ifadesi kullanılır. Etiketler: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
       </footer>
+      </div>
+      </div>
     </>
   );
 }
