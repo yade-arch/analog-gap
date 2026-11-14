@@ -1,7 +1,7 @@
 // Oyun kuralları ve simülasyon varsayımları tek yerde. Bunların hiçbiri NASA verisi değildir;
 // arayüzde "Simülasyon varsayımı / oyun kuralı" etiketiyle gösterilir (RulesPanel).
 export const GAME = {
-  startMin: 300,          // başlangıç oksijen/süre bütçesi (oyun dakikası)
+  startMin: 300,        // başlangıç oksijen/süre bütçesi (oyun dakikası)
   tickMs: 1000,           // gerçek 1 sn = 1 oyun dakikası
   cost: { inspect: 5, test: 15, suit: 10 },     // eylem maliyetleri (oyun dakikası)
   warnFrac: 0.5,          // bu oranın altında sayaç "dikkat" ritmine geçer

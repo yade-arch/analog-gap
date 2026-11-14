@@ -13,7 +13,7 @@ export function ThermalTest({ p, D, profile }) {
   const rows = [{ label: t("game.earth") + " T_mean2", pc: e }, ...(tt || []).map((w) => ({ label: `${w.id} ${t("game.th.max")}`, pc: pc3(w.max) }))];
   return (
     <>
-      <p>{t("game.earth")}: {th.ok ? <>dT_dn <N v={th.w.dT_dn_K_median} u="K" /> (P10–P90 <N v={th.w.dT_dn_K_p10_p90?.[0]} />–<N v={th.w.dT_dn_K_p10_p90?.[1]} u="K" />), T_mean2 <N v={th.w.T_mean2_K_median} u="K" /></> : <Missing />} <Lbl k="real" /> <Tag kind="obs" /></p>
+      <p>{t("game.earth")}: {th.ok ? <>dT_dn <N v={th.w.dT_dn_K_median} u="K" /> (P10–P90 <N v={th.w.dT_dn_K_p10_p90?.[0]} />–<N v={th.w.dT_dn_K_p10_p90?.[1]} u="K" />), T_mean2 <N v={th.w.T_mean2_K_median} u="K" /> <Lbl k="real" /> <Tag kind="obs" /></> : <Missing />}</p>
       {tt ? (
         <>
           <Strips rows={rows} unit="K" />

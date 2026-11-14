@@ -2,7 +2,7 @@ import React from "react";
 import { t } from "../../i18n/index.js";
 import { fmt, Tag } from "../../common.jsx";
 import { GAME, TESTS } from "./rules.js";
-import { compareRows, roverLimit, siteChecks, slopeBand } from "./data.js";
+import { compareRows, earthThermal, roverLimit, siteChecks, slopeBand } from "./data.js";
 import { FlagList } from "./StageSuit.jsx";
 import { Lbl, Missing, N, tf } from "./ui.jsx";
 
@@ -39,7 +39,7 @@ export default function StageResult({ p, D, profile, cand, target, done, suit, f
               <h4>{t("game.res.simdiff")}</h4>
               <ul className="g-list">
                 {rows.map((r) => <li key={r.k}>{t("game.var." + r.k)}: {r.similar === null ? <Missing /> : t(r.similar ? "game.similar" : "game.different")} (d_k <N v={r.d} d={3} />)</li>)}
-                <li>{t("game.thermal")}: {t("game.notequiv")}</li>
+                <li>{t("game.thermal")}: {profile === "moon" && earthThermal(D.tE, p.id).ok ? t("game.notequiv") : <Missing />}</li>
                 <li>{t("game.res.always")}</li>
               </ul>
             </>
@@ -50,12 +50,12 @@ export default function StageResult({ p, D, profile, cand, target, done, suit, f
           <ul className="g-list">
             {TESTS.map((k) => (
               <li key={k}>{t("game.test." + k)}: {!done[k] ? t("game.res.notrun")
-                : k === "terrain" && p && lim ? t("game.band." + slopeBand(p.derived_percentiles?.slope, lim.num))
+                : k === "terrain" && p && lim ? t("game.earth") + ": " + t("game.band." + slopeBand(p.derived_percentiles?.slope, lim.num))
                 : k === "thermal" && profile === "mars" ? <Missing /> : t("game.res.run")}</li>
             ))}
           </ul>
           <h3>{t("game.res.suit")}</h3>
-          <p>{suit ? t("game." + suit.id) : <Missing />}</p>
+          <p>{suit ? t("game." + suit.id) : t("game.res.nosuit")}</p>
           <h4>{t("game.suit.flags")}</h4>
           <FlagList flags={flags} />
           <button className="btn-accent g-big" onClick={onRestart}>{t("game.restart")}</button>

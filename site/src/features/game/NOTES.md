@@ -4,11 +4,12 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 
 ## Bitti
 - Paylaşılan dosyalara minimum satır: config.js (ROUTES +1), App.jsx (+2), i18n/tr.js (+2), i18n/en.js (+2).
+- Tarayıcıda doğrulandı (Ay SUIT1 başarılı, Mars SUIT2 riskli, HAW termal Veri eksik, süre doldu, 375 px taşma yok).
 - Aşama 1–6: Brifing, Harita keşfi (MapView yeniden kullanıldı), 3 rover testi, kıyafet, sayaç, sonuç.
 - Dosyalar: pages/Game.jsx, features/game/*, game.css, i18n/tr.game.js, en.game.js.
 
 ## Sırada
-- Tarayıcıda Ay + Mars baştan sona oynama, dar ekran kontrolü, PR.
+- PR açıklaması ve push. (Tarayıcı testi bitti: Ay, Mars, Veri eksik termal, süre bitişi, dar ekran.)
 
 ## Varsayımlar (PR'a da yazıldı)
 - Süre/maliyet/kıyafet değerleri `rules.js` içinde, hepsi "Simülasyon varsayımı"; RulesPanel'de görünür.
@@ -18,3 +19,5 @@ Dal: `feature/emergency-analog-mission`. Rota: `#/game`.
 - "Düşük D" eşiği sabit değil: profil adaylarının alt çeyreği (veriden).
 - Gösterilen adayların hepsinde D var (filtreyi geçenler); D yoksa "Veri eksik" yolu kodda mevcut.
 - Haversine Card.jsx'te dışa aktarılmadığı için (dokunulmaz dosya) data.js'de küçük kopya var.
+- MapView onSelect ilk çizimde yakalanıyor (MapView.jsx dokunulmaz): Game.jsx'te ref + useCallback ile sarıldı.
+- Gösterilen adayların tümünde D var; "D'si olmayan pencere" yolu (N/Missing) yalnızca kodda.

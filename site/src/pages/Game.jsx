@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { t } from "../i18n/index.js";
 import { SOURCES } from "../common.jsx";
 import "../game.css";
@@ -29,6 +29,7 @@ export default function Game({ D, profile, setProfile }) {
 
   const restart = () => { clock.reset(); setStage("brief"); setSel(null); setSeen(new Set()); setDone({}); setSuit(null); setFinal(null); };
   useEffect(restart, [profile]);
+  useEffect(() => { window.scrollTo?.(0, 0); }, [stage]);
   useEffect(() => {                                   // süre bitti: sonuç ekranı
     if (clock.left <= 0 && stage !== "brief" && stage !== "result") { setFinal({ result: "timeout", left: 0 }); setStage("result"); }
   }, [clock.left, stage]);
@@ -39,6 +40,8 @@ export default function Game({ D, profile, setProfile }) {
     if (!seen.has(id)) { clock.spend(GAME.cost.inspect, "inspect"); setSeen(new Set(seen).add(id)); }
     setSel(p);
   };
+  const inspectRef = useRef(inspect); inspectRef.current = inspect;      // MapView tıklama işleyicisini ilk çizimde yakalar
+  const onInspect = useCallback((id) => inspectRef.current(id), []);
   const run = (k) => { if (!done[k]) { clock.spend(GAME.cost.test, k); setDone({ ...done, [k]: true }); } };
   const pick = (s) => {
     const after = Math.max(0, clock.left - GAME.cost.suit);
@@ -60,7 +63,7 @@ export default function Game({ D, profile, setProfile }) {
         {STAGES.map((s, i) => <li key={s} className={s === stage ? "on" : STAGES.indexOf(stage) > i ? "past" : ""}>{i + 1} · {t("game.step." + s)}</li>)}
       </ol>
       {stage === "brief" && <StageBrief D={D} profile={profile} setProfile={setProfile} onStart={() => { clock.start(); setStage("scout"); }} />}
-      {stage === "scout" && <StageScout D={D} profile={profile} cand={cand} target={target} sel={sel} inspected={seen.size} onInspect={inspect} onChoose={() => setStage("tests")} />}
+      {stage === "scout" && <StageScout D={D} profile={profile} cand={cand} target={target} sel={sel} inspected={seen.size} onInspect={onInspect} onChoose={() => setStage("tests")} />}
       {stage === "tests" && sel && <StageTests p={sel} D={D} profile={profile} target={target} done={done} onRun={run} onNext={() => setStage("suit")} />}
       {stage === "suit" && <StageSuit flags={flags} left={clock.left} onPick={pick} />}
       {stage === "result" && <StageResult p={sel} D={D} profile={profile} cand={cand} target={target} done={done} suit={suit} flags={flags} result={final?.result || "timeout"} left={final?.left ?? 0} onRestart={restart} />}

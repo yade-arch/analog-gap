@@ -31,7 +31,7 @@ export default function CompareCard({ p, target: ref, D, profile }) {
             <td>{th.ok ? <>dT_dn <N v={th.w.dT_dn_K_median} u="K" /> · T_mean2 <N v={th.w.T_mean2_K_median} u="K" /></> : <Missing />}</td>
             <td>{tt ? <>{t("game.th.max")} P50 <N v={tt[0].max?.[1]} u="K" /> ({tt[0].id})</> : <Missing />}</td>
             <td>—</td>
-            <td className="g-diff">{t("game.notequiv")}</td>
+            <td className={tt && th.ok ? "g-diff" : ""}>{tt && th.ok ? t("game.notequiv") : <Missing />}</td>
           </tr>
           {["gravity", "atmosphere", "radiation", "regolith"].map((k) => (
             <tr key={k}><td>{t("game.gap." + k)}</td><td colSpan="3" className="muted">{t("game.outscope")}</td><td className="g-diff">{t("game.different")}</td></tr>

@@ -1,6 +1,6 @@
 /* Emergency Analog Mission: yalnızca .g-* sınıfları; renkler theme.css değişkenlerinden (yeni global stil yok). */
 .g-page { max-width: 1400px; margin: 0 auto; }
-.g-head { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.g-head { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 6px 0; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .g-head h2 { margin: 0; letter-spacing: .12em; font-size: 1.25rem; }
 .g-head p { margin: 2px 0 0; }
 
@@ -89,3 +89,4 @@
 .g-rules { margin-top: 14px; }
 .g-rules summary { cursor: pointer; font-weight: 600; }
 .g-foot { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; font-size: .88rem; overflow-wrap: anywhere; }
+@media (max-width: 900px) { .g-head p, .g-o2-note { display: none; } .g-head h2 { font-size: 1rem; } .g-o2-val { font-size: 1.2rem; } }
