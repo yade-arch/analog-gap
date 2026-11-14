@@ -101,3 +101,6 @@
 .ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(140, 180, 255, .15); } .ov-line-a { stroke: #4d9bff; } .ov-line-b { stroke: #3fd07a; }
 .ov-dot.a { background: #4d9bff; } .ov-dot.b { background: #3fd07a; }
 .ov-hint { margin: 0 0 8px; font-size: 12px; color: var(--ov-mut); } .ov .tag { color: #0c1f4d; }
+.ov-intro { display: grid; place-items: center; }
+.ov-globes { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; } .ov-globes > * { min-height: 0; height: 100%; }
+.ov-zoom { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3; padding: 12px 22px; border-radius: 12px; border: 0; background: #4d8fe6; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }

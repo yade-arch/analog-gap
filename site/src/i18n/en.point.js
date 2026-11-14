@@ -1,7 +1,8 @@
 // Texts for the on-demand point analysis (any place on Earth). tr.point.js re-exports this file (English is the interface language).
 export default {
   "nav.explore": "Explore", "nav.discoveries": "Discoveries", "nav.mission": "Mission",
-  "flow.1": "Select a place", "flow.2": "Compare", "flow.3": "Report",
+  "flow.1": "Select a place",
+  "ov.zoomIn": "Zoom in and measure the ground", "ov.zoomOut": "Back to the two planets", "flow.2": "Compare", "flow.3": "Report",
   "ov.moreInfo": "More about the Earth place: climate and data links",
   "pt.title": "Landform check for a 10 × 10 km square here",
   "pt.loading": "Downloading elevation tiles and measuring the land…",

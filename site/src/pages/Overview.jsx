@@ -12,7 +12,9 @@ import Panel, { statRows } from "../features/overview/Panel.jsx";
 import Stations from "../features/overview/Stations.jsx";
 import { ClimateBox, LinksBox } from "../features/overview/Climate.jsx";
 import { usePoint } from "../features/overview/usePoint.js";
+import GlobeView from "../components/GlobeView.jsx";
 import "../features/overview/overview.css";
+const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
 
 /** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
  *  middle, collapsible tool panel below. Values come from the data files; nothing here is simulated. */
@@ -21,7 +23,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   const list = useMemo(() => (cand?.features || []).map((f) => f.properties).sort((a, b) => a.rank - b.rank).slice(0, 40), [cand]);
   const [pick, setPick] = useState(null), pt = usePoint(pick ? null : selId, profile, D);
   const p = pt?.p || list.find((x) => x.id === (pick || selId)) || list[0];
-  const refId = SETTINGS.references[profile][0], ready = !!p && !pt?.loading && !pt?.error;
+  const refId = SETTINGS.references[profile][0], [zoomed, setZoomed] = useState(false), ready = !!p && !pt?.loading && !pt?.error && zoomed;
   const [dems, setDems] = useState({}), [idx, setIdx] = useState(null);
   const [layer, setLayer] = useState("dem"), [mode, setMode] = useState("3d"), [open, setOpen] = useState(true), [swapped, setSwapped] = useState(false);
   const names = [t("ui.body." + profile), t("side.earth").charAt(0) + t("side.earth").slice(1).toLowerCase()];
@@ -75,17 +77,28 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   return (
     <div className={"ov" + (open ? "" : " ov-full")}>
       <div className="ov-top">{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
+      {!zoomed ? (
+      <div className="ov-stage ov-intro" onWheelCapture={(e) => { if (e.deltaY < 0) setZoomed(true); }} onDoubleClick={() => setZoomed(true)}>
+        <div className="ov-globes">
+          <GlobeView body={profile} compact markers={mr ? [{ id: "", lat: mr.lat, lon: mr.lon, kind: "ref", label: mr.title }] : []} />
+          <GlobeView body="earth" compact photo={PHOTO} markers={[{ id: "", lat: p.center_lat, lon: p.center_lon, kind: "cand", label: p.id }]} />
+        </div>
+        <button className="ov-zoom" onClick={() => setZoomed(true)}>{t("ov.zoomIn")}</button>
+      </div>
+      ) : (
       <div className="ov-stage">
         {gl ? <div ref={host} className="ov-canvas" aria-label={t("ov.aria")} /> : <p className="ov-nogl">{t("cmp.fallback")}</p>}
         {(!dems.r || !dems.c) && <p className="ov-load">{t("cmp.loading")}</p>}
         <button className="ov-swap" onClick={() => setSwapped(!swapped)} aria-label={t("ov.swap")} title={t("ov.swap")}>⇄</button>
         <div className="ov-ctrl">
+          <button onClick={() => setZoomed(false)} aria-label={t("ov.zoomOut")} title={t("ov.zoomOut")}>🪐</button>
           <button onClick={() => sc.current?.north()} aria-label={t("ov.north")} title={t("ov.north")}>N</button>
           <button onClick={() => sc.current?.zoom(0.8)} aria-label={t("globe.zoomin")}>+</button>
           <button onClick={() => sc.current?.zoom(1.25)} aria-label={t("globe.zoomout")}>−</button>
         </div>
         <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
+      )}
       <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
       <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
