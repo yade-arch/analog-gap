@@ -26,7 +26,7 @@ export default function GameView({ profile, D, phase, sel, suit, done = [], dems
   const refId = SETTINGS.references[profile][0];
   const refM = useMemo(() => refMarkers(refOf(D, profile)), [D, profile]);
   // DEM'i olan aday parlak (inilebilir), olmayan soluk: oyuncu arazi verisi olan bölgeyi görerek seçer.
-  const cands = useMemo(() => candMarkers(candOf(D, profile)).map((m) => ({ ...m, color: dems?.[m.id] ? 0x9fd0ff : 0x3d5a78 })), [D, profile, dems]);
+  const cands = useMemo(() => candMarkers(candOf(D, profile)).map((m) => ({ ...m, hot: !!dems?.[m.id], color: dems?.[m.id] ? 0x9fd0ff : 0x3d5a78 })), [D, profile, dems]);
 
   useEffect(() => { stage.current = createStage(host.current); return () => stage.current.dispose(); }, []);
 

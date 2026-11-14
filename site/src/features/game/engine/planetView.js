@@ -54,7 +54,7 @@ export function makePlanetView(el, body, { markers = [], onPick, color = 0x7fb2e
     const hit = ray.intersectObject(planet)[0]; if (!hit) return;
     const ll = toLatLon(hit.point.x, hit.point.y, hit.point.z), tol = 0.03 * (camera.position.length() - 0.9);
     let best = null, bd = tol;
-    for (const m of markers) { const d = angle(ll, m); if (d < bd) { bd = d; best = m; } }
+    for (const m of markers) { const d = angle(ll, m) * (m.hot ? 0.5 : 1); if (d < bd) { bd = d; best = m; } }   // hot: öncelikli (ör. DEM'i olan aday)
     if (best) onPick(best);
   };
   el.addEventListener("pointerdown", onDown); el.addEventListener("pointerup", onUp);
