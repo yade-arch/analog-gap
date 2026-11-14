@@ -97,3 +97,5 @@
 .ov-st:focus-visible, .ov button:focus-visible, .ov a:focus-visible { outline: 2px solid var(--ov-acc); outline-offset: 2px; }
 .ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(230, 236, 245, .08); } .ov-line-a { stroke: #6ea8ff; } .ov-line-b { stroke: #a3adbb; }
 .ov-dot.a { background: #6ea8ff; } .ov-dot.b { background: #a3adbb; }
+.ov { gap: 8px; padding-top: 8px; } .ov-top { gap: 8px; } .ov-orb { width: 56px; height: 56px; }
+.ov-stage { min-height: 420px; }

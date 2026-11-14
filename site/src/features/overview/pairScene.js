@@ -29,7 +29,7 @@ function denseTerrain(dem) {
   return { geo, N, bottom: ((g.lo - mid) / 1000) * EXAG - 0.6, top: ((g.hi - mid) / 1000) * EXAG };
 }
 
-/** Closed side walls fading from light blue at the terrain edge to near-white at the base (reference look). */
+/** Closed side walls fading from dark grey at the terrain edge to the page background at the base (dark theme). */
 function walls(geo, N, base) {
   const p = geo.attributes.position, pos = [], col = [], idx = [];
   const r = [...Array(N).keys()];
@@ -37,7 +37,7 @@ function walls(geo, N, base) {
   for (const e of edges) {
     const s = pos.length / 3;
     e.forEach((k, n) => {
-      pos.push(p.getX(k), p.getY(k), p.getZ(k), p.getX(k), base, p.getZ(k)); col.push(0.55, 0.66, 0.84, 0.9, 0.94, 0.99);
+      pos.push(p.getX(k), p.getY(k), p.getZ(k), p.getX(k), base, p.getZ(k)); col.push(0.17, 0.19, 0.23, 0.07, 0.08, 0.1);
       if (n) { const a = s + (n - 1) * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
     });
   }
@@ -72,7 +72,7 @@ export function createPairScene(host) {
   const home = () => {
     controls.target.set(0, 0, 0);
     const k = Math.max(1, 1.7 / (camera.aspect || 1));               // narrow screens: step back so both tiles fit
-    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 9 * k, 16 * k);
+    if (mode === "2d") camera.position.set(0, 26 * k, 0.01); else camera.position.set(0, 5.6 * k, 10 * k);
     controls.update();
   };
   const resize = () => { const w = host.clientWidth || 1, h = host.clientHeight || 1; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
