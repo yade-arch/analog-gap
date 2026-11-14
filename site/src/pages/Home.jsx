@@ -6,13 +6,17 @@ import "../features/home/home.css";
 
 // Küreler three.js ister; ayrı parça olarak indirilir (ilk yazı hemen görünür).
 const HomeGlobes = lazy(() => import("../features/home/HomeGlobes.jsx"));
+const Hero = lazy(() => import("../features/hero/Hero.jsx"));
+const start = (b) => { location.hash = b === "earth" ? "#/map" : `#/map?t=${b}`; };
 
 export default function Home({ cand, profile, D = {} }) {
   const best = cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0];
   const to = best ? `#/compare/${best.id}/${profile}` : "#/compare";
   const steps = [1, 2, 3];
   return (
-    <div className="home home-3d">
+    <>
+    <Suspense fallback={<div className="hero" />}><Hero onStart={start} /></Suspense>
+    <div className="home home-3d" id="hero-more">
       <h2>{t("app.title")}</h2>
       <div className="home-top">
         <p className="purpose big-p">{t("home.purpose")}</p>
@@ -32,5 +36,6 @@ export default function Home({ cand, profile, D = {} }) {
       )}
       <Warn>{t("home.limit")}</Warn>
     </div>
+    </>
   );
 }

@@ -57,7 +57,7 @@ export default function App() {
     <>
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
       <main className={page === "compare" ? "full" : ""}>
-        {D.cm && page !== "compare" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
+        {D.cm && page !== "compare" && page !== "home" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
         {!D.cm ? <p>Veri yükleniyor…</p> : (
           <Suspense fallback={<p>Sayfa yükleniyor…</p>}>
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
