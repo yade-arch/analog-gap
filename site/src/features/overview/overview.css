@@ -105,3 +105,4 @@
 .ov-globes { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; } .ov-globes > * { min-height: 0; height: 100%; }
 .ov-zoom { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3; padding: 12px 22px; border-radius: 12px; border: 0; background: #4d8fe6; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
 .ov-globes select, .ov-globes button, .ov-globes label { display: none; }
+.ov-globes > *, .ov-globes > * > *, .ov-globes .globe-canvas { height: 100% !important; max-height: none !important; min-height: 0; border: 0 !important; background: none !important; box-shadow: none !important; }
