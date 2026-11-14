@@ -47,6 +47,7 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
             <Warn>{t("map.warn")}</Warn>
           </details>
           <div className="darkstage">
+            {!sel && <div className="explore-tip"><strong>{t("ex.tip.t").replace("{b}", t("ui.body." + profile))}</strong><span>{t("ex.tip.d")}</span></div>}
             {view === "globe"
               ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => (x.id ? onSelect(x.id) : x.lat != null && setSel({ lat: x.lat, lon: x.lon }))} />
               : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} onPoint={setSel} selectedId={null} />}

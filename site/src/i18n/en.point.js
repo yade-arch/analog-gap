@@ -2,6 +2,7 @@
 export default {
   "nav.explore": "Explore", "nav.discoveries": "Discoveries", "nav.mission": "Mission",
   "flow.1": "Select a place",
+  "ex.tip.t": "Click anywhere on Earth to see if its ground looks like the {b}", "ex.tip.d": "Blue squares are places we already checked. Drag to turn the globe.",
   "ov.zoomIn": "Zoom in and measure the ground", "ov.zoomOut": "Back to the two planets", "flow.2": "Compare", "flow.3": "Report",
   "ov.moreInfo": "More about the Earth place: climate and data links",
   "pt.title": "Landform check for a 10 × 10 km square here",
