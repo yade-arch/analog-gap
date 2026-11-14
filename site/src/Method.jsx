@@ -1,4 +1,5 @@
 import React from "react";
+import { regionLabel } from "./i18n/terms.js";
 import { Tag, Warn, Limitations, fmt } from "./common.jsx";
 import PageIntro, { Term } from "./components/PageIntro.jsx";
 import CopyPre from "./components/CopyPre.jsx";
@@ -69,7 +70,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
               <thead><tr><th>Analog</th><th>Bölge / profil</th><th className="n">D</th><th className="n">Yüzdelik (A)</th><th>Durum (B)</th></tr></thead>
               <tbody>
                 {pc.rows.map((r) => (
-                  <tr key={r.id}><td>{r.id} {r.name}</td><td>{r.region ?? "—"} {r.profile ? "· " + r.profile.split(" (")[0] : ""}</td><td className="n">{fmt(r.D, 3)}</td><td className="n">{r.percentile_in_region ?? "—"}</td><td>{r.match_status || r.status}</td></tr>
+                  <tr key={r.id}><td>{r.id} {r.name}</td><td>{r.region ? regionLabel(r.region) : "—"} {r.profile ? "· " + r.profile.split(" (")[0] : ""}</td><td className="n">{fmt(r.D, 3)}</td><td className="n">{r.percentile_in_region ?? "—"}</td><td>{r.match_status || r.status}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -82,7 +83,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
           <thead><tr><th>Bölge</th><th>Profil</th><th className="n">D'li / 200</th><th className="n">Filtreyi geçen</th><th>D P10 / P50 / P90</th></tr></thead>
           <tbody>
             {neg && Object.entries(neg.per_region).flatMap(([reg, o]) => Object.entries(o).map(([pf, v]) => (
-              <tr key={reg + pf}><td>{reg}</td><td>{pf === "moon" ? "Ay" : "Mars"}</td><td className="n">{v.n_with_D}</td><td className="n">{v.n_pass_filter}</td><td>{v["D_percentiles_(P10,P50,P90)"]?.join(" / ") ?? "Veri eksik"}</td></tr>
+              <tr key={reg + pf}><td>{regionLabel(reg)}</td><td>{pf === "moon" ? "Ay" : "Mars"}</td><td className="n">{v.n_with_D}</td><td className="n">{v.n_pass_filter}</td><td>{v["D_percentiles_(P10,P50,P90)"]?.join(" / ") ?? "Veri eksik"}</td></tr>
             )))}
           </tbody>
         </table>

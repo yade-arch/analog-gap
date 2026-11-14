@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { regionLabel } from "./i18n/terms.js";
 import { PROFILES, VARS, Tag, Warn, Limitations, RangeBars, fmt } from "./common.jsx";
 
 function hav(a, b, c, d) {
@@ -92,7 +93,7 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
     <div>
       <div className="card">
         <h2>Analog Card — {p.id}</h2>
-        <div className="muted">{p.region} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · profil: {prof.name}</div>
+        <div className="muted">{regionLabel(p.region)} · merkez {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · profil: {prof.name}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
           <div><div className="muted">Arazi uzaklığı (teknik ad: D; 0 = aynı, düşük = daha benzer)</div><div className="big">{fmt(p.D, 3)}</div></div>
           <div><div className="muted">Sıra (filtreyi geçen {PROFILES[profile].name} adayları içinde)</div><div className="big">{p.rank ?? "—"}</div></div>

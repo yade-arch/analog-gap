@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { PROFILES, Warn, fmt } from "../common.jsx";
 import { t } from "../i18n/index.js";
+import { regionLabel } from "../i18n/terms.js";
 import "../features/home/home.css";
 
 // Küreler three.js ister; ayrı parça olarak indirilir (ilk yazı hemen görünür).
@@ -26,7 +27,7 @@ export default function Home({ cand, profile, D = {} }) {
       {best && (
         <div className="card">
           <h3>{t("home.example")} <span className="muted">· {PROFILES[profile].name}</span></h3>
-          <p>{t("home.example.d").replace("{id}", best.id).replace("{region}", best.region).replace("{D}", fmt(best.D, 3))}</p>
+          <p>{t("home.example.d").replace("{id}", best.id).replace("{region}", regionLabel(best.region)).replace("{D}", fmt(best.D, 3))}</p>
         </div>
       )}
       <Warn>{t("home.limit")}</Warn>

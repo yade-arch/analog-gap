@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { fmt, Tag } from "../../common.jsx";
 import { t } from "../../i18n/index.js";
+import { regionLabel } from "../../i18n/terms.js";
 import GlobeView from "../../components/GlobeView.jsx";
 import DLegend from "./DLegend.jsx";
 import TargetPanel from "./TargetPanel.jsx";
@@ -11,7 +12,7 @@ function Selected({ p, profile }) {
   if (!p) return <p className="muted">{t("home.pick")}</p>;
   return (
     <>
-      <p><strong>{p.id}</strong> · {p.region} · {t("home.sel.rank")} {p.rank}</p>
+      <p><strong>{p.id}</strong> · {regionLabel(p.region)} · {t("home.sel.rank")} {p.rank}</p>
       <p>{t("home.sel.D")}: <strong>{fmt(p.D, 3)}</strong> <Tag kind="der" /></p>
       <p className="muted small">{t("home.sel.Dhint")}</p>
       <p className="muted small">{t("home.sel.coord")}: {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}°</p>
