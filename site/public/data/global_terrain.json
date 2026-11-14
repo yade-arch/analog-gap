@@ -1,0 +1,14 @@
+{
+ "product": "NASA SRTMGL30 v002 (LP DAAC), 30 yay saniyesi (~1 km)",
+ "doi": "10.5067/MEaSUREs/SRTM/SRTMGL30.002",
+ "step_deg": 0.25,
+ "ncol": 1440,
+ "nrow": 600,
+ "north": 90,
+ "west": -180,
+ "coverage": "90°K–60°G (Antarktika karoları üründe yok)",
+ "layout": "satır ana, kuzeyden güneye, -180'den doğuya; diziler sırayla: elev int16 (m, yok=-32768), relief uint16 (m), s50 uint16 (0,1°), s90 uint16 (0,1°), valid uint8 (%); uint16 yok=65535",
+ "method": "hücre = 30×30 piksel; eğim Horn 3×3 (1 km); üründe deniz 0 m kodlu: 0 ve -9999 pikseller dışlanır (deniz seviyesindeki kıyı karaları da dışlanabilir); kara %10'dan azsa değer yok",
+ "note": "1 km eğim 30 m pencere eğimiyle karşılaştırılmaz; arazi uzaklığına girmez",
+ "tiles": 27
+}

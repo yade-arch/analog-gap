@@ -4,6 +4,7 @@ import { t } from "../../i18n/index.js";
 import { regionLabel } from "../../i18n/terms.js";
 import { fetchPower, gibsImg, worldviewUrl, POWER_URL } from "../planet/power.js";
 import { surfaceKm } from "../planet/coords.js";
+import { queryTerrain } from "../planet/globalTerrain.js";
 
 // Dünya'da herhangi bir yere basınca açılan "Seçilen bölge" paneli: NASA GIBS görüntüsü + NASA POWER iklim normali (hücre ortalaması)
 // + bu hedefe göre taranmış en yakın 3 pencere (arazi uzaklığı yalnız taranmış pencerelerde vardır; yeni değer üretilmez).
@@ -14,7 +15,9 @@ export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
   const [st, setSt] = useState({ s: "load" }), [lay, setLay] = useState(0), [n, setN] = useState(0);
   useEffect(() => { let live = true; setSt({ s: "load" }); fetchPower(sel.lat, sel.lon).then((r) => live && setSt({ s: "ok", r })).catch((e) => live && setSt({ s: "err", e: String(e.message || e) })); return () => { live = false; }; }, [sel.lat, sel.lon, n]);
   const near = useMemo(() => (cand?.features || []).map((f) => f.properties).map((p) => ({ ...p, km: surfaceKm(sel, { lat: p.center_lat, lon: p.center_lon }, 6371) })).sort((a, b) => a.km - b.km).slice(0, 3), [cand, sel]);
-  const c = st.r?.cell;
+  const [tr, setTr] = useState({ s: "load" });
+  useEffect(() => { let live = true; setTr({ s: "load" }); queryTerrain(sel.lat, sel.lon).then((r) => live && setTr({ s: "ok", r })).catch(() => live && setTr({ s: "err" })); return () => { live = false; }; }, [sel.lat, sel.lon]);
+  const c = st.r?.cell, T = tr.r;
   return (
     <div className="g-card regpanel">
       <div className="rp-head">
@@ -25,6 +28,16 @@ export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
         <img src={gibsImg(sel.lat, sel.lon, LAYERS[lay][0])} alt={t(LAYERS[lay][1])} width="360" height="360" loading="lazy" />
         <div className="rp-tabs">{LAYERS.map(([, k], i) => <button key={k} className={lay === i ? "on" : ""} onClick={() => setLay(i)}>{t(k)}</button>)}</div>
       </div>
+      <div className="g-sub">⛰ {t("ui.terrain")}</div>
+      {tr.s === "load" && <p className="muted">{t("ui.loading")}</p>}
+      {tr.s === "err" && <p>{t("ui.terrErr")}</p>}
+      {tr.s === "ok" && (T.missing ? <p>{t("list.nodata")}: {T.missing}</p> : (
+        <div className="rp-grid">
+          {[["elev", "⛰", T.elev, "m", 0], ["relief", "▲", T.relief, "m", 0], ["s50", "◢", T.s50, "°", 1], ["s90", "◣", T.s90, "°", 1], ["valid", "🗺", T.valid, "%", 0]].map(([id, ic, v, u, d]) => (
+            <div key={id} title={t("ui.gt." + id + ".m")}><span className="muted"><span className="ic">{ic}</span>{t("ui.gt." + id)}</span><b>{v == null ? t("list.nodata") : `${fmt(v, d)} ${u}`}</b></div>
+          ))}
+        </div>
+      ))}
       <div className="g-sub">🌍 {t("ui.climate")}</div>
       {st.s === "load" && <p className="muted">{t("ui.loading")}</p>}
       {st.s === "err" && <p>{t("ui.powerErr")} <button className="g-btn" style={{ width: "auto" }} onClick={() => setN((x) => x + 1)}>{t("ui.retry")}</button></p>}
@@ -44,6 +57,7 @@ export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
       <details className="rp-src">
         <summary>{t("ui.srcInfo")}</summary>
         <p className="small">{t("ui.pwNote").replace("{range}", st.r?.range || "2001–2025")}{c ? ` ${t("ui.cell")}: ${fmt(c.s, 2)}…${fmt(c.n, 2)}°, ${fmt(c.w, 3)}…${fmt(c.e, 3)}°.` : ""}</p>
+        <p className="small">{t("ui.gtNote")}{T && !T.missing ? ` ${t("ui.cell")}: ${fmt(T.cell.s, 2)}…${fmt(T.cell.n, 2)}°, ${fmt(T.cell.w, 2)}…${fmt(T.cell.e, 2)}°.` : ""}</p>
         <p className="small">{t("ui.terrainNote")}</p>
         <p className="small"><a href={POWER_URL} target="_blank" rel="noreferrer">NASA POWER</a> · <a href={worldviewUrl(sel.lat, sel.lon)} target="_blank" rel="noreferrer">NASA Worldview</a> · NASA GIBS</p>
       </details>
