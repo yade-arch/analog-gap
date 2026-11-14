@@ -9,6 +9,7 @@
   --good-edge: #6fb98f;       /* yalnızca "tamamlandı" çerçevesi; iyi/kötü anlamı taşımaz */
   --warn-bg: #2a2619; --warn-line: #b59f5b;
   --seq1: #d6e9f8; --seq2: #7fb2e0; --seq3: #3b7fc0; --seq4: #2a5a96;   /* D: yakın -> uzak */
+  --globe-ocean: #0c1a2c; --globe-land: #3a3931; --globe-coast: #8fa2b8; --nodata: #9aa3ad;   /* küre: okyanus, kara (Natural Earth), kıyı, Veri eksik */
   --t-obs: #1f3550; --t-der: #2a2a4a; --t-int: #3a3020;
   --font: Inter, system-ui, "Segoe UI", sans-serif;
 }
@@ -78,8 +79,8 @@ nav .sep { width: 1px; height: 18px; background: var(--line); margin: 0 6px; }
 .intro { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
 .intro p { margin: 2px 0; } .intro .purpose { font-weight: 600; } .intro .how { color: var(--muted); font-size: 13.5px; }
 .term { border-bottom: 1px dotted var(--muted); cursor: help; position: relative; }
-.term:hover::after, .term:focus::after { content: attr(data-tip); position: absolute; left: 0; top: 130%; z-index: 20; width: 260px; max-width: 70vw; white-space: normal; font-weight: 400; font-size: 12.5px; line-height: 1.4; background: var(--bg); color: var(--ink); border: 1px solid var(--accent); border-radius: 6px; padding: 6px 8px; text-align: left; }
-th.n .term:hover::after, th.n .term:focus::after { left: auto; right: 0; }
+.term:hover::after, .term:focus::after, .term.open::after { content: attr(data-tip); position: absolute; left: 0; top: 130%; z-index: 20; width: 260px; max-width: 70vw; white-space: normal; font-weight: 400; font-size: 12.5px; line-height: 1.4; background: var(--bg); color: var(--ink); border: 1px solid var(--accent); border-radius: 6px; padding: 6px 8px; text-align: left; }
+th.n .term:hover::after, th.n .term:focus::after, th.n .term.open::after { left: auto; right: 0; }
 .gloss { margin: 14px 0; } .gloss summary { cursor: pointer; color: var(--cool); }
 .gloss dl { display: grid; gap: 6px; } .gloss dt { font-weight: 600; } .gloss dd { margin: 0 0 4px; color: var(--muted); }
 .home { max-width: 860px; margin: 0 auto; }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PROFILES, Tag, fmt } from "../common.jsx";
 import PageIntro, { Term, Glossary } from "../components/PageIntro.jsx";
 import { t } from "../i18n/index.js";
+import { regionLabel } from "../i18n/terms.js";
 
 const fill = (s, o) => Object.entries(o).reduce((a, [k, v]) => a.replace(`{${k}}`, v), s);
 
@@ -17,7 +18,7 @@ export default function ListPage({ cand, profile, hasDem }) {
       <div className="top3" aria-label={t("list.top3")}>
         {all.slice(0, 3).map((p) => (
           <div className="card cand" key={p.id}>
-            <div className="muted">#{p.rank} · {p.region}</div>
+            <div className="muted">#{p.rank} · {regionLabel(p.region)}</div>
             <div className="big">{fmt(p.D, 3)}</div>
             <div className="muted"><Term k="D">D</Term> · {p.id} <Tag kind="der" /></div>
             <button className="btn-accent" onClick={() => go(p.id)}>{t("list.compare")}</button>
@@ -29,7 +30,7 @@ export default function ListPage({ cand, profile, hasDem }) {
         <p className="muted">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })}</p>
         <p className="muted">{t("list.rowHint")}</p>
         <div className="filters">
-          <label>Bölge:{" "}<select value={reg} onChange={(e) => setReg(e.target.value)}><option value="">Tümü</option>{regions.map((r) => <option key={r}>{r}</option>)}</select></label>
+          <label>Bölge:{" "}<select value={reg} onChange={(e) => setReg(e.target.value)}><option value="">Tümü</option>{regions.map((r) => <option key={r} value={r}>{regionLabel(r)}</option>)}</select></label>
           <label><input type="checkbox" checked={more} onChange={(e) => setMore(e.target.checked)} /> {t("list.details")}</label>
         </div>
         <table>
@@ -41,7 +42,7 @@ export default function ListPage({ cand, profile, hasDem }) {
           <tbody>
             {rows.map((p) => (
               <tr className="click" key={p.id} onClick={() => go(p.id)}>
-                <td className="n">{p.rank}</td>{more && <td>{p.id}</td>}<td>{p.region}</td><td className="n">{fmt(p.D, 3)}</td>
+                <td className="n">{p.rank}</td>{more && <td>{p.id}</td>}<td>{regionLabel(p.region)}</td><td className="n">{fmt(p.D, 3)}</td>
                 {more && <><td className="n">{fmt(p.d.slope, 2)}</td><td className="n">{fmt(p.d.relief, 2)}</td><td className="n">{fmt(p.d.rough, 2)}</td><td className="n">{fmt(p.evidence_coverage.valid_pixel_fraction * 100, 1)}</td></>}
                 <td className="n">{fmt(p.derived_percentiles.slope.p50, 1)}</td>
                 <td><button onClick={(e) => { e.stopPropagation(); go(p.id); }}>{t("list.compare")}</button>{hasDem && !hasDem(p.id) && <span className="muted"> · {t("list.noDem")}</span>}</td>

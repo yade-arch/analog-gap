@@ -1,4 +1,4 @@
-﻿# ANALOG GAP: proje kuralları (Claude Code için)
+# ANALOG GAP: proje kuralları (Claude Code için)
 
 NASA Space Apps Challenge 2026. Dünya'da Ay ve Mars için yeterince incelenmemiş analog bölgeleri keşfeden, karakterize eden, Ay/Mars referanslarıyla karşılaştıran ve sınırlarını (Gap) gösteren statik web sitesi. 1 kişi, yaklaşık 1 gün. Kullanıcı yalnızca izin verir; kodu ve siteyi sen yazarsın.
 
@@ -43,3 +43,23 @@ Ekranlar: Harita, Aday listesi, Analog Card (Characterize / Compare / Evidence /
 ## Veri kaynakları (aday liste, hepsi doğrulanacak)
 Earth: NASA Earthdata Search, Worldview (NASADEM/SRTM, MODIS LST, ASTER, EMIT). Moon: NASA PDS, LRO (LOLA, Diviner, LROC). Mars: NASA PDS (MOLA, CRISM, THEMIS).
 Tamamlayıcı (yalnızca NASA verisi eksikse): CSA RADARSAT, ESA Copernicus Data Space, ESA Open Science Catalog, JAXA G-Portal.
+
+## Hak koruma modu (haftalık sınır düşük; 17 Kasım'a kadar ve kullanıcı kaldırana dek geçerli)
+1. Yalnızca açıkça istenen işi yap. Ek iyileştirme, ek test veya "fırsattan istifade" refactor yok.
+2. Dosyaları tam okuma; gereken satır aralığını oku. Büyük JSON/parquet/data dosyalarını hiç okuma.
+3. Tarayıcı/puppeteer ekran görüntüsünü yalnızca görsel değişiklikte ve işte bir kez al.
+4. Kısa yanıt: yapılan, doğrulanan, eksik. Uzun özet, tablo, tekrar yok.
+5. `npm run check` dışındaki ağır testleri (tüm sayfa taraması, tam tarayıcı testi) yalnızca kullanıcı isterse çalıştır.
+6. Bir hata iki denemede çözülmezse dur; nedeni ve önerini 3 satırda yaz, devam etme.
+7. Sormadan model değiştirme önerme; Sonnet orta yeterli.
+
+## Kalıcı kurallar (veri kaynağı ve dil)
+1. VERİ KAYNAĞI: Önce NASA ve yarışma kaynakları (Earthdata Search, Worldview/GIBS, PDS, LRO/LOLA/Diviner, Mars CTX/MOLA). Başka kaynak yalnızca NASA'da yoksa ve gerekliyse; kullanıldığında kaynak adı, lisans/atıf ve "NASA verisi değil" etiketi görünür, arazi uzaklığına (D) ve sıralamaya karıştırılmaz. NASA verisi başka sağlayıcıda barınıyorsa (örn. NASADEM'in Planetary Computer kopyası) ürün adı ve sürüm NASA olarak yazılır. Her yeni veri data_inventory.csv'ye (sürüm, çözünürlük, tarih, erişim yolu) yazılır.
+2. ANLAŞILIR DİL: Site her yaştan insanın anlayacağı sade Türkçeyle yazılır; bilimsel değer düşmez. Her sayısal değer ekranda adı, birimi ve tek cümlelik anlamıyla (nasıl okunacağı) gelir. Jargon ve kısaltma (ATA, HAW, ANA, US-SW, P10/P50/P90, O_k, d_k, W1, IQR, LST, DEM, röleyf) kullanıcıya çıplak görünmez; ayrıntıda "teknik ad: ..." olarak geçebilir. Metinlerin tek kaynağı src/i18n (terms.js sözlüğü).
+
+## ÇALIŞMA DÜZENİ (çoklu bilgisayar ve kişi)
+1. Oturum başında: `git fetch`; geçerli dalı ve main ile farkını yaz; çalışılacak işin dalını sor/belirle (iş adıyla: sadelestirme, oyun-3d-kure, hava-katmanlari; kişi adıyla değil). Dal yoksa main'den aç, varsa `git pull` ile güncelle.
+2. Başkasının dalında olduğu düşünülen (son commit kullanıcıdan değilse ya da son 24 saatte başka makineden push edilmişse) bir dala commit atmadan önce dur ve kullanıcıya sor.
+3. Her anlamlı iş bitince commit ve push (yarım iş bırakma; başka bilgisayar görsün).
+4. main'e yalnızca `npm run check` geçince ve kullanıcı "main'e al" dediğinde ya da komutta açıkça yazıyorsa birleştir; çakışma varsa dur ve yaz.
+5. Oturum sonunda `docs/ISLER.md`'ye bir satır ekle: tarih, dal, ne yapıldı, durum (devam/tamam).

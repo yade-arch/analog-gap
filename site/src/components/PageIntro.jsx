@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { t } from "../i18n/index.js";
+import { TERMS, tipOf } from "../i18n/terms.js";
 
-const GL = { D: "gl.D", d_slope: "gl.d_slope", d_relief: "gl.d_relief", d_rough: "gl.d_rough", valid: "gl.valid", slope50: "gl.slope50" };
-
-/** Odaklanılabilir ipucu: fare üzerine gelince veya klavye odağında açıklama görünür (CSS .term). */
+/** İpucu: fare, klavye odağı VEYA dokunma/tıklama ile açılır (dokunmatikte çalışır). Çocuk verilmezse sözlük adı yazılır. */
 export function Term({ k, children }) {
-  const tip = t(GL[k]);
-  return <span className="term" tabIndex={0} role="note" aria-label={tip} data-tip={tip}>{children}</span>;
+  const [open, setOpen] = useState(false), tip = tipOf(k);
+  return (
+    <span className={"term" + (open ? " open" : "")} tabIndex={0} role="note" aria-label={tip} data-tip={tip}
+      onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
+      {children ?? TERMS[k]?.name}
+    </span>
+  );
 }
 
-/** Her sayfanın üstü: tek cümlelik amaç + 1 satırlık "Nasıl okunur" kutusu. */
+/** Her sayfanın üstü: tek cümlelik amaç + "Burada ne görüyorum?" satırı. */
 export default function PageIntro({ purpose, how }) {
   return (
     <div className="intro">
@@ -23,7 +27,7 @@ export function Glossary() {
   return (
     <details className="gloss">
       <summary>{t("gl.title")}</summary>
-      <dl>{Object.entries(GL).map(([k, key]) => <div key={k}><dt>{t(key).split(":")[0]}</dt><dd>{t(key).slice(t(key).indexOf(":") + 1).trim()}</dd></div>)}</dl>
+      <dl>{Object.entries(TERMS).map(([k, x]) => <div key={k}><dt>{x.name}{x.unit ? ` (${x.unit})` : ""}</dt><dd>{x.meaning} <span className="muted">Teknik ad: {x.tech}</span></dd></div>)}</dl>
     </details>
   );
 }

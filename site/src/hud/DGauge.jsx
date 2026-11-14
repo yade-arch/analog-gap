@@ -8,7 +8,7 @@ export default function DGauge({ cand, profile }) {
   const D = cand?.D, has = D !== null && D !== undefined && Number.isFinite(D);
   const frac = has ? Math.min(1, D / SETTINGS.dScaleMax) : 0;
   return (
-    <div className="dgauge" title={has ? "D = ortalama(d_eğim, d_röleyf, d_pürüzlülük); d_k = W1 / IQR(ref)" : t("gauge.nodata")}>
+    <div className="dgauge" title={has ? "Arazi uzaklığı (teknik ad: D) = eğim, yükseklik farkı ve yüzey engebesi uzaklıklarının ortalaması. 0 = aynı, düşük = daha benzer; yüzde veya fiziksel mesafe değildir." : t("gauge.nodata")}>
       <div className="lbl">{t("gauge.title")}</div>
       <div className="val" style={{ color: has ? dColor(D) : "var(--muted)" }}>{has ? fmt(D, 3) : t("gauge.none")}</div>
       <div className="bar"><i style={{ width: frac * 100 + "%", background: has ? dColor(D) : "transparent" }} /></div>

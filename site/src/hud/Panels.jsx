@@ -1,6 +1,7 @@
 // Küçük HUD panelleri: birim seçici, kamera, abartı, gözlem günlüğü, mini harita, lejant.
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { t } from "../i18n/index.js";
+import GlobeView from "../components/GlobeView.jsx";
 import { SETTINGS } from "../config.js";
 import { UNITS } from "../features/units/index.js";
 import Fold from "./Fold.jsx";
@@ -47,21 +48,20 @@ export function ObsLog({ entries = [] }) {
   );
 }
 
-/** Dünya bölge kutuları + seçili aday noktası (altlık harita yok; regions.geojson'dan). */
+/** Küçük Dünya küresi: arama bölgesi çerçeveleri (regions.geojson) + seçili aday merkezi. Kapalı <details> içindeyken çizilmez (WebGL boşa çalışmasın). */
 export function MiniMap({ regions, point }) {
-  const ref = useRef(null);
+  const ref = useRef(null), [open, setOpen] = useState(false);
   useEffect(() => {
-    const cv = ref.current; if (!cv || !regions) return;
-    const W = cv.width, H = cv.height, c = cv.getContext("2d");
-    const X = (lon) => ((lon + 180) / 360) * W, Y = (lat) => ((90 - lat) / 180) * H;
-    c.clearRect(0, 0, W, H); c.strokeStyle = "rgba(157,176,198,.7)"; c.lineWidth = 1;
-    regions.features.forEach((f) => { const [w, s, e, n] = f.properties.bbox_wsen; c.strokeRect(X(w), Y(n), X(e) - X(w), Y(s) - Y(n)); });
-    if (point) { c.fillStyle = "#f0b445"; c.beginPath(); c.arc(X(point.lon), Y(point.lat), 4, 0, 7); c.fill(); }
-  }, [regions, point]);
+    const d = ref.current?.closest("details"); if (!d) { setOpen(true); return undefined; }
+    const f = () => setOpen(d.open); f(); d.addEventListener("toggle", f);
+    return () => d.removeEventListener("toggle", f);
+  }, []);
+  const markers = useMemo(() => (point ? [{ id: "cur", lat: point.lat, lon: point.lon, label: t("cmp.cand") }] : []), [point?.lat, point?.lon]);
   return (
-    <div className="hud-panel mini">
+    <div ref={ref} className="hud-panel mini">
       <Fold title={t("map.title")}>
-        <canvas ref={ref} width={220} height={110} aria-label="Dünya bölgeleri ve seçili aday" />
+        {open && <GlobeView body="earth" markers={markers} selectedId="cur" outlines={regions} compact />}
+        {!point && <small>{t("map.mini.none")}</small>}
       </Fold>
     </div>
   );

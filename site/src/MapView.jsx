@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import { fmt, D_STOPS } from "./common.jsx";
 import { t } from "./i18n/index.js";
+import { regionLabel } from "./i18n/terms.js";
 
 const FILL = ["interpolate", ["linear"], ["coalesce", ["get", "D"], 1.2], ...D_STOPS.flat()];
 // NASA GIBS WMTS (EPSG:3857, GoogleMapsCompatible_Level8), katman BlueMarble_ShadedRelief_Bathymetry; adres canlı doğrulandı (HTTP 200, CORS *).
@@ -26,7 +27,8 @@ function declutter(labels, m) {
 }
 
 export default function MapView({ data, regions, onSelect, selectedId }) {
-  const el = useRef(null), map = useRef(null), loaded = useRef(false);
+  const el = useRef(null), map = useRef(null), loaded = useRef(false), pickRef = useRef(onSelect);
+  pickRef.current = onSelect;                                   // harita bir kez kurulur; tıklama her zaman güncel işlevi çağırır (profil değişince)
 
   useEffect(() => {
     const m = new maplibregl.Map({
@@ -65,18 +67,18 @@ export default function MapView({ data, regions, onSelect, selectedId }) {
       m.addLayer({ id: "sel", type: "line", source: "cand", filter: ["==", ["get", "id"], ""], paint: { "line-color": "#f0b445", "line-width": 3 } });
       const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
       for (const layer of ["cand-fill", "cand-pt"]) {
-        m.on("click", layer, (e) => onSelect(e.features[0].properties.id));
+        m.on("click", layer, (e) => pickRef.current?.(e.features[0].properties.id));
         m.on("mouseenter", layer, () => (m.getCanvas().style.cursor = "pointer"));
         m.on("mousemove", layer, (e) => {
           const p = e.features[0].properties;
-          pop.setLngLat(e.lngLat).setHTML(`<b>${p.region}</b> · ${t("map.rank")} ${p.rank}<br/>D = ${fmt(p.D, 3)}<br/><i>${t("map.clickHint")}</i>`).addTo(m);
+          pop.setLngLat(e.lngLat).setHTML(`<b>${regionLabel(p.region)}</b> · ${t("map.rank")} ${p.rank}<br/>D = ${fmt(p.D, 3)}<br/><i>${t("map.clickHint")}</i>`).addTo(m);
         });
         m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; pop.remove(); });
       }
       const labels = regions.features.map((f) => {
         const [w, , e, n] = f.properties.bbox_wsen;
         const d = document.createElement("div");
-        d.textContent = `${f.properties.code} · ${f.properties.name || ""}`;
+        d.textContent = f.properties.name || regionLabel(f.properties.code);
         d.style.cssText = "font:600 11px system-ui;color:#1c2530;background:rgba(255,255,255,.88);padding:1px 5px;border-radius:3px;pointer-events:none;white-space:nowrap";
         const lngLat = [(w + e) / 2, n];
         new maplibregl.Marker({ element: d, anchor: "bottom", offset: [0, -4] }).setLngLat(lngLat).addTo(m);

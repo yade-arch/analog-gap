@@ -1,5 +1,6 @@
 // İngilizce iskelet: eksik anahtarlar tr.js'e düşer. Çeviri eklendikçe doldurun.
 import game from "./en.game.js";
+import anaekran from "./en.anaekran.js";
 export default {
   ...game,
   "app.sub": "Comparison Mission",
@@ -10,4 +11,5 @@ export default {
   "cam.follow": "Follow",
   "cam.free": "Free",
   "cam.top": "Top",
+  ...anaekran,
 };

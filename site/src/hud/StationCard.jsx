@@ -34,7 +34,7 @@ export default function StationCard({ res, refTitle, candTitle, D, onClose, onNe
       </div>
       <StationTable res={res} refTitle={refTitle} candTitle={candTitle} />
       {res.note && res.rows.length > 0 && <p className="hud-note">{res.note}</p>}
-      <p className="hud-note warn-amber"><b>Gap:</b> {t("station.gap")}{D != null ? ` D = ${D.toFixed(3)} (düşük = yakın).` : ""}</p>
+      <p className="hud-note warn-amber"><b>Gap:</b> {t("station.gap")}{D != null ? ` Arazi uzaklığı = ${D.toFixed(3)} (0 = aynı, düşük = daha benzer; fiziksel mesafe değil, arazi şekillerinin farkı).` : ""}</p>
     </div>
   );
 }

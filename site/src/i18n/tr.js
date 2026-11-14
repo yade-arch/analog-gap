@@ -1,6 +1,7 @@
 // Tüm arayüz metinleri (Türkçe). Yeni metin = buraya anahtar ekle, en.js'e iskelet çevirisi.
 import pages from "./tr.pages.js";
 import game from "./tr.game.js";
+import anaekran from "./tr.anaekran.js";
 export default {
   ...pages,
   ...game,
@@ -31,10 +32,10 @@ export default {
   "map.title": "HARİTA",
   "log.title": "GÖZLEM GÜNLÜĞÜ",
   "log.empty": "Henüz gözlem yok. Alttaki istasyonlara tıklayın.",
-  "gauge.title": "D",
-  "gauge.hint": "düşük = yakın",
+  "gauge.title": "Arazi uzaklığı",
+  "gauge.hint": "0 = aynı, düşük = daha benzer",
   "gauge.none": "—",
-  "gauge.nodata": "Ortak veri yetersiz; D üretilmedi (O_k < 0,25 veya veri eksik).",
+  "gauge.nodata": "Ortak veri yetersiz; arazi uzaklığı üretilmedi (örtüşme 0,25'in altında veya veri eksik).",
   "gauge.ref.moon": "Referans: 3 Ay penceresi havuzu (LOLA M1)",
   "gauge.ref.mars": "Referans: R2 (25 pencere birleşimi)",
   "legend.slope": "Eğim",
@@ -44,11 +45,11 @@ export default {
   "exag.title": "Dikey abartı",
   "exag.label": "Dikey abartı",
   "station.slope": "Eğim",
-  "station.relief": "Röleyf",
-  "station.rough": "Pürüzlülük",
-  "station.thermal": "Termal",
-  "station.mars_thermal": "Mars termal",
-  "station.spectral": "Spektral",
+  "station.relief": "Yükseklik farkı",
+  "station.rough": "Yüzey engebesi",
+  "station.thermal": "Sıcaklık",
+  "station.mars_thermal": "Mars sıcaklığı",
+  "station.spectral": "Mineral (renk tayfı)",
   "station.seen": "ziyaret edildi",
   "station.next": "Sonraki istasyon",
   "station.close": "Kapat",
@@ -79,4 +80,5 @@ export default {
   "tag.real": "Gerçek ölçüm",
   "tag.calc": "Hesaplanmış",
   "tag.sim": "Simülasyon varsayımı",
+  ...anaekran,
 };
