@@ -6,7 +6,7 @@ import { angle, toLatLon, toXYZ } from "../../../components/globe/geo.js";
 import { MOBILE, disposeScene, tex } from "./stage.js";
 
 const BODY = {
-  earth: { map: "earth_bmng_200412_2048.jpg", atmo: [0.35, 0.6, 1.0], atmoK: 1.0 },
+  earth: { map: MOBILE ? "earth_bmng_200412_2048.jpg" : "earth_bmng_200412_5400.jpg", atmo: [0.35, 0.6, 1.0], atmoK: 1.0 },
   moon: { map: "moon_lroc_color_2048.jpg", bump: "moon_ldem_bump_1024.jpg", atmo: null },
   mars: { map: "mars_viking_clr_2048.jpg", atmo: [0.85, 0.5, 0.35], atmoK: 0.45 },
 };
@@ -24,7 +24,7 @@ function atmosphere(rgb, k) {
 export function makePlanetView(el, body, { markers = [], onPick, color = 0x7fb2e0 } = {}) {
   const B = BODY[body], scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 100);
-  camera.position.set(0, 0.4, 3.4);
+  camera.position.set(0, 0.4, 3.4); camera.userData.fit = 40;
   const mat = new THREE.MeshStandardMaterial({ map: tex(B.map), roughness: 1, metalness: 0 });
   if (B.bump) { mat.bumpMap = tex(B.bump, false); mat.bumpScale = 3; }
   const seg = MOBILE ? 64 : 128, planet = new THREE.Mesh(new THREE.SphereGeometry(1, seg, seg / 2), mat);

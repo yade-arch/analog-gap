@@ -40,7 +40,10 @@ export function createStage(host) {
       const v = views[k], r = rect(k); if (!v || !r) continue;
       v.update?.(dt);
       renderer.setViewport(...r); renderer.setScissor(...r);
-      v.camera.aspect = r[2] / r[3]; v.camera.updateProjectionMatrix();
+      v.camera.aspect = r[2] / r[3];
+      const fit = v.camera.userData.fit;                  // dar görünümde küre kırpılmasın: yatay açıyı koru
+      if (fit) v.camera.fov = v.camera.aspect < 1 ? (2 * Math.atan(Math.tan((fit * Math.PI) / 360) / v.camera.aspect) * 180) / Math.PI : fit;
+      v.camera.updateProjectionMatrix();
       renderer.render(v.scene, v.camera);
     }
     for (const cb of frameCbs) cb(dt);

@@ -1,42 +1,54 @@
-// Oyuncu kontrollü rover (Dünya analog arazisi). Model: mevcut şematik model (features/compare/unitModels), gerçek araç modeli değil.
-// Kurallar: yükseklik yalnızca DEM'den; veri boşluğuna girilmez; yerel eğim kaynaklı limiti aşıyorsa (parameters_sources.json)
-// daha dik yöne ilerlenmez. Hız bir gösterim değeridir (Simülasyon varsayımı).
-import { MODELS } from "../../compare/unitModels.js";
+// Oyuncu kontrollü rover. Yükseklik yalnızca DEM'den; veri boşluğuna girilmez. Yerel eğim kaynaklı limiti
+// (parameters_sources.json) aşarsa güçlendirici olmadan dik yöne gidilmez; güçlendirici yakıt harcar ve sağlamlığı azaltır.
+// Pil/yakıt/sağlamlık/hız oyun mekaniğidir (Simülasyon varsayımı), gerçek rover performansı değildir.
+import { rover as roverModel } from "./voxel.js";
 
-export const ROVER_SCALE = 0.35;
-const VMAX = 0.9, TURN = 1.9;                         // km/sn ve rad/sn: ekran gösterimi, gerçek performans değil
+export const ROVER_SCALE = 0.32;
+export const KEYMAPS = {
+  solo: { up: ["w", "arrowup"], down: ["s", "arrowdown"], left: ["a", "arrowleft"], right: ["d", "arrowright"], boost: ["shift", " "] },
+  p1: { up: ["w"], down: ["s"], left: ["a"], right: ["d"], boost: ["shift"] },
+  p2: { up: ["arrowup"], down: ["arrowdown"], left: ["arrowleft"], right: ["arrowright"], boost: ["enter", "0"] },
+};
+const VMAX = 0.7, BOOST = 1.6, TURN = 1.9;              // km/sn (ekran), rad/sn
 
-export function createRover(tv, limitDeg) {
-  const obj = MODELS.rover(); obj.scale.setScalar(ROVER_SCALE);
-  const s = { x: tv.start?.x ?? 0, z: tv.start?.z ?? 0, heading: 0, v: 0 };
-  let blocked = null;
+export function createRover(tv, limitDeg, map = KEYMAPS.solo, accent) {
+  const obj = roverModel(accent); obj.scale.setScalar(ROVER_SCALE);
+  const s = { x: tv.start?.x ?? 0, z: tv.start?.z ?? 0, heading: 0, v: 0, battery: 100, fuel: 100, health: 100 };
   const place = () => {
     const y = tv.height(s.x, s.z);
-    obj.position.set(s.x, Number.isNaN(y) ? obj.position.y : y, s.z);
-    obj.rotation.y = s.heading;
+    obj.position.set(s.x, Number.isNaN(y) ? obj.position.y : y, s.z); obj.rotation.y = s.heading;
   };
-  place(); tv.add(obj); tv.follow(obj);
+  place(); tv.add(obj);
 
   return {
-    obj,
-    get pos() { return { x: s.x, z: s.z }; },
-    /** keys: Set ("w","a","s","d"); -> engel olayı ("steep" | "nodata" | null) */
+    obj, stats: s,
+    /** keys: Set -> engel olayı ("steep" | "nodata" | null) */
     update(dt, keys) {
-      const thr = (keys.has("w") ? 1 : 0) - (keys.has("s") ? 1 : 0), turn = (keys.has("a") ? 1 : 0) - (keys.has("d") ? 1 : 0);
+      const on = (a) => a.some((k) => keys.has(k));
+      const thr = (on(map.up) ? 1 : 0) - (on(map.down) ? 1 : 0), turn = (on(map.left) ? 1 : 0) - (on(map.right) ? 1 : 0);
+      const boost = on(map.boost) && s.fuel > 0;
       s.heading += turn * TURN * dt * (thr < 0 ? -1 : 1);
-      s.v += (thr * VMAX - s.v) * Math.min(1, dt * 3);
-      blocked = null;
+      const vmax = (boost ? BOOST : VMAX) * (s.battery > 0 ? 1 : 0.4) * (0.5 + s.health / 200);
+      s.v += (thr * vmax - s.v) * Math.min(1, dt * 3);
+      let blocked = null;
       if (Math.abs(s.v) > 0.01) {
         const nx = s.x + Math.cos(s.heading) * s.v * dt, nz = s.z - Math.sin(s.heading) * s.v * dt;
         const ny = tv.height(nx, nz), slope = tv.slopeAt(nx, nz), here = tv.slopeAt(s.x, s.z);
+        const steep = limitDeg && slope > limitDeg && !(slope < here);
         if (Number.isNaN(ny)) blocked = "nodata";
-        else if (limitDeg && slope > limitDeg && !(slope < here)) blocked = "steep";
-        if (blocked) s.v = 0; else { s.x = nx; s.z = nz; }
+        else if (steep && !boost) blocked = "steep";
+        if (blocked) s.v = 0;
+        else {
+          const d = Math.hypot(nx - s.x, nz - s.z); s.x = nx; s.z = nz;
+          s.battery = Math.max(0, s.battery - d * 1.5);
+          if (boost) { s.fuel = Math.max(0, s.fuel - d * 6); if (steep) s.health = Math.max(0, s.health - d * 4); }
+        }
       }
-      obj.userData.tick?.(dt, Math.abs(s.v) > 0.05);
+      obj.userData.tick?.(dt, Math.abs(s.v) > 0.05, s.v);
       place();
       return blocked;
     },
     near(p, r = 0.6) { return p && Math.hypot(p.x - s.x, p.z - s.z) < r; },
+    dist(p) { return Math.hypot(p.x - s.x, p.z - s.z); },
   };
 }

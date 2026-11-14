@@ -3,10 +3,10 @@ import { t } from "../../i18n/index.js";
 import { GAME } from "./rules.js";
 import { tf } from "./ui.jsx";
 
-const SOURCES = ["tex.earth", "tex.moon", "tex.mars", "dem", "cand", "ref", "params", "terrain", "models", "nocraft", "nomp"];
+const SOURCES = ["tex.earth", "tex.moon", "tex.mars", "dem", "cand", "ref", "params", "terrain", "decor", "models", "mech", "mp"];
 
 /** Başlangıç ekranı (açık arayüz). */
-export function StartMenu({ profile, setProfile, onStart, gl, reportHref }) {
+export function StartMenu({ profile, setProfile, mode, setMode, onStart, gl, reportHref }) {
   return (
     <div className="g-menu">
       <div className="g-menu-card">
@@ -16,6 +16,10 @@ export function StartMenu({ profile, setProfile, onStart, gl, reportHref }) {
         <div className="g-seg" role="group" aria-label={t("game.menu.target")}>
           {["moon", "mars"].map((k) => <button key={k} className={profile === k ? "on" : ""} aria-pressed={profile === k} onClick={() => setProfile(k)}>{t("game.target." + k)}</button>)}
         </div>
+        <div className="g-seg" role="group" aria-label={t("game.menu.mode")}>
+          {["solo", "multi"].map((k) => <button key={k} className={mode === k ? "on" : ""} aria-pressed={mode === k} onClick={() => setMode(k)}>{t("game.mode." + k)}</button>)}
+        </div>
+        <p className="g-small">{t("game.mode." + mode + ".d")}</p>
         {gl ? <button className="g-start" onClick={onStart}>{t("game.menu.start")}</button> : <p className="g-lead">{t("game.menu.nogl")}</p>}
         <p className="g-small">{t("game.menu.keys")}</p>
         <p className="g-small"><a href={reportHref}>{t("game.menu.report")}</a> · <a href="#/home">{t("game.menu.site")}</a></p>

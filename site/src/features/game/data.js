@@ -93,3 +93,17 @@ export function candMarkers(cand) {
 export function refMarkers(ref) {
   return (ref?.windows || []).filter((w) => Number.isFinite(w.lat) && Number.isFinite(w.lon_E)).map((w) => ({ id: w.id, lat: w.lat, lon: w.lon_E, kind: "ref", label: `${w.id} · ${w.name || ""}` }));
 }
+
+/** Benzerlik sırası (çocuk dostu yüzde): profilin gösterilen adaylarından kaçının D'si bu pencereden büyük (%). Benzerlik yüzdesi DEĞİL, sıralamadır. */
+export function betterThan(p, cand) {
+  const a = (cand?.features || []).map((f) => f.properties.D).filter((v) => v !== null && v !== undefined);
+  if (p?.D === null || p?.D === undefined || !a.length) return null;
+  return Math.round((a.filter((v) => v > p.D).length / a.length) * 100);
+}
+
+/** Bölge merkezleri (adayların ortalaması): küre üzerinde bölge düğmeleri için. */
+export function regionCenters(cand) {
+  const r = {};
+  for (const f of cand?.features || []) { const p = f.properties, o = (r[p.region] ||= { n: 0, lat: 0, lon: 0 }); o.n++; o.lat += p.center_lat; o.lon += p.center_lon; }
+  return Object.entries(r).map(([code, o]) => ({ code, lat: o.lat / o.n, lon: o.lon / o.n, n: o.n }));
+}

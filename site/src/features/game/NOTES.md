@@ -44,3 +44,12 @@ Dal: `feature/oyun-3d-kure`. Rota: `#/game`. main'e push YOK (ön talimattaki "b
 - main'e girildi (11d67fa); Pages yayını başarılı, site ve dokular 200.
 - Yapılmayanlar: uzay aracı/iniş, gerçek glTF modeller, bulut, astronot yürüyüşü, multiplayer (ayrıntı yukarıda).
 - Sıradaki: NASA 3D Resources glTF (lisans + CREDITS), bulut dokusu, astronot animasyonu.
+
+## Oyun v2 (2026-11-14, dal feature/oyun-v2) — doküman geri bildirimi
+- Tek oyuncu (Ay/Mars tam ekran, Dünya verileri paneli) ve aynı ekranda iki oyuncu (sol Ay/Mars WASD, sağ Dünya oklar, eşleşme 0/3).
+- Kaza hikâyesi: konum etiketi (Shackleton / Jezero), arızalı iniş aracı, voxel astronot; bölge düğmeleri + iniş kartı (yer adı, merkez, katalog durumu).
+- Tüm gösterilen adaylara gerçek NASADEM DEM üretildi (export_dem_windows.py, K=250; 1591 pencere, ~40 MB) → "arazi verisi yok" kalmadı.
+- Kıyafet ekranı (Kızıl/Siyah astronot, önizleme + özellikler; Simülasyon varsayımı), HUD (pil/yakıt/sağlamlık/hız, mesafe etiketi), güçlendirici (Shift/Enter) dik yamaçlar için.
+- Rapor: her yaşa uygun; yüzde = sıralama ("adayların %X'inden daha benzer"), benzerlik yüzdesi değil. Dünya dokusu masaüstünde 5400×2700 (T1b).
+- Doğrulanmadı: tarayıcı paneli gizli olduğu için görseller ve animasyonlar ekran görüntüsüyle kontrol edilemedi; akış JS ile uçtan uca denendi.
+- Yapılmadı: çevrimiçi çok oyunculu (sunucu yok), sitenin genel yeniden tasarımı (yalnızca oyun; diğer ekranlar başka oturumda).

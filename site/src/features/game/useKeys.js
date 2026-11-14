@@ -5,13 +5,13 @@ export default function useKeys(onPress) {
   const keys = useRef(new Set()), cb = useRef(onPress);
   cb.current = onPress;
   useEffect(() => {
-    const map = (e) => ({ arrowup: "w", arrowdown: "s", arrowleft: "a", arrowright: "d" })[e.key.toLowerCase()] || e.key.toLowerCase();
+    const map = (e) => e.key.toLowerCase();
     const down = (e) => {
       if (e.target?.tagName === "INPUT" || e.target?.tagName === "SELECT") return;
       const k = map(e);
       if (!keys.current.has(k)) cb.current?.(k);
       keys.current.add(k);
-      if (["w", "a", "s", "d", " "].includes(k)) e.preventDefault();
+      if (["w", "a", "s", "d", " ", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(k)) e.preventDefault();
     };
     const up = (e) => keys.current.delete(map(e));
     const blur = () => keys.current.clear();
