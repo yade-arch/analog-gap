@@ -63,3 +63,9 @@ Tamamlayıcı (yalnızca NASA verisi eksikse): CSA RADARSAT, ESA Copernicus Data
 3. Her anlamlı iş bitince commit ve push (yarım iş bırakma; başka bilgisayar görsün).
 4. main'e yalnızca `npm run check` geçince ve kullanıcı "main'e al" dediğinde ya da komutta açıkça yazıyorsa birleştir; çakışma varsa dur ve yaz.
 5. Oturum sonunda `docs/ISLER.md`'ye bir satır ekle: tarih, dal, ne yapıldı, durum (devam/tamam).
+
+## Günlük hak koruma (otomatik uygula)
+1. Ekran görüntüsü ve tarayıcı testi yalnızca kullanıcı isterse veya görsel bir hata düzeltiliyorsa; varsayılan doğrulama `npm run check`.
+2. Küçük düzeltmeler tek commit'te toplanır; ara rapor yazılmaz, sonunda en fazla 5 satır.
+3. Büyük bir iş bitince kullanıcıya "yeni oturum aç" öner; yeni oturum yalnızca `STATUS.md` ve `docs/ISLER.md` son satırlarını okuyarak başlar.
+4. Basit düzeltmede kısa düşün, dosyanın yalnızca ilgili satırlarını oku; Opus yalnızca zor tasarım/hata için (model değişikliğini kullanıcı yapar).
