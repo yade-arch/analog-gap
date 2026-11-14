@@ -1,5 +1,7 @@
 // Emergency Analog Mission (English skeleton; missing keys fall back to tr.game.js).
+import globe from "./en.globe.js";
 export default {
+  ...globe,
   "nav.game": "Emergency Analog Mission",
   "game.title": "EMERGENCY ANALOG MISSION",
   "game.sub": "Mission control · find a similar terrain on Earth, run rover tests, choose the suit",

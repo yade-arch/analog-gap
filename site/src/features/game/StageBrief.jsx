@@ -4,6 +4,7 @@ import { PROFILES, Tag } from "../../common.jsx";
 import { GAME } from "./rules.js";
 import { refOf, targetThermal, VAR_KEYS } from "./data.js";
 import { Lbl, Missing, N, tf } from "./ui.jsx";
+import TargetGlobe from "./TargetGlobe.jsx";
 
 const UNITS = { slope: "°", relief: "m", rough: "m" };
 
@@ -23,6 +24,7 @@ export default function StageBrief({ D, profile, setProfile, onStart }) {
           </button>
         ))}
       </div>
+      <TargetGlobe D={D} profile={profile} />
       <div className="g-grid2">
         <div className="card">
           <h3>{t("game.brief.known")} <Tag kind="obs" /><Tag kind="der" /></h3>

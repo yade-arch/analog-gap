@@ -90,3 +90,6 @@
 .g-rules summary { cursor: pointer; font-weight: 600; }
 .g-foot { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; font-size: .88rem; overflow-wrap: anywhere; }
 @media (max-width: 900px) { .g-head p, .g-o2-note { display: none; } .g-head h2 { font-size: 1rem; } .g-o2-val { font-size: 1.2rem; } }
+.g-viewbar { margin: 0 0 8px; }
+.g-viewbar button { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--cool); background: transparent; color: var(--cool); font-weight: 600; cursor: pointer; }
+.g-globe-row { margin-bottom: 14px; }

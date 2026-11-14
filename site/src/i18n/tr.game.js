@@ -1,5 +1,7 @@
-// Emergency Analog Mission (oyun) metinleri; tr.js içine eklenir.
+// Emergency Analog Mission (oyun) metinleri; tr.js içine eklenir. Ortak küre metinleri (tr.globe.js) buradan yüklenir.
+import globe from "./tr.globe.js";
 export default {
+  ...globe,
   "nav.game": "Emergency Analog Mission",
   "game.title": "EMERGENCY ANALOG MISSION",
   "game.sub": "Görev kontrolü · Dünya'da benzer arazi bul, rover testlerini yap, kıyafeti seç",
@@ -63,6 +65,14 @@ export default {
   "game.src.earth": "Dünya: NASADEM_HGT v001 (30 m), aday pencere 10×10 km",
 
   "game.scout.hint": "Haritada {n} aday pencere var. Bir pencereye tıkla: her yeni pencere {c} dk harcar. Benzer ve FARKLI özellikleri yan yana incele.",
+  "game.globe.ref": "Hedef referans penceresi",
+  "game.globe.pick": "Küreden bir referans penceresine bas: konum, ızgara ve termal bilgisi açılır.",
+  "game.globe.src": "Kaynak (PGDA ROI)",
+  "game.globe.nocoord.moon": "referans pencerelerinin koordinatı veride yok.",
+  "game.globe.nocoord.mars": "R2 referansının enlem/boylamı site verisinde (reference_mars.json) kayıtlı değil; küreye işaretçi konmadı.",
+  "game.scout.to2d": "2D haritaya geç",
+  "game.scout.toglobe": "Küreye dön",
+  "game.scout.globehint": "Küreden bir aday pencereye bas: 2D harita ve karşılaştırma kartı açılır (inceleme maliyeti aynı).",
   "game.scout.choose": "Bu pencereyi analog olarak seç",
   "game.scout.empty": "Haritadan bir aday pencere seç.",
   "game.scout.count": "İncelenen pencere: {n}",
