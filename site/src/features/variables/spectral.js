@@ -2,6 +2,6 @@
 export default {
   id: "spectral", titleKey: "station.spectral", unit: "",
   requires: [],
-  availability: () => ({ status: "missing", note: "Kapsam dışı / veri yok" }),
+  availability: () => ({ status: "missing", note: "Out of scope / no data" }),
   compute: null, card: null, report: null,
 };

@@ -10,7 +10,7 @@ export const ROUTES = [
 export const DEFAULT_ROUTE = "home";
 
 export const SETTINGS = {
-  lang: "tr",
+  lang: "en",
   windowKm: 10,                         // 3D pencere kenarı (km); sol ve sağ aynı ölçekte
   exaggerations: [1, 3, 5],
   defaultExag: 1,

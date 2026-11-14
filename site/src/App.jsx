@@ -58,8 +58,8 @@ export default function App() {
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
       <main className={page === "compare" ? "full" : ""}>
         {D.cm && page !== "compare" && page !== "home" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
-        {!D.cm ? <p>Veri yükleniyor…</p> : (
-          <Suspense fallback={<p>Sayfa yükleniyor…</p>}>
+        {!D.cm ? <p>Loading data…</p> : (
+          <Suspense fallback={<p>Loading page…</p>}>
             {page === "compare" && <Compare D={D} profile={profile} cand={cand} selId={a1} />}
             {page === "report" && <Report D={D} profile={profile} cand={cand} id={a1} />}
             {page === "map" && <MapPage cand={candR} candAll={cand} region={region} setRegion={setRegion} profile={profile} D={D} onSelect={go} />}
@@ -68,15 +68,15 @@ export default function App() {
             {page === "list" && <ListPage cand={cand} region={region} setRegion={setRegion} profile={profile} reference={reference} known={D.known} tE={D.tE} tM={D.tM} hasDem={dem ? (id) => id in dem : null} />}
             {page === "card" && (feature
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
-              : <div className="card">Bu pencere seçili profilin aday dosyasında yok (yalnızca bölge başına en iyi 250 aday dosyaya konur). <a href="#/list">Listeye dön</a></div>)}
+              : <div className="card">This window is not in the candidate file for the chosen target (the file holds only the best 250 candidates per region). <a href="#/list">Back to the list</a></div>)}
             {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>
         )}
       </main>
       <footer>
-        <div><strong>Veri ürünleri:</strong> {SOURCES}</div>
-        <div>Yöntem ve sınırlamalar: <a href="#/method">Yöntem ve Doğrulama</a>. Hiçbir pencere Ay/Mars'ın tam karşılığı olarak sunulmaz; "daha az incelenmiş / katalogda yok" ifadesi kullanılır. Etiketler: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
+        <div><strong>Data products:</strong> {SOURCES}</div>
+        <div>Method and limits: <a href="#/method">Method & Validation</a>. No window is presented as an exact copy of the Moon/Mars; we say "less studied / not in catalog". Labels: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
       </footer>
     </>
   );

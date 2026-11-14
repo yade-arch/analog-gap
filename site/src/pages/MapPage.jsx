@@ -28,7 +28,7 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
         </div>
         <div className="g-card mappanel">
           <div className="viewtabs" role="group" aria-label={t("map.view")}>
-            {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 3D Küre" : "🗺 2D Harita"}</button>)}
+            {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 3D Globe" : "🗺 2D Map"}</button>)}
             <span className="muted small pick-hint">{t("ui.pickHint")}</span>
           </div>
           <details className="g-card extra">

@@ -18,7 +18,7 @@ export function loadDem(id) {
     cache.set(id, (async () => {
       const idx = await loadDemIndex();
       const meta = idx.windows[id];
-      if (!meta) throw new Error("DEM yok: " + id);
+      if (!meta) throw new Error("No DEM: " + id);
       const r = await fetch(base + id + ".bin.gz");
       if (!r.ok) throw new Error(id + " " + r.status);
       const buf = await gunzip(await r.arrayBuffer());

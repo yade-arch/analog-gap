@@ -21,7 +21,7 @@ export default function RegionPanel({ sel, cand, target, onSelect, onClose }) {
   return (
     <div className="g-card regpanel">
       <div className="rp-head">
-        <div><div className="g-kicker">{t("ui.selRegion")}</div><h2 className="g-h">{fmt(Math.abs(sel.lat), 2)}° {sel.lat >= 0 ? "K" : "G"}, {fmt(Math.abs(sel.lon), 2)}° {sel.lon >= 0 ? "D" : "B"}</h2></div>
+        <div><div className="g-kicker">{t("ui.selRegion")}</div><h2 className="g-h">{fmt(Math.abs(sel.lat), 2)}° {sel.lat >= 0 ? "N" : "S"}, {fmt(Math.abs(sel.lon), 2)}° {sel.lon >= 0 ? "E" : "W"}</h2></div>
         <button className="rp-x" onClick={onClose} aria-label={t("station.close")}>✕</button>
       </div>
       <div className="rp-img">

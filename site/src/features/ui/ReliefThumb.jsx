@@ -29,7 +29,7 @@ export default function ReliefThumb({ id, body, label, h = 140 }) {
   return (
     <div className={"relief " + body} style={{ height: h }}>
       <canvas ref={cv} style={{ display: st === "ok" ? "block" : "none" }} aria-label={label} role="img" />
-      {st !== "ok" && <span className="relief-empty">{st === "load" ? "…" : "Kabartma görseli yok (bu pencerenin 3B yükseklik verisi sitede yok)"}</span>}
+      {st !== "ok" && <span className="relief-empty">{st === "load" ? "…" : "No relief image (no 3D elevation data for this window on the site)"}</span>}
       {label && <span className="relief-tag">{label}</span>}
     </div>
   );

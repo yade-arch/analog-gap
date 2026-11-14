@@ -9,7 +9,7 @@ export const LINKS = { mock: MockLink, serial: WebSerialLink, websocket: WebSock
 export const availability = () => ({ mock: true, serial: serialSupported(), websocket: typeof WebSocket !== "undefined" });
 
 export function createLink(kind, opts) {
-  const C = LINKS[kind]; if (!C) throw new Error("bilinmeyen bağlantı türü: " + kind);
+  const C = LINKS[kind]; if (!C) throw new Error("unknown link type: " + kind);
   return new C(opts);
 }
 export { default as RoverLink } from "./RoverLink.js";

@@ -9,11 +9,11 @@ const isPt = (p) => p && isNum(p.x_km) && isNum(p.z_km);
 
 /** Ayrıştırılmış nesneyi doğrular -> { ok: true, msg } | { ok: false, error }. Bilinmeyen alanlar yok sayılır, zorunlu alanlar denetlenir. */
 export function validate(m) {
-  if (!m || typeof m !== "object" || Array.isArray(m)) return { ok: false, error: "nesne değil" };
-  if (m.v !== PROTO_VERSION) return { ok: false, error: `desteklenmeyen sürüm: ${m.v}` };
+  if (!m || typeof m !== "object" || Array.isArray(m)) return { ok: false, error: "not an object" };
+  if (m.v !== PROTO_VERSION) return { ok: false, error: `unsupported version: ${m.v}` };
   switch (m.type) {
     case "cmd":
-      if (!Number.isInteger(m.id) || m.id < 0) return { ok: false, error: "cmd.id tamsayı olmalı" };
+      if (!Number.isInteger(m.id) || m.id < 0) return { ok: false, error: "cmd.id must be an integer" };
       if (!CMDS.includes(m.cmd)) return { ok: false, error: `bilinmeyen cmd: ${m.cmd}` };
       if (m.cmd === "goto" && !isPt(m.args && m.args.target)) return { ok: false, error: "goto: args.target {x_km,z_km} gerekli" };
       return { ok: true, msg: m };
@@ -28,7 +28,7 @@ export function validate(m) {
       return { ok: true, msg: m };
     case "telemetry":
       if (!isNum(m.t_ms) || !isPt(m.pos) || !STATES.includes(m.state) || !SOURCES.includes(m.source)) return { ok: false, error: "telemetry: t_ms, pos, state, source gerekli" };
-      if (m.heading_deg !== undefined && !isNum(m.heading_deg)) return { ok: false, error: "telemetry.heading_deg sayı olmalı" };
+      if (m.heading_deg !== undefined && !isNum(m.heading_deg)) return { ok: false, error: "telemetry.heading_deg must be a number" };
       return { ok: true, msg: m };
     default:
       return { ok: false, error: `bilinmeyen type: ${m.type}` };
@@ -38,7 +38,7 @@ export function validate(m) {
 export const encode = (m) => JSON.stringify({ v: PROTO_VERSION, ...m }) + "\n";
 
 export function decode(line) {
-  let o; try { o = JSON.parse(line); } catch { return { ok: false, error: "JSON değil" }; }
+  let o; try { o = JSON.parse(line); } catch { return { ok: false, error: "not JSON" }; }
   return validate(o);
 }
 

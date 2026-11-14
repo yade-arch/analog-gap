@@ -3,7 +3,7 @@
 import { fmt } from "../../common.jsx";
 import { TERMS } from "../../i18n/terms.js";
 
-const range = (o, d, u) => (o ? `tipik ${fmt(o.p50, d)} ${u}, çoğu yer ${fmt(o.p10, d)}–${fmt(o.p90, d)} ${u}` : "Veri eksik");
+const range = (o, d, u) => (o ? `typical ${fmt(o.p50, d)} ${u}, most of the area ${fmt(o.p10, d)}–${fmt(o.p90, d)} ${u}` : "Data missing");
 
 /** key: 'slope'|'relief'|'rough'. -> compute(ctx) */
 export function topoCompute(key, d, unit, extra) {
@@ -12,12 +12,12 @@ export function topoCompute(key, d, unit, extra) {
     const r = reference?.variables?.[key], c = p.derived_percentiles[key], dn = TERMS["d_" + key].name.toLowerCase();
     const diff = r && c ? Math.abs(c.p50 - r.p50) : null;
     const summary = r && c
-      ? `Referans: tipik ${fmt(r.p50, d)} ${unit}. Dünya adayı: tipik ${fmt(c.p50, d)} ${unit}. Tipik değerler arasındaki fark ${fmt(diff, d)} ${unit} (${dn} ${fmt(p.d[key], 3)}; 0 = aynı dağılım).`
-      : "Veri eksik: karşılaştırma yapılmadı.";
+      ? `Reference: typical ${fmt(r.p50, d)} ${unit}. Earth candidate: typical ${fmt(c.p50, d)} ${unit}. Difference between typical values ${fmt(diff, d)} ${unit} (${dn} ${fmt(p.d[key], 3)}; 0 = same spread).`
+      : "Data missing: no comparison made.";
     const rows = [
-      { label: `Tipik değer ve aralık (teknik ad: P50, P10–P90; ${unit})`, ref: range(r, d, unit), cand: range(c, d, unit), tag: "calc" },
-      { label: "Örtüşme (teknik ad: O_k): referansın tipik aralığının adayın aralığıyla örtüşen payı, 0 = hiç, 1 = tamamen", single: fmt(p.O[key], 3), tag: "calc" },
-      { label: `${TERMS["d_" + key].name} (teknik ad: d_k = W1 / IQR(referans)); 0 = aynı, düşük = daha benzer`, single: fmt(p.d[key], 3), tag: "calc" },
+      { label: `Typical value and range (technical name: P50, P10–P90; ${unit})`, ref: range(r, d, unit), cand: range(c, d, unit), tag: "calc" },
+      { label: "Overlap (technical name: O_k): share of the reference's typical range covered by the candidate's range, 0 = none, 1 = all", single: fmt(p.O[key], 3), tag: "calc" },
+      { label: `${TERMS["d_" + key].name} (technical name: d_k = W1 / IQR(reference)); 0 = identical, lower = more similar`, single: fmt(p.d[key], 3), tag: "calc" },
     ];
     return { status: "ok", summary, rows: extra ? rows.concat(extra(ctx)) : rows };
   };
