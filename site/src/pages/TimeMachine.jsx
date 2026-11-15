@@ -52,7 +52,7 @@ export default function TimeMachine({ D, profile, setProfile, cand }) {
         <label className="small">{t("tm.month")} <select value={month} onChange={(e) => setMonth(e.target.value)}>{MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}</select></label>
       </div>
       <LongTimeline planet={planet} />
-      {!place ? <RobotSays text={t("tm.hello")} /> : (
+      {!place ? <p className="muted">{t("tm.hello2")}</p> : (
         <>
           <div className="tm-view">
             <figure>{cur && !cur.empty ? <img src={cur.url} alt={tf("tm.alt", { y: year })} /> : <div className="tm-empty">{cur ? tf("tm.noImg", { y: year }) : t("gd.loading")}</div>}<figcaption>{year}-{month}-15</figcaption></figure>

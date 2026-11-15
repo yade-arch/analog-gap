@@ -24,7 +24,7 @@ function Chart({ g, year }) {
 }
 
 export default function LongTimeline({ planet }) {
-  const [year, setYear] = useState(Y1), [g, setG] = useState(null);
+  const [year, setYear] = useState(2025), [g, setG] = useState(null);
   useEffect(() => { fetch(import.meta.env.BASE_URL + "data/gistemp_global.json").then((r) => r.json()).then((j) => setG(j.annual)).catch(() => setG({})); }, []);
   const ev = [...EV[planet]].reverse().find(([y]) => y <= year), v = g?.[year];
   let text = ev ? `${ev[0]}: ${t("lt." + ev[1])}` : "";

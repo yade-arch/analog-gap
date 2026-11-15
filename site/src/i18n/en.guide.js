@@ -56,6 +56,7 @@ export default {
   "pdf.sci.change": "Difference last year − 1900", "pdf.sci.single": "two single years; year-to-year noise is about ±0.1 °C", "pdf.sci.dem": "Elevation product",
   "pdf.sci.noPlace": "No Earth place was chosen, so no image record is included.",
   "pdf.sci.l1": "Global mean temperature describes the whole planet, not a single analog place.", "pdf.sci.l2": "Moon and Mars have no century-long temperature records; no values are estimated or simulated here.",
+  "tm.hello2": "Pick a place above to travel back in time with real NASA satellite pictures, one for each year.",
   "tm.title": "TIME MACHINE", "tm.planet.earth": "Earth", "tm.planet.moon": "Moon", "tm.planet.mars": "Mars",
   "tm.planetNote": "{body} reference: {ref}. This app has no yearly image archive for the {body}, so the timeline shows the Earth analog place you choose.",
   "tm.month": "Same day each year: 15th of month", "tm.hello": "Hi! Pick a place and I'll take you back in time with real NASA satellite pictures, one for each year.",
