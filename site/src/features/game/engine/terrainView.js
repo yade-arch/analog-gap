@@ -58,15 +58,29 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   if (L.fog) scene.fog = body === "moon" ? new THREE.Fog(L.fog, 14, 60) : new THREE.Fog(L.fog, 7, 30);   // Moon: far horizon fades out, near ground stays visible (no dark gap)
   const { geometry, zmed } = buildTerrain(dem);
   const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1, metalness: 0 });
-  const mesh = new THREE.Mesh(geometry, mat); const EX = body === "moon" ? 0.35 : EXAG;   // Moon: heights drawn at 0.35× so hills read as rolling ground, not walls (display only; rover slope limits use the real DEM slope)
+  mat.side = THREE.DoubleSide; const mesh = new THREE.Mesh(geometry, mat); const EX = EXAG;
   mesh.scale.y = EX; scene.add(mesh);
-  let zmin = Infinity; for (let k = 0; k < dem.z.length; k++) { const e = elev(dem, k); if (!Number.isNaN(e) && e < zmin) zmin = e; }
-  const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1 }));
-  base.material.map.repeat.set(960, 960);   // same colour and tile size as the data window (400 km / 10 km × 24): no visible seam base.rotation.x = -Math.PI / 2;
-  base.position.y = ((zmin - zmed) / 1000) * EX - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
   const h = (x, z) => sampleH(dem, x, z) * EX;
+  // Open ground to the horizon (visual only, not data): rays from the window edge outwards; height starts at the real edge
+  // height (seamless join) and eases to a flat plain over 5 km, then runs 150 km out where the fog hides it. No walls, no drop-offs.
+  const W2 = SETTINGS.windowKm / 2 * 0.999, RS = [0, 0.1, 0.3, 0.7, 1.4, 2.5, 4, 6, 10, 18, 35, 70, 150], N = 320;
+  const fade = (d) => { const t = Math.min(1, d / 5); return 1 - t * t * (3 - 2 * t); };
+  const edgeAt = (a) => { const c = Math.cos(a), sn = Math.sin(a), k = W2 / Math.max(Math.abs(c), Math.abs(sn)); return [c * k, sn * k]; };
+  const edgeH = (ex, ez) => { const y = h(ex, ez); return Number.isNaN(y) ? 0 : y; };
+  const outerH = (x, z) => { const a = Math.atan2(z, x), [ex, ez] = edgeAt(a); return edgeH(ex, ez) * fade(Math.hypot(x - ex, z - ez)); };
+  {
+    const pos = [], uv = [], idx = [], Wk = SETTINGS.windowKm;
+    for (let i = 0; i <= N; i++) {
+      const a = (i / N) * Math.PI * 2, [ex, ez] = edgeAt(a), y0 = edgeH(ex, ez), c = Math.cos(a), sn = Math.sin(a);
+      for (const r of RS) { const x = ex + c * r, z = ez + sn * r; pos.push(x, y0 * fade(r), z); uv.push(x / Wk + 0.5, 0.5 - z / Wk); }
+    }
+    const M = RS.length;
+    for (let i = 0; i < N; i++) for (let j = 0; j < M - 1; j++) { const p = i * M + j, q = p + M; idx.push(p, q, p + 1, p + 1, q, q + 1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+    g.setIndex(idx); g.computeVertexNormals(); scene.add(new THREE.Mesh(g, mat));
+  }
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));
-  scene.add(scenery(body, base.position.y));
+  scene.add(scenery(body, outerH));
   if (body !== "earth") scene.add(stars());
   if (body === "moon") {                               // Ay güney kutbundan Dünya ufka yakın görünür (görsel)
     const earth = new THREE.Mesh(new THREE.SphereGeometry(3, 48, 32), new THREE.MeshStandardMaterial({ map: tex("earth_bmng_200412_2048.jpg"), roughness: 1, fog: false }));

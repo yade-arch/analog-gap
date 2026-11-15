@@ -15,7 +15,7 @@ export function scenery(body, baseY, n = 900) {
     const x = Math.cos(a) * d, z = Math.sin(a) * d;
     if (Math.abs(x) < 5.2 && Math.abs(z) < 5.2) continue;                  // DEM penceresinin üstüne koyma
     const k = (0.03 + r() ** 3 * 0.3) * (1 + d / 40);
-    o.position.set(x, baseY + k * 0.4, z); o.rotation.set(0, r() * 3, 0); o.scale.set(k * (1 + r()), k, k * (1 + r())); o.updateMatrix();
+    o.position.set(x, (typeof baseY === "function" ? baseY(x, z) : baseY) + k * 0.4, z); o.rotation.set(0, r() * 3, 0); o.scale.set(k * (1 + r()), k, k * (1 + r())); o.updateMatrix();
     const j = r() > 0.5 ? 1 : 0; meshes[j].setMatrixAt(cnt[j]++, o.matrix);
   }
   const g = new THREE.Group();
