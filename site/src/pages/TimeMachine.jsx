@@ -8,6 +8,7 @@ import { fmt } from "../common.jsx";
 import { RobotSays } from "../features/guide/Robot.jsx";
 import PlacePicker from "../features/guide/PlacePicker.jsx";
 import LongTimeline from "../features/guide/LongTimeline.jsx";
+import TmPdf from "../features/guide/TmPdf.jsx";
 
 const PRESETS = [["tm.p.glacier", 61.17, -147.08], ["tm.p.aral", 45.0, 59.6]];   // well-known visible changes (coordinates only; images are real)
 import { SOURCE, YEARS, diffPct, gibsUrl, loadShot } from "../features/guide/gibs.js";
@@ -70,13 +71,12 @@ export default function TimeMachine({ D, profile, setProfile, cand }) {
             <ReportBody {...{ planet, place, month, got, miss, diffs, stable, D }} />
             <button className="g-go" onClick={() => window.print()}>{t("tm.pdf")}</button>
           </details>
-          <section className="print-only">
-            <h1>ANALOG GAP — {t("tm.title")}</h1>
-            <ReportBody {...{ planet, place, month, got, miss, diffs, stable, D }} />
-            {got.length > 0 && <div className="tm-view"><figure><img src={shots[got[0]].url} alt="" /><figcaption>{got[0]}-{month}-15</figcaption></figure><figure><img src={last.url} alt="" /><figcaption>{lastYear}-{month}-15</figcaption></figure></div>}
-          </section>
         </>
       )}
+      <TmPdf planet={planet} D={D}>{place && <>
+        <ReportBody {...{ planet, place, month, got, miss, diffs, stable, D }} />
+        {got.length > 0 && last && <div className="tm-view"><figure><img src={shots[got[0]].url} alt="" /><figcaption>{got[0]}-{month}-15</figcaption></figure><figure><img src={last.url} alt="" /><figcaption>{lastYear}-{month}-15</figcaption></figure></div>}
+      </>}</TmPdf>
     </div>
   );
 }

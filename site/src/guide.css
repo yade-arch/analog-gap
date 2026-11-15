@@ -45,4 +45,6 @@
   .gd-pair, .tm-view { grid-template-columns: 1fr; } .rb-bot { width: 64px; height: 80px; } .rb-bubble { font-size: 15px; }
   .tm-slider { flex-wrap: wrap; } .tm-slider input { flex-basis: 100%; order: -1; }
 }
+.tm-pdfbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } .tm-pdfbar .g-go { width: auto; flex: 0 0 auto; padding: 10px 18px; }
+.tm-pdf table { border-collapse: collapse; margin: 4pt 0 8pt; } .tm-pdf td, .tm-pdf th { border: 1px solid #999; padding: 2pt 6pt; text-align: left; }
 @media print { .gd-page > :not(.print-only) { display: none !important; } .tm-view img { break-inside: avoid; } }
