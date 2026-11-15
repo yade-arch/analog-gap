@@ -9,7 +9,7 @@ const STEP_D = ["NASA elevation data: Earth NASADEM, Moon LOLA, Mars CTX", "all 
 const Sec = ({ title, kid, children }) => (
   <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">
     {kid && <p className="kid-line">{kid}</p>}
-    {kid ? <details className="sci"><summary>Details for scientists</summary>{children}</details> : children}
+    {kid ? <details className="sci"><summary>For scientists</summary>{children}</details> : children}
   </div></details>
 );
 const FORMULA = `Technical names: D = terrain distance, d_k = distance per property (slope / height difference / surface roughness), O_k = overlap, P10/P50/P90 = typical value and range, W1 = Wasserstein distance, IQR = interquartile range (width of the middle half).
@@ -35,7 +35,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
           <li><b>3</b><span><strong>Compare the terrain.</strong> NASA height maps tell us three things: how steep it is (<Term k="slope" />), how high the bumps are (<Term k="relief" />) and how rocky and bumpy it feels (<Term k="rough" />).</span></li>
                     <li><b>4</b><span><strong>Explore what is alike and what is different.</strong> The <Term k="D" /> is one number: 0 means the measured terrain features are the same, a smaller number means they are more alike. The things we cannot compare are always shown too.</span></li>
         </ol>
-        <p className="muted small">It is not a percentage and not a score of "good" or "bad". It only compares the shape of the land, not air, cold or soil. Data names and versions are in the sections below.</p>
+        <p className="muted small">It is not a percentage and not a score of "good" or "bad". It only compares the shape of the land, not air, cold or soil, so a similar shape alone does not make a place right for a mission. Data names and versions are in the sections below and on the <a href="#/data">Data sources</a> page.</p>
       </div>
       <Warn><strong>Honest note:</strong> the positive-control target was <strong>not met</strong> (the median percentile of known analogs did not reach ≤ 20%). Details: Validation section. So we do not claim the method is "validated".</Warn>
       <ol className="flow" aria-label="Method steps">
@@ -60,7 +60,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
         <p>Candidates are scanned in: Southwestern USA, Atacama, Island of Hawaiʻi, Western/Central Anatolia. Places anywhere else on Earth can be analysed on demand from the map. Known analogs are not used to make candidates; they are only for the positive control and the "known" label. Reference targets: Moon = around Shackleton (LOLA, 3 ROI windows), Mars = around Jezero (CTX DTM, R2).</p>
       </Sec>
       <Sec title="Did we check our work?" kid="We tested if places that scientists already use as Moon or Mars practice sites end up near the top. They did not always, so we say honestly that the method is not proven yet.">
-        <h3>Pozitif kontrol <Tag kind="der" /></h3>
+        <h3>Positive control <Tag kind="der" /></h3>
         <Warn><strong>Target not met.</strong> Success target: median percentile of known analogs ≤ 20%. The result below is reported as it is; parameters and thresholds were not tuned to it. n = 5 tested (of 13 rows; 7 rows have no coordinates, Salda falls outside a valid window because of the water mask). The regions are unbalanced (US-SW 4, HAW 1, ANA 1, ATA 0).</Warn>
         {pc && (
           <>
@@ -83,7 +83,7 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
             <p className="muted">{pc.WARNING}</p>
           </>
         )}
-        <h3>Negatif kontrol <Tag kind="der" /></h3>
+        <h3>Negative control <Tag kind="der" /></h3>
         <p>200 random windows per region (seed = 42). Flat windows (slope P90 &lt; 2°, n = {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_flat_windows}): with D for the Moon target {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_with_D}; last quarter/unranked {neg?.flat_windows_slope_p90_lt_2deg?.moon?.["n_in_last_quarter_(percentile>=75)"]}. Windows overlap by 50%, so p-values may be optimistic.</p>
         <table>
           <thead><tr><th>Region</th><th>Target</th><th className="n">With D / 200</th><th className="n">Passed filter</th><th>D P10 / P50 / P90</th></tr></thead>

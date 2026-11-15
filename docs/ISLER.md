@@ -15,3 +15,4 @@
 - 2026-11-15 | gezegen-kesif | Açılış ekranı (#/start): küre, tanıtım, arama, Ay/Mars, son yerler; tıklanan nokta Explore'da seçili açılır | tamam
 - 2026-11-15 | gezegen-kesif | PDF rapor düzeni: A4, açık renk, bölünmeyen kartlar, başlık bloğu, üç grafik, sayfa no; PDF düğmesi en üstte | tamam
 - 2026-11-15 | gezegen-kesif | My places: iki grup, favori, tarih, filtreler, iki yeri yan yana karşılaştırma | tamam
+- 2026-11-15 | gezegen-kesif | Veri kaynakları sayfası (#/data), Yöntem sayfası düzeltmeleri; kalan: anlık nokta PDF, oyun genişletmesi | devam
