@@ -136,3 +136,15 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .disc-pick { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; cursor: pointer; } .disc-pick input { width: 18px; height: 18px; }
 .disc-pair { margin: 0 0 12px; display: grid; gap: 8px; } .disc-pair h3 { margin: 0; } .disc-pair .g-btn { width: auto; justify-self: start; }
 .scan-group { margin-top: 24px; } .scan-group > .muted { margin: 0 0 10px; max-width: 75ch; }
+/* Data sources page */
+.ds { display: grid; gap: 12px; } .ds h3 { margin: 0 0 2px; } .ds p { max-width: 75ch; }
+.ds-key { margin: 8px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.ds-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+.ds-row { padding: 10px 0; border-top: 1px solid var(--line-soft); } .ds-row:first-child { border-top: 0; padding-top: 0; }
+.ds-main { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; }
+.ds-who { font-size: .8rem; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.ds-who.other { border-style: dashed; }
+.ds-approx { font-size: .8rem; font-weight: 600; padding: 1px 8px; border: 1px dashed var(--line); border-radius: 999px; }
+.ds-role { margin: 4px 0; } .ds-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 6px 0 0; }
+.ds-dl dt { color: var(--muted); } .ds-dl dd { margin: 0; min-width: 0; } .ds-break { overflow-wrap: anywhere; }
+@media (max-width: 560px) { .ds-dl { grid-template-columns: 1fr; } .ds-dl dd { margin-bottom: 6px; } }

@@ -16,6 +16,7 @@ const MapPage = lazy(() => import("./pages/MapPage.jsx"));
 const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
 const Start = lazy(() => import("./pages/Start.jsx"));
+const DataSources = lazy(() => import("./pages/DataSources.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
@@ -72,12 +73,13 @@ export default function App() {
               : <div className="card">This window is not in the candidate file for the chosen target (the file holds only the best 250 candidates per region). <a href="#/list">Back to the list</a></div>)}
             {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
             {page === "start" && <Start profile={profile} setProfile={setProfile} />}
+            {page === "data" && <DataSources inventory={D.inv} />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>
         )}
       </main>
       <footer>
-        <div><strong>Data products:</strong> {SOURCES}</div>
+        <div><strong>Data products:</strong> {SOURCES} · <a href="#/data">All data sources</a></div>
         <div>Method and limits: <a href="#/method">Method & Validation</a>. No window is presented as an exact copy of the Moon/Mars; we say "less studied / not in catalog". Labels: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
       </footer>
     </>

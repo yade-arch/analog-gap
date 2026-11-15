@@ -52,7 +52,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   const mr = idx?.windows?.[refId], mc = p.onDemand ? pt.dem.meta : idx?.windows?.[p.id];
   const refCard = (
     <PlaceCard key="r" body={profile} title={`${names[0]} – ${mr?.title || refId}`} sub={reference?.label}
-      chips={[["grid", "30 m"], ["product", profile === "moon" ? "LDEM_80S_20M" : "CTX DTM (R2)"], ["src", profile === "moon" ? "NASA PDS" : "USGS"]]}
+      chips={[["grid", "30 m"], ["product", profile === "moon" ? "LDEM_80S_20M" : "CTX DTM (R2)"]]}
       details={[[t("ov.d.coord"), mr ? `${fmt(mr.lat, 3)}°, ${fmt(mr.lon, 3)}°` : null], [t("cmp.elev"), mr ? `${fmt(mr.z_min, 0)} – ${fmt(mr.z_max, 0)} m` : null], [t("ov.d.product"), mr?.product]]} />
   );
   const earthCard = p.onDemand ? (
@@ -63,7 +63,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
     </PlaceCard>
   ) : (
     <PlaceCard key="e" body="earth" title={`${names[1]} – ${regionLabel(p.region)}`} sub={`${t("list.code")}: ${p.id}`}
-      chips={[["grid", "30 m"], ["product", "NASADEM_HGT v001"], ["src", "NASA LP DAAC"], ["range", mc ? `${fmt(mc.z_min, 0)}–${fmt(mc.z_max, 0)} m` : null]]}
+      chips={[["grid", "30 m"], ["product", "NASADEM_HGT v001"], ["range", mc ? `${fmt(mc.z_min, 0)}–${fmt(mc.z_max, 0)} m` : null]]}
       details={[[t("ov.d.coord"), `${fmt(p.center_lat, 3)}°, ${fmt(p.center_lon, 3)}°`], [t("map.rank"), `#${p.rank}`], [t("ov.d.product"), mc?.product]]}>
       <CandPicker list={list} value={p.id} onPick={setPick} />
     </PlaceCard>
