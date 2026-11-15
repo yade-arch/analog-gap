@@ -30,10 +30,10 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
       <div className="card brief kid">
         <h2>How it works</h2>
         <ol className="kid-steps">
-          <li><b>1</b><span><strong>Pick a place.</strong> Choose any spot on Earth. We look at a square of land 10 km wide.</span></li>
-          <li><b>2</b><span><strong>Measure the ground.</strong> NASA height maps tell us three things: how steep it is (<Term k="slope" />), how high the bumps are (<Term k="relief" />) and how rocky and bumpy it feels (<Term k="rough" />).</span></li>
-          <li><b>3</b><span><strong>Do the same on the Moon or Mars.</strong> We measure the land around Shackleton crater (Moon) or Jezero crater (Mars) the same way.</span></li>
-          <li><b>4</b><span><strong>Get one number.</strong> The <Term k="D" /> says how different the two grounds are. 0 means the same, a small number means very alike, a big number means very different.</span></li>
+          <li><b>1</b><span><strong>Choose a place on Earth.</strong> Click any spot. We look at a square of land 10 km wide.</span></li>
+          <li><b>2</b><span><strong>Choose the Moon or Mars.</strong> We use the land around Shackleton crater (Moon) or Jezero crater (Mars).</span></li>
+          <li><b>3</b><span><strong>Compare the terrain.</strong> NASA height maps tell us three things: how steep it is (<Term k="slope" />), how high the bumps are (<Term k="relief" />) and how rocky and bumpy it feels (<Term k="rough" />).</span></li>
+                    <li><b>4</b><span><strong>Explore what is alike and what is different.</strong> The <Term k="D" /> is one number: 0 means the measured terrain features are the same, a smaller number means they are more alike. The things we cannot compare are always shown too.</span></li>
         </ol>
         <p className="muted small">It is not a percentage and not a score of "good" or "bad". It only compares the shape of the land, not air, cold or soil. Data names and versions are in the sections below.</p>
       </div>
