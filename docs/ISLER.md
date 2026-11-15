@@ -9,3 +9,4 @@
 | 2026-11-14 | gezegen-kesif | Ana ekran kahraman, referans tasarımda üst çubuk/liste/harita/rapor (main'e alındı); karşılaştırma ekranı ana-ekran-3d çakışması nedeniyle dokunulmadı | tamam |
 | 2026-11-14 | feature/oyun-v2 | Oyun v2: doküman geri bildirimi (modlar, hikâye, kıyafet, HUD, rapor, tüm adaylara DEM) | tamam |
 | 2026-11-15 | claude/global-analysis-8184cd | Dünyanın her noktası: Terrain Tiles ile anlık 10×10 km arazi analizi (worker), yer arama, 3B karşılaştırma; docs/GLOBAL_ANALYSIS.md | tamam (main'e alınmadı) |
+- 2026-11-15 | gezegen-kesif | global-analysis dalı birleştirildi; Find a place sekmesine bölüm menüsü (tek bölüm göster) | tamam

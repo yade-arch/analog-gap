@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { MAP_SECTIONS, setMapSection, useMapSection } from "../features/mapSections.js";
 import { ROUTES } from "../config.js";
 import { TargetSwitch } from "../features/world/WorldBar.jsx";
 import { t } from "../i18n/index.js";
@@ -8,6 +9,25 @@ import { t } from "../i18n/index.js";
 const Logo = () => (
   <svg width="40" height="28" viewBox="0 0 40 28" aria-hidden="true"><ellipse cx="20" cy="15" rx="18" ry="6" fill="none" stroke="#1f3a8a" strokeWidth="2.4" transform="rotate(-18 20 15)" /><circle cx="20" cy="14" r="9" fill="#1f3a8a" /></svg>
 );
+
+// "Find a place" tab with a small menu: show one part of that page at a time.
+function MapDrop({ children }) {
+  const [open, setOpen] = useState(false), sec = useMapSection(), ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const f = (e) => { if (e.key === "Escape" || (e.type === "pointerdown" && !ref.current?.contains(e.target))) setOpen(false); };
+    addEventListener("pointerdown", f); addEventListener("keydown", f);
+    return () => { removeEventListener("pointerdown", f); removeEventListener("keydown", f); };
+  }, [open]);
+  const pick = (s) => { setMapSection(s); setOpen(false); if (!location.hash.startsWith("#/map")) location.hash = "#/map"; };
+  return (
+    <span className="navdrop" ref={ref}>
+      {children}
+      <button type="button" aria-haspopup="true" aria-expanded={open} aria-label={t("nav.sections")} onClick={() => setOpen(!open)}>▾</button>
+      {open && <ul className="navmenu">{MAP_SECTIONS.map((s) => <li key={s}><button type="button" aria-current={s === sec} onClick={() => pick(s)}>{t("sec." + s)}</button></li>)}</ul>}
+    </span>
+  );
+}
 
 export default function TopBar({ page, profile, setProfile, reportId }) {
   const [online, setOnline] = useState(navigator.onLine);
@@ -19,7 +39,10 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
     <header className="top topx">
       <a className="brand" href="#/map" aria-label={t("nav.home")}><Logo /><h1>Analog Gap</h1></a>
       <nav className="mainnav" aria-label={t("ui.pages")}>
-        {SEC.map(([k, key, h]) => <a key={k} href={h} className={on(k) ? "on" : ""} aria-current={on(k) ? "page" : undefined}>{t(key)}</a>)}
+        {SEC.map(([k, key, h]) => {
+          const a = <a key={k} href={h} className={on(k) ? "on" : ""} aria-current={on(k) ? "page" : undefined}>{t(key)}</a>;
+          return k === "map" ? <MapDrop key={k}>{a}</MapDrop> : a;
+        })}
       </nav>
       <span className={"conn" + (online ? "" : " off")}><i />{t(online ? "ui.online" : "ui.offline")}</span>
       <details className="gear">

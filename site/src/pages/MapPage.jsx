@@ -10,6 +10,7 @@ import RefCard from "../features/ui/RefCard.jsx";
 import RegionPanel from "../features/ui/RegionPanel.jsx";
 import PlaceSearch from "../features/ui/PlaceSearch.jsx";
 import "../features/home/home.css";
+import { useMapSection } from "../features/mapSections.js";
 import "../features/ui/glass.css";
 
 const VIEWS = ["globe", "flat"];
@@ -21,20 +22,22 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
   const markers = useMemo(() => dMarkers(cand), [cand]);
   const refs = useMemo(() => ({ moon: D.rm, mars: D.rs }), [D.rm, D.rs]);
   const m = cand.meta;
+  const sec = useMapSection(), show = (k) => sec === "all" || sec === k;
+  const left = show("ref") || !!sel, right = show("globe") || show("search") || show("info");
   return (
     <div className="glass">
-      <div className="mapgrid">
-        <div>
+      <div className={"mapgrid" + (left && right ? "" : " one")}>
+        <div hidden={!left}>
           {sel ? <RegionPanel sel={sel} cand={candAll || cand} target={profile} refs={refs} onSelect={onSelect} onClose={() => setSel(null)} />
             : <RefCard target={profile} reference={profile === "moon" ? D.rm : D.rs} tM={D.tM} />}
         </div>
-        <div className="g-card mappanel">
-          <div className="viewtabs" role="group" aria-label={t("map.view")}>
+        <div className="g-card mappanel" hidden={!right}>
+          <div className="viewtabs" role="group" aria-label={t("map.view")} hidden={!show("globe")}>
             {VIEWS.map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>{v === "globe" ? "🌐 3D Globe" : "🗺 2D Map"}</button>)}
             <span className="muted small pick-hint">{t("ui.pickHint")}</span>
           </div>
-          <PlaceSearch onPick={setSel} />
-          <details className="g-card extra">
+          {show("search") && <PlaceSearch onPick={setSel} />}
+          {show("info") && <details className="g-card extra" open={sec === "info" || undefined}>
             <summary>ⓘ {t("ui.extra")}</summary>
             <dl className="stats three">
               <div><dt>{t("ui.scanned")}</dt><dd>{m.n_windows_total}</dd></div>
@@ -45,8 +48,8 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
             <p className="muted small">{t("map.how")} {t("ui.photoSrc")} {view === "globe" ? t("map.globe.flatNote") : ""}</p>
             <RegionCard code={region} regions={D.regions} cand={candAll || cand} target={profile} tE={D.tE} known={D.known} onSelect={onSelect} />
             <Warn>{t("map.warn")}</Warn>
-          </details>
-          <div className="darkstage">
+          </details>}
+          <div className="darkstage" hidden={!show("globe")}>
             {!sel && <div className="explore-tip"><strong>{t("ex.tip.t").replace("{b}", t("ui.body." + profile))}</strong><span>{t("ex.tip.d")}</span></div>}
             {view === "globe"
               ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => (x.id ? onSelect(x.id) : x.lat != null && setSel({ lat: x.lat, lon: x.lon }))} />
