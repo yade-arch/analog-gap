@@ -57,7 +57,12 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   scene.background = new THREE.Color(L.sky);
   if (L.fog) scene.fog = body === "moon" ? new THREE.Fog(L.fog, 14, 60) : new THREE.Fog(L.fog, 7, 30);   // Moon: far horizon fades out, near ground stays visible (no dark gap)
   const { geometry, zmed } = buildTerrain(dem);
-  const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1, metalness: 0 });
+  {   // slope-based shading from the real DEM slope (LOLA on the Moon): steep crater walls and rims darker, flat floors lighter
+    const n = dem.G * dem.G, col = new Float32Array(n * 3);
+    for (let k = 0; k < n; k++) { const sl = slopeDeg(dem, k), v = Number.isNaN(sl) ? 1 : Math.max(0.5, 1.08 - sl / 40); col.set([v, v, v], k * 3); }
+    geometry.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  }
+  const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground), roughness: 1, metalness: 0, vertexColors: true });   // no repeated fake craters: relief comes from the data
   mat.side = THREE.DoubleSide; const mesh = new THREE.Mesh(geometry, mat); const EX = EXAG;
   mesh.scale.y = EX; scene.add(mesh);
   const h = (x, z) => sampleH(dem, x, z) * EX;
@@ -77,6 +82,7 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
     const M = RS.length;
     for (let i = 0; i < N; i++) for (let j = 0; j < M - 1; j++) { const p = i * M + j, q = p + M; idx.push(p, q, p + 1, p + 1, q, q + 1); }
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+    g.setAttribute("color", new THREE.Float32BufferAttribute(new Array(pos.length).fill(1), 3));
     g.setIndex(idx); g.computeVertexNormals(); scene.add(new THREE.Mesh(g, mat));
   }
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));
