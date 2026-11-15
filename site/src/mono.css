@@ -20,3 +20,7 @@ html[data-mono] .mainnav a.on { box-shadow: inset 0 -3px 0 #fff; }
 .mono-switch { display: flex; align-items: center; gap: 8px; padding: 8px 10px; cursor: pointer; }
 .mono-switch input { width: 18px; height: 18px; accent-color: var(--accent); }
 html[data-mono] .lg.earth { border-top-color: #fff; }
+/* Some panels have fixed colours in older CSS files. To keep every screen grey without editing each one,
+   the page parts themselves are shown in greyscale on top of the grey colour tokens above. The game layer is
+   position: fixed, so it gets its own filter (a filter on its parent would pin it to that parent). */
+html[data-mono] header, html[data-mono] footer, html[data-mono] main > *:not(.g-root):not(:has(.g-root)), html[data-mono] .g-root { filter: grayscale(1); }

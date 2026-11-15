@@ -14,14 +14,16 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 - My places (`features/ui/Discovered.jsx`, `features/planet/discovered.js`, `pages/ListPage.jsx`): two groups, "Places you explored" first and "Best matches from our scan" second, with a note that only 4 regions were scanned. Explored places have a favourite star (favourites are never dropped when the 24-place limit is reached), the date explored, filters (All, Closer to the Moon, Closer to Mars, Favourites, Last 7 days) and "Pick to compare": two picked places show their saved numbers side by side, with nothing new calculated. Also fixed: a saved place name was lost when the same point was checked again. Checked in the browser with 2 saved places.
 - Data sources page (`#/data`, ☰ menu, footer link; `pages/DataSources.jsx`): 11 groups by purpose built from data_inventory.json plus NASA POWER, NASA GIBS / Blue Marble and OpenStreetMap. "NASA data" or "Not NASA data" is shown once per source. AWS Terrain Tiles is described as mostly NASA SRTM and not NASADEM. Versions, licence, citation and access path are in "More details". Provider chips were removed from the Compare place cards. The last Turkish words in the inventory (piksel, derece, kutular, KULLANILMIYOR) were translated in both the JSON and the CSV.
 - Method page: already had the four simple steps and expandable sections; these are now named "For scientists". Turkish control headings were translated. Added: a similar shape alone does not make a place right for a mission, with a link to Data sources. The positive-control result ("target not met") is unchanged.
+- Report as a short paper (`features/ui/ReportPaper.jsx`, texts in `i18n/en.paper.js`): abstract, introduction, aim, problem, data and method, results table, discussion and limits, conclusion, data sources. All sentences are templates filled with existing values. On the report page it is a closed section on screen and printed first, with the full report after it as an appendix. A quick check of any point (no report page) prints the same paper from the result card. Checked in the browser on screen; the print dialog itself was not opened.
+- Black-and-white mode now also greys page parts whose colours are fixed in older CSS (filter on header, footer and page blocks, and on the game layer itself so it stays full screen).
 
 ## Not verified
-- Black-and-white mode was not looked at in the browser. Check the globe, charts, report printout and the game.
+- Black-and-white mode: checked in the browser on Compare and the game (whole screen grey, game stays full screen). Not looked at: printout in black-and-white mode.
 - The result card for an on-demand point: it may show "not enough data yet" if the point object has no `d` / `derived_percentiles`.
 
 ## Not started (next, in this order)
 1. (done: start screen)
-2. PDF report: layout fixed (see Done). Still missing: a PDF for on-demand points (no scan window, so no report page yet) and terrain pictures of both places inside the PDF (Part 4).
+2. PDF report: done as a short paper for scan places and quick checks. Still missing: terrain pictures of both places inside the paper.
 3. (done: My places) Still missing there: report download for explored places (needs the on-demand PDF), comparing two scan candidates with each other.
 4. (done: Data sources page)
 5. (done: Method page)
