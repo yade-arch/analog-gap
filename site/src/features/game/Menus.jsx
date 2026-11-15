@@ -1,3 +1,4 @@
+import Logbook from "./Logbook.jsx";
 import React, { useEffect, useState } from "react";
 import { t } from "../../i18n/index.js";
 import { GAME } from "./rules.js";
@@ -30,6 +31,7 @@ export function StartMenu({ profile, setProfile, mode, setMode, onStart, gl, rep
         <p className="g-small">{t("game.mode." + mode + ".d")}</p>
         {gl ? <button className="g-start g-press" onClick={onStart}>{t("game.arc.press")}<small>{t("game.arc.enter")}</small></button> : <p className="g-lead">{t("game.menu.nogl")}</p>}
         <p className="g-small">{t("game.menu.keys")}</p>
+        <Logbook />
         <p className="g-small"><a href={reportHref}>{t("game.menu.report")}</a> · <a href="#/home">{t("game.menu.site")}</a></p>
         <p className="g-small">{t("game.foot.game")}</p>
       </div>

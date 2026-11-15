@@ -1,6 +1,14 @@
 // Emergency Analog Mission (game) texts in English. Shared globe texts load from here.
 import globe from "./en.globe.js";
 export default {
+  "game.tier.success": "SUCCESS", "game.tier.partial": "PARTIAL SUCCESS", "game.tier.failure": "FAILURE",
+  "game.log.title": "Mission logbook ({n})", "game.log.empty": "No missions yet. Finished missions are listed here (kept in this browser).", "game.log.tests": "{n} of 3 tests", "game.log.clear": "Clear logbook",
+  "game.deb.title": "Debrief", "game.deb.done": "Completed: {n} of 3 tests.",
+  "game.deb.tip.success": "Next time: try the other target (Moon or Mars) or a different place.",
+  "game.deb.tip.risky": "Next time: the faster suit is risky on ground with risk flags. The sturdier suit comes back safely but needs more time.",
+  "game.deb.tip.nooxygen": "Next time: keep more oxygen for the trip back. Check fewer places, or use the faster suit when the ground is safe.",
+  "game.deb.tip.timeout": "Next time: choose the suit sooner. Each place you check costs {i} minutes and each test costs {s} minutes.",
+  "game.deb.note": "Game rules only. This is not a NASA measurement or a real mission prediction.",
   ...globe,
   "nav.game": "Emergency Analog Mission",
   "game.title": "EMERGENCY ANALOG MISSION",

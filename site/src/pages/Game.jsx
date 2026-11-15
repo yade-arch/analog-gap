@@ -13,6 +13,7 @@ import { TOUCH } from "../features/game/engine/stage.js";
 import GameView from "../features/game/GameView.jsx";
 import SuitScreen from "../features/game/SuitScreen.jsx";
 import MissionReport from "../features/game/MissionReport.jsx";
+import { addLog } from "../features/game/logbook.js";
 import { EarthPanel, LandCard, LinkBadge, Location, Oxygen, Prompt, RegionBar, RoverHud, Speech, Toast, TouchPad, WaypointTags } from "../features/game/Hud.jsx";
 import { PauseMenu, StartMenu } from "../features/game/Menus.jsx";
 
@@ -44,6 +45,7 @@ export default function Game({ D, profile, setProfile }) {
   const next = () => setSpeech((s) => { if (!s) return s; if (s.i + 1 < s.lines.length) return { ...s, i: s.i + 1 }; setTimeout(() => s.then?.(), 0); return null; });
   useEffect(() => { if (!speech) return undefined; const id = setTimeout(next, 5500); return () => clearTimeout(id); }, [speech?.i, speech?.lines]);
 
+  useEffect(() => { if (ended && final) addLog({ profile, mode, region: sel?.region ?? null, id: sel?.id ?? null, suit, result: final.result, left: final.left, tests: tests.length }); }, [ended]);   // one logbook line per finished mission
   function finish(result, left) {
     clock.stop(); setFinal({ result, left }); setPhase("result");
     say(resultLines(result, sel, D, profile, cand, tests).slice(0, 2), () => setEnded(true));
@@ -103,7 +105,7 @@ export default function Game({ D, profile, setProfile }) {
       {phase === "explore" && !sel && !paused && (<div className="g-story" role="note"><svg className="g-pxman" viewBox="0 0 8 12" width="32" height="48" aria-hidden="true" shapeRendering="crispEdges"><rect x="2" y="0" width="4" height="3" fill="#ffd9b0"/><rect x="2" y="3" width="4" height="4" fill="#4d8fe6"/><rect x="0" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="6" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="2" y="7" width="1.6" height="4" fill="#2b3a5c"/><rect x="4.4" y="7" width="1.6" height="4" fill="#2b3a5c"/></svg><p>{t("game.story.find")}</p></div>)}
       <Prompt text={prompt} />
       {phase === "suit" && !paused && <SuitScreen suit={suit} setSuit={setSuit} onConfirm={confirmSuit} left={clock.left} />}
-      {phase === "result" && ended && <MissionReport result={final?.result || "timeout"} p={sel} D={D} profile={profile} cand={cand} suit={suit} left={final?.left ?? 0} reportHref={reportHref} onAgain={reset} />}
+      {phase === "result" && ended && <MissionReport result={final?.result || "timeout"} p={sel} D={D} profile={profile} cand={cand} suit={suit} left={final?.left ?? 0} reportHref={reportHref} onAgain={reset} tests={tests.length} />}
       {TOUCH && phase === "drive" && !paused && <TouchPad keys={keys} actions={[["t", "T", () => setPhase("suit")]]} />}
       {phase !== "menu" && !paused && <button className="g-pausebtn" onClick={() => setPaused(true)} aria-label={t("game.pause.title")}>II</button>}
       {paused && <PauseMenu onResume={() => setPaused(false)} onRestart={reset} reportHref={reportHref} />}

@@ -16,6 +16,7 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 - Method page: already had the four simple steps and expandable sections; these are now named "For scientists". Turkish control headings were translated. Added: a similar shape alone does not make a place right for a mission, with a link to Data sources. The positive-control result ("target not met") is unchanged.
 - Report as a short paper (`features/ui/ReportPaper.jsx`, texts in `i18n/en.paper.js`): abstract, introduction, aim, problem, data and method, results table, discussion and limits, conclusion, data sources. All sentences are templates filled with existing values. On the report page it is a closed section on screen and printed first, with the full report after it as an appendix. A quick check of any point (no report page) prints the same paper from the result card. Checked in the browser on screen; the print dialog itself was not opened.
 - Black-and-white mode now also greys page parts whose colours are fixed in older CSS (filter on header, footer and page blocks, and on the game layer itself so it stays full screen).
+- Mission game (first step of Part 8): results now show SUCCESS, PARTIAL SUCCESS or FAILURE (success / risky / no oxygen or time out) with a short debrief: tests completed, and a tip based on the real game rules (costs from `rules.js`). Every finished mission is saved to a Mission logbook (last 20, this browser; `features/game/logbook.js`), shown on the start menu. Checked in the browser with a sample logbook line; a full mission was not played.
 
 ## Not verified
 - Black-and-white mode: checked in the browser on Compare and the game (whole screen grey, game stays full screen). Not looked at: printout in black-and-white mode.
@@ -28,4 +29,4 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 4. (done: Data sources page)
 5. (done: Method page)
 6. Black-and-white mode: line patterns in charts instead of greyscale alone (Part 11).
-7. Mission game expansion (Part 8): mission types, suit/rover/equipment effects, resources, outcomes, logbook. This is large and needs its own session.
+7. Mission game expansion (Part 8). Done: three outcome levels, debrief, logbook. Next, in order: (a) mission types that change the goal (which tests, time budget, start point) in `features/game/rules.js` + `pages/Game.jsx`; (b) equipment with limited slots that changes action costs; (c) rover types (speed / slope tolerance) in GameView; (d) events with a choice (dust storm: wait or go on); (e) more suits. Keep all game values in `rules.js`, labelled as game rules, never as NASA values.
