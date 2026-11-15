@@ -52,7 +52,8 @@
 .rs-sci h4 { margin: 12px 0 4px; } .rs-sci ul { padding-left: 18px; } .rs-sci code { word-break: break-all; }
 .g-drive.g-mode-solo .g-dir-left { bottom: 12px; } .g-drive.g-mode-solo .g-speed-left { display: none; }
 @media (max-width: 760px) {
-  .rs-desk { top: auto; left: 8px; right: 8px; width: auto; height: 52vh; }
+  .rs-desk { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; max-height: 42vh; }
+  .g-mode-solo.g-explore .g-regions { display: none; }
   .rs-gauges { width: 180px; top: 48px; } .rs-g { grid-template-columns: 62px 1fr 32px; }
   .rs-ctrl { bottom: 8px; left: 8px; }
 }
