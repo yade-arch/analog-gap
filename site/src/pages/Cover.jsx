@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { tex } from "../features/game/engine/stage.js";
 import "../cover.css";
+import IntroVideo from "../components/IntroVideo.jsx";
 
 const BODIES = ["earth", "moon", "mars"];
 const LOOK = { earth: { map: "earth_bmng_200412_2048.jpg", glow: [0.35, 0.6, 1] }, moon: { map: "moon_lroc_color_2048.jpg", bump: "moon_ldem_bump_1024.jpg" }, mars: { map: "mars_viking_clr_2048.jpg", glow: [0.9, 0.55, 0.35] } };
@@ -21,7 +22,7 @@ function rim(c) {
 }
 
 export default function Cover({ setProfile }) {
-  const host = useRef(null), [hero, setHero] = useState("earth"), st = useRef({});
+  const host = useRef(null), [hero, setHero] = useState("earth"), [vid, setVid] = useState(false), st = useRef({});
   const slots = (h) => { const o = BODIES.filter((b) => b !== h); return { [h]: "hero", [o[0]]: "left", [o[1]]: "right" }; };
 
   useEffect(() => {
@@ -70,9 +71,10 @@ export default function Cover({ setProfile }) {
         <h1 key={hero}>{hero.toUpperCase()}</h1>
         <i className="cv-line" />
         <p>{SUB[hero]}</p>
-        <a className="cv-go" href="#/map">GET STARTED</a>
+        <button type="button" className="cv-go" onClick={() => setVid(true)}>GET STARTED</button>
       </div>
       <a className="cv-down" href="#/map" aria-label="Explore">↓</a>
+      {vid && <IntroVideo onClose={() => { setVid(false); location.hash = "#/map"; }} />}
       <small className="cv-data">Data: NASA Blue Marble · LRO LROC / LOLA · Viking MDIM</small>
     </div>
   );

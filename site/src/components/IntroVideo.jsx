@@ -1,9 +1,8 @@
-// Intro video shown when the site opens (once per visit); ✕ top right closes it, it also closes itself at the end.
-import React, { useState } from "react";
+// Intro video shown when the site opens after GET STARTED; ✕ top right or the end of the video closes it.
+import React from "react";
 
-export default function IntroVideo() {
-  const [open, setOpen] = useState(true);
-  if (!open) return null;
+export default function IntroVideo({ onClose }) {
+  const setOpen = () => onClose?.();
   return (
     <div className="intro-v" role="dialog" aria-label="Space Sync intro video">
       <video src={import.meta.env.BASE_URL + "data/intro.mp4"} autoPlay muted playsInline controls onEnded={() => setOpen(false)} />

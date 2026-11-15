@@ -9,7 +9,7 @@
 .cv h1 { margin: 6px 0 10px; font-size: clamp(3.5rem, 7vw, 6.5rem); font-weight: 800; line-height: 1; letter-spacing: .02em; animation: cv-in .6s ease-out; }
 .cv-line { display: block; width: 36px; height: 2px; margin: 0 auto 14px; background: rgba(255,255,255,.4); }
 .cv-mid p { max-width: 540px; margin: 0 auto 22px; color: #cbd5e1; line-height: 1.6; }
-.cv-go { display: inline-block; padding: 13px 30px; border-radius: 999px; background: #e2e8f0; color: #0f172a; font-weight: 800; letter-spacing: .14em; text-decoration: none; box-shadow: 0 0 35px rgba(186,230,253,.45); }
+.cv-go { border: 0; cursor: pointer; font: inherit; display: inline-block; padding: 13px 30px; border-radius: 999px; background: #e2e8f0; color: #0f172a; font-weight: 800; letter-spacing: .14em; text-decoration: none; box-shadow: 0 0 35px rgba(186,230,253,.45); }
 .cv-side { position: absolute; top: 52%; background: none; border: 0; color: #fff; font-weight: 700; letter-spacing: .2em; cursor: pointer; font-size: 14px; } .cv-l { left: 16%; } .cv-r { right: 16%; }
 .cv-down { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgba(15,23,42,.65); backdrop-filter: blur(8px); color: #fff; text-decoration: none; }
 .cv-data { position: absolute; left: 14px; bottom: 10px; font-size: 10px; color: rgba(203,213,225,.45); }
