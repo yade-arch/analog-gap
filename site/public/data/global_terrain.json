@@ -6,9 +6,9 @@
  "nrow": 600,
  "north": 90,
  "west": -180,
- "coverage": "90°K–60°G (Antarktika karoları üründe yok)",
- "layout": "satır ana, kuzeyden güneye, -180'den doğuya; diziler sırayla: elev int16 (m, yok=-32768), relief uint16 (m), s50 uint16 (0,1°), s90 uint16 (0,1°), valid uint8 (%); uint16 yok=65535",
- "method": "hücre = 30×30 piksel; eğim Horn 3×3 (1 km); üründe deniz 0 m kodlu: 0 ve -9999 pikseller dışlanır (deniz seviyesindeki kıyı karaları da dışlanabilir); kara %10'dan azsa değer yok",
- "note": "1 km eğim 30 m pencere eğimiyle karşılaştırılmaz; arazi uzaklığına girmez",
+ "coverage": "90°N–60°S (Antarctic tiles are not in the product)",
+ "layout": "row-major, north to south, eastward from -180; arrays in order: elev int16 (m, none=-32768), relief uint16 (m), s50 uint16 (0.1°), s90 uint16 (0.1°), valid uint8 (%); uint16 none=65535",
+ "method": "cell = 30×30 pixels; slope Horn 3×3 (1 km); sea is coded 0 m in the product: 0 and -9999 pixels are excluded (coastal land at sea level may also be excluded); no value if land is under 10%",
+ "note": "1 km slope is not compared with 30 m window slope; not part of terrain distance",
  "tiles": 27
 }

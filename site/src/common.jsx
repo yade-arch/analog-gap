@@ -2,13 +2,13 @@ import React from "react";
 import { TAGS } from "./i18n/terms.js";
 
 export const PROFILES = {
-  moon: { name: "Lunar Base Analogs", sub: "Shackleton çevresi, güney kutbu (referans: LOLA LDEM_80S_20M, Site04/Site01/Site07)", reference: "reference_moon.json", cand: "candidates_moon.geojson" },
-  mars: { name: "Martian Landing & Exploration", sub: "Jezero çevresi (referans: USGS Mars 2020 TRN CTX DTM 20 m, R2)", reference: "reference_mars.json", cand: "candidates_mars.geojson" },
+  moon: { name: "Lunar Base Analogs", sub: "Around Shackleton, south pole (reference: LOLA LDEM_80S_20M, Site04/Site01/Site07)", reference: "reference_moon.json", cand: "candidates_moon.geojson" },
+  mars: { name: "Martian Landing & Exploration", sub: "Around Jezero (reference: USGS Mars 2020 TRN CTX DTM 20 m, R2)", reference: "reference_mars.json", cand: "candidates_mars.geojson" },
 };
-export const VARS = { slope: ["Eğim", "°"], relief: ["Yükseklik farkı (330 m çevre)", "m"], rough: ["Yüzey engebesi (teknik ad: pürüzlülük, 150 m yüksek geçiren RMS)", "m"] };
-export const SOURCES = "Dünya: NASADEM_HGT v001 (NASA LP DAAC, 30 m) · Ay: LOLA LDEM_80S_20M (NASA PDS) · Mars: Mars 2020 TRN CTX DTM (USGS) · Termal: MYD11A2 v061, Diviner PRP v2";
+export const VARS = { slope: ["Slope", "°"], relief: ["Height difference (330 m area)", "m"], rough: ["Surface roughness (technical name: roughness, 150 m high-pass RMS)", "m"] };
+export const SOURCES = "Earth: NASADEM_HGT v001 (NASA LP DAAC, 30 m) · Moon: LOLA LDEM_80S_20M (NASA PDS) · Mars: Mars 2020 TRN CTX DTM (USGS) · Temperature: MYD11A2 v061, Diviner PRP v2";
 
-export const fmt = (v, d = 2) => (v === null || v === undefined || Number.isNaN(v) ? "Veri eksik" : Number(v).toFixed(d));
+export const fmt = (v, d = 2) => (v === null || v === undefined || Number.isNaN(v) ? "Data missing" : Number(v).toFixed(d));
 
 export function Tag({ kind }) {
   const m = TAGS[kind];
@@ -19,7 +19,7 @@ export function Warn({ children }) {
   return <div className="warn">{children}</div>;
 }
 
-const BODY_TR = { moon: "Ay", mars: "Mars", earth: "Dünya" };
+const BODY_TR = { moon: "Moon", mars: "Mars", earth: "Earth" };
 
 /** profile verilirse yalnızca o profilin referansına (moon/mars) veya Dünya adaylarına (earth) ait sınırlamalar gösterilir.
  *  profile verilmezse (Yöntem sayfası) hepsi, geçerli gövde etiketiyle listelenir. */
@@ -31,7 +31,7 @@ export function Limitations({ lim, profile }) {
       {items.map((i) => (
         <Warn key={i.id}>
           <strong>{i.title}.</strong> {(profile && i.text_by_profile?.[profile]) || i.text}
-          {!profile && i.applies_bodies && <em className="muted"> [Geçerli: {i.applies_bodies.map((b) => BODY_TR[b]).join(", ")}]</em>}
+          {!profile && i.applies_bodies && <em className="muted"> [Applies to: {i.applies_bodies.map((b) => BODY_TR[b]).join(", ")}]</em>}
         </Warn>
       ))}
     </div>
@@ -70,8 +70,8 @@ export function RangeBars({ cand, reference, unit }) {
   );
   return (
     <svg viewBox={`0 0 ${W} 70`} width="100%" role="img" aria-label={`P10-P50-P90 aday ve referans (${unit})`}>
-      {bar(cand.p10, cand.p50, cand.p90, 18, "var(--seq2)", `Aday${fmt(cand.p10, 1)} / ${fmt(cand.p50, 1)} / ${fmt(cand.p90, 1)} ${unit}`)}
-      {bar(reference.p10, reference.p50, reference.p90, 50, "var(--muted)", `Referans${fmt(reference.p10, 1)} / ${fmt(reference.p50, 1)} / ${fmt(reference.p90, 1)} ${unit}`)}
+      {bar(cand.p10, cand.p50, cand.p90, 18, "var(--seq2)", `Candidate ${fmt(cand.p10, 1)} / ${fmt(cand.p50, 1)} / ${fmt(cand.p90, 1)} ${unit}`)}
+      {bar(reference.p10, reference.p50, reference.p90, 50, "var(--muted)", `Reference ${fmt(reference.p10, 1)} / ${fmt(reference.p50, 1)} / ${fmt(reference.p90, 1)} ${unit}`)}
     </svg>
   );
 }

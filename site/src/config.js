@@ -1,16 +1,15 @@
 // Rota ve ayarlar tek yerde. Yeni sayfa = ROUTES'a satır + App.jsx'te eşleme.
 export const ROUTES = [
-  { id: "compare", key: "nav.mission", primary: true },
   { id: "method", key: "nav.method", primary: true },
   { id: "about", key: "nav.about", primary: true },
   { id: "map", key: "nav.map" },
   { id: "list", key: "nav.list" },
   { id: "game", key: "nav.game" },
 ];
-export const DEFAULT_ROUTE = "home";
+export const DEFAULT_ROUTE = "map";                // start by exploring Earth
 
 export const SETTINGS = {
-  lang: "tr",
+  lang: "en",
   windowKm: 10,                         // 3D pencere kenarı (km); sol ve sağ aynı ölçekte
   exaggerations: [1, 3, 5],
   defaultExag: 1,

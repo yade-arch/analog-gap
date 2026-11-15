@@ -8,7 +8,7 @@ export default function CopyPre({ text }) {
   };
   return (
     <div className="copypre">
-      <button type="button" onClick={copy} aria-label="Formülü kopyala">{ok ? "Kopyalandı" : "Kopyala"}</button>
+      <button type="button" onClick={copy} aria-label="Copy formula">{ok ? "Copied" : "Copy"}</button>
       <pre className="formula">{text}</pre>
     </div>
   );

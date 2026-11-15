@@ -62,7 +62,7 @@ await step("rover protokolü (MockLink)", async () => {
   const link = createLink("mock", { speedKmPerS: 200, tickMs: 5, ackTimeoutMs: 300 });
   const tele = [], errs = []; let hello = null;
   link.on("telemetry", (t) => tele.push(t)); link.on("hello", (h) => (hello = h)); link.on("error", (e) => errs.push(e));
-  await assert.rejects(link.send("ping"), /açık değil/);
+  await assert.rejects(link.send("ping"), /not open/);
   await link.open(); await new Promise((r) => setTimeout(r, 10));
   try {
     assert.equal(hello?.source, "mock");
@@ -73,7 +73,7 @@ await step("rover protokolü (MockLink)", async () => {
     assert.ok(last && last.state === "idle", "varış telemetrisi gelmedi");
     assert.deepEqual(last.pos, { x_km: 1, z_km: 0.5 });
     assert.ok(tele.every((t) => t.source === "mock"), "mock telemetri source:'mock' olmalı");
-    await assert.rejects(link.send("goto", {}), /zaman aşımı/);          // geçersiz goto: rover error yollar, ack yok
+    await assert.rejects(link.send("goto", {}), /timeout/);          // geçersiz goto: rover error yollar, ack yok
     assert.ok(errs.some((e) => e.code === "bad_message"), "bad_message hatası gelmedi");
   } finally { await link.close(); }
   assert.equal(link.state, "closed");

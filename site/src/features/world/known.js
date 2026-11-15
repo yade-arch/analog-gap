@@ -6,4 +6,4 @@ export function knownIn(p, known) {
   return (known || []).find((k) => k.lat && Math.abs((+k.lat - p.center_lat) * KM_PER_DEG) <= HALF_KM && Math.abs((+k.lon - p.center_lon) * KM_PER_DEG * c) <= HALF_KM) || null;
 }
 /** Referans için sade ad (hedefe göre). */
-export const REF_NAME = { moon: "Shackleton kraterinin çevresi (güney kutbu)", mars: "Jezero krateri çevresi (R2 alanı)" };
+export const REF_NAME = { moon: "Around Shackleton crater (south pole)", mars: "Around Jezero crater (R2 area)" };

@@ -24,15 +24,15 @@ export async function fetchPower(lat, lon) {
   const ann = (k) => { const v = pr[k]?.ANN; return v == null || v === fill ? null : v; };
   const monthly = MON.map((m) => pr.T2M?.[m]).filter((v) => v != null && v !== fill);
   const z = d.geometry?.coordinates?.[2];
-  const src = "NASA POWER (MERRA-2, 0,5°×0,625°)", srcSun = "NASA POWER (CERES SYN1deg, 1°)";
-  const v = (id, value, unit, source, resolution_m, kind) => ({ id, value, unit, source, resolution_m, kind, ...(value == null ? { missingReason: "NASA POWER bu hücre için değer vermedi" } : {}) });
+  const src = "NASA POWER (MERRA-2, 0.5°×0.625°)", srcSun = "NASA POWER (CERES SYN1deg, 1°)";
+  const v = (id, value, unit, source, resolution_m, kind) => ({ id, value, unit, source, resolution_m, kind, ...(value == null ? { missingReason: "NASA POWER returned no value for this cell" } : {}) });
   const pre = ann("PRECTOTCORR");
   return { cell: c, range: d.header?.range, monthlyT2M: monthly, variables: [
-    v("elev", z == null || z === fill ? null : z, "m", src + ", hücre ortalama yüksekliği", 55000, "obs"),
+    v("elev", z == null || z === fill ? null : z, "m", src + ", cell mean elevation", 55000, "obs"),
     v("t2m", ann("T2M"), "°C", src, 55000, "obs"), v("t2mMax", ann("T2M_MAX"), "°C", src, 55000, "obs"), v("t2mMin", ann("T2M_MIN"), "°C", src, 55000, "obs"),
-    v("tRange", monthly.length === 12 ? Math.max(...monthly) - Math.min(...monthly) : null, "°C", src + "; en sıcak − en soğuk ay ortalaması", 55000, "der"),
-    v("rain", pre == null ? null : pre * 365.25, "mm/yıl", src + "; mm/gün × 365,25", 55000, "der"),
-    v("sun", ann("ALLSKY_SFC_SW_DWN"), "kWh/m²/gün", srcSun, 110000, "obs"),
+    v("tRange", monthly.length === 12 ? Math.max(...monthly) - Math.min(...monthly) : null, "°C", src + "; warmest − coldest month mean", 55000, "der"),
+    v("rain", pre == null ? null : pre * 365.25, "mm/year", src + "; mm/day × 365.25", 55000, "der"),
+    v("sun", ann("ALLSKY_SFC_SW_DWN"), "kWh/m²/day", srcSun, 110000, "obs"),
     v("wind", ann("WS2M"), "m/s", src, 55000, "obs"), v("rh", ann("RH2M"), "%", src, 55000, "obs"),
   ] };
 }

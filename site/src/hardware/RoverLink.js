@@ -19,16 +19,16 @@ export default class RoverLink {
     try { await this._open(); this._set("open"); } catch (e) { this._set("error", e.message); throw e; }
   }
   async close() {
-    this._pending.forEach((p) => { clearTimeout(p.timer); p.reject(new Error("bağlantı kapandı")); }); this._pending.clear();
+    this._pending.forEach((p) => { clearTimeout(p.timer); p.reject(new Error("link closed")); }); this._pending.clear();
     try { await this._close(); } finally { this._set("closed"); }
   }
 
   /** Komut gönder; ack gelince çözülür, ok=false veya zaman aşımında reddedilir. */
   send(cmd, args) {
-    if (this.state !== "open") return Promise.reject(new Error("bağlantı açık değil"));
+    if (this.state !== "open") return Promise.reject(new Error("link is not open"));
     const id = this._id++, ms = this.opts.ackTimeoutMs ?? 3000;
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { this._pending.delete(id); reject(new Error(`ack zaman aşımı (${cmd})`)); }, ms);
+      const timer = setTimeout(() => { this._pending.delete(id); reject(new Error(`ack timeout (${cmd})`)); }, ms);
       this._pending.set(id, { resolve, reject, timer });
       try { this._write(encode({ type: "cmd", id, cmd, ...(args ? { args } : {}) })); } catch (e) { clearTimeout(timer); this._pending.delete(id); reject(e); }
     });
@@ -47,7 +47,7 @@ export default class RoverLink {
     // "cmd" rover'dan gelmez; yok sayılır.
   }
 
-  async _open() { throw new Error("_open uygulanmadı"); }
+  async _open() { throw new Error("_open not implemented"); }
   async _close() {}
-  _write() { throw new Error("_write uygulanmadı"); }
+  _write() { throw new Error("_write not implemented"); }
 }

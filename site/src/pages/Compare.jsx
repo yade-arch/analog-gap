@@ -57,7 +57,7 @@ export default function Compare({ D, profile, cand, selId }) {
     if (visited.has(id)) return;
     const res = stationResult(VARIABLES.find((v) => v.id === id), profile, ctx), r0 = res.rows[0];
     setVisited(new Set([...visited, id]));
-    setLog((l) => [...l, { id, title: t(res.v.titleKey) + ":", text: r0 ? `${r0.label.split(" (")[0]} — aday ${r0.cand}, referans ${r0.ref} [${t("tag." + r0.tag)}]` : "Veri eksik; değer üretilmedi." }]);
+    setLog((l) => [...l, { id, title: t(res.v.titleKey) + ":", text: r0 ? `${r0.label.split(" (")[0]} — candidate ${r0.cand}, reference ${r0.ref} [${t("tag." + r0.tag)}]` : "Data missing; no value produced." }]);
   };
   const stLabel = (i) => `${t(u.labelKey)} → ${t(VARIABLES[i].titleKey)}`;
   const autoRef = useRef(null);
@@ -87,7 +87,7 @@ export default function Compare({ D, profile, cand, selId }) {
     addEventListener("keydown", h); return () => removeEventListener("keydown", h);
   });
   const done = visited.size === VARIABLES.length;
-  const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
+  const go = (id) => { location.hash = `#/mission/${id}/${profile}`; };
   const metaL = index?.windows[refId], metaR = hasDem ? index.windows[cid] : null;
   const body = profile === "moon" ? t("side.moon") : t("side.mars");
 
@@ -115,7 +115,7 @@ export default function Compare({ D, profile, cand, selId }) {
             <small>{metaR?.product || "NASADEM_HGT v001 (NASA LP DAAC), 30 m"}</small>
             <small>{t("side.cand")} · 10×10 km{metaR ? ` · ${t("cmp.elev")} ${fmt(metaR.z_min, 0)}–${fmt(metaR.z_max, 0)} m` : ""}</small>
             <select aria-label={t("cmp.cand")} value={cid || ""} onChange={(e) => go(e.target.value)}>
-              {!hasDem && cid && <option value={cid}>{cid} (DEM yok)</option>}
+              {!hasDem && cid && <option value={cid}>{cid} (no DEM)</option>}
               {list.map((p) => <option key={p.id} value={p.id}>#{p.rank} · {p.id}</option>)}
             </select>
             {cid && !hasDem && <small className="err">{t("cmp.nodem")}</small>}

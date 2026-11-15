@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { t } from "../../i18n/index.js";
 import { GAME } from "./rules.js";
 import { tf } from "./ui.jsx";
@@ -7,8 +7,16 @@ const SOURCES = ["tex.earth", "tex.moon", "tex.mars", "dem", "cand", "ref", "par
 
 /** Başlangıç ekranı (açık arayüz). */
 export function StartMenu({ profile, setProfile, mode, setMode, onStart, gl, reportHref }) {
+  useEffect(() => {                                     // arcade style: Enter starts the game
+    if (!gl) return undefined;
+    const f = (e) => { if (e.key === "Enter" && !e.target.closest?.("button, a, input, select")) onStart(); };
+    addEventListener("keydown", f); return () => removeEventListener("keydown", f);
+  }, [gl, onStart]);
   return (
-    <div className="g-menu">
+    <div className="g-menu g-arcade">
+      <div className="g-hud-top" aria-hidden="true">
+        <span><b>1P</b>{t("game.target." + profile)}</span><span><b>{t("game.arc.mission")}</b>ANALOG GAP</span><span><b>2P</b>{mode === "multi" ? t("game.arc.ready") : "—"}</span>
+      </div>
       <div className="g-menu-card">
         <p className="g-kicker">{t("game.menu.kicker")}</p>
         <h1>{t("game.title")}</h1>
@@ -20,7 +28,7 @@ export function StartMenu({ profile, setProfile, mode, setMode, onStart, gl, rep
           {["solo", "multi"].map((k) => <button key={k} className={mode === k ? "on" : ""} aria-pressed={mode === k} onClick={() => setMode(k)}>{t("game.mode." + k)}</button>)}
         </div>
         <p className="g-small">{t("game.mode." + mode + ".d")}</p>
-        {gl ? <button className="g-start" onClick={onStart}>{t("game.menu.start")}</button> : <p className="g-lead">{t("game.menu.nogl")}</p>}
+        {gl ? <button className="g-start g-press" onClick={onStart}>{t("game.arc.press")}<small>{t("game.arc.enter")}</small></button> : <p className="g-lead">{t("game.menu.nogl")}</p>}
         <p className="g-small">{t("game.menu.keys")}</p>
         <p className="g-small"><a href={reportHref}>{t("game.menu.report")}</a> · <a href="#/home">{t("game.menu.site")}</a></p>
         <p className="g-small">{t("game.foot.game")}</p>

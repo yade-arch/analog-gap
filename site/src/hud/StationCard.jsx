@@ -5,10 +5,10 @@ import { useNarrow } from "./Fold.jsx";
 
 /** Tablo: istasyon satırları (referans | aday | etiket). Kart ve rapor ortak kullanır. */
 export function StationTable({ res, refTitle, candTitle }) {
-  if (!res.rows.length) return <p><strong>Veri eksik</strong>{res.note ? ` — ${res.note}` : ""}. Değer üretilmedi.</p>;
+  if (!res.rows.length) return <p><strong>Data missing</strong>{res.note ? ` — ${res.note}` : ""}. No value was produced.</p>;
   return (
     <table>
-      <thead><tr><th>Ölçüt</th><th className="n">{refTitle}</th><th className="n">{candTitle}</th><th>Etiket</th></tr></thead>
+      <thead><tr><th>Measure</th><th className="n">{refTitle}</th><th className="n">{candTitle}</th><th>Label</th></tr></thead>
       <tbody>
         {res.rows.map((r) => (
           <tr key={r.label}><td>{r.label}</td>{r.single != null ? <td className="n" colSpan={2}>{r.single}</td> : <><td className="n">{r.ref}</td><td className="n">{r.cand}</td></>}<td><span className={"tag " + r.tag}>{t(TAG_KEYS[r.tag])}</span></td></tr>
@@ -37,7 +37,7 @@ export default function StationCard({ res, refTitle, candTitle, D, onClose, onNe
         ? <details className="sc-more"><summary>{t("station.more")}</summary><StationTable res={res} refTitle={refTitle} candTitle={candTitle} /></details>
         : <StationTable res={res} refTitle={refTitle} candTitle={candTitle} />}
       {res.note && res.rows.length > 0 && <p className="hud-note">{res.note}</p>}
-      <p className="hud-note warn-amber"><b>Gap:</b> {t("station.gap")}{D != null ? ` Arazi uzaklığı = ${D.toFixed(3)} (0 = aynı, düşük = daha benzer; fiziksel mesafe değil, arazi şekillerinin farkı).` : ""}</p>
+      <p className="hud-note warn-amber"><b>Gap:</b> {t("station.gap")}{D != null ? ` Terrain distance = ${D.toFixed(3)} (0 = identical, lower = more similar; not a physical distance but the difference in landforms).` : ""}</p>
     </div>
   );
 }

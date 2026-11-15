@@ -1,0 +1,108 @@
+/* Main screen (reference design): dark space backdrop, glass cards, two large terrain tiles, collapsible bottom panel. Scoped to .ov. */
+.ov { --ov-ink: #10224a; --ov-mut: #4f6386; --ov-line: rgba(70, 120, 210, .22); --ov-glass: rgba(255, 255, 255, .86); --ov-acc: #1f63d6;
+  position: relative; display: grid; grid-template-rows: auto minmax(320px, 1fr) auto; gap: 12px; min-height: calc(100vh - var(--hdr, 64px) - 24px);
+  margin: -12px -16px 0; padding: 14px 16px; color: var(--ov-ink);
+  background: radial-gradient(ellipse 80% 50% at 50% 70%, rgba(120, 175, 255, .45), transparent 70%), linear-gradient(180deg, #f4f8ff, #dde9fb 70%, #eef4fd); }
+.ov-full { grid-template-rows: auto minmax(420px, 1fr) auto; }
+.ov h2, .ov h3 { color: var(--ov-ink); margin: 0; }
+.ov-sub { color: var(--ov-mut); font-size: 12px; margin: 2px 0 0; }
+.ov-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(0, 1fr); gap: 12px; align-items: start; }
+.ov-card, .ov-dist, .ov-box { background: var(--ov-glass); border: 1px solid var(--ov-line); border-radius: 16px; box-shadow: 0 6px 22px rgba(40, 80, 160, .10); backdrop-filter: blur(6px); }
+.ov-card { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding: 12px 40px 12px 12px; }
+.ov-orb { width: 76px; height: 76px; border-radius: 50%; background-size: 200% 100%; background-position: 30% 50%; box-shadow: -10px -6px 22px rgba(0, 0, 0, .55) inset, 0 4px 12px rgba(40, 80, 160, .25); }
+.ov-card h2 { font-size: 17px; line-height: 1.25; }
+.ov-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ov-chips span { font-size: 11.5px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--ov-line); color: var(--ov-mut); }
+.ov-chips span:nth-child(3) { color: var(--ov-acc); border-color: rgba(31, 99, 214, .5); font-weight: 600; }
+.ov-chev { position: absolute; right: 10px; top: 10px; width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--ov-line); background: transparent; color: var(--ov-mut); cursor: pointer; transition: transform .2s; }
+.ov-card.open .ov-chev { transform: rotate(180deg); }
+.ov-det { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 10px 0 0; font-size: 12px; } .ov-det dt { color: var(--ov-mut); } .ov-det dd { margin: 0; overflow-wrap: anywhere; }
+.ov-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--ov-mut); }
+.ov-pick select { flex: 1 1 160px; min-width: 0; padding: 4px 6px; border-radius: 8px; border: 1px solid var(--ov-line); background: #fff; color: var(--ov-ink); }
+.ov-pick a, .ov a { color: var(--ov-acc); }
+.ov-dist { padding: 12px 16px; text-align: center; }
+.ov-dist h2 { font-size: 14px; font-weight: 600; }
+.ov-dist strong { display: block; font-size: 40px; line-height: 1.1; letter-spacing: .02em; color: #0c1f4d; }
+.ov-bar { position: relative; height: 8px; border-radius: 4px; margin: 8px 0 4px; }
+.ov-bar i { position: absolute; top: -4px; width: 4px; height: 16px; margin-left: -2px; border-radius: 2px; background: #10224a; box-shadow: 0 0 0 2px #fff; }
+.ov-bar-l { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ov-mut); }
+.ov-stage { position: relative; min-height: 320px; border-radius: 18px; overflow: hidden; }
+.ov-stage::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(transparent, rgba(60, 130, 240, .55), transparent); pointer-events: none; }
+.ov-canvas { position: absolute; inset: 0; } .ov-canvas canvas { width: 100% !important; height: 100% !important; display: block; cursor: grab; }
+.ov-swap { position: absolute; left: 50%; top: 42%; z-index: 2; transform: translate(-50%, -50%); width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(140, 190, 255, .7);
+  background: #fff; color: var(--ov-acc); font-size: 22px; cursor: pointer; box-shadow: 0 6px 20px rgba(40, 80, 160, .3); }
+.ov-ctrl { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: grid; gap: 8px; z-index: 2; }
+.ov-ctrl button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--ov-line); background: var(--ov-glass); color: var(--ov-ink); font-size: 18px; font-weight: 700; cursor: pointer; }
+.ov-note { position: absolute; left: 12px; bottom: 8px; margin: 0; font-size: 11.5px; color: var(--ov-mut); max-width: 70%; }
+.ov-load, .ov-nogl { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--ov-mut); }
+.ov-panel { position: relative; }
+.ov-tab { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); z-index: 3; width: 64px; height: 24px; border-radius: 12px 12px 0 0; border: 1px solid var(--ov-line); border-bottom: 0; background: var(--ov-glass); color: var(--ov-ink); cursor: pointer; }
+.ov-panel.shut .ov-tab { top: -24px; }
+.ov-grid { display: grid; grid-template-columns: minmax(170px, 1fr) minmax(170px, .9fr) minmax(260px, 2fr) minmax(200px, 1.3fr) minmax(200px, 1.2fr); gap: 10px; }
+.ov-box { padding: 10px 12px; min-width: 0; } .ov-box h3 { font-size: 13.5px; margin-bottom: 8px; display: flex; gap: 6px; align-items: center; }
+.ov-radio { display: grid; grid-template-columns: auto 1fr 42px; align-items: center; gap: 8px; padding: 3px 0; font-size: 13px; cursor: pointer; }
+.ov-radio input { accent-color: var(--ov-acc); }
+.ov-sw { height: 10px; border-radius: 3px; }
+.ov-sw-dem { background: linear-gradient(90deg, #2e5c34, #96764f, #e8e2d6); } .ov-sw-slope { background: linear-gradient(90deg, #2b4a8c, #24808f, #4c9a6a, #968614, #cf6f26); }
+.ov-sw-aspect { background: linear-gradient(90deg, #e05050, #e0e050, #50e050, #50e0e0, #5050e0, #e050e0); } .ov-sw-rough { background: linear-gradient(90deg, #282830, #ffffff); }
+.ov-modes, .ov-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.ov-modes button, .ov-acts button, .ov-acts a { display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 10px; border: 1px solid var(--ov-line); background: #f3f7ff; color: var(--ov-ink); font-size: 11.5px; text-decoration: none; cursor: pointer; }
+.ov-modes button b, .ov-acts b { font-size: 18px; color: var(--ov-acc); }
+.ov-modes button.on { background: var(--ov-acc); border-color: var(--ov-acc); color: #fff; } .ov-modes button.on b { color: #fff; }
+.ov-stats { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 12.5px; }
+.ov-stats li { display: flex; justify-content: space-between; gap: 8px; } .ov-stats span { color: var(--ov-mut); } .ov-stats b { font-variant-numeric: tabular-nums; }
+.ov-prof { margin: 0; } .ov-prof svg { width: 100%; height: auto; display: block; }
+.ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(60, 100, 170, .15); } .ov-ax { fill: var(--ov-mut); font-size: 10px; }
+.ov-line { fill: none; stroke-width: 2; } .ov-line-a { stroke: #1f63d6; } .ov-line-b { stroke: #2f9e5a; }
+.ov-prof figcaption { font-size: 11px; color: var(--ov-mut); }
+.ov-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 0 4px 0 6px; } .ov-dot.a { background: #1f63d6; } .ov-dot.b { background: #2f9e5a; }
+.ov-wide { grid-row: span 1; }
+.ov .tag { font-size: 10px; }
+@media (max-width: 1200px) { .ov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ov-wide { grid-column: 1 / -1; } }
+@media (max-width: 760px) {
+  .ov { margin: -12px -16px 0; padding: 10px; }
+  .ov-top { grid-template-columns: 1fr; } .ov-dist { order: -1; }
+  .ov-grid { grid-template-columns: 1fr; } .ov-stage { min-height: 300px; }
+  .ov-card { grid-template-columns: 56px minmax(0, 1fr); } .ov-orb { width: 56px; height: 56px; }
+}
+
+/* Measurement cards (reference: 1. Slope … 6. Minerals) */
+.ov-stations { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.ov-st { display: grid; justify-items: center; gap: 2px; padding: 12px 8px; border-radius: 16px; border: 1px solid var(--ov-line); background: var(--ov-glass); color: var(--ov-ink); cursor: pointer; box-shadow: 0 6px 18px rgba(40, 80, 160, .08); }
+.ov-st b { font-size: 22px; color: var(--ov-acc); } .ov-st strong { font-size: 14px; } .ov-st span { font-size: 12.5px; color: var(--ov-mut); }
+.ov-st-missing { opacity: .72; } .ov-st-missing b { color: var(--ov-mut); }
+.ov-st.on { border-color: var(--ov-acc); box-shadow: 0 0 0 2px rgba(31, 99, 214, .25); }
+.ov-stcard { background: #fff; border: 1px solid var(--ov-line); border-radius: 16px; padding: 4px 8px; color: #10224a; }
+.ov-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px; }
+.ov-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 13px; }
+@media (max-width: 1100px) { .ov-stations { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .ov-stations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ov-stcard .station-card { position: static; max-height: none; width: auto; background: transparent; box-shadow: none; border: 0; color: #10224a; font-size: 13.5px; }
+.ov-stcard .station-card table { width: 100%; font-size: 13px; }
+/* Space theme (reference design): deep navy, Earth horizon glow behind the tiles, blue-edged glass panels. */
+.ov { --ov-ink: #e8f0ff; --ov-mut: #9fb3d9; --ov-line: rgba(90, 150, 255, .38); --ov-glass: rgba(8, 20, 50, .82); --ov-acc: #4d9bff; gap: 8px; padding-top: 8px;
+  background: radial-gradient(ellipse 75% 22% at 50% 64%, rgba(70, 150, 255, .55), rgba(20, 70, 200, .18) 45%, transparent 70%),
+    radial-gradient(ellipse 140% 55% at 50% 118%, #0b2a6b 0 58%, rgba(40, 110, 255, .5) 60%, transparent 64%),
+    radial-gradient(1px 1px at 20% 20%, #fff8, transparent), radial-gradient(1px 1px at 70% 12%, #fff6, transparent), radial-gradient(1px 1px at 85% 40%, #fff5, transparent),
+    linear-gradient(180deg, #020611, #050f2a 55%, #03081a); }
+.ov-top { gap: 8px; } .ov-orb { width: 64px; height: 64px; box-shadow: -10px -6px 22px rgba(0, 0, 0, .6) inset, 0 0 18px rgba(80, 150, 255, .35); }
+.ov-stage { min-height: 420px; }
+.ov-card, .ov-dist, .ov-box, .ov-st { backdrop-filter: blur(6px); box-shadow: 0 0 0 1px rgba(77, 155, 255, .15), 0 8px 26px rgba(0, 8, 30, .6), inset 0 0 24px rgba(60, 130, 255, .1); }
+.ov-dist strong { color: #fff; font-variant-numeric: tabular-nums; text-shadow: 0 0 16px rgba(90, 160, 255, .5); }
+.ov-bar i { background: #fff; box-shadow: 0 0 0 2px #050f2a; }
+.ov-pick select, .ov-stcard, .ov-stcard .station-card { background: #0b1a3d; color: var(--ov-ink); }
+.ov-swap { background: #0b1a3d; color: #8cc0ff; border-color: var(--ov-line); box-shadow: 0 0 22px rgba(77, 155, 255, .6); }
+.ov-stage::after { width: 2px; background: linear-gradient(rgba(110, 180, 255, .2), rgba(150, 200, 255, .95) 45%, rgba(110, 180, 255, .2)); box-shadow: 0 0 14px rgba(77, 155, 255, .8); }
+.ov-ctrl button { background: rgba(8, 20, 50, .82); color: var(--ov-ink); box-shadow: 0 0 12px rgba(77, 155, 255, .35); }
+.ov-modes button, .ov-acts button, .ov-acts a { background: rgba(20, 40, 90, .6); color: var(--ov-ink); }
+.ov-modes button.on { background: #1f63d6; border-color: #4d9bff; color: #fff; box-shadow: 0 0 14px rgba(77, 155, 255, .55); } .ov-modes button.on b { color: #fff; }
+.ov-st b { color: var(--ov-acc); } .ov-st.on { border-color: var(--ov-acc); background: rgba(20, 50, 110, .7); }
+.ov-st:focus-visible, .ov button:focus-visible, .ov a:focus-visible { outline: 2px solid var(--ov-acc); outline-offset: 2px; }
+.ov-grid line.ov-grid, .ov-prof .ov-grid { stroke: rgba(140, 180, 255, .15); } .ov-line-a { stroke: #4d9bff; } .ov-line-b { stroke: #3fd07a; }
+.ov-dot.a { background: #4d9bff; } .ov-dot.b { background: #3fd07a; }
+.ov-hint { margin: 0 0 8px; font-size: 12px; color: var(--ov-mut); } .ov .tag { color: #0c1f4d; }
+.ov-intro { display: grid; place-items: center; }
+.ov-globes { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; } .ov-globes > * { min-height: 0; height: 100%; }
+.ov-zoom { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3; padding: 12px 22px; border-radius: 12px; border: 0; background: #4d8fe6; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.ov-globes select, .ov-globes button, .ov-globes label { display: none; }
+.ov-globes > *, .ov-globes > * > *, .ov-globes .globe-canvas { height: 100% !important; max-height: none !important; min-height: 0; border: 0 !important; background: none !important; box-shadow: none !important; }

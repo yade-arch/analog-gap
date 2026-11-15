@@ -4,15 +4,20 @@ import { Tag, Warn, Limitations, fmt } from "./common.jsx";
 import PageIntro, { Term } from "./components/PageIntro.jsx";
 import CopyPre from "./components/CopyPre.jsx";
 
-const STEPS = ["Veri", "Hazırlık", "Özellik", "Karşılaştırılabilirlik", "Karşılaştırma", "Sonuç"];
-const STEP_D = ["NASA yükseklik verisi: Dünya NASADEM, Ay LOLA, Mars CTX", "hepsi aynı 30 m ızgaraya", "eğim, yükseklik farkı, yüzey engebesi", "aralıkları örtüşmeyenler elenir", "dağılım farkı → arazi uzaklığı", "sıralı liste + eksik konular"];
-const Sec = ({ title, children }) => <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">{children}</div></details>;
-const FORMULA = `Teknik adlar: D = arazi uzaklığı, d_k = değişken uzaklığı (eğim / yükseklik farkı / yüzey engebesi), O_k = örtüşme, P10/P50/P90 = tipik değer ve aralık, W1 = Wasserstein mesafesi, IQR = çeyrekler arası genişlik.
-Değişkenler (yalnızca topografya): eğim, yerel röleyf (11×11, 330 m, max−min), pürüzlülük (z − ort_5x5(z) artığının 11×11 RMS'i)
-Filtre:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  her k için ve geçerli piksel >= %90
-d_k   =  W1(F_aday,k , F_ref,k) / IQR(F_ref,k)     (scipy wasserstein_distance, 20 000 piksellik alt örnek, seed = 42)
-D     =  (d_eğim + d_röleyf + d_pürüzlülük) / 3     eşit ağırlık; kullanıcı tarafından değiştirilemez
-Sıra: D küçükten büyüğe (düşük = daha yakın). Benzerlik % veya güven puanı üretilmez.`;
+const STEPS = ["Data", "Preparation", "Properties", "Comparability", "Comparison", "Result"];
+const STEP_D = ["NASA elevation data: Earth NASADEM, Moon LOLA, Mars CTX", "all put on the same 30 m grid", "slope, height difference, surface roughness", "places whose ranges do not overlap are removed", "difference in spread → terrain distance", "ranked list + missing topics"];
+const Sec = ({ title, kid, children }) => (
+  <details className="msec"><summary><h2>{title}</h2></summary><div className="msec-body">
+    {kid && <p className="kid-line">{kid}</p>}
+    {kid ? <details className="sci"><summary>Details for scientists</summary>{children}</details> : children}
+  </div></details>
+);
+const FORMULA = `Technical names: D = terrain distance, d_k = distance per property (slope / height difference / surface roughness), O_k = overlap, P10/P50/P90 = typical value and range, W1 = Wasserstein distance, IQR = interquartile range (width of the middle half).
+Properties (landform only): slope, local relief (11×11, 330 m, max−min), roughness (11×11 RMS of z − mean_5x5(z))
+Filter:  O_k = |[c10,c90] ∩ [r10,r90]| / (r90 − r10)  >= 0.5  for every k, and valid pixels >= 90%
+d_k   =  W1(F_cand,k , F_ref,k) / IQR(F_ref,k)     (scipy wasserstein_distance, 20 000-pixel subsample, seed = 42)
+D     =  (d_slope + d_relief + d_roughness) / 3     equal weights; cannot be changed by the user
+Rank: D from small to large (lower = closer). No similarity % or confidence score is produced.`;
 
 export default function Method({ lim, valid, controls, inventory, expl }) {
   const pc = controls?.positive_control;
@@ -21,54 +26,54 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
   const neg = controls?.negative_control;
   return (
     <div>
-      <PageIntro purpose="Dünya'daki daha az incelenmiş arazi pencerelerinin Ay/Mars referanslarına topografik olarak ne kadar yaklaştığını ve bu karşılaştırmanın nerede bittiğini gösterir." how="Önce Kısaca kutusunu, sonra ilgilendiğin bölümü aç; her bölüm kapalı başlar." />
-      <div className="card brief">
-        <h2>Kısaca</h2>
-        <ul>
-          <li><strong>Ne karşılaştırılır:</strong> Dünya'daki 10×10 km arazi parçalarının <Term k="slope" />, <Term k="relief" /> ve <Term k="rough" /> değerleri; Ay'da Shackleton krateri çevresi veya Mars'ta Jezero krateri çevresiyle.</li>
-          <li><strong>Hangi veri:</strong> NASA yükseklik ölçümleri (Dünya NASADEM 30 m, Ay LOLA, Mars CTX); ürün adı ve sürümü Veri envanteri bölümünde.</li>
-          <li><strong>Hangi ölçü:</strong> her özellik için Dünya parçasındaki değerlerin dağılımı referansınkiyle kıyaslanır; üç farkın eşit ağırlıklı ortalaması <Term k="D" />dır (teknik ad: D).</li>
-          <li><strong>Nasıl okunur:</strong> 0 = aynı, düşük = arazi şekli daha benzer. Fiziksel mesafe değil, arazi şekillerinin farkıdır. Sıralama içindir; "iyi/kötü" eşiği yoktur.</li>
-          <li><strong>Neden yüzde veya güven puanı yok:</strong> arazi uzaklığı bir olasılık değildir; anlamı olmayan tek bir puan yanıltıcı olurdu. <Term k="coverage" /> ve <Term k="reliability" /> ayrı gösterilir.</li>
-        </ul>
+      <PageIntro purpose="Shows how close less-studied land windows on Earth come to the Moon/Mars references in landform, and where this comparison stops." how="Open the In short box first, then any section you are interested in; every section starts closed." />
+      <div className="card brief kid">
+        <h2>How it works</h2>
+        <ol className="kid-steps">
+          <li><b>1</b><span><strong>Choose a place on Earth.</strong> Click any spot. We look at a square of land 10 km wide.</span></li>
+          <li><b>2</b><span><strong>Choose the Moon or Mars.</strong> We use the land around Shackleton crater (Moon) or Jezero crater (Mars).</span></li>
+          <li><b>3</b><span><strong>Compare the terrain.</strong> NASA height maps tell us three things: how steep it is (<Term k="slope" />), how high the bumps are (<Term k="relief" />) and how rocky and bumpy it feels (<Term k="rough" />).</span></li>
+                    <li><b>4</b><span><strong>Explore what is alike and what is different.</strong> The <Term k="D" /> is one number: 0 means the measured terrain features are the same, a smaller number means they are more alike. The things we cannot compare are always shown too.</span></li>
+        </ol>
+        <p className="muted small">It is not a percentage and not a score of "good" or "bad". It only compares the shape of the land, not air, cold or soil. Data names and versions are in the sections below.</p>
       </div>
-      <Warn><strong>Dürüst not:</strong> pozitif kontrol ölçütü <strong>sağlanmadı</strong> (bilinen analogların medyan yüzdeliği ≤ %20 hedefine ulaşılamadı). Ayrıntı: Doğrulama bölümü. Bu yüzden yöntemin "doğrulandığı" söylenmez.</Warn>
-      <ol className="flow" aria-label="Yöntem adımları">
+      <Warn><strong>Honest note:</strong> the positive-control target was <strong>not met</strong> (the median percentile of known analogs did not reach ≤ 20%). Details: Validation section. So we do not claim the method is "validated".</Warn>
+      <ol className="flow" aria-label="Method steps">
         {STEPS.map((s, i) => <li key={s}><strong>{s}</strong><span>{STEP_D[i]}</span></li>)}
       </ol>
 
-      <Sec title="Ortak ölçek ve ızgara">
-        <p><Tag kind="der" />Tüm DEM'ler 30 m eşit alanlı yerel projeksiyona alan ortalamasıyla; eğim 30 m ızgarada Horn 3×3 (etkin taban ≈ 60 m); pencere 10 × 10 km (333 × 333 piksel), adım 5 km. Hiçbir ürün inceltilmez; Ay ve Mars'ın ince detayı bu ölçekte kaybolur.</p>
-        <p>Sapma notu: bölge başına tek LAEA ızgarası kullanıldı (pencere merkezli değil); ≈ 500 km'de ölçek sapması %0,08.</p>
+      <Sec title="Same size squares everywhere" kid="All maps are cut into the same small 30 m squares, so the Moon, Mars and Earth are measured with the same ruler.">
+        <p><Tag kind="der" />All elevation models are averaged onto a 30 m equal-area local projection; slope uses Horn 3×3 on the 30 m grid (effective baseline ≈ 60 m); window 10 × 10 km (333 × 333 pixels), step 5 km. No product is sharpened; fine Moon and Mars detail is lost at this scale.</p>
+        <p>Distortion note: one LAEA grid per region was used (not centred on each window); scale error ≈ 0.08% at ≈ 500 km.</p>
       </Sec>
-      <Sec title="Değişkenler ve formüller">
+      <Sec title="What we measure and how" kid="For every little square we check how steep it is, how big the bumps are and how rough it feels. Then we compare these numbers with the Moon or Mars and turn the difference into one number.">
         <CopyPre text={FORMULA} />
-        <p>Duyarlılık analizi (pencere 5/20 km, ızgara 90 m, eşik 0,25/0,75, değişken çıkarma): <strong>yapılmadı</strong> (kesme listesi, süre). Eşikler bu sonuçlara göre ayarlanmadı.</p>
+        <p>Sensitivity analysis (window 5/20 km, grid 90 m, threshold 0.25/0.75, dropping a property): <strong>not done</strong> (cut list, time). Thresholds were not tuned to these results.</p>
       </Sec>
-      <Sec title="Filtre ve sıralama (örtüşme, değişken uzaklıkları, arazi uzaklığı)">
-        <p>O_k: adayın P10–P90 aralığının referansın P10–P90 aralığıyla örtüşme oranı; her değişken için ≥ 0,5 ve geçerli piksel ≥ %90 olmayan pencere elenir. <Term k="d_slope">d_k</Term>: değişken başına W1/IQR. <Term k="D">D</Term>: üç d_k'nin eşit ağırlıklı ortalaması. Ağırlıklar sabittir.</p>
+      <Sec title="Which places make the list" kid="A place only makes the list if its ground is at least a bit like the Moon or Mars ground. Then places are sorted: the smallest terrain distance comes first.">
+        <p>O_k: how much the candidate's P10–P90 range overlaps the reference's P10–P90 range; a window is removed unless this is ≥ 0.5 for every property and valid pixels are ≥ 90%. <Term k="d_slope">d_k</Term>: W1/IQR per property. <Term k="D">D</Term>: the equal-weight average of the three d_k. Weights are fixed.</p>
       </Sec>
-      <Sec title="Termal değişkenler (neden puana girmiyor)">
-        <p>Termal değişkenler puana ve filtreye <strong>girmez</strong>: Dünya LST (yüzey, iki örnek), Ay Diviner PRP (2 cm derinlik, model) ve Mars THEMIS (kalibre değil) eşdeğer nicelikler değildir; yalnızca Characterize ve Gap panelinde, ürün adıyla gösterilir. Mars termal: Veri eksik.</p>
+      <Sec title="Why temperature is kept apart" kid="Hot and cold are shown, but they do not change the terrain distance, because the Moon and Mars are much colder than any place on Earth.">
+        <p>Temperature is <strong>not used</strong> in the distance or the filter: Earth LST (surface, two samples), Moon Diviner PRP (2 cm below the surface, model) and Mars THEMIS (not calibrated) are not the same quantities; they are only shown, with product names, in Properties and the Gap panel. Mars temperature: data missing.</p>
       </Sec>
-      <Sec title="Aday üretimi ve referans profiller">
-        <p>Aday üretimi: ABD Güneybatı, Atacama, Hawaii Büyük Ada, Batı/Orta Anadolu. Bilinen analoglar aday üretiminde kullanılmaz; yalnızca pozitif kontrol ve "bilinen" etiketi içindir. Referans profilleri: Ay = Shackleton çevresi (LOLA, 3 ROI penceresi), Mars = Jezero çevresi (CTX DTM, R2).</p>
+      <Sec title="Where the places come from" kid="We looked at four big areas on Earth and cut them into 10 km squares, then compared each square with the Moon or Mars area.">
+        <p>Candidates are scanned in: Southwestern USA, Atacama, Island of Hawaiʻi, Western/Central Anatolia. Places anywhere else on Earth can be analysed on demand from the map. Known analogs are not used to make candidates; they are only for the positive control and the "known" label. Reference targets: Moon = around Shackleton (LOLA, 3 ROI windows), Mars = around Jezero (CTX DTM, R2).</p>
       </Sec>
-      <Sec title="Doğrulama (pozitif ve negatif kontrol)">
+      <Sec title="Did we check our work?" kid="We tested if places that scientists already use as Moon or Mars practice sites end up near the top. They did not always, so we say honestly that the method is not proven yet.">
         <h3>Pozitif kontrol <Tag kind="der" /></h3>
-        <Warn><strong>Ölçüt sağlanmadı.</strong> Başarı ölçütü: bilinen analogların medyan yüzdeliği ≤ %20. Sonuç aşağıda olduğu gibi raporlanmıştır; parametreler veya eşikler bu sonuca göre ayarlanmadı. n = 5 test edildi (13 satırdan; 7 satırda koordinat yok, Salda su maskesi nedeniyle geçerli pencere dışı). Bölge dağılımı dengesiz (US-SW 4, HAW 1, ANA 1, ATA 0).</Warn>
+        <Warn><strong>Target not met.</strong> Success target: median percentile of known analogs ≤ 20%. The result below is reported as it is; parameters and thresholds were not tuned to it. n = 5 tested (of 13 rows; 7 rows have no coordinates, Salda falls outside a valid window because of the water mask). The regions are unbalanced (US-SW 4, HAW 1, ANA 1, ATA 0).</Warn>
         {pc && (
           <>
             <table>
-              <thead><tr><th>Gösterim</th><th>Sonuç</th></tr></thead>
+              <thead><tr><th>View</th><th>Result</th></tr></thead>
               <tbody>
-                <tr><td><strong>A.</strong> D'si olmayan analog "son grup" sırası sayılır</td><td>n = {va?.n}; medyan yüzdelik {va?.median_percentile} (ölçüt ≤ 20) · Mann–Whitney tek yönlü p = {pc.mann_whitney?.["p_one_sided_(analog_lower_D_percentile)"]}</td></tr>
-                <tr><td><strong>B.</strong> D'si olmayanlar ayrı: "eşleşme yok (O_k &lt; 0.25)"</td><td>{vb?.n_no_match_O_lt_0_25 ?? vb?.["n_no_match_O_lt_0.25"]} eşleşme yok ({vb?.no_match_rows?.join("; ")}); eşleşen {vb?.n_matched_D_available}: {Object.entries(vb?.matched_percentiles || {}).map(([k, v]) => `${k}: %${v}`).join("; ")}; yalnızca eşleşenlerin medyanı {vb?.median_percentile_matched_only}</td></tr>
+                <tr><td><strong>A.</strong> An analog without D is counted in the "last group"</td><td>n = {va?.n}; median percentile {va?.median_percentile} (target ≤ 20) · Mann–Whitney one-sided p = {pc.mann_whitney?.["p_one_sided_(analog_lower_D_percentile)"]}</td></tr>
+                <tr><td><strong>B.</strong> Those without D kept apart: "no match (O_k &lt; 0.25)"</td><td>{vb?.n_no_match_O_lt_0_25 ?? vb?.["n_no_match_O_lt_0.25"]} no match ({vb?.no_match_rows?.join("; ")}); matched {vb?.n_matched_D_available}: {Object.entries(vb?.matched_percentiles || {}).map(([k, v]) => `${k}: %${v}`).join("; ")}; median of matched only {vb?.median_percentile_matched_only}</td></tr>
               </tbody>
             </table>
             <p className="muted">{vb?.note}</p>
             <table>
-              <thead><tr><th>Analog</th><th>Bölge / profil</th><th className="n">D</th><th className="n">Yüzdelik (A)</th><th>Durum (B)</th></tr></thead>
+              <thead><tr><th>Analog</th><th>Region / target</th><th className="n">D</th><th className="n">Percentile (A)</th><th>Status (B)</th></tr></thead>
               <tbody>
                 {pc.rows.map((r) => (
                   <tr key={r.id}><td>{r.id} {r.name}</td><td>{r.region ? regionLabel(r.region) : "—"} {r.profile ? "· " + r.profile.split(" (")[0] : ""}</td><td className="n">{fmt(r.D, 3)}</td><td className="n">{r.percentile_in_region ?? "—"}</td><td>{r.match_status || r.status}</td></tr>
@@ -79,46 +84,46 @@ export default function Method({ lim, valid, controls, inventory, expl }) {
           </>
         )}
         <h3>Negatif kontrol <Tag kind="der" /></h3>
-        <p>Bölge başına 200 rastgele pencere (seed = 42). Düz pencereler (eğim P90 &lt; 2°, n = {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_flat_windows}): Ay profilinde D alan {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_with_D}; son çeyrek/sıralanmayan {neg?.flat_windows_slope_p90_lt_2deg?.moon?.["n_in_last_quarter_(percentile>=75)"]}. Pencereler %50 örtüşür; p değerleri iyimser olabilir.</p>
+        <p>200 random windows per region (seed = 42). Flat windows (slope P90 &lt; 2°, n = {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_flat_windows}): with D for the Moon target {neg?.flat_windows_slope_p90_lt_2deg?.moon?.n_with_D}; last quarter/unranked {neg?.flat_windows_slope_p90_lt_2deg?.moon?.["n_in_last_quarter_(percentile>=75)"]}. Windows overlap by 50%, so p-values may be optimistic.</p>
         <table>
-          <thead><tr><th>Bölge</th><th>Profil</th><th className="n">D'li / 200</th><th className="n">Filtreyi geçen</th><th>D P10 / P50 / P90</th></tr></thead>
+          <thead><tr><th>Region</th><th>Target</th><th className="n">With D / 200</th><th className="n">Passed filter</th><th>D P10 / P50 / P90</th></tr></thead>
           <tbody>
             {neg && Object.entries(neg.per_region).flatMap(([reg, o]) => Object.entries(o).map(([pf, v]) => (
-              <tr key={reg + pf}><td>{regionLabel(reg)}</td><td>{pf === "moon" ? "Ay" : "Mars"}</td><td className="n">{v.n_with_D}</td><td className="n">{v.n_pass_filter}</td><td>{v["D_percentiles_(P10,P50,P90)"]?.join(" / ") ?? "Veri eksik"}</td></tr>
+              <tr key={reg + pf}><td>{regionLabel(reg)}</td><td>{pf === "moon" ? "Moon" : "Mars"}</td><td className="n">{v.n_with_D}</td><td className="n">{v.n_pass_filter}</td><td>{v["D_percentiles_(P10,P50,P90)"]?.join(" / ") ?? "Veri eksik"}</td></tr>
             )))}
           </tbody>
         </table>
-        <h3>Sabit doğrulama notları (validation.json)</h3>
+        <h3>Validation notes (validation.json)</h3>
         {valid?.positive_control?.limitations?.map((t, i) => <Warn key={i}>{t}</Warn>)}
         <p className="muted">{valid?.positive_control?.interpretation_rule}</p>
       </Sec>
 
       {expl && (
-        <Sec title="Sonradan yapılan keşifsel analiz: Ay referansı ayrı ayrı">
-          <Warn><strong>Keşifsel (post-hoc).</strong> Bu analiz ana sonuçlar alındıktan sonra, havuzlanmış Ay referansı yerine Site01, Site04 ve Site07'nin ayrı ayrı kullanılmasıyla yapıldı. Ana sıralamayı, eşikleri veya pozitif kontrol sonucunu <strong>değiştirmez</strong>; hipotez testi olarak okunmamalıdır.</Warn>
+        <Sec title="Extra check: each Moon spot alone" kid="We also compared Earth with each of the three Moon spots one by one, to see if the results change.">
+          <Warn><strong>Exploratory (post-hoc).</strong> This was done after the main results, using Site01, Site04 and Site07 separately instead of the pooled Moon reference. It does <strong>not change</strong> the main ranking, thresholds or the positive-control result, and should not be read as a hypothesis test.</Warn>
           {expl.sites && Object.entries(expl.sites).map(([s, v]) => (
             <div key={s}>
               <h3>{s}</h3>
-              <p>Referans P10/P50/P90: {Object.entries(v.reference).map(([k, r]) => `${k} ${r.join("/")}`).join(" · ")}. Filtreyi geçen pencere: {v.n_pass_filter} (D'li: {v.n_with_D}).</p>
+              <p>Reference P10/P50/P90: {Object.entries(v.reference).map(([k, r]) => `${k} ${r.join("/")}`).join(" · ")}. Windows passing the filter: {v.n_pass_filter} (with D: {v.n_with_D}).</p>
               <table>
-                <thead><tr><th>Analog</th><th>Durum</th><th className="n">D</th><th className="n">Yüzdelik</th></tr></thead>
+                <thead><tr><th>Analog</th><th>Status</th><th className="n">D</th><th className="n">Percentile</th></tr></thead>
                 <tbody>{v.analogs.map((a) => <tr key={a.id}><td>{a.id} {a.name}</td><td>{a.status}</td><td className="n">{fmt(a.D, 3)}</td><td className="n">{a.percentile ?? "—"}</td></tr>)}</tbody>
               </table>
-              <p className="muted">Medyan yüzdelik (A, eşleşmeyen = son grup): {v.median_A ?? "—"} · yalnızca eşleşenler: {v.median_B ?? "—"} (n = {v.n_matched}).</p>
+              <p className="muted">Median percentile (A, unmatched = last group): {v.median_A ?? "—"} · matched only: {v.median_B ?? "—"} (n = {v.n_matched}).</p>
             </div>
           ))}
           <p className="muted">{expl.note}</p>
         </Sec>
       )}
 
-      <Sec title="Sınırlamalar (sabit)">
+      <Sec title="What this cannot tell you" kid="It only compares the shape of the ground. It cannot say anything about air, cold, dust, radiation or what the rocks are made of.">
         <Limitations lim={lim} />
       </Sec>
 
-      <Sec title="Veri envanteri ve kaynaklar (data_inventory.csv)">
+      <Sec title="Where the data comes from" kid="A list of every map and measurement we used, mostly from NASA, with where to download it.">
         <div style={{ overflowX: "auto" }}>
           <table>
-            <thead><tr><th>ID</th><th>Cisim</th><th>Ürün</th><th>Sürüm</th><th>Çözünürlük</th><th>Birim</th><th>Lisans</th><th>Durum</th></tr></thead>
+            <thead><tr><th>ID</th><th>Body</th><th>Product</th><th>Version</th><th>Resolution</th><th>Units</th><th>License</th><th>Status</th></tr></thead>
             <tbody>
               {inventory?.map((r) => (
                 <tr key={r.id}><td>{r.id}</td><td>{r.body}</td><td>{r.product}<div className="muted">{r.short_name}</div></td><td>{r.version}</td><td>{r.resolution}</td><td>{r.units_and_encoding}</td><td>{r.license_or_use}</td><td>{r.verification_status}</td></tr>

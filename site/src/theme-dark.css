@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+/* One design system for every page: calm dark navy (from the compare screen), simple solid panels, one blue accent.
+   Loaded last; overrides the older light theme. Body colours: Moon grey, Mars rust, Earth blue-green (small accents only). */
+:root { --bg: #0b1426; --bg2: #121d33; --panel: #131f37; --panel-solid: #131f37; --ink: #e6ecf5; --muted: #a2b0c6;
+  --line: #4a5d7d; --line-soft: rgba(230, 236, 245, .1); --accent: #4d8fe6; --accent-ink: #fff; --accent-soft: rgba(77, 143, 230, .18); --cool: #7fb0f0;
+  --warn-bg: #2a2412; --warn-line: #c9a227; --t-obs: #cfe3f8; --t-der: #ddd8f3; --t-int: #f1e3c6; --scene-top: #0e1a30; --scene-bottom: #0b1426; color-scheme: dark; }
+html body, html[data-page] body { background: var(--bg); color: var(--ink); }
+html .g-card, html .card, html .gear-menu, html .refcard-stats, html .rep-row.me, html .pt-d, html .rp-near, html .rp-grid > div, html .pt-vars > div, html .cand2-d, html .more-btn, html .sci-tabs button, html .viewtabs button, html .conn {
+  background: var(--panel); color: var(--ink); border-color: var(--line-soft); box-shadow: none; backdrop-filter: none; }
+html .g-card { border: 1px solid var(--line-soft); }
+html .rp-near, html .rp-grid > div, html .pt-vars > div, html .refcard-stats, html .pt-d { background: var(--bg2); }
+html .rp-x { background: var(--bg2); color: var(--ink); }
+html .cand2-d b, html .g-h, html .glass h2, html .glass h3, html .cand2-loc { color: var(--ink); } html .cand2-d span, html .muted, html .small.muted { color: var(--muted); }
+html .rep-bar .bar { background: var(--bg2); } html .pt-note { color: #e3c56b; }
+html .g-btn { background: var(--bg2); color: var(--ink); border: 1px solid var(--line-soft); } html .g-btn.primary, html .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+html .viewtabs button[aria-pressed="true"], html .regions button.on, html .sci-tabs button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+html input, html select, html textarea { background: var(--bg2); color: var(--ink); border-color: var(--line); }
+html table th, html table td { border-color: var(--line-soft); } html a { color: var(--cool); }
+html .disc-body.moon { background: #2a3140; color: #d7dde8; } html .disc-body.mars { background: #3a2219; color: #f0c2ad; } html .disc-body.none { background: var(--bg2); }
+html header.top, html header.topx { background: #08101f; border-bottom: 1px solid var(--line-soft); }
+html .mainnav { display: flex; gap: 4px; margin: 0 auto; } html .mainnav a { padding: 8px 14px; border-radius: 10px; color: var(--muted); text-decoration: none; font-weight: 500; }
+html .mainnav a:hover { color: var(--ink); background: var(--bg2); } html .mainnav a.on { color: var(--ink); background: var(--accent-soft); box-shadow: inset 0 -2px 0 var(--accent); }
+@media (max-width: 720px) { .mainnav { order: 3; width: 100%; overflow-x: auto; } html .mainnav a { padding: 6px 10px; font-size: 14px; } }
+/* compare screen: fewer glows, same structure */
+html .ov { --ov-glass: #131f37; --ov-line: rgba(230, 236, 245, .12); background: radial-gradient(ellipse 80% 40% at 50% 60%, rgba(40, 90, 180, .25), transparent 70%), var(--bg); }
+html .ov-card, html .ov-dist, html .ov-box, html .ov-st { box-shadow: none; backdrop-filter: none; } html .ov-dist strong { text-shadow: none; }
+html .ov-swap, html .ov-ctrl button, html .ov-modes button.on { box-shadow: none; } html .ov-stage::after { box-shadow: none; width: 1px; }
+html .ov-more { margin-top: 4px; } html .ov-more > summary { cursor: pointer; padding: 10px 14px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line-soft); color: var(--ink); font-weight: 500; }
+html .ov-more[open] > summary { margin-bottom: 8px; }
+html header.top.topx { background: #08101f; border-bottom: 1px solid var(--line-soft); } html .burger i { background: var(--ink); }
+html .gear-menu a { color: var(--ink); } html .gear-menu a:hover, html .gear-menu a[aria-current] { background: var(--bg2); }
+html .steps4 a, html .worldbar { color: var(--ink); }
+html, html #root { background: var(--bg); } html .tag { color: #0c1f4d; }
+/* Explore: the selected-place panel scrolls inside the screen height instead of running down the page */
+html .mapgrid > div:first-child { position: sticky; top: 12px; max-height: calc(100vh - var(--hdr, 64px) - 24px); overflow-y: auto; border-radius: 16px; }
+@media (max-width: 860px) { html .mapgrid > div:first-child { position: static; max-height: none; overflow: visible; } }
+html .disc-img { position: relative; margin: -4px -4px 10px; } html .disc-img img { display: block; width: 100%; height: 150px; object-fit: cover; border-radius: 12px; background: var(--bg2); }
+html .disc-img::after { content: ""; position: absolute; left: 50%; top: 75px; width: 18%; aspect-ratio: 1; transform: translate(-50%, -50%); border: 2px solid #fff; border-radius: 3px; pointer-events: none; }
+html .disc-img figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; } html .disc-body { color: var(--ink); }
+html .kid-steps { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 12px; } html .kid-steps li { display: flex; gap: 12px; align-items: start; font-size: 16px; line-height: 1.5; }
+html .kid-steps b { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; }
+html .kid-line { font-size: 16px; line-height: 1.6; margin: 0 0 12px; } html .sci > summary { cursor: pointer; color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
+/* Explore: bigger, cleaner globe stage */
+html[data-page="map"] .globe-canvas { height: calc(100vh - var(--hdr, 64px) - 210px); min-height: 440px; border: 0; border-radius: 14px; }
+html[data-page="map"] .mappanel { padding: 12px; } html[data-page="map"] .darkstage { border: 1px solid var(--line-soft); }
+html[data-page="map"] .pick-hint { font-size: 14px; color: var(--ink); }
+html .viewtabs button { border-radius: 10px; }
+html[data-page="map"] .globe-bar select, html[data-page="map"] .globe > :not(.globe-canvas):not(.globe-bar) { display: none; }
+html .darkstage { position: relative; } html .explore-tip { position: absolute; z-index: 4; left: 50%; top: 16px; transform: translateX(-50%); display: grid; gap: 4px; text-align: center; padding: 12px 18px; border-radius: 12px; background: rgba(8, 16, 31, .85); border: 1px solid var(--line-soft); pointer-events: none; max-width: 90%; } html .explore-tip strong { font-size: 17px; } html .explore-tip span { font-size: 13px; color: var(--muted); }
+html[data-page="map"] .pick-hint { display: none; }
+html .rp-name { font-size: 18px; margin: 2px 0; } html .rp-name + h2 { font-size: 14px; color: var(--muted); font-weight: 500; }
+html .pt-kid { display: grid; gap: 4px; } html .pt-kid b { font-size: 16px; } html .pt-kid em { font-style: normal; color: var(--cool); font-weight: 500; }
+html .gap-side { position: sticky; top: 12px; max-height: calc(100vh - var(--hdr, 64px) - 24px); overflow-y: auto; align-self: start; } @media (max-width: 860px) { html .gap-side { position: static; max-height: none; } }
+html .rep-ring text { fill: var(--ink) !important; } html .rep-ring, html .rep-ring * { color: var(--ink); } html .rep-ring circle:first-child { stroke: var(--bg2); }
+/* auto: old light-theme text colours made readable on dark */
+html .g-card { color: var(--ink); }
+html .g-kicker { color: var(--muted); }
+html .g-h { color: var(--ink); }
+html .g-btn { color: var(--ink); }
+html .relief-empty { color: var(--muted); }
+html .stats dt { color: var(--muted); }
+html .cand2-d b { color: var(--ink); }
+html .cand2-d span { color: var(--muted); }
+html .rep-nav a { color: var(--muted); }
+html .ref-sub { color: var(--muted); }
+html .ic { color: var(--muted); }
+html .pt-d strong { color: var(--ink); }
+html .pt-note { color: var(--muted); }
+html .disc-body { color: var(--ink); }
+html .disc-body.mars { color: var(--muted); }
+html .topx .brand { color: var(--ink); }
+html .stepx a { color: var(--muted); }
+html .stepx .dot { color: var(--muted); }
+html .stepx li.on a { color: var(--muted); }
+html .conn { color: var(--ink); }
+html .gear summary { color: var(--muted); }
+html .gear-menu a { color: var(--ink); }
+html .gear-menu .g-sub { color: var(--muted); }
+html .ref-sub, html .muted { color: #b4c0d3; }
+/* Professional polish: one type scale, one radius, hairline panels, calmer tags, consistent controls */
+html body { font-family: Inter, system-ui, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+html h1, html h2, html h3, html .g-h { font-weight: 600; letter-spacing: -0.01em; } html h2, html .g-h { font-size: 20px; } html h3 { font-size: 16px; }
+html .g-card, html .card, html .ov-card, html .ov-dist, html .ov-box, html .ov-st { border-radius: 12px; border: 1px solid rgba(230, 236, 245, .08); }
+html button, html .g-btn, html .btn-accent, html .viewtabs button, html .regions button { border-radius: 8px; font-weight: 500; transition: background-color .15s ease, border-color .15s ease; }
+html .tag { font-size: 11px; padding: 1px 8px; border-radius: 6px; font-weight: 500; }
+html main { max-width: 1440px; } html table td, html table th { padding: 8px 10px; } html table th { color: var(--muted); font-weight: 500; }
+html a:focus-visible, html button:focus-visible, html summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

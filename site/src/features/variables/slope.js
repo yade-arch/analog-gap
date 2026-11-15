@@ -1,11 +1,11 @@
 import { topoCompute } from "./topo.js";
 import { fmt } from "../../common.jsx";
 
-const pct = (f) => (f == null ? "Veri eksik" : fmt(f * 100, 1) + " %");
+const pct = (f) => (f == null ? "Data missing" : fmt(f * 100, 1) + " %");
 // Limit aşan hücre oranı: limit NASA kaynaklı simülasyon varsayımıdır; oran görüntülenen 90 m ızgaradan hesaplanır.
 const extra = ({ lim, stats }) => (lim
-  ? [{ label: `Eğim > ${lim.value}° hücre oranı (limit ${lim.id}, 90 m ızgara)`, ref: pct(stats?.ref), cand: pct(stats?.cand), tag: "sim" }]
-  : [{ label: "Birim eğim limiti", ref: "Veri eksik", cand: "Veri eksik (kaynak bekliyor)", tag: "sim" }]);
+  ? [{ label: `Share of cells with slope > ${lim.value}° (limit ${lim.id}, 90 m grid)`, ref: pct(stats?.ref), cand: pct(stats?.cand), tag: "sim" }]
+  : [{ label: "Vehicle slope limit", ref: "Data missing", cand: "Data missing (source pending)", tag: "sim" }]);
 
 export default {
   id: "slope", titleKey: "station.slope", unit: "°",

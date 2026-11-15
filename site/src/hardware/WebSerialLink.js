@@ -8,7 +8,7 @@ export const serialSupported = () => typeof navigator !== "undefined" && "serial
 export default class WebSerialLink extends RoverLink {
   /** opts: { baudRate = 115200, filters = [] (usbVendorId/usbProductId) } */
   async _open() {
-    if (!serialSupported()) throw new Error("Web Serial bu tarayıcıda yok");
+    if (!serialSupported()) throw new Error("Web Serial is not available in this browser");
     this.port = await navigator.serial.requestPort({ filters: this.opts.filters || [] });   // kullanıcı seçer; izin tarayıcıdadır
     await this.port.open({ baudRate: this.opts.baudRate || 115200 });
     this.writer = this.port.writable.getWriter(); this.enc = new TextEncoder();

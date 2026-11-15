@@ -1,3 +1,4 @@
+import { dangerMin } from "./data.js";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { t } from "../../i18n/index.js";
@@ -52,6 +53,7 @@ export default function SuitScreen({ suit, setSuit, onConfirm, left }) {
               <strong>{t("game." + s.id)}</strong>
               {STATS.map((k) => <span key={k} className={"g-stat g-stat-" + k}><em>{t("game.stat." + k)}</em><i><b style={{ width: s.stats[k] + "%" }} /></i><u>{s.stats[k]}</u></span>)}
               <small>{tf("game.suit.time", { r: s.returnMin, s: GAME.cost.suit })}</small>
+              <small className="g-effect">{tf("game.suit.effect", { d: dangerMin(s) })} {t(s.tolerant ? "game.suit.tol" : "game.suit.notol")}</small>
               {left < s.returnMin + GAME.cost.suit && <small className="g-warnline">{t("game.suit.short2")}</small>}
             </button>
           ))}

@@ -6,14 +6,14 @@ export default class WebSocketLink extends RoverLink {
   /** opts: { url: "ws://localhost:8765" } */
   _open() {
     const url = this.opts.url || "";
-    if (!/^wss?:\/\//.test(url)) return Promise.reject(new Error("url ws:// veya wss:// ile başlamalı"));
-    if (url.startsWith("ws://") && typeof location !== "undefined" && location.protocol === "https:") return Promise.reject(new Error("https sayfasında ws:// kullanılamaz; wss:// gerekli"));
+    if (!/^wss?:\/\//.test(url)) return Promise.reject(new Error("url must start with ws:// or wss://"));
+    if (url.startsWith("ws://") && typeof location !== "undefined" && location.protocol === "https:") return Promise.reject(new Error("ws:// cannot be used on an https page; wss:// is required"));
     return new Promise((resolve, reject) => {
       const ws = (this.ws = new WebSocket(url));
       ws.onopen = () => resolve();
-      ws.onerror = () => reject(new Error("WebSocket açılamadı"));
+      ws.onerror = () => reject(new Error("WebSocket could not open"));
       ws.onmessage = (e) => typeof e.data === "string" && e.data.split("\n").forEach((l) => l.trim() && this._onLine(l.trim()));
-      ws.onclose = () => { if (this.state === "open") this._set("closed", "sunucu kapattı"); };
+      ws.onclose = () => { if (this.state === "open") this._set("closed", "server closed"); };
     });
   }
   _write(line) { this.ws.send(line.trim()); }

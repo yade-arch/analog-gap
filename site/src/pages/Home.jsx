@@ -12,7 +12,7 @@ const start = (b) => { location.hash = b === "earth" ? "#/map" : `#/map?t=${b}`;
 export default function Home({ cand, profile, D = {}, hero }) {
   if (hero) return <Suspense fallback={<div className="hero" />}><Hero onStart={start} /></Suspense>;
   const best = cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0];
-  const to = best ? `#/compare/${best.id}/${profile}` : "#/compare";
+  const to = "#/map";                                              // step 1: choose a place (the compare screen is the home page)
   const steps = [1, 2, 3];
   return (
     <>
