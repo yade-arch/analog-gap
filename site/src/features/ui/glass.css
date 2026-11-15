@@ -151,7 +151,7 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 @media (max-width: 560px) { .ds-dl { grid-template-columns: 1fr; } .ds-dl dd { margin-bottom: 6px; } }
 .darkstage { position: relative; } .globe-hint { position: absolute; left: 10px; bottom: 10px; z-index: 3; pointer-events: none; padding: 4px 10px; border-radius: 999px; background: rgba(10,16,32,.55); color: #fff; font-size: 11px; }
 footer .foot-more summary { cursor: pointer; font-size: 12px; opacity: .8; list-style: none; } footer .foot-more[open] summary { margin-bottom: 6px; }
-footer { padding-top: 4px !important; padding-bottom: 4px !important; position: relative; z-index: 5; background: #f8fafc; }
-html[data-theme="dark"] footer, html[data-mono] footer, :root:not([data-theme="light"]) footer { background: #000; border-top: 1px solid rgba(255,255,255,.15); }
+footer { padding-top: 4px !important; padding-bottom: 4px !important; position: relative; z-index: 5; } html[data-light] footer { background: #f8fafc; }
+html:not([data-light]) footer { background: #000; border-top: 1px solid rgba(255,255,255,.15); }
 .foot-tog { display: block; width: 100%; height: 32px; text-align: left; background: none; border: 0; color: inherit; font: inherit; font-size: 12px; cursor: pointer; opacity: .85; }
 .foot-body { padding: 4px 0 8px; }
