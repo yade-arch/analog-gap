@@ -71,7 +71,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   const cards = swapped ? [earthCard, refCard] : [refCard, earthCard];
   const profA = dems.r ? centreProfile(dems.r) : [], profB = dems.c ? centreProfile(dems.c) : [];
   const download = () => {
-    const out = { product: "ANALOG GAP overview", generated: new Date().toISOString(), target: profile, reference: refId, candidate: p.id, terrain_distance_D: p.D,
+    const out = { product: "SPACE SYNC overview", generated: new Date().toISOString(), target: profile, reference: refId, candidate: p.id, terrain_distance_D: p.D,
       d: p.d, candidate_percentiles: p.derived_percentiles, reference_percentiles: reference?.variables && Object.fromEntries(Object.entries(reference.variables).map(([k, v]) => [k, { p10: v.p10, p50: v.p50, p90: v.p90 }])),
       sources: [mr?.product, mc?.product], note: t("ov.dlNote") };
     const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" })); a.download = `analog-gap-${profile}-${p.id}.json`; a.click();

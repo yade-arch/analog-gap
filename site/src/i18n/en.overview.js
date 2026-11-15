@@ -1,6 +1,6 @@
 // Main screen (overview) texts in English. tr.overview.js re-exports this file (English is the interface language).
 export default {
-  "nav.data": "Data sources", "ds.title": "Where the data comes from", "ds.intro": "Every number in Analog Gap comes from one of the sources below. They are grouped by what they are used for. Open \"More details\" for versions, licences and download paths.",
+  "nav.data": "Data sources", "ds.title": "Where the data comes from", "ds.intro": "Every number in Space Sync comes from one of the sources below. They are grouped by what they are used for. Open \"More details\" for versions, licences and download paths.",
   "ds.nasa": "NASA data", "ds.other": "Not NASA data", "ds.more": "More details", "ds.open": "Open the source website",
   "ds.k.obs": "Real measurement", "ds.k.obsD": "a value read from a data product.", "ds.k.der": "Calculated", "ds.k.derD": "worked out by us from measurements (for example slope, D).",
   "ds.k.apxD": "a quick check made in your browser from AWS Terrain Tiles; it can differ from the full NASADEM scan.", "ds.k.missD": "the source has no value there. It is never shown as zero.",
@@ -19,7 +19,7 @@ export default {
   "sci.solid": "solid line", "sci.dashed": "dashed line",
   "rep.title": "Terrain analog report", "rep.place": "Place on Earth", "rep.window": "scan window", "rep.ref": "Compared with", "rep.date": "Analysis date", "rep.data": "Data products",
   "rep.pdfHint": "Your browser opens its print window. Choose \"Save as PDF\".", "rep.loading": "Loading the elevation data…", "rep.back": "Back to the comparison",
-  "start.title": "Find places on Earth that look like the Moon or Mars", "start.intro": "Analog Gap measures the shape of the ground with real elevation data. Pick any spot on Earth and see how close its ground is to the Moon or Mars, and how it is different.",
+  "start.title": "Find places on Earth that look like the Moon or Mars", "start.intro": "Space Sync measures the shape of the ground with real elevation data. Pick any spot on Earth and see how close its ground is to the Moon or Mars, and how it is different.",
   "start.target": "Compare with", "start.find": "Find a place", "start.recent": "Places you explored", "start.tip": "Click anywhere on Earth to check that place",
   "rs.title": "Your result", "rs.loc": "Place on Earth", "rs.ref": "Compared with", "rs.dHint": "A smaller number means the measured ground shapes are more alike.",
   "rs.approx": "Approximate", "rs.approxTip": "Quick check from AWS Terrain Tiles (mostly NASA SRTM), not the NASADEM scan. Numbers can differ from a full analysis.",
@@ -55,7 +55,7 @@ export default {
   "ov.copied": "Link copied.",
   "ov.hide": "Hide tools", "ov.show": "Show tools",
   "ov.d.coord": "Centre", "ov.d.product": "Data product",
-  "ov.dlNote": "Values come from the ANALOG GAP data files. Terrain distance D: 0 = identical, lower = more similar; it is not a percentage.",
+  "ov.dlNote": "Values come from the SPACE SYNC data files. Terrain distance D: 0 = identical, lower = more similar; it is not a percentage.",
   "ov.climate": "Earth climate at this place",
   "ov.climateNote": "NASA POWER climate normal ({range}); average of a grid cell about 50 km wide, not a measurement at this exact window.",
   "ov.links": "NASA data links",

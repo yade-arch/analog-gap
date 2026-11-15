@@ -16,7 +16,7 @@ export default function Panel({ layer, setLayer, mode, setMode, profile, stats, 
   const [msg, setMsg] = useState("");
   const share = async () => {
     const url = location.href;
-    try { if (navigator.share) await navigator.share({ title: "ANALOG GAP", url }); else { await navigator.clipboard.writeText(url); setMsg(t("ov.copied")); } } catch { /* cancelled */ }
+    try { if (navigator.share) await navigator.share({ title: "SPACE SYNC", url }); else { await navigator.clipboard.writeText(url); setMsg(t("ov.copied")); } } catch { /* cancelled */ }
   };
   return (
     <div className={"ov-panel" + (open ? "" : " shut")}>

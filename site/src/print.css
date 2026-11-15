@@ -5,7 +5,7 @@
 @page {
   size: A4;
   margin: 16mm 14mm 18mm;
-  @bottom-left { content: "ANALOG GAP terrain analog report · NASA Space Apps 2026"; font: 8pt system-ui, sans-serif; color: #555; }
+  @bottom-left { content: "SPACE SYNC terrain analog report · NASA Space Apps 2026"; font: 8pt system-ui, sans-serif; color: #555; }
   @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt system-ui, sans-serif; color: #555; }
 }
 

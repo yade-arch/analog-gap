@@ -19,7 +19,7 @@ export default function TmPdf({ planet, D, children }) {
     <>
       <div className="tm-pdfbar noprint"><button className="g-go" onClick={() => window.print()}>{t("pdf.sci.btn")}</button><span className="small muted">{t("game.rs.pdfHint")}</span></div>
       <section className="print-only tm-pdf">
-        <h1>ANALOG GAP — {t("pdf.sci.title")}: {t("tm.planet." + planet)}</h1>
+        <h1>SPACE SYNC — {t("pdf.sci.title")}: {t("tm.planet." + planet)}</h1>
         <p>{t("pdf.sci.date")}: {new Date().toISOString().slice(0, 10)}</p>
         <h2>1. {t("pdf.sci.s1")}</h2>
         {planet === "earth" && j ? (

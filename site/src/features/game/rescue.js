@@ -14,7 +14,7 @@ export function siteFromCand(p, D, i) {
   const th = earthThermal(D.tE, p.id);
   return { key: p.id, letter: letter(i), kind: "cand", status: "ok", id: p.id, name: p.id, region: p.region, center_lat: p.center_lat, center_lon: p.center_lon,
     vars: p.derived_percentiles || {}, approx: false, elev: null, thermal: th.ok ? th.w : null, D: p.D ?? null, d: p.d || {}, valid: p.evidence_coverage?.valid_pixel_fraction ?? null,
-    source: "NASADEM (NASA, 30 m) · ANALOG GAP scan", tempSource: th.ok ? "MODIS MYD11A2 v061 land surface temperature (NASA)" : null };
+    source: "NASADEM (NASA, 30 m) · SPACE SYNC scan", tempSource: th.ok ? "MODIS MYD11A2 v061 land surface temperature (NASA)" : null };
 }
 
 /** Pending site for any clicked/typed point (filled by fillPoint when the on-demand analysis returns). */

@@ -2,7 +2,7 @@
 // Sentences are templates filled only with values that already exist; nothing is estimated here.
 export default {
   "pp.title": "How close is the ground at {place} to the {body}? A terrain analog check",
-  "pp.authors": "ANALOG GAP · NASA Space Apps Challenge 2026",
+  "pp.authors": "SPACE SYNC · NASA Space Apps Challenge 2026",
   "pp.abstract": "Abstract",
   "pp.abstractT": "We compared the shape of the ground in a 10 × 10 km square at {ll} with the {body} reference area ({ref}). Three properties were measured from elevation data: slope, local height difference and surface roughness. The Terrain Gap D is {D} (0 = the same, lower = more alike; not a percentage). {best}{worst}Only ground shape was compared.",
   "pp.bestS": "The most alike property is {x}. ", "pp.worstS": "The least alike property is {x}. ",

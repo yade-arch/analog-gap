@@ -1,4 +1,4 @@
-// ANALOG GAP rover bağlantı protokolü v0 (TASLAK). Ayrıntı: docs/PROTOCOL.md. Tarayıcıya özgü kod içermez (Node'da test edilir).
+// SPACE SYNC rover bağlantı protokolü v0 (TASLAK). Ayrıntı: docs/PROTOCOL.md. Tarayıcıya özgü kod içermez (Node'da test edilir).
 export const PROTO_VERSION = 0;
 export const CMDS = ["hello", "ping", "goto", "stop"];
 export const STATES = ["idle", "moving", "stopped", "fault"];

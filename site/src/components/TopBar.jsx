@@ -56,7 +56,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
   const on = (k) => k === page || (k === "compare" && (page === "home" || page === "report")) || (k === "list" && page === "card") || (k === "guide" && (page === "story" || page === "time"));
   return (
     <header className="top topx">
-      <a className="brand" href="#/start" aria-label={t("nav.home")}><Logo /><h1>Analog Gap</h1></a>
+      <a className="brand" href="#/start" aria-label={t("nav.home")}><Logo /><h1>Space Sync</h1></a>
       <nav className="mainnav" aria-label={t("ui.pages")}>
         {SEC.map(([k, key, h]) => {
           const a = <a key={k} href={h} className={on(k) ? "on" : ""} aria-current={on(k) ? "page" : undefined}>{t(key)}</a>;

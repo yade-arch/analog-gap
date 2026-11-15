@@ -22,7 +22,7 @@ export default {
   ...rescue,
   ...guide,
   ...gear,
-  "app.title": "ANALOG GAP",
+  "app.title": "SPACE SYNC",
   "app.sub": "Comparison Mission",
   "nav.compare": "Compare",
   "nav.map": "Map",

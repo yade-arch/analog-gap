@@ -16,7 +16,7 @@ export function StartMenu({ profile, setProfile, mode, setMode, onStart, gl, rep
   return (
     <div className="g-menu g-arcade">
       <div className="g-hud-top" aria-hidden="true">
-        <span><b>1P</b>{t("game.target." + profile)}</span><span><b>{t("game.arc.mission")}</b>ANALOG GAP</span><span><b>2P</b>{mode === "multi" ? t("game.arc.ready") : "—"}</span>
+        <span><b>1P</b>{t("game.target." + profile)}</span><span><b>{t("game.arc.mission")}</b>SPACE SYNC</span><span><b>2P</b>{mode === "multi" ? t("game.arc.ready") : "—"}</span>
       </div>
       <div className="g-menu-card">
         <p className="g-kicker">{t("game.menu.kicker")}</p>

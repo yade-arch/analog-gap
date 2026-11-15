@@ -13,7 +13,7 @@ import { StationTable } from "../hud/StationCard.jsx";
 import ReportOverview from "../features/ui/ReportOverview.jsx";
 import ReportPaper from "../features/ui/ReportPaper.jsx";
 
-/** Otomatik ANALOG GAP Report (yazdırılabilir). Ekrandaki istasyon kartlarıyla aynı hesap (stationResult). Rover limiti kullanılır. */
+/** Otomatik SPACE SYNC Report (yazdırılabilir). Ekrandaki istasyon kartlarıyla aynı hesap (stationResult). Rover limiti kullanılır. */
 export default function Report({ D, profile, cand, id }) {
   const p = cand.features.find((f) => f.properties.id === id)?.properties;
   const refId = SETTINGS.references[profile][0];
@@ -55,7 +55,7 @@ export default function Report({ D, profile, cand, id }) {
   return (
     <div className="report">
       <header className="print-only rep-print-head">
-        <h1>ANALOG GAP · {t("rep.title")}</h1>
+        <h1>SPACE SYNC · {t("rep.title")}</h1>
         <dl>
           <dt>{t("rep.place")}</dt><dd>{regionLabel(p.region)} · {fmt(p.center_lat, 4)}°, {fmt(p.center_lon, 4)}° · {t("rep.window")} {p.id} (10 × 10 km)</dd>
           <dt>{t("rep.ref")}</dt><dd>{PROFILES[profile].name}</dd>
@@ -76,7 +76,7 @@ export default function Report({ D, profile, cand, id }) {
       <details className="g-card more-rep" id="rep-detail">
       <summary>📄 {t("ui.repDetail")}</summary>
       <div className="card">
-        <h2>ANALOG GAP Report — {p.id}</h2>
+        <h2>SPACE SYNC Report — {p.id}</h2>
         <div className="muted">{PROFILES[profile].name} · {regionLabel(p.region)} · centre {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · {new Date().toISOString().slice(0, 10)}</div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
           <div><div className="muted">Terrain distance (technical name: D; 0 = identical, lower = more similar) <Tag kind="der" /></div><div className="big">{fmt(p.D, 3)}</div></div>

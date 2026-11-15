@@ -79,7 +79,7 @@ export default function RescueResult({ r, profile, D, clockLog, onAgain, reportH
         <p className="g-note noprint">{t("game.rs.pdfHint")}</p>
       </div>
       <section className="print-only rs-print">
-        <h1>ANALOG GAP — {t("game.rs.pdfTitle")}</h1>
+        <h1>SPACE SYNC — {t("game.rs.pdfTitle")}</h1>
         <p>{new Date(res.at).toLocaleString()} · {t("ui.body." + profile)} · {truth.label}</p>
         <h2>{t("game.tier." + res.tier)}</h2><p>{kid}</p>
         <Science S={S} res={res} site={site} truth={truth} profile={profile} D={D} />

@@ -18,7 +18,7 @@ export default {
   ...gear,
   ...point,
   ...paper,
-  "app.title": "ANALOG GAP",
+  "app.title": "SPACE SYNC",
   "app.sub": "Karşılaştırma Görevi",
   "nav.compare": "Karşılaştırma",
   "nav.map": "Harita",
