@@ -17,6 +17,8 @@ const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
 const Start = lazy(() => import("./pages/Start.jsx"));
 const DataSources = lazy(() => import("./pages/DataSources.jsx"));
+const Story = lazy(() => import("./pages/Story.jsx"));
+const TimeMachine = lazy(() => import("./pages/TimeMachine.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
@@ -73,6 +75,8 @@ export default function App() {
               : <div className="card">This window is not in the candidate file for the chosen target (the file holds only the best 250 candidates per region). <a href="#/list">Back to the list</a></div>)}
             {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
             {page === "start" && <Start profile={profile} setProfile={setProfile} />}
+            {page === "story" && <Story D={D} profile={profile} setProfile={setProfile} cand={cand} />}
+            {page === "time" && <TimeMachine D={D} profile={profile} setProfile={setProfile} cand={cand} />}
             {page === "data" && <DataSources inventory={D.inv} />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>

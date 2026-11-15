@@ -34,7 +34,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
   const [online, setOnline] = useState(navigator.onLine), [theme, setThemeS] = useState(getTheme);
   useEffect(() => { const f = () => setOnline(navigator.onLine); addEventListener("online", f); addEventListener("offline", f); return () => { removeEventListener("online", f); removeEventListener("offline", f); }; }, []);
   const id = reportId;
-  const SEC = [["map", "nav.explore", "#/map"], ["compare", "nav.compare", id ? `#/compare/${id}/${profile}` : "#/compare"], ["list", "nav.discoveries", "#/list"], ["game", "nav.mission", "#/game"]];
+  const SEC = [["map", "nav.explore", "#/map"], ["compare", "nav.compare", id ? `#/compare/${id}/${profile}` : "#/compare"], ["list", "nav.discoveries", "#/list"], ["game", "nav.mission", "#/game"], ["story", "nav.story", "#/story"], ["time", "nav.time", "#/time"]];
   const on = (k) => k === page || (k === "compare" && (page === "home" || page === "report")) || (k === "list" && page === "card");
   return (
     <header className="top topx">
