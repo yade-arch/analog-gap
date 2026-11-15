@@ -18,3 +18,4 @@
 - 2026-11-15 | gezegen-kesif | Veri kaynakları sayfası (#/data), Yöntem sayfası düzeltmeleri; kalan: anlık nokta PDF, oyun genişletmesi | devam
 - 2026-11-15 | gezegen-kesif | Rapor kısa bildiri biçiminde; siyah-beyaz mod tüm ekran; oyun: sonuç seviyeleri, değerlendirme, seyir defteri | devam (oyun görev türleri sırada)
 - 2026-11-15 | oyun-kurtarma | Earth-to-Space Rescue oyunu (her yer seçimi, rapor, giysi/rota/ekipman, iki rover modu, kararlar, olaylar, sonuç + PDF); Story Mode (#/story); Time Machine (#/time, GIBS MODIS); AI robot sohbeti yapılmadı (projede AI bağlantısı yok, sahte bağlantı kurulmadı) | tamam
+- 2026-11-15 | main | oyun-kurtarma main'e alındı (Dünya→Ay sıralı görev, Story Mode, Time Machine, zemin düzeltmeleri) | tamam
