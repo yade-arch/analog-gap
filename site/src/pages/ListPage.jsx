@@ -41,10 +41,13 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
   const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
   return (
     <div className="glass">
-      {show("ref") && <RefCard target={profile} reference={reference} tM={tM} wide />}
       {show("found") && <Discovered />}
+      <section className="scan-group" hidden={!(show("top") || show("table") || show("ref"))} aria-labelledby="scan-h">
+      <h2 className="g-h" id="scan-h">{t("disc.scan")}</h2>
+      <p className="muted small">{t("list.scanNote")}</p>
+      <div className="top3" hidden={!show("top")}>{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go, profile }} />)}</div>
       <details className="more" hidden={!show("table")}>
-        <summary><h2 className="g-h">{t("disc.scan")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
+        <summary><span className="more-btn">{t("list.tableOpen")} ⌄</span></summary>
         <div className="g-card">
           <div className="regions">{REGION_CODES.map((r) => <button key={r} className={region === r ? "on" : ""} aria-pressed={region === r} onClick={() => setRegion(r)}>{r === "ALL" ? t("world.allRegions") : regionLabel(r)}</button>)}</div>
           <p className="muted small">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })} {t("list.shipped")} {t("list.dnote")} {t("ui.tempNote")} {t("ui.refSrc." + profile)}</p>
@@ -72,7 +75,8 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
           <Glossary />
         </div>
       </details>
-      <div className="top3" hidden={!show("top")}>{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go, profile }} />)}</div>
+      {show("ref") && <RefCard target={profile} reference={reference} tM={tM} wide />}
+      </section>
     </div>
   );
 }

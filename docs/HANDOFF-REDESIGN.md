@@ -11,6 +11,7 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 - Merged `claude/global-analysis-8184cd` (any point on Earth).
 - Start screen (`#/start`, now the default page; `src/pages/Start.jsx`): Earth globe, short intro, Moon/Mars choice, place search, "Find a place", up to 4 recent places. A globe click or search opens Explore with that point already selected (`#/map?lat=..&lon=..&name=..`). Checked in the browser.
 - PDF report (`src/print.css`, `pages/Report.jsx`, `features/ui/SciChart.jsx`): A4 pages, light paper colours, one column, cards and charts are not split across pages, page numbers and a footer (where the browser supports @page margin boxes), a header block with place, reference, D, date and data products, every closed section opened while printing, and all three charts printed (screen keeps tabs). Earth line is dashed. "Download full PDF report" is the first button; it opens the print window by itself when reached from the result card. JSON is under "More export options". Checked by applying the print rules on screen: nothing wider than the page, no dark backgrounds, no Turkish text. A real browser PDF was not saved.
+- My places (`features/ui/Discovered.jsx`, `features/planet/discovered.js`, `pages/ListPage.jsx`): two groups, "Places you explored" first and "Best matches from our scan" second, with a note that only 4 regions were scanned. Explored places have a favourite star (favourites are never dropped when the 24-place limit is reached), the date explored, filters (All, Closer to the Moon, Closer to Mars, Favourites, Last 7 days) and "Pick to compare": two picked places show their saved numbers side by side, with nothing new calculated. Also fixed: a saved place name was lost when the same point was checked again. Checked in the browser with 2 saved places.
 
 ## Not verified
 - Black-and-white mode was not looked at in the browser. Check the globe, charts, report printout and the game.
@@ -19,7 +20,7 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 ## Not started (next, in this order)
 1. (done: start screen)
 2. PDF report: layout fixed (see Done). Still missing: a PDF for on-demand points (no scan window, so no report page yet) and terrain pictures of both places inside the PDF (Part 4).
-3. My places: two groups (Places I explored / Best matches from our scan), favourites and Moon/Mars filters, compare two saved places (Part 6).
+3. (done: My places) Still missing there: report download for explored places (needs the on-demand PDF), comparing two scan candidates with each other.
 4. One "Data sources" section grouped by purpose. Remove repeated "NASA" badges from cards. Check that AWS Terrain Tiles is never labelled NASADEM (Part 5).
 5. Method page: four simple steps + "For scientists" sections (Part 9).
 6. Black-and-white mode: line patterns in charts instead of greyscale alone (Part 11).

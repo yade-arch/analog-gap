@@ -126,3 +126,13 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .rep-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 14px; }
 .rep-actions .g-btn { width: auto; } .rep-actions summary { cursor: pointer; color: var(--muted); }
 .lg.earth { background: none; width: 18px; height: 0; border-radius: 0; border-top: 3px dashed #7b5cf0; vertical-align: middle; }
+/* My places: filters, favourite star, pick two to compare */
+.disc-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.disc-filters button { font: inherit; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; }
+.disc-filters button.on { background: var(--accent-soft); border-color: var(--accent); }
+.disc-name { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.disc-fav { font-size: 1.4rem; line-height: 1; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px; border-radius: 8px; }
+.disc-fav.on { color: var(--ink); }
+.disc-pick { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; cursor: pointer; } .disc-pick input { width: 18px; height: 18px; }
+.disc-pair { margin: 0 0 12px; display: grid; gap: 8px; } .disc-pair h3 { margin: 0; } .disc-pair .g-btn { width: auto; justify-self: start; }
+.scan-group { margin-top: 24px; } .scan-group > .muted { margin: 0 0 10px; max-width: 75ch; }

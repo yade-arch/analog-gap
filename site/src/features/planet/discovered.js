@@ -13,9 +13,23 @@ export function addDiscovered(res, name) {
   const item = { key: res.key, lat: res.lat, lon: res.lon, name: name || null, t: Date.now(), valid: res.valid, outsideSRTM: !!res.outsideSRTM,
     p50: Object.fromEntries(["slope", "relief", "rough"].map((k) => [k, res.P[k]?.p50 ?? null])), moon: s("moon"), mars: s("mars") };
   try {
-    const prev = listDiscovered().filter((x) => x.key !== item.key);
-    localStorage.setItem(KEY, JSON.stringify([{ ...item, name: item.name || prev.find((x) => x.key === item.key)?.name || null }, ...prev].slice(0, MAX)));
+    const all = listDiscovered(), old = all.find((x) => x.key === item.key);
+    save([{ ...item, name: item.name || old?.name || null, fav: !!old?.fav }, ...all.filter((x) => x.key !== item.key)]);
   } catch { /* storage unavailable */ }
+}
+
+// Keeps at most MAX places; favourites are never dropped to make room.
+function save(list) {
+  const a = [...list];
+  for (let i = a.length - 1; a.length > MAX && i >= 0; i--) if (!a[i].fav) a.splice(i, 1);
+  localStorage.setItem(KEY, JSON.stringify(a));
+}
+
+/** Star or unstar a saved place. Returns the new list. */
+export function toggleFavorite(key) {
+  const a = listDiscovered().map((x) => (x.key === key ? { ...x, fav: !x.fav } : x));
+  try { save(a); } catch { /* storage unavailable: the star lasts until the page closes */ }
+  return a;
 }
 
 export function clearDiscovered() { try { localStorage.removeItem(KEY); } catch { /* storage unavailable */ } }
