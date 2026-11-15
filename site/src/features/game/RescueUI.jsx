@@ -45,20 +45,16 @@ export function EarthDesk({ r, profile }) {
     <aside className="rs-desk" onPointerDown={(e) => e.stopPropagation()}>
       <h3>🌍 {tf("game.rs.desk.title", { b: t("ui.body." + profile) })}</h3>
       <div className="rs-sites">{SPOTS.map(([n, la, lo]) => <button key={n} className="g-btn2" onClick={() => r.investigate({ lat: la, lon: lo, free: true, name: n })}>{n}</button>)}</div>
-      {S.sites.length > 0 && <div className="rs-tabs" role="tablist"><span className="rs-small">{t("game.rs.desk.checked")}</span>{S.sites.map((x) => (
-        <button key={x.key} role="tab" aria-selected={x.key === S.focus} className={x.key === S.focus ? "on" : ""} onClick={() => r.focus(x.key)}>{x.letter}</button>
-      ))}</div>}
       {s ? <SiteBox s={s} truth={truth} profile={profile} /> : <p className="rs-small">{t("game.rs.desk.empty")}</p>}
       {s && <div className="rs-acts">
-        <button className="g-btn2" onClick={() => r.focus(null)}>{t("game.rs.another")}</button>
-        <button className="g-go" disabled={s.status !== "ok"} onClick={r.chooseReport}>{t("game.rs.useThis")}</button>
+        <button className="g-go" disabled={s.status !== "ok"} onClick={r.chooseReport}>{t("game.rs.land")}</button>
       </div>}
     </aside>
   );
 }
 
 function SiteBox({ s, truth, profile }) {
-  if (s.status === "load") return <p className="rs-small">{tf("game.rs.loading", { c: coords(s) })}</p>;
+  if (s.status === "load") return null;
   if (s.status === "err") return <p className="rs-warn">{t("game.rs.loadErr")} ({s.err})</p>;
   if (s.status === "nodata") return <p className="rs-warn">{s.letter}: {t("game.rs.noLand")}</p>;
   const a = assess(s, truth);

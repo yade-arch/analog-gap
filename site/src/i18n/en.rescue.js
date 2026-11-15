@@ -34,7 +34,7 @@ const S = {
   "temp.out": "Outside: about {a} K (Moon reference, real)", "suitTemp.ok": "suit inside: OK", "suitTemp.cold": "suit inside: cold!", "suitTemp.hot": "suit inside: too warm (no water)",
   "desk.title": "Find a place on Earth that looks like the {b}", "desk.s1": "Tap the Earth globe anywhere (each look costs time).", "desk.s2": "Check the numbers: is the ground as steep and bumpy as the target?", "desk.s3": "Not good? Tap another place. Good? Send it!", "desk.typed": "Or type a position (latitude, longitude)", "desk.checked": "Places you checked:",
   "lat": "Latitude (−90…90)", "lon": "Longitude (−180…180)", "check": "Investigate", "coordErr": "Please type a latitude between −90 and 90 and a longitude between −180 and 180.",
-  "desk.empty": "No place investigated yet.", "another": "Find another location", "useThis": "Use this place for the report",
+  "desk.empty": "No place investigated yet.", "another": "Find another location", "land": "Land", "useThis": "Use this place for the report",
   "loading": "Downloading elevation data for {c}…", "loadErr": "Could not load data for this spot. Try another location.", "noLand": "no land elevation data here (sea or polar area). Try another location.",
   "elev": "Elevation range", "match": "Terrain match", "matchMeans": "lower = closer to the target ground", "noD": "cannot be calculated (data missing)", "noD.overlap": "not calculated: this ground is too different from the target (their value ranges do not overlap)",
   "q.good": "Good information: slopes and surface match the target well.", "q.partial": "Some information: slopes match, but the surface or other data differ or are missing.",
