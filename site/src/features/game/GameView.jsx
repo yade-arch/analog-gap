@@ -24,7 +24,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
   const host = useRef(null), stage = useRef(null), F = useRef({});
   const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done, ctl };
   const group = ["drive", "suit", "result", "loadout"].includes(phase) ? "field" : phase === "transmit" ? "explore" : phase;
-  const refId = SETTINGS.references[profile][0];
+  const refId = profile === "moon" ? "Site07" : SETTINGS.references[profile][0];   // Moon field: real LOLA window "Peak near Shackleton" (gentler; Site04 rim is a ~2 km wall)
   const refM = useMemo(() => refMarkers(refOf(D, profile)), [D, profile]);
   const cands = useMemo(() => candMarkers(candOf(D, profile)).map((m) => ({ ...m, hot: !!dems?.[m.id], color: dems?.[m.id] ? 0x9fd0ff : 0x3d5a78 })), [D, profile, dems]);
 
