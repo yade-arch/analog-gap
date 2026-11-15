@@ -185,14 +185,13 @@ export function Decision({ r }) {
   );
 }
 
-/** Earth phase HUD: data points collected by the Earth rover, then go to the report. */
+/** Earth phase HUD: one small pill under the oxygen pill (progress + finish), out of the driving view. */
 export function EarthSurvey({ r }) {
   const n = r.S.got.length;
   return (
-    <div className="rs-ctrl">
-      <div className="rs-obj">🌍 {tf("game.rs.sv.obj", { n })}</div>
-      <p className="rs-small">{t("game.rs.sv.help")}</p>
-      <button className="g-go" onClick={r.toReport}>{t(n >= 3 ? "game.rs.sv.done" : "game.rs.sv.early")}</button>
+    <div className="rs-survey" title={t("game.rs.sv.help")}>
+      <span>🌍 {tf("game.rs.sv.short", { n })}</span>
+      <button onClick={r.toReport}>{t("game.rs.sv.finish")}</button>
     </div>
   );
 }

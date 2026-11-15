@@ -7,7 +7,7 @@ const S = {
   "sv.temp": "Data point: temperature here swings {dt} K between day and night (MODIS, real).", "sv.tempNone": "Data point: no temperature data for this Earth place (missing).",
   "sv.slope": "Data point: slope typical {p50}°, steep parts {p90}° (rover limit {lim}°). Real data.", "sv.rough": "Data point: bumpiness {v} m. Real data.", "sv.none": "Data point: no data here (missing).",
   "sv.obj": "Earth survey: {n} of 3 data points", "sv.help": "Drive to the lights. Each data point costs time. Missing points mean a weaker report.",
-  "sv.done": "Write the mission report", "sv.early": "Stop surveying and write the report",
+  "sv.short": "Survey: {n}/3", "sv.finish": "Finish report", "sv.done": "Write the mission report", "sv.early": "Stop surveying and write the report",
   "f.notGot.temp": "Temperature: not collected by the Earth rover.", "f.notGot.slope": "Slope: not collected by the Earth rover.", "f.notGot.rough": "Surface roughness: not collected by the Earth rover.",
   "tx.got": "Data points collected by the Earth rover: {n} of 3. Values not collected are left out.",
   "why.surveyShort": "The Earth rover collected only {n} of 3 data points.",
