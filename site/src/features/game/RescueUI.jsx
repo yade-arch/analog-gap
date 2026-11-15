@@ -42,15 +42,15 @@ export function EarthDesk({ r, profile }) {
   const go = (e) => { e.preventDefault(); const a = +lat, b = +lon; if (lat === "" || lon === "" || !(Math.abs(a) <= 90 && Math.abs(b) <= 180)) { setErr(true); return; } setErr(false); r.investigate({ lat: a, lon: b, free: true }); };
   return (
     <aside className="rs-desk" onPointerDown={(e) => e.stopPropagation()}>
-      <h3>🌍 {t("game.rs.desk.title")}</h3>
-      <p className="rs-small">{tf("game.rs.desk.how", { c: RESCUE.cost.inspectCand, p: RESCUE.cost.inspectPoint })}</p>
-      <form className="rs-coord" onSubmit={go}>
+      <h3>🌍 {tf("game.rs.desk.title", { b: t("ui.body." + profile) })}</h3>
+      <ol className="rs-steps"><li>{t("game.rs.desk.s1")}</li><li>{t("game.rs.desk.s2")}</li><li>{t("game.rs.desk.s3")}</li></ol>
+      <details className="rs-more"><summary>{t("game.rs.desk.typed")}</summary><form className="rs-coord" onSubmit={go}>
         <input inputMode="decimal" aria-label={t("game.rs.lat")} placeholder={t("game.rs.lat")} value={lat} onChange={(e) => setLat(e.target.value)} />
         <input inputMode="decimal" aria-label={t("game.rs.lon")} placeholder={t("game.rs.lon")} value={lon} onChange={(e) => setLon(e.target.value)} />
         <button className="g-btn2">{t("game.rs.check")}</button>
       </form>
-      {err && <p className="rs-warn">{t("game.rs.coordErr")}</p>}
-      {S.sites.length > 0 && <div className="rs-tabs" role="tablist">{S.sites.map((x) => (
+      {err && <p className="rs-warn">{t("game.rs.coordErr")}</p>}</details>
+      {S.sites.length > 0 && <div className="rs-tabs" role="tablist"><span className="rs-small">{t("game.rs.desk.checked")}</span>{S.sites.map((x) => (
         <button key={x.key} role="tab" aria-selected={x.key === S.focus} className={x.key === S.focus ? "on" : ""} onClick={() => r.focus(x.key)}>{x.letter}</button>
       ))}</div>}
       {s ? <SiteBox s={s} truth={truth} profile={profile} /> : <p className="rs-small">{t("game.rs.desk.empty")}</p>}

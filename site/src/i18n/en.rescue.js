@@ -24,7 +24,7 @@ const S = {
   "temp.notSame.moon": "Earth temperature is NOT Moon temperature. It only tells how this Earth place behaves.",
   "temp.notSame.mars": "Earth temperature is NOT Mars temperature. It only tells how this Earth place behaves.",
   "temp.out": "Outside: about {a} K (Moon reference, real)", "suitTemp.ok": "suit inside: OK", "suitTemp.cold": "suit inside: cold!", "suitTemp.hot": "suit inside: too warm (no water)",
-  "desk.title": "Earth team: find a place like the target", "desk.how": "Tap ANY spot on the Earth globe (with or without a name), or type coordinates. A catalog place costs {c} min, a new spot {p} min.",
+  "desk.title": "Find a place on Earth that looks like the {b}", "desk.s1": "Tap the Earth globe anywhere (each look costs time).", "desk.s2": "Check the numbers: is the ground as steep and bumpy as the target?", "desk.s3": "Not good? Tap another place. Good? Send it!", "desk.typed": "Or type a position (latitude, longitude)", "desk.checked": "Places you checked:",
   "lat": "Latitude (−90…90)", "lon": "Longitude (−180…180)", "check": "Investigate", "coordErr": "Please type a latitude between −90 and 90 and a longitude between −180 and 180.",
   "desk.empty": "No place investigated yet.", "another": "Find another location", "useThis": "Use this place for the report",
   "loading": "Downloading elevation data for {c}…", "loadErr": "Could not load data for this spot. Try another location.", "noLand": "no land elevation data here (sea or polar area). Try another location.",
