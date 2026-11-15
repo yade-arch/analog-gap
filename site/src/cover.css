@@ -1,0 +1,17 @@
+.cv { position: fixed; inset: 0; z-index: 60; background: #02040a; color: #fff; overflow: hidden; font-family: var(--font, system-ui); touch-action: pan-y; }
+.cv-stage { position: absolute; inset: 0; } .cv-stage canvas { width: 100%; height: 100%; display: block; }
+.cv-nav { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,.12); }
+.cv-brand { color: #fff; text-decoration: none; font-weight: 700; letter-spacing: .08em; font-size: 18px; }
+.cv-links { display: flex; align-items: center; gap: 22px; } .cv-links a { color: #e2e8f0; text-decoration: none; font-size: 14px; padding: 4px 0; }
+.cv-links a:not(.cv-cta):hover { box-shadow: inset 0 -2px 0 #fff; } .cv-cta { padding: 7px 16px !important; border-radius: 999px; background: #fff; color: #0f172a !important; font-weight: 700; }
+.cv-mid { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); width: min(92vw, 640px); text-align: center; }
+.cv-eye { font-size: 12px; letter-spacing: .28em; color: #94a3b8; }
+.cv h1 { margin: 6px 0 10px; font-size: clamp(3.5rem, 7vw, 6.5rem); font-weight: 800; line-height: 1; letter-spacing: .02em; animation: cv-in .6s ease-out; }
+.cv-line { display: block; width: 36px; height: 2px; margin: 0 auto 14px; background: rgba(255,255,255,.4); }
+.cv-mid p { max-width: 540px; margin: 0 auto 22px; color: #cbd5e1; line-height: 1.6; }
+.cv-go { display: inline-block; padding: 13px 30px; border-radius: 999px; background: #e2e8f0; color: #0f172a; font-weight: 800; letter-spacing: .14em; text-decoration: none; box-shadow: 0 0 35px rgba(186,230,253,.45); }
+.cv-side { position: absolute; top: 52%; background: none; border: 0; color: #fff; font-weight: 700; letter-spacing: .2em; cursor: pointer; font-size: 14px; } .cv-l { left: 16%; } .cv-r { right: 16%; }
+.cv-down { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgba(15,23,42,.65); backdrop-filter: blur(8px); color: #fff; text-decoration: none; }
+.cv-data { position: absolute; left: 14px; bottom: 10px; font-size: 10px; color: rgba(203,213,225,.45); }
+@keyframes cv-in { from { opacity: 0; transform: translateY(10px); } }
+@media (max-width: 700px) { .cv-links a:not(.cv-cta) { display: none; } .cv-l { left: 4%; } .cv-r { right: 4%; } .cv-mid { top: 36%; } .cv-data { display: none; } }

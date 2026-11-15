@@ -15,7 +15,7 @@ import WorldBar from "./features/world/WorldBar.jsx";
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
 const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
-const Start = lazy(() => import("./pages/Start.jsx"));
+const Start = lazy(() => import("./pages/Cover.jsx"));   // home cover (3D planets); old Start.jsx kept
 const DataSources = lazy(() => import("./pages/DataSources.jsx"));
 const Story = lazy(() => import("./pages/Story.jsx"));
 const TimeMachine = lazy(() => import("./pages/TimeMachine.jsx"));
