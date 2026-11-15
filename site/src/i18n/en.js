@@ -16,7 +16,7 @@ export default {
   ...point,
   "app.title": "ANALOG GAP",
   "app.sub": "Comparison Mission",
-  "nav.compare": "Compare two places",
+  "nav.compare": "Compare",
   "nav.map": "Map",
   "nav.list": "Candidates",
   "nav.method": "Method & Validation",

@@ -5,6 +5,8 @@ import "./theme.css";
 import "./features/ui/topx.css";
 import "./hud.css";
 import "./theme-dark.css";
+import "./mono.css";
+import "./features/appearance.js";
 import App from "./App.jsx";
 
 // After a new deploy, an already open (cached) page may ask for old file names that no longer exist and go blank.

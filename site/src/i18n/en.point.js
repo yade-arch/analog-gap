@@ -1,6 +1,6 @@
 // Texts for the on-demand point analysis (any place on Earth). tr.point.js re-exports this file (English is the interface language).
 export default {
-  "nav.explore": "Find a place", "nav.sections": "Choose what to show", "sec.map.all": "Everything", "sec.map.globe": "Globe and map", "sec.map.ref": "Reference area", "sec.map.search": "Search by name", "sec.map.info": "More information", "sec.compare.all": "Everything", "sec.compare.places": "The two places", "sec.compare.view": "3D view and tools", "sec.compare.stations": "Measurements", "sec.compare.info": "More information", "sec.list.all": "Everything", "sec.list.ref": "Reference area", "sec.list.found": "Places you explored", "sec.list.table": "All checked places", "sec.list.top": "Best three matches", "nav.discoveries": "My places", "nav.mission": "Mission game",
+  "nav.explore": "Explore", "nav.mono": "Black and white", "nav.monoHint": "Show the whole app in black, white and grey", "nav.sections": "Choose what to show", "sec.map.all": "Everything", "sec.map.globe": "Globe and map", "sec.map.ref": "Reference area", "sec.map.search": "Search by name", "sec.map.info": "More information", "sec.compare.all": "Everything", "sec.compare.places": "The two places", "sec.compare.view": "3D view and tools", "sec.compare.stations": "Measurements", "sec.compare.info": "More information", "sec.list.all": "Everything", "sec.list.ref": "Reference area", "sec.list.found": "Places you explored", "sec.list.table": "All checked places", "sec.list.top": "Best three matches", "nav.discoveries": "My places", "nav.mission": "Mission",
   "flow.1": "Select a place",
   "ex.tip.t": "Click anywhere on Earth to see if its ground looks like the {b}", "ex.tip.d": "Blue squares are places we already checked. Drag to turn the globe.",
   "ov.zoomIn": "Zoom in and measure the ground", "ov.zoomOut": "Back to the two planets", "flow.2": "Compare", "flow.3": "Report",
@@ -31,7 +31,7 @@ export default {
   "pt.land": "Land in the square", "pt.elev": "Height range",
   "pt.approx": "Approximate. Heights come from Terrain Tiles (AWS Open Data; mostly NASA SRTM), not from the NASADEM files used for the scanned windows.",
   "pt.outSrtm": "This place is outside the NASA SRTM band (60° N – 56° S). Here the tiles use other, non-NASA height sources whose detail can be much coarser, so slopes and roughness may come out too low.",
-  "pt.compare": "Compare two places in 3D",
+  "pt.compare": "Compare this place",
   "pt.how": "How this was measured",
   "pt.how.text": "Tiles at zoom {z} (pixel about {px} m on the ground) were joined and resampled to a 30 m grid of 333 × 333 cells centred on the point; each 30 m cell is the mean of {k}×{k} samples. Heights at or below 0 m count as sea (no land data); this also removes a few dry places below sea level. Then: slope with the Horn 3×3 method, height difference over 11×11 cells, roughness as the 11×11 RMS of the height minus its 5×5 mean. Distance parts compare the full value spread of this square with the reference's stored histogram (values spread evenly inside each bin). D = mean of the three parts, equal weights, fixed.",
   "pt.time": "Download {f} ms ({n} tiles{c}), calculation {m} ms.",
