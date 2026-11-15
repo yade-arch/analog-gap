@@ -7,6 +7,8 @@ import Card from "./Card.jsx";
 import Method from "./Method.jsx";
 import Report from "./pages/Report.jsx";
 import TopBar from "./components/TopBar.jsx";
+import IntroVideo from "./components/IntroVideo.jsx";
+import "./cover.css";
 import { DEFAULT_ROUTE } from "./config.js";
 import { useWorld, byRegion } from "./features/world/state.js";
 import WorldBar from "./features/world/WorldBar.jsx";
@@ -62,6 +64,7 @@ export default function App() {
   return (
     <>
       {page !== "start" && <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
+      <IntroVideo />
       <main>
         {D.cm && page !== "compare" && page !== "mission" && page !== "home" && page !== "start" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
         {!D.cm ? <p>Loading data…</p> : (
