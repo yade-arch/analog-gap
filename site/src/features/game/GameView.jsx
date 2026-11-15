@@ -23,7 +23,7 @@ function crashSite(tv, suit, withLander = true) {
 export default function GameView({ profile, D, phase, mode, sel, suit, region, dems, done, paused, keys, onPick, onArrive, onBlocked, onLanded, anchors, hud, ctl }) {
   const host = useRef(null), stage = useRef(null), F = useRef({});
   const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done, ctl };
-  const group = ["drive", "suit", "result", "loadout"].includes(phase) ? "field" : phase === "transmit" ? "explore" : phase;
+  const group = ["drive", "suit", "result", "loadout"].includes(phase) ? "field" : phase === "earthdrive" ? "earthfield" : phase === "transmit" ? "explore" : phase;
   const refId = profile === "moon" ? "Site07" : SETTINGS.references[profile][0];   // Moon field: real LOLA window "Peak near Shackleton" (gentler; Site04 rim is a ~2 km wall)
   const refM = useMemo(() => refMarkers(refOf(D, profile)), [D, profile]);
   const cands = useMemo(() => candMarkers(candOf(D, profile)).map((m) => ({ ...m, hot: !!dems?.[m.id], color: dems?.[m.id] ? 0x9fd0ff : 0x3d5a78 })), [D, profile, dems]);
@@ -49,6 +49,13 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
       }).catch(() => live.on && cb.current.onLanded?.()), 3700);
       return () => { live.on = false; clearTimeout(t); };
     }
+    if (group === "earthfield" && sel) {             // Earth phase: Earth rover on the real Earth window (NASADEM, or the on-demand window for any point)
+      Promise.resolve(sel.dem || loadDem(sel.id)).then((dem) => {
+        if (!live.on || !dem) return;
+        const tv = makeTerrainView(st.els.left, dem, "earth"); st.setView("left", tv); st.setView("right", null); st.setLayout("left");
+        F0.tl = tv; F0.r1 = createRover(tv, roverLimit(D.params, profile)?.num, KEYMAPS.solo, 0x2a6fd6); tv.chase(F0.r1.obj);
+      });
+    }
     if (group === "field" && sel) {
       Promise.all([loadDem(refId), mode === "multi" ? loadDem(sel.id) : null]).then(([dr, dc]) => {
         if (!live.on) return;
@@ -72,7 +79,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
       });
     }
     return () => { live.on = false; };
-  }, [group, profile, mode, group === "field" ? sel?.id : null, group === "menu" || group === "explore" ? cands : null]);
+  }, [group, profile, mode, group === "field" || group === "earthfield" ? sel?.id : null, group === "menu" || group === "explore" ? cands : null]);
 
   useEffect(() => {                                   // keşif: bölge düğmesi veya aday seçimi -> Dünya kamerası oraya uçar
     const v = stage.current?.view("right"); if (group !== "explore" || !v?.flyTo) return;
@@ -92,7 +99,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
 
   useEffect(() => stage.current.onFrame((dt) => {      // sürüş, varış, HUD ve etiket konumları (React dışı)
     const f = F.current, c = cb.current, st = stage.current;
-    const drive = c.phase === "drive" && !c.paused, out = {};
+    const drive = (c.phase === "drive" || c.phase === "earthdrive") && !c.paused, out = {};
     for (const [k, r, tv, side] of [["p1", f.r1, f.tl, "left"], ["p2", f.r2, f.tr, "right"]]) {
       if (!r || !tv) continue;
       if (drive) {

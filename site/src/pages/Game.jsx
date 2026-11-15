@@ -18,10 +18,10 @@ import { addLog } from "../features/game/logbook.js";
 import { EarthPanel, LandCard, LinkBadge, Location, Oxygen, Prompt, RegionBar, RoverHud, Speech, Toast, TouchPad, WaypointTags } from "../features/game/Hud.jsx";
 import { PauseMenu, StartMenu } from "../features/game/Menus.jsx";
 import useRescue from "../features/game/useRescue.js";
-import { Decision, DriveHud, EarthDesk, Loadout, Transmit } from "../features/game/RescueUI.jsx";
+import { Decision, DriveHud, EarthDesk, EarthSurvey, Loadout, Transmit } from "../features/game/RescueUI.jsx";
 import RescueResult from "../features/game/RescueResult.jsx";
 
-const PLAYING = ["explore", "drive", "suit", "transmit", "loadout"];
+const PLAYING = ["explore", "drive", "suit", "transmit", "loadout", "earthdrive"];
 
 /** Emergency Analog Mission: tam ekran oyun. Tek oyunculu (hedef gövde tam ekran) veya aynı ekranda iki oyunculu (sol Ay/Mars, sağ Dünya). */
 export default function Game({ D, profile, setProfile }) {
@@ -69,7 +69,9 @@ export default function Game({ D, profile, setProfile }) {
     setPhase("drive"); setToast(t(mode === "multi" ? "game.msg.drive.multi" : "game.msg.drive"));
   };
   const doneRef = useRef(done); doneRef.current = done;
+  useEffect(() => { if (solo && (phase === "earthdrive" || phase === "drive")) { const z = { p1: [], p2: [] }; doneRef.current = z; setDone(z); } }, [phase]);   // fresh data points for each rover phase
   const arrive = (k, i) => {                          // varış: ref ile tek sefer (kare döngüsü aynı karede tekrar çağırabilir)
+    if (solo && phase === "earthdrive") { if (k === "p1") rescue.earthArrive(i); const d1 = doneRef.current; if (!d1.p1.includes(i)) { const nd1 = { ...d1, p1: [...d1.p1, i] }; doneRef.current = nd1; setDone(nd1); } return; }
     if (solo) { if (k === "p1") { const d0 = doneRef.current; if (!d0.p1.includes(i)) { const nd0 = { ...d0, p1: [...d0.p1, i] }; doneRef.current = nd0; setDone(nd0); rescue.arrive(i); } } return; }
     const d = doneRef.current; if (d[k].includes(i)) return;
     const nd = { ...d, [k]: [...d[k], i] }; doneRef.current = nd; setDone(nd);
@@ -108,6 +110,7 @@ export default function Game({ D, profile, setProfile }) {
       {(phase === "intro" || phase === "drive" || phase === "result") && <Location text={loc} />}
       {phase === "explore" && !paused && <><Location text={t("game.loc.pick")} side="right" /><RegionBar regions={regions} onGo={(r) => { setSel(null); setRegion(r); }} /></>}
       {solo && phase === "explore" && !paused && <EarthDesk r={rescue} profile={profile} />}
+      {solo && phase === "earthdrive" && <><RoverHud hud={hud} who="p1" /><WaypointTags hud={hud} />{!paused && <EarthSurvey r={rescue} />}</>}
       {solo && phase === "transmit" && !paused && <Transmit r={rescue} profile={profile} />}
       {solo && phase === "loadout" && !paused && !speech && <Loadout r={rescue} />}
       {solo && phase === "drive" && <><DriveHud r={rescue} clock={clock} hud={hud} profile={profile} />{!paused && <Decision r={rescue} />}</>}

@@ -83,24 +83,25 @@ const Pick = ({ k, opts, v, set, hint, hl = "game.rs.dataSays" }) => (
 
 /** Earth -> space: findings drafted from the data, plus the Earth team's advice. Sending costs time. */
 export function Transmit({ r, profile }) {
-  const s = r.site(r.S.report), a = assess(s, r.truth), sg = suggest(a), lim = r.truth.lim;
+  const s = r.known(r.site(r.S.report)), a = assess(s, r.truth), sg = suggest(a), lim = r.truth.lim;
   const [rec, setRec] = useState(() => sg || { suit: "suit1", route: "safe", equip: "wheels" });
   const set = (k) => (v) => setRec({ ...rec, [k]: v });
   return (
     <div className="rs-modal"><div className="rs-card">
       <h2>📡 {tf("game.rs.tx.title", { b: t("ui.body." + profile) })}</h2>
       <p className="rs-small">{s.letter} · {siteName(s)} · {coords(s)}</p>
+      <p className="rs-small">{tf("game.rs.tx.got", { n: r.S.got.length })}</p>
       <ul className="rs-find">
-        <li>{a.siteSteep === null ? t("game.rs.f.slopeNone") : tf(a.siteSteep ? "game.rs.f.steep" : "game.rs.f.gentle", { p90: fmt(s.vars.slope.p90, 0), lim: lim?.num, who: t("game.rs.limWho." + profile) })}</li>
-        <li>{s.vars?.rough ? tf("game.rs.f.rough", { v: fmt(s.vars.rough.p50, 2) }) : t("game.rs.f.roughNone")}</li>
-        <li>{s.thermal ? t("game.rs.f.temp") : t("game.rs.f.tempNone")}</li>
+        <li>{a.siteSteep === null ? t(r.S.got.includes(1) ? "game.rs.f.slopeNone" : "game.rs.f.notGot.slope") : tf(a.siteSteep ? "game.rs.f.steep" : "game.rs.f.gentle", { p90: fmt(s.vars.slope.p90, 0), lim: lim?.num, who: t("game.rs.limWho." + profile) })}</li>
+        <li>{s.vars?.rough ? tf("game.rs.f.rough", { v: fmt(s.vars.rough.p50, 2) }) : t(r.S.got.includes(2) ? "game.rs.f.roughNone" : "game.rs.f.notGot.rough")}</li>
+        <li>{s.thermal ? t("game.rs.f.temp") : r.S.got.includes(0) ? t("game.rs.f.tempNone") : t("game.rs.f.notGot.temp")}</li>
         {s.approx && <li>{t("game.rs.f.approx")}</li>}
       </ul>
       <Pick k="suit" opts={["suit1", "suit2"]} v={rec.suit} set={set("suit")} hint={sg?.suit} />
       <Pick k="route" opts={["safe", "direct"]} v={rec.route} set={set("route")} hint={sg?.route} />
       <Pick k="equip" opts={EQUIP} v={rec.equip} set={set("equip")} hint={sg?.equip} />
       {!sg && <p className="rs-warn">{t("game.rs.tx.noAdvice")}</p>}
-      <div className="rs-acts"><button className="g-btn2" onClick={r.back}>{t("game.rs.tx.back")}</button><button className="g-go" onClick={() => r.send(rec)}>{tf("game.rs.tx.send", { c: RESCUE.cost.send })}</button></div>
+      <div className="rs-acts"><button className="g-go" onClick={() => r.send(rec)}>{tf("game.rs.tx.send", { c: RESCUE.cost.send, b: t("ui.body." + profile).toUpperCase() })}</button></div>
       <p className="g-note">{t("game.rs.gameRule")}</p>
     </div></div>
   );
@@ -181,5 +182,17 @@ export function Decision({ r }) {
       {opts.map(([o, note, off]) => <button key={o} className="g-btn2 rs-opt" disabled={!!off} onClick={() => r.decide(o)}><b>{t("game.rs.d." + d.id.replace("2", "") + "." + o)}</b>{note && <small> · {note}</small>}</button>)}
       <p className="g-note">{t("game.rs.d.clock")}</p>
     </div></div>
+  );
+}
+
+/** Earth phase HUD: data points collected by the Earth rover, then go to the report. */
+export function EarthSurvey({ r }) {
+  const n = r.S.got.length;
+  return (
+    <div className="rs-ctrl">
+      <div className="rs-obj">🌍 {tf("game.rs.sv.obj", { n })}</div>
+      <p className="rs-small">{t("game.rs.sv.help")}</p>
+      <button className="g-go" onClick={r.toReport}>{t(n >= 3 ? "game.rs.sv.done" : "game.rs.sv.early")}</button>
+    </div>
   );
 }

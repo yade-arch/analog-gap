@@ -24,7 +24,7 @@ export const TESTS = ["thermal", "terrain", "surface"];
 // Earth-to-Space Rescue (solo mode). Every number below is a GAME RULE (fictional gameplay parameter), not NASA data.
 // Real values (slopes, roughness, temperatures, rover slope limit) come from the data files; these only set time costs and wear.
 export const RESCUE = {
-  cost: { inspectCand: 10, inspectPoint: 15, send: 10, askEarth: 15, waitAnalysis: 20, switchSuit: 10, toRover: 8, scan: 5 },   // game minutes
+  cost: { survey: 8, inspectCand: 10, inspectPoint: 15, send: 10, askEarth: 15, waitAnalysis: 20, switchSuit: 10, toRover: 8, scan: 5 },   // game minutes
   collectMin: { suit1: 12, suit2: 6 },      // time to load one supply cache (sturdy suit moves slower)
   suitWear: 0.3,                            // suit durability lost per game minute on gentle ground (%)
   steepWear: 3,                             // multiplier while the rover is on ground steeper than the rover limit

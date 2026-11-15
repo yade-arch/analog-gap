@@ -8,7 +8,7 @@ import { t } from "../../i18n/index.js";
 import { tf } from "./ui.jsx";
 import { fmt } from "../../common.jsx";
 
-const fresh = () => ({ sites: [], focus: null, report: null, sent: null, load: null, ctrl: "direct", avoid: false, collected: [], need: 3,
+const fresh = () => ({ sites: [], focus: null, report: null, sent: null, load: null, ctrl: "direct", avoid: false, collected: [], got: [], need: 3,
   suit: 100, water: 100, event: null, evDone: false, decision: null, shown: {}, decisions: [], cmds: [], upgraded: null, wantEnd: false, result: null, driveAt: null });
 
 export default function useRescue({ D, profile, clock, phase, setPhase, paused, hud, toast, say, on }) {
@@ -34,7 +34,19 @@ export default function useRescue({ D, profile, clock, phase, setPhase, paused, 
       .then((r) => put((s) => ({ sites: s.sites.map((x) => (x.key === sp.key ? fillPoint(x, r, profile) : x)) })))
       .catch((e) => put((s) => ({ sites: s.sites.map((x) => (x.key === sp.key ? { ...x, status: "err", err: String(e.message || e) } : x)) })));
   }
-  const chooseReport = () => { const s = site(); if (s?.status === "ok") { put({ report: s.key }); setPhase("transmit"); } };
+  const chooseReport = () => { const s = site(); if (s?.status === "ok") { put({ report: s.key, got: [] }); setPhase("earthdrive"); toast(t("game.rs.msg.earthDrive")); } };
+  /** Earth rover reached data point i (0 temperature, 1 slope + height difference, 2 roughness): only collected values go into the report. */
+  function earthArrive(i) {
+    const s = R.current; if (s.got.includes(i)) return;
+    clock.spend(RESCUE.cost.survey, "survey"); put({ got: [...s.got, i] });
+    const x = site(s.report), v = x?.vars || {};
+    toast(i === 0 ? (x?.thermal ? tf("game.rs.sv.temp", { dt: fmt(x.thermal.dT_dn_K_median, 1) }) : t("game.rs.sv.tempNone"))
+      : i === 1 ? (v.slope ? tf("game.rs.sv.slope", { p50: fmt(v.slope.p50, 1), p90: fmt(v.slope.p90, 1), lim: truth.lim?.num ?? "—" }) : t("game.rs.sv.none"))
+      : (v.rough ? tf("game.rs.sv.rough", { v: fmt(v.rough.p50, 2) }) : t("game.rs.sv.none")));
+  }
+  /** The site as the Earth team knows it: values whose data point was not visited are left out (not zero). */
+  const known = (x) => { const g = R.current.got; if (!x) return x; const keep = (k) => (k === "rough" ? g.includes(2) : g.includes(1));
+    return { ...x, vars: Object.fromEntries(Object.entries(x.vars || {}).filter(([k]) => keep(k))), d: Object.fromEntries(Object.entries(x.d || {}).filter(([k]) => keep(k))), thermal: g.includes(0) ? x.thermal : null }; };
   function send(rec) {
     clock.spend(RESCUE.cost.send, "send"); put({ sent: rec, load: { ...rec } });
     setPhase("loadout"); say([t("game.rs.say.recv")]);
@@ -155,11 +167,11 @@ export default function useRescue({ D, profile, clock, phase, setPhase, paused, 
   function end(cause) {
     if (R.current.result) return;
     clock.stop(); ctl.current.auto = { queue: [], stop: true };
-    const s = R.current, ev = evaluate({ end: cause, collected: s.collected.length, need: s.need, site: site(s.report), truth, load: s.load || {}, sent: s.sent,
+    const s = R.current, ev = evaluate({ end: cause, collected: s.collected.length, need: s.need, site: known(site(s.report)), surveyed: s.got.length, truth, load: s.load || {}, sent: s.sent,
       rover: hud.current?.p1, suitDur: s.suit, decisions: s.decisions, D, profile, upgraded: s.upgraded });
     put({ result: { ...ev, end: cause, left: clock.left, at: new Date().toISOString() } });
     setPhase("result");
   }
 
-  return { S, ctl, truth, site, investigate, chooseReport, send, startDrive, arrive, cmd, decide, end, reset, focus: (k) => put({ focus: k }), back: () => setPhase("explore") };
+  return { S, ctl, truth, site, known, earthArrive, toReport: () => setPhase("transmit"), investigate, chooseReport, send, startDrive, arrive, cmd, decide, end, reset, focus: (k) => put({ focus: k }), back: () => setPhase("explore") };
 }

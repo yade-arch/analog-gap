@@ -26,7 +26,7 @@ export function sitePoint(lat, lon, i) {
 export function fillPoint(s, r, profile) {
   if (r.missing || !VARS.some(([k]) => r.P?.[k])) return { ...s, status: "nodata" };   // sea / polar / no land pixels: no values, never zeros
   const sc = r.scores?.[profile] || {};
-  return { ...s, status: "ok", vars: r.P || {}, elev: r.z || null, D: sc.D ?? null, d: sc.d || {}, valid: r.valid ?? null, outsideSRTM: !!r.outsideSRTM, noDreason: sc.reason || null };
+  return { ...s, status: "ok", dem: r.dem || null, vars: r.P || {}, elev: r.z || null, D: sc.D ?? null, d: sc.d || {}, valid: r.valid ?? null, outsideSRTM: !!r.outsideSRTM, noDreason: sc.reason || null };
 }
 
 /** Ground truth of the target (real reference values) and the sourced rover limit. */
@@ -70,7 +70,7 @@ export function betterSite(D, profile, site) {
 
 /** Final evaluation: tier + actual reasons (keys with values), from what really happened in the game. */
 export function evaluate(st) {
-  const { end, collected, need, site, truth, load, sent, rover, suitDur, decisions, D, profile, upgraded } = st;
+  const { end, collected, need, site, surveyed = 3, truth, load, sent, rover, suitDur, decisions, D, profile, upgraded } = st;
   const a = assess(upgraded || site, truth), best = bestFor(truth), r = [];
   const tier = end === "base" && collected >= need ? "success" : end === "base" && collected > 0 ? "partial" : "failure";
   if (end === "timeout") r.push({ k: "time" });
@@ -79,6 +79,7 @@ export function evaluate(st) {
   if (end === "base" && collected === 0) r.push({ k: "noneCollected" });
   if (end === "base" && collected > 0 && collected < need) r.push({ k: "notAll", n: collected, of: need });
   if (end === "base" && collected >= need && need < 3) r.push({ k: "planCut", n: need });
+  if (surveyed < 3) r.push({ k: "surveyShort", n: surveyed });
   if (a.slopeOK === false) r.push({ k: "infoWrong", site: a.siteSteep ? "steep" : "gentle", real: truth.steep ? "steep" : "gentle" });
   if (a.slopeOK === null) r.push({ k: "infoIncomplete" });
   if (a.roughOK === false) r.push({ k: "roughDiff" });
