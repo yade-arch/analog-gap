@@ -7,6 +7,9 @@ import { tf } from "../features/game/ui.jsx";
 import { fmt } from "../common.jsx";
 import { RobotSays } from "../features/guide/Robot.jsx";
 import PlacePicker from "../features/guide/PlacePicker.jsx";
+import LongTimeline from "../features/guide/LongTimeline.jsx";
+
+const PRESETS = [["tm.p.glacier", 61.17, -147.08], ["tm.p.aral", 45.0, 59.6]];   // well-known visible changes (coordinates only; images are real)
 import { SOURCE, YEARS, diffPct, gibsUrl, loadShot } from "../features/guide/gibs.js";
 
 const MONTHS = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
@@ -44,8 +47,10 @@ export default function TimeMachine({ D, profile, setProfile, cand }) {
         <div className="gd-planet" role="group">{["earth", "moon", "mars"].map((b) => <button key={b} className={planet === b ? "on" : ""} onClick={() => choosePlanet(b)}>{t("tm.planet." + b)}</button>)}</div>
         {planet !== "earth" && <p className="small">{tf("tm.planetNote", { body: t("ui.body." + planet), ref: (planet === "moon" ? D.rm : D.rs)?.label })}</p>}
         <PlacePicker cand={cand} onPick={(p) => { setPlace(p); setI(YEARS.length - 1); }} value={place?.kind === "cand" ? "c:" + place.id : ""} />
+        <span className="small">{t("tm.presets")}: {PRESETS.map(([k, la, lo]) => <button key={k} className="g-btn2 tm-pre" onClick={() => { setPlace({ kind: "point", lat: la, lon: lo, label: t(k) }); setI(YEARS.length - 1); }}>{t(k)}</button>)}</span>
         <label className="small">{t("tm.month")} <select value={month} onChange={(e) => setMonth(e.target.value)}>{MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}</select></label>
       </div>
+      <LongTimeline planet={planet} />
       {!place ? <RobotSays text={t("tm.hello")} /> : (
         <>
           <div className="tm-view">
@@ -60,6 +65,7 @@ export default function TimeMachine({ D, profile, setProfile, cand }) {
             <strong>{year}</strong>
           </div>
           <RobotSays text={say(cur, last, d, year, lastYear)} />
+          {stable != null && <p className={"tm-stab " + (stable ? "ok" : "bad")}>{tf("tm.stab", { s: diffs.filter(([, v]) => v < SAME).length, n: diffs.length })} {t(stable ? "tm.stab.ok" : "tm.stab.bad")}</p>}
           <details className="card tm-report"><summary>{t("tm.viewReport")}</summary>
             <ReportBody {...{ planet, place, month, got, miss, diffs, stable, D }} />
             <button className="g-go" onClick={() => window.print()}>{t("tm.pdf")}</button>

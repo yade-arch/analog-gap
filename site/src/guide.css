@@ -33,6 +33,14 @@
 .tm-slider { display: flex; align-items: center; gap: 8px; } .tm-slider input { flex: 1; } .tm-slider button { width: auto; }
 .tm-slider strong { font-size: 20px; min-width: 3em; text-align: right; font-variant-numeric: tabular-nums; }
 .tm-report summary { cursor: pointer; font-weight: 800; letter-spacing: .05em; }
+.lt h2 { margin: 0 0 8px; font-size: 18px; }
+.lt-chart { width: 100%; height: 120px; display: block; margin: 6px 0; }
+.lt-zero { stroke: var(--line); } .lt-warm { fill: #cf6f26; } .lt-cool { fill: #2b4a8c; } .lt-now { stroke: var(--ink); stroke-width: 2; }
+.lt-ev { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 10px; } .lt-ev button { width: auto; padding: 4px 8px; font-size: 12px; }
+.lt-ev button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tm-pre { width: auto; display: inline-block; margin: 2px 4px; padding: 4px 8px; font-size: 12px; }
+.tm-stab { margin: 0; padding: 8px 12px; border-radius: 10px; border-left: 4px solid var(--accent); background: var(--accent-soft); font-weight: 600; }
+.tm-stab.bad { border-left-color: #cf6f26; }
 @media (max-width: 700px) {
   .gd-pair, .tm-view { grid-template-columns: 1fr; } .rb-bot { width: 64px; height: 80px; } .rb-bubble { font-size: 15px; }
   .tm-slider { flex-wrap: wrap; } .tm-slider input { flex-basis: 100%; order: -1; }
