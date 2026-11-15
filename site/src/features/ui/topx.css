@@ -24,3 +24,7 @@ html[data-page="home"] .topx .brand, html[data-page="home"] .stepx a { color: #e
 html[data-page="home"] .topx svg ellipse { stroke: #9cc0ff; } html[data-page="home"] .topx svg circle { fill: #9cc0ff; } html[data-page="home"] .gear summary { color: #e8edf5; }
 @media (max-width: 760px) { header.top.topx { padding: 10px 14px; gap: 10px; } .stepx { order: 3; width: 100%; justify-content: center; } .stepx li + li::before { width: 14px; } .stepx a { font-size: 13px; gap: 6px; } .stepx .dot { width: 26px; height: 26px; } .topx .brand h1 { font-size: 20px; } .conn { margin-left: auto; } }
 @media print { header.top.topx { display: none; } }
+/* Opaque top-right menu above all page content (all themes, incl. black-and-white); page cards never wider than the screen */
+html .gear-menu, html[data-mono] .gear-menu { z-index: 1000; isolation: isolate; } html[data-mono] .gear-menu { background: #000 !important; opacity: 1 !important; backdrop-filter: none !important; }
+header.topx { position: relative; z-index: 900; }
+main, main > *, main .card, main .glass, main .g-card { max-width: 100%; box-sizing: border-box; } main { padding-inline: 16px; overflow-x: hidden; }
