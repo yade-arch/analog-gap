@@ -96,14 +96,14 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
   return (
     <div>
       <div className="card">
-        <h2><span className="tag-body earth">EARTH (candidate)</span> {regionLabel(p.region)} <span className="muted small">· window code {p.id}</span></h2>
-        <div className="muted">{regionLabel(p.region)} · centre {fmt(p.center_lat, 3)}°, {fmt(p.center_lon, 3)}° · 10 × 10 km · target: {prof.name}</div>
+        <h2>{regionLabel(p.region)}</h2>
+        <div className="muted">A 10 km square of land on Earth, compared with {profile === "moon" ? "Moon" : "Mars"} <span className="small" title={p.id}>({fmt(p.center_lat, 2)}°, {fmt(p.center_lon, 2)}°)</span></div>
         <div style={{ display: "flex", gap: 30, flexWrap: "wrap", alignItems: "baseline", marginTop: 8 }}>
-          <div><div className="muted">Terrain distance (technical name: D; 0 = identical, lower = more similar)</div><div className="big">{fmt(p.D, 3)}</div></div>
-          <div><div className="muted">Rank (among {PROFILES[profile].name} candidates that passed the filter)</div><div className="big">{p.rank ?? "—"}</div></div>
+          <div><div className="muted">How different from {profile === "moon" ? "Moon" : "Mars"} (0 = the same, smaller = more alike)</div><div className="big">{fmt(p.D, 3)}</div></div>
+          <div><div className="muted">Place in our list (1 = most alike)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
-        <p><a className="btn-accent" href={`#/compare/${p.id}/${profile}`}>Compare with the reference</a></p>
-        <p className="muted">No similarity percentage or confidence score is produced. This window is not "a copy of the Moon/Mars"; it only shows how close the landform patterns are.</p>
+        <p><a className="btn-accent" href={`#/compare/${p.id}/${profile}`}>See both side by side</a></p>
+        <p className="muted">This only compares the shape of the ground. No place on Earth is an exact copy of {profile === "moon" ? "Moon" : "Mars"}.</p>
       </div>
       <div className="grid2">
         <div>
