@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SECTIONS, setSection, useSection } from "../features/mapSections.js";
-import { isMono, setMono } from "../features/appearance.js";
+import { THEMES, getTheme, setTheme } from "../features/appearance.js";
 import { ROUTES } from "../config.js";
 import { TargetSwitch } from "../features/world/WorldBar.jsx";
 import { t } from "../i18n/index.js";
@@ -31,7 +31,7 @@ function TabDrop({ tab, home, children }) {
 }
 
 export default function TopBar({ page, profile, setProfile, reportId }) {
-  const [online, setOnline] = useState(navigator.onLine), [mono, setMonoS] = useState(isMono);
+  const [online, setOnline] = useState(navigator.onLine), [theme, setThemeS] = useState(getTheme);
   useEffect(() => { const f = () => setOnline(navigator.onLine); addEventListener("online", f); addEventListener("offline", f); return () => { removeEventListener("online", f); removeEventListener("offline", f); }; }, []);
   const id = reportId;
   const SEC = [["map", "nav.explore", "#/map"], ["compare", "nav.compare", id ? `#/compare/${id}/${profile}` : "#/compare"], ["list", "nav.discoveries", "#/list"], ["game", "nav.mission", "#/game"]];
@@ -51,7 +51,7 @@ export default function TopBar({ page, profile, setProfile, reportId }) {
         <div className="gear-menu">
           <div className="g-sub">{t("world.target")}</div>
           <TargetSwitch target={profile} setTarget={setProfile} />
-          <label className="mono-switch" title={t("nav.monoHint")}><input type="checkbox" checked={mono} onChange={(e) => { setMonoS(e.target.checked); setMono(e.target.checked); }} /> {t("nav.mono")}</label>
+          <div className="theme-pick" role="group" aria-label={t("nav.theme")}>{THEMES.map((k) => <button key={k} type="button" aria-pressed={theme === k} onClick={() => { setThemeS(k); setTheme(k); }}>{t("nav.theme." + k)}</button>)}</div>
           <div className="g-sub">{t("ui.pages")}</div>
           {ROUTES.filter((r) => r.primary).map((r) => <a key={r.id} href={"#/" + r.id} aria-current={page === r.id ? "page" : undefined}>{t(r.key)}</a>)}
           {id && <a href={`#/report/${id}/${profile}`}>{t("nav.report")}</a>}

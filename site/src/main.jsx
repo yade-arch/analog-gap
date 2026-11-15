@@ -6,6 +6,7 @@ import "./features/ui/topx.css";
 import "./hud.css";
 import "./theme-dark.css";
 import "./mono.css";
+import "./light.css";
 import "./features/appearance.js";
 import "./print.css";
 import App from "./App.jsx";

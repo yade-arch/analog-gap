@@ -103,7 +103,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
         <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
       )}
-      {show("stations") && <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />}
+      {show("places") && <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />}
       {show("view") && <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
         stats={statRows(reference, p, mr, mc, names)} actions={{ report: p.onDemand ? null : `#/report/${p.id}/${profile}`, download }} />}

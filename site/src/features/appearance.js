@@ -1,15 +1,21 @@
-// Colour / black-and-white mode for the whole app. Kept in the browser so it survives page
-// changes and reopening (a viewer convenience only; nothing else depends on it).
-const KEY = "ag-mono";
+// Appearance for the whole app: dark (default), light (white) or black-and-white. Kept in the browser so it
+// survives page changes and reopening (a viewer convenience only; nothing else depends on it).
+const KEY = "ag-theme", OLD = "ag-mono";
+export const THEMES = ["dark", "light", "mono"];
 
-export function isMono() {
-  try { return localStorage.getItem(KEY) === "1"; } catch { return false; }
+export function getTheme() {
+  try {
+    const v = localStorage.getItem(KEY);
+    if (THEMES.includes(v)) return v;
+    return localStorage.getItem(OLD) === "1" ? "mono" : "dark";
+  } catch { return "dark"; }
 }
 
-export function setMono(on) {
-  if (on) document.documentElement.setAttribute("data-mono", "");
-  else document.documentElement.removeAttribute("data-mono");
-  try { localStorage.setItem(KEY, on ? "1" : "0"); } catch { /* storage blocked: mode lasts this visit */ }
+export function setTheme(v) {
+  const th = THEMES.includes(v) ? v : "dark", el = document.documentElement;
+  el.toggleAttribute("data-mono", th === "mono");
+  el.toggleAttribute("data-light", th === "light");
+  try { localStorage.setItem(KEY, th); } catch { /* storage blocked: choice lasts this visit */ }
 }
 
-setMono(isMono());
+setTheme(getTheme());

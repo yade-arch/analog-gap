@@ -1,0 +1,20 @@
+/* Light (white) mode: html[data-light]. Same layout, light paper colours. The globe stage and the
+   game keep their dark space background on purpose (it is the sky around the planet). */
+html[data-light] {
+  color-scheme: light;
+  --bg: #f3f5f9; --bg2: #e7ebf2; --panel: #ffffff; --panel-solid: #ffffff; --ink: #0f1a2e; --muted: #4a5873;
+  --line: #a9b4c8; --line-soft: rgba(15, 26, 46, .12); --accent: #1f5fbf; --accent-ink: #fff; --accent-soft: rgba(31, 95, 191, .12); --cool: #1f5fbf;
+  --warn-bg: #fff6dd; --warn-line: #8a6d00; --t-obs: #e3effc; --t-der: #ebe7fa; --t-int: #fbf0dc; --scene-top: #dfe7f3; --scene-bottom: #f3f5f9;
+}
+html[data-light] header.top, html[data-light] header.top.topx, html[data-light][data-page="home"] header.top.topx { background: #fff; border-bottom: 1px solid var(--line-soft); }
+html[data-light] .ov { --ov-glass: #fff; --ov-ink: #10224a; --ov-line: rgba(15, 26, 46, .14); --ov-acc: #1f63d6; background: var(--bg); }
+html[data-light] .ov-pick select, html[data-light] .ov-stcard, html[data-light] .ov-stcard .station-card { background: #fff; color: var(--ov-ink); }
+html[data-light] .ov-swap { background: #fff; color: #1f63d6; box-shadow: none; }
+html[data-light] .ov-modes button, html[data-light] .ov-acts button, html[data-light] .ov-acts a { background: var(--bg2); color: var(--ov-ink); }
+html[data-light] .ov-st.on { background: var(--accent-soft); }
+html[data-light] .lg.earth { border-top-color: #5b3fd0; }
+
+/* appearance choice in the menu */
+.theme-pick { display: flex; gap: 4px; padding: 4px 6px 8px; flex-wrap: wrap; }
+.theme-pick button { font: inherit; font-size: .9rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; }
+.theme-pick button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
