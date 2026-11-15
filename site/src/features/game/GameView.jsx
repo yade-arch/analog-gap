@@ -14,8 +14,8 @@ const UP = new THREE.Vector3(0, 0.55, 0);
 /** Kaza alanı: arızalı iniş aracı + astronot (başlangıç noktasının yanında). */
 function crashSite(tv, suit, withLander = true) {
   const p = tv.start || { x: 0, z: 0 }, y = (x, z) => tv.height(x, z) || 0;
-  if (withLander) { const l = lander(); l.scale.setScalar(0.45); l.position.set(p.x - 0.9, y(p.x - 0.9, p.z - 0.5), p.z - 0.5); tv.add(l); }
-  const a = astronaut(suit || "base"); a.scale.setScalar(ROVER_SCALE * 1.4); a.position.set(p.x - 0.35, y(p.x - 0.35, p.z + 0.2), p.z + 0.2); a.rotation.y = -0.6; tv.add(a);
+  if (withLander) { const l = lander(); l.scale.setScalar(0.45); l.position.set(p.x - 1.7, y(p.x - 1.7, p.z - 0.7), p.z - 0.7); tv.add(l); }
+  const a = astronaut(suit || "base"); a.scale.setScalar(ROVER_SCALE * 1.4); a.position.set(p.x - 0.6, y(p.x - 0.6, p.z + 0.6), p.z + 0.6); a.rotation.y = -0.6; tv.add(a);
   return a;
 }
 
