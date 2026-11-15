@@ -1,5 +1,8 @@
 // Main screen (overview) texts in English. tr.overview.js re-exports this file (English is the interface language).
 export default {
+  "sci.solid": "solid line", "sci.dashed": "dashed line",
+  "rep.title": "Terrain analog report", "rep.place": "Place on Earth", "rep.window": "scan window", "rep.ref": "Compared with", "rep.date": "Analysis date", "rep.data": "Data products",
+  "rep.pdfHint": "Your browser opens its print window. Choose \"Save as PDF\".", "rep.loading": "Loading the elevation data…", "rep.back": "Back to the comparison",
   "start.title": "Find places on Earth that look like the Moon or Mars", "start.intro": "Analog Gap measures the shape of the ground with real elevation data. Pick any spot on Earth and see how close its ground is to the Moon or Mars, and how it is different.",
   "start.target": "Compare with", "start.find": "Find a place", "start.recent": "Places you explored", "start.tip": "Click anywhere on Earth to check that place",
   "rs.title": "Your result", "rs.loc": "Place on Earth", "rs.ref": "Compared with", "rs.dHint": "A smaller number means the measured ground shapes are more alike.",

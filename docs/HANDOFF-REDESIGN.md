@@ -10,14 +10,15 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 - Explore point panel: action renamed to "Compare this place" (already opened Compare with the point).
 - Merged `claude/global-analysis-8184cd` (any point on Earth).
 - Start screen (`#/start`, now the default page; `src/pages/Start.jsx`): Earth globe, short intro, Moon/Mars choice, place search, "Find a place", up to 4 recent places. A globe click or search opens Explore with that point already selected (`#/map?lat=..&lon=..&name=..`). Checked in the browser.
+- PDF report (`src/print.css`, `pages/Report.jsx`, `features/ui/SciChart.jsx`): A4 pages, light paper colours, one column, cards and charts are not split across pages, page numbers and a footer (where the browser supports @page margin boxes), a header block with place, reference, D, date and data products, every closed section opened while printing, and all three charts printed (screen keeps tabs). Earth line is dashed. "Download full PDF report" is the first button; it opens the print window by itself when reached from the result card. JSON is under "More export options". Checked by applying the print rules on screen: nothing wider than the page, no dark backgrounds, no Turkish text. A real browser PDF was not saved.
 
 ## Not verified
 - Black-and-white mode was not looked at in the browser. Check the globe, charts, report printout and the game.
 - The result card for an on-demand point: it may show "not enough data yet" if the point object has no `d` / `derived_percentiles`.
 
 ## Not started (next, in this order)
-1. (done: start screen) — next is the PDF report.
-2. PDF report: real PDF for on-demand points; fix page breaks and image scaling in the print CSS (Part 4).
+1. (done: start screen)
+2. PDF report: layout fixed (see Done). Still missing: a PDF for on-demand points (no scan window, so no report page yet) and terrain pictures of both places inside the PDF (Part 4).
 3. My places: two groups (Places I explored / Best matches from our scan), favourites and Moon/Mars filters, compare two saved places (Part 6).
 4. One "Data sources" section grouped by purpose. Remove repeated "NASA" badges from cards. Check that AWS Terrain Tiles is never labelled NASADEM (Part 5).
 5. Method page: four simple steps + "For scientists" sections (Part 9).

@@ -122,3 +122,7 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .rsum-act { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; } .rsum-act .g-btn { width: auto; }
 .rsum-act summary { cursor: pointer; color: var(--muted); padding: 8px 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* report actions: PDF first, JSON tucked under more options */
+.rep-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 14px; }
+.rep-actions .g-btn { width: auto; } .rep-actions summary { cursor: pointer; color: var(--muted); }
+.lg.earth { background: none; width: 18px; height: 0; border-radius: 0; border-top: 3px dashed #7b5cf0; vertical-align: middle; }

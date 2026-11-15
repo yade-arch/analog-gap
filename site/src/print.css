@@ -1,0 +1,49 @@
+/* PDF / print layout for the report. Loaded last so it wins over the dark theme and
+   black-and-white mode. A4 pages, light paper colours, one column, nothing split mid-card. */
+.print-only { display: none; }
+
+@page {
+  size: A4;
+  margin: 16mm 14mm 18mm;
+  @bottom-left { content: "ANALOG GAP terrain analog report · NASA Space Apps 2026"; font: 8pt system-ui, sans-serif; color: #555; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt system-ui, sans-serif; color: #555; }
+}
+
+@media print {
+  :root, html[data-mono] {
+    color-scheme: light; --bg: #fff; --bg2: #f2f2f2; --panel: #fff; --panel-solid: #fff; --ink: #000; --muted: #333;
+    --line: #999; --line-soft: #ccc; --accent: #0b3d75; --accent-ink: #fff; --accent-soft: #e8eef7; --cool: #0b3d75;
+    --warn-bg: #fff; --warn-line: #555; --t-obs: #fff; --t-der: #fff; --t-int: #fff;
+  }
+  html, html body, #root, main { height: auto !important; min-height: 0 !important; overflow: visible !important; }
+  html body { background: #fff !important; color: #000 !important; font-size: 10.5pt; line-height: 1.45; }
+  html main { max-width: none; margin: 0; padding: 0; }
+  header, footer, .worldbar, .noprint, .rep-nav, .mainnav, .navmenu, details > summary { display: none !important; }
+  .print-only { display: block !important; }
+
+  html .g-card, html .card, html .glass, html .rep-ov, html .refcard-stats, html .rep-row, html .stat3 > div, html .more-rep {
+    background: #fff !important; color: #000 !important; box-shadow: none !important; backdrop-filter: none !important;
+    border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 0 10pt !important;
+  }
+  html .rep-ov, html .report .grid2 { display: block !important; }
+  html .report .card + .card { border-top: 1px solid #bbb !important; padding-top: 8pt !important; }
+
+  h1, h2, h3, h4 { color: #000 !important; break-after: avoid; page-break-after: avoid; }
+  h2 { font-size: 15pt; margin: 14pt 0 6pt; } h3 { font-size: 12pt; margin: 10pt 0 4pt; }
+  p, li { orphans: 3; widows: 3; max-width: none; }
+  .card, .g-card, table, figure, svg, img, canvas, .rep-bar, .rep-gauge, tr, .rp-grid, .stat3 { break-inside: avoid; page-break-inside: avoid; }
+  img, svg, canvas { max-width: 100% !important; height: auto; }
+  table { width: 100% !important; border-collapse: collapse; font-size: 9pt; }
+  th, td { border-bottom: 1px solid #ccc; padding: 3pt 5pt; text-align: left; vertical-align: top; color: #000 !important; }
+  a { color: #000 !important; text-decoration: none; }
+  .muted, .small { color: #333 !important; }
+  .tag { background: #fff !important; color: #000 !important; border: 1px solid #555 !important; }
+  * { animation: none !important; transition: none !important; }
+
+  .rep-print-head { border-bottom: 2px solid #000; padding-bottom: 8pt; margin-bottom: 12pt; }
+  .rep-print-head h1 { font-size: 18pt; margin: 0 0 4pt; }
+  .rep-print-head dl { display: grid; grid-template-columns: max-content 1fr; gap: 2pt 10pt; margin: 6pt 0 0; font-size: 9.5pt; }
+  .rep-print-head dt { color: #333; } .rep-print-head dd { margin: 0; }
+}
+@media print { .sci-print { margin: 0 0 8pt; } .sci-print figcaption { margin-bottom: 2pt; } }
+@media print { .lg.earth { border-top-color: #000; } }
