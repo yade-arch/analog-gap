@@ -36,10 +36,12 @@ export function createRover(tv, limitDeg, map = KEYMAPS.solo, accent) {
         const ny = tv.height(nx, nz), slope = tv.slopeAt(nx, nz), here = tv.slopeAt(s.x, s.z);
         const steep = limitDeg && slope > limitDeg && !(slope < here);
         if (Number.isNaN(ny)) blocked = "nodata";
-        else if (steep && !boost) blocked = "steep";
         if (blocked) s.v = 0;
         else {
-          const d = Math.hypot(nx - s.x, nz - s.z); s.x = nx; s.z = nz;
+          if (steep && !boost) { s.v *= 0.25; blocked = "steep"; }        // too steep: crawl slowly (warning), Shift climbs faster
+          const k = steep && !boost ? 0.25 : 1, mx = s.x + (nx - s.x) * k, mz = s.z + (nz - s.z) * k;
+          const d = Math.hypot(mx - s.x, mz - s.z); s.x = mx; s.z = mz;
+          if (steep && !boost) s.health = Math.max(0, s.health - d * 2);
           s.battery = Math.max(0, s.battery - d * 1.5);
           if (boost) { s.fuel = Math.max(0, s.fuel - d * 6); if (steep) s.health = Math.max(0, s.health - d * 4); }
         }
