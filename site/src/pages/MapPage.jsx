@@ -55,6 +55,7 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
             <Warn>{t("map.warn")}</Warn>
           </details>}
           <div className="darkstage" hidden={!show("globe")}>
+            <span className="globe-hint">Click anywhere on Earth to inspect · Drag to rotate</span>
             {view === "globe"
               ? <GlobeView body="earth" markers={markers} colorScale={D_SCALE} outlines={D.regions} photo={PHOTO} onPick={(x) => (x.id ? onSelect(x.id) : x.lat != null && setSel({ lat: x.lat, lon: x.lon }))} />
               : <MapView data={cand} regions={D.regions} onSelect={onSelect} onRegion={setRegion} onPoint={setSel} selectedId={null} />}

@@ -83,8 +83,10 @@ export default function App() {
         )}
       </main>
       <footer>
+        <details className="foot-more"><summary>Data sources &amp; methodology ▾</summary>
         <div><strong>Data products:</strong> {SOURCES} · <a href="#/data">All data sources</a></div>
         <div>Method and limits: <a href="#/method">Method & Validation</a>. No window is presented as an exact copy of the Moon/Mars; we say "less studied / not in catalog". Labels: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
+        </details>
       </footer>
     </>
   );

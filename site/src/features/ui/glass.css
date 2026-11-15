@@ -149,3 +149,5 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .ds-role { margin: 4px 0; } .ds-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 6px 0 0; }
 .ds-dl dt { color: var(--muted); } .ds-dl dd { margin: 0; min-width: 0; } .ds-break { overflow-wrap: anywhere; }
 @media (max-width: 560px) { .ds-dl { grid-template-columns: 1fr; } .ds-dl dd { margin-bottom: 6px; } }
+.darkstage { position: relative; } .globe-hint { position: absolute; left: 10px; bottom: 10px; z-index: 3; pointer-events: none; padding: 4px 10px; border-radius: 999px; background: rgba(10,16,32,.55); color: #fff; font-size: 11px; }
+footer .foot-more summary { cursor: pointer; font-size: 12px; opacity: .8; list-style: none; } footer .foot-more[open] summary { margin-bottom: 6px; }
