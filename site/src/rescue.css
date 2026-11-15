@@ -52,10 +52,10 @@
 .rs-sci h4 { margin: 12px 0 4px; } .rs-sci ul { padding-left: 18px; } .rs-sci code { word-break: break-all; }
 .g-drive.g-mode-solo .g-dir-left { bottom: 12px; } .g-drive.g-mode-solo .g-speed-left { display: none; }
 @media (max-width: 760px) {
-  .rs-desk { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; height: 42vh; max-height: none; }
+  .rs-desk { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; height: 30vh; max-height: none; }
   .g-mode-solo.g-explore .g-regions { display: none; }
-  .g-mode-solo.g-explore .g-stage { bottom: calc(42vh + 12px); }
-  .rs-desk h3 { font-size: 15px; } .rs-desk { font-size: 12px; padding: 10px 12px; }
+  .g-mode-solo.g-explore .g-stage { bottom: calc(30vh + 12px); }
+  .rs-desk h3 { font-size: 13px; } .rs-desk { font-size: 11px; padding: 8px 10px; } .rs-desk .rs-small, .rs-desk .rs-warn { font-size: 10.5px; } .rs-coord input { padding: 5px 6px; }
   .rs-gauges { width: 180px; top: 48px; } .rs-g { grid-template-columns: 62px 1fr 32px; }
   .rs-ctrl { bottom: 8px; left: 8px; }
 }
