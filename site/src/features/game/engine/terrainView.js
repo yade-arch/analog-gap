@@ -55,10 +55,10 @@ function beacon() {
 export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   const L = LOOK[body], scene = new THREE.Scene();
   scene.background = new THREE.Color(L.sky);
-  if (L.fog) scene.fog = new THREE.Fog(L.fog, 7, 30);
+  if (L.fog) scene.fog = body === "moon" ? new THREE.Fog(L.fog, 14, 60) : new THREE.Fog(L.fog, 7, 30);   // Moon: far horizon fades out, near ground stays visible (no dark gap)
   const { geometry, zmed } = buildTerrain(dem);
   const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1, metalness: 0 });
-  const mesh = new THREE.Mesh(geometry, mat); const EX = body === "moon" ? 1 : EXAG;   // Moon: true heights (Shackleton rim is already steep; 2× made it a wall)
+  const mesh = new THREE.Mesh(geometry, mat); const EX = body === "moon" ? 0.35 : EXAG;   // Moon: heights drawn at 0.35× so hills read as rolling ground, not walls (display only; rover slope limits use the real DEM slope)
   mesh.scale.y = EX; scene.add(mesh);
   let zmin = Infinity; for (let k = 0; k < dem.z.length; k++) { const e = elev(dem, k); if (!Number.isNaN(e) && e < zmin) zmin = e; }
   const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1 }));
