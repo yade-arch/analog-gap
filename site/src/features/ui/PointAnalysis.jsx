@@ -40,15 +40,19 @@ function Result({ r, target, body, ref_ }) {
         {s.reason !== "land" && s.O && Object.keys(s.O).length > 0 && <p className="small muted">{t(s.passes ? "pt.pass" : "pt.fail")}</p>}
       </div>
       <div className="pt-vars">
-        {V.map(([k, u, d]) => { const c = r.P?.[k], rf = ref_?.[k]; return (
-          <div key={k}>
-            <b title={t("pt.v." + k + ".m")}>{t("pt.v." + k)}</b>
-            <span className="small muted">{t("pt.v." + k + ".m")}</span>
-            <span className="small">{t("pt.here")}: {c ? fill(t("pt.typ"), { v: `${fmt(c.p50, d)} ${u}`, a: fmt(c.p10, d), c: `${fmt(c.p90, d)} ${u}` }) : t("ui.noData")}</span>
-            <span className="small">{fill(t("pt.ref"), { b: body })}: {rf ? fill(t("pt.typ"), { v: `${fmt(rf.p50, d)} ${u}`, a: fmt(rf.p10, d), c: `${fmt(rf.p90, d)} ${u}` }) : t("ui.noData")}</span>
-            <span className="small"><span title={t("pt.ov.m")}>{t("pt.ov")}: {s.O?.[k] != null ? fmt(s.O[k], 2) : t("ui.noData")}</span> · <span title={t("pt.dk.m")}>{t("pt.dk")}: {s.d?.[k] != null ? fmt(s.d[k], 3) : t("ui.noData")}</span></span>
+        {V.map(([k, u, d]) => { const c = r.P?.[k], rf = ref_?.[k], q = c && rf ? c.p50 / rf.p50 : null;
+          const w = q == null ? null : q < 0.8 ? "lo" : q > 1.25 ? "hi" : "eq"; return (
+          <div key={k} className="pt-kid" title={t("pt.v." + k + ".m")}>
+            <b>{t("pt.v." + k)}</b>
+            <span>{t("pt.here")} <strong>{c ? `${fmt(c.p50, d)} ${u}` : t("ui.noData")}</strong> · {body} <strong>{rf ? `${fmt(rf.p50, d)} ${u}` : t("ui.noData")}</strong></span>
+            {w && <em>{t("pt.w." + k + "." + w)}</em>}
           </div>
         ); })}
+        <details className="sci"><summary>{t("pt.more")}</summary>
+          {V.map(([k, u, d]) => { const c = r.P?.[k], rf = ref_?.[k]; return (
+            <p key={k} className="small">{t("pt.v." + k)}: {t("pt.here")} {c ? fill(t("pt.typ"), { v: `${fmt(c.p50, d)} ${u}`, a: fmt(c.p10, d), c: `${fmt(c.p90, d)} ${u}` }) : t("ui.noData")}; {fill(t("pt.ref"), { b: body })} {rf ? fill(t("pt.typ"), { v: `${fmt(rf.p50, d)} ${u}`, a: fmt(rf.p10, d), c: `${fmt(rf.p90, d)} ${u}` }) : t("ui.noData")}. {t("pt.ov")} {s.O?.[k] != null ? fmt(s.O[k], 2) : t("ui.noData")} · {t("pt.dk")} {s.d?.[k] != null ? fmt(s.d[k], 3) : t("ui.noData")}</p>
+          ); })}
+        </details>
       </div>
       <div className="rp-grid pt-grid">
         <div><span className="muted">{t("pt.land")}</span><b>{fmt(r.valid * 100, 1)} %</b></div>
