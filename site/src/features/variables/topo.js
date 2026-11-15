@@ -12,7 +12,7 @@ export function topoCompute(key, d, unit, extra) {
     const r = reference?.variables?.[key], c = p.derived_percentiles[key], dn = TERMS["d_" + key].name.toLowerCase();
     const diff = r && c ? Math.abs(c.p50 - r.p50) : null;
     const summary = r && c
-      ? `Reference: typical ${fmt(r.p50, d)} ${unit}. Earth candidate: typical ${fmt(c.p50, d)} ${unit}. Difference between typical values ${fmt(diff, d)} ${unit} (${dn} ${fmt(p.d[key], 3)}; 0 = same spread).`
+      ? `Reference: typical ${fmt(r.p50, d)} ${unit}. Earth candidate: typical ${fmt(c.p50, d)} ${unit}. Difference between typical values ${fmt(diff, d)} ${unit} (${dn} ${fmt(p.d[key], 3)}; 0 = same spread).${p.O?.[key] != null ? ` Range overlap: ${fmt(p.O[key] * 100, 0)}% (how much the usual ranges, P10–P90, of Earth and the reference cover each other; existing value O_k, not an overall similarity score).` : ""}`
       : "Data missing: no comparison made.";
     const rows = [
       { label: `Typical value and range (technical name: P50, P10–P90; ${unit})`, ref: range(r, d, unit), cand: range(c, d, unit), tag: "calc" },
