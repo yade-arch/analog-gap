@@ -151,7 +151,7 @@ export default function Game({ D, profile, setProfile }) {
       {!solo && phase === "suit" && !paused && <GearLoadout zones={zones} log={elog} uplinked={up === 2} onGo={confirmGear} />}
       {solo && phase === "suit" && !paused && <SuitScreen suit={suit} setSuit={setSuit} onConfirm={confirmSuit} left={clock.left} />}
       {!solo && phase === "result" && ended && <MissionReport result={final?.result || "timeout"} p={sel} D={D} profile={profile} cand={cand} suit={suit} left={final?.left ?? 0} reportHref={reportHref} onAgain={reset} tests={tests.length} earthLog={elog} />}
-      {TOUCH && phase === "drive" && !paused && <TouchPad keys={keys} actions={solo ? [["m", "M", () => rescue.cmd.mode(rescue.S.ctrl === "cmd" ? "direct" : "cmd")]] : [["t", "T", () => setPhase("suit")]]} />}
+      {TOUCH && (phase === "drive" || phase === "earthdrive") && !paused && <TouchPad keys={keys} actions={solo ? [["m", "M", () => rescue.cmd.mode(rescue.S.ctrl === "cmd" ? "direct" : "cmd")]] : [["t", "T", () => setPhase("suit")]]} />}
       {phase !== "menu" && !paused && <button className="g-pausebtn" onClick={() => setPaused(true)} aria-label={t("game.pause.title")}>II</button>}
       {paused && <PauseMenu onResume={() => setPaused(false)} onRestart={reset} reportHref={reportHref} />}
     </div>

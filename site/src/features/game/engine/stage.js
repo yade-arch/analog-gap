@@ -2,7 +2,7 @@
 // olay alanı (yarım ekran div) vardır; OrbitControls o div'e bağlanır. Düzen: "split" | "left" | "right".
 import * as THREE from "three";
 
-export const TOUCH = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
+export const TOUCH = typeof window !== "undefined" && ("ontouchstart" in window || navigator.maxTouchPoints > 0 || matchMedia?.("(pointer: coarse)").matches || Math.min(innerWidth, innerHeight) < 768);
 export const MOBILE = typeof matchMedia === "function" && matchMedia("(max-width: 900px), (pointer: coarse)").matches;
 
 export function createStage(host) {
