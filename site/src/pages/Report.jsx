@@ -47,7 +47,7 @@ export default function Report({ D, profile, cand, id }) {
           <div><div className="muted">Rank (among candidates that passed the filter)</div><div className="big">{p.rank ?? "—"}</div></div>
         </div>
         <p className="muted">D = mean(d_slope, d_relief, d_roughness), equal weights, fixed; d_k = W1 / IQR(reference). No similarity percentage or confidence score is produced. The window is not "a copy of {body}". Gap paneli yanda.</p>
-        <p className="noprint"><button onClick={() => window.print()} disabled={!dem.done}>Print / PDF</button>{" "}<button onClick={download} disabled={!dem.done}>Download JSON</button>{!dem.done && <span className="muted"> Loading terrain window…</span>}{" "}<a href={`#/compare/${p.id}/${profile}`}>Back to comparison</a></p>
+        <p className="noprint"><button onClick={() => window.print()}>Print / PDF</button>{" "}<button onClick={download} disabled={!dem.done}>Download JSON</button>{!dem.done && <span className="muted"> Loading terrain window…</span>}{" "}<a href={`#/compare/${p.id}/${profile}`}>Back to comparison</a></p>
       </div>
       <div className="grid2">
         <div>
