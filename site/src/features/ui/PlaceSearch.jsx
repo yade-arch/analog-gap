@@ -3,7 +3,7 @@ import { t } from "../../i18n/index.js";
 
 // Search box: "lat, lon" is used directly (no network); a place name is looked up once per submit with Nominatim
 // (OpenStreetMap; usage policy: no autocomplete, at most 1 request per second). Not NASA data, labelled as such.
-const NOMINATIM = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=";
+const NOMINATIM = "https://nominatim.openstreetmap.org/search?format=json&accept-language=en&limit=1&q=";
 
 export function parseLatLon(q) {
   const m = /^\s*(-?\d+(?:\.\d+)?)\s*°?\s*([NS])?\s*[,;\s]\s*(-?\d+(?:\.\d+)?)\s*°?\s*([EW])?\s*$/i.exec(q);

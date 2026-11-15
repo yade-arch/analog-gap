@@ -22,7 +22,7 @@ export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose
   useEffect(() => {
     if (sel.name) { setNm(sel.name); return undefined; }
     let live = true; setNm(null);
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&zoom=8&lat=${sel.lat}&lon=${sel.lon}`).then((r) => r.json())
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&accept-language=en&zoom=8&lat=${sel.lat}&lon=${sel.lon}`).then((r) => r.json())
       .then((j) => live && setNm(j?.display_name || null)).catch(() => {});
     return () => { live = false; };
   }, [sel.lat, sel.lon, sel.name]);
