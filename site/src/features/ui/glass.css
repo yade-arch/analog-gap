@@ -109,3 +109,16 @@ details.more-rep > summary { cursor: pointer; font-weight: 700; font-size: 18px;
 .disc-body { display: inline-block; border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: 13px; background: #e6ebf5; color: #141b36; }
 .disc-body.moon { background: #dfe3ea; } .disc-body.mars { background: #f6dfd5; color: #6b2a12; }
 .disc-ds { margin: 6px 0; } .disc .g-btn { display: block; text-align: center; text-decoration: none; }
+/* result summary (Compare) */
+.rsum { margin: 12px 0; display: grid; gap: 10px; }
+.rsum h2 { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 1.15rem; }
+.rsum h3 { margin: 4px 0 0; font-size: 1rem; display: flex; gap: 8px; align-items: center; }
+.rsum-approx { font-size: .8rem; font-weight: 600; padding: 2px 8px; border: 1px dashed var(--line); border-radius: 999px; color: var(--muted); }
+.rsum-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 16px; margin: 0; }
+.rsum-top dt { color: var(--muted); font-size: .85rem; } .rsum-top dd { margin: 2px 0 0; }
+.rsum-t { width: 100%; border-collapse: collapse; } .rsum-t th, .rsum-t td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line-soft); }
+.rsum-t thead th { color: var(--muted); font-weight: 500; font-size: .85rem; }
+.rsum-m { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; max-width: 75ch; }
+.rsum-act { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; } .rsum-act .g-btn { width: auto; }
+.rsum-act summary { cursor: pointer; color: var(--muted); padding: 8px 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

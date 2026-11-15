@@ -1,5 +1,12 @@
 // Main screen (overview) texts in English. tr.overview.js re-exports this file (English is the interface language).
 export default {
+  "rs.title": "Your result", "rs.loc": "Place on Earth", "rs.ref": "Compared with", "rs.dHint": "A smaller number means the measured ground shapes are more alike.",
+  "rs.approx": "Approximate", "rs.approxTip": "Quick check from AWS Terrain Tiles (mostly NASA SRTM), not the NASADEM scan. Numbers can differ from a full analysis.",
+  "rs.mean": "What does the result mean?", "rs.best": "Most alike: {x}. Its gap is the smallest of the three.", "rs.worst": "Least alike: {x}. Its gap is the largest of the three.",
+  "rs.missing": "Not enough data yet for: {x}. These are left out, not counted as zero.",
+  "rs.careful": "Be careful: this compares ground shape only. Temperature, soil, dust, air and gravity are not part of this number, so the place is not a copy of the Moon or Mars.",
+  "rs.pdf": "Download full PDF report", "rs.noPdf": "The full PDF report is ready for places from our scan. For a quick check, save the numbers below.",
+  "rs.more": "More export options", "rs.json": "Save the numbers (JSON file)", "sec.compare.summary": "Your result",
   "ov.hint.layers": "Choose what the colours on the 3D tiles show",
   "ov.hint.mode": "3D = tilted view, 2D = seen from above, Profile = a cut through the middle of both places",
   "ov.hint.prof": "Height along a straight line through the middle of each 10 km square. Same shape = similar terrain",

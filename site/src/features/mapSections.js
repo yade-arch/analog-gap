@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export const SECTIONS = {
   map: ["all", "globe", "ref", "search", "info"],
-  compare: ["all", "places", "view", "stations", "info"],
+  compare: ["all", "summary", "places", "view", "stations", "info"],
   list: ["all", "ref", "found", "table", "top"],
 };
 const cur = { map: "all", compare: "all", list: "all" };

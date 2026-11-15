@@ -15,6 +15,7 @@ import { usePoint } from "../features/overview/usePoint.js";
 import GlobeView from "../components/GlobeView.jsx";
 import "../features/overview/overview.css";
 import { useShow } from "../features/mapSections.js";
+import ResultSummary from "../features/overview/ResultSummary.jsx";
 const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
 
 /** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
@@ -79,6 +80,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   return (
     <div className={"ov" + (open ? "" : " ov-full")}>
       <div className="ov-top" hidden={!show("places")}>{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
+      {show("summary") && <ResultSummary p={p} reference={reference} names={names} report={p.onDemand ? null : `#/report/${p.id}/${profile}`} download={download} />}
       {!zoomed ? (
       <div className="ov-stage ov-intro" hidden={!show("view")} onDoubleClick={() => setZoomed(true)}>
         <div className="ov-globes">
