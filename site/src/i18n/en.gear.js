@@ -19,7 +19,7 @@ export default {
   "gear.failed": "{g} failed in {z}", "gear.verified": "✅ VERIFIED: {s} + {m}",
   "gear.fail.suit": "❌ {g} failed in {z}! Swap gear at the garage (G).", "gear.fail.mod": "❌ {g} failed on {z}! Swap gear at the garage (G).",
   "gear.load": "Pick your suit and rover module", "gear.loadHelp": "✅ = worked in Earth tests, ❌ = failed, ✅❌ = worked in one place, failed in another.", "gear.noUplink": "No Earth tests were sent, so you have to guess.",
-  "gear.zone": "Light {n}: {z} (real slope {s}°)", "gear.go": "Go!",
+  "gear.zone": "Light {n}: {z} (real slope {s}°)", "gear.go": "Go!", "gear.log": "Earth Analog Test Log", "gear.light": "Light",
   "gear.rule": "Suit and module effects are game rules, not NASA engineering data. Each Earth light copies the hazard of the Moon/Mars light with the same number.",
   "gear.rule2": "Game rule: each zone your gear fails costs {m} min. Zones are placed by the real beacon heights (lowest = shadow, highest = sunlit; a game rule) and real slopes. No temperature values are made up.",
 };

@@ -116,7 +116,7 @@ export default {
   "game.msg.drive.multi": "Player 1 on the Moon/Mars (WASD + Shift), player 2 on Earth (arrows + Enter). Both of you reach the light with the same number.",
   "game.msg.wait.p1": "This point is done! The Earth player must reach the same point too.",
   "game.msg.wait.p2": "Earth point done! The Moon/Mars player must reach the same point too.",
-  "game.prompt.drive.multi": "Player 1: WASD + Shift · Player 2: arrows + Enter · reach the lights",
+  "game.prompt.drive.multi": "Player 1: WASD + Shift · Player 2: arrows + Enter · P1 Gear: [T] · P2 Garage: [G] · Send Data: [U]",
   "game.prompt.suit": "All data collected! T: choose a suit",
   "game.menu.mode": "Game mode",
   "game.mode.solo": "1 player",

@@ -94,3 +94,4 @@
 @keyframes gr-fl { to { opacity: 0; } }
 .gr-load { position: absolute; inset: 0; display: grid; place-items: center; padding: 56px 12px 12px; background: rgba(4, 8, 18, .5); overflow: auto; }
 .gr-load .rs-card { width: min(760px, 100%); }
+.g-elog { margin-top: 8px; text-align: left; font-size: 12px; } .g-elog summary { cursor: pointer; font-weight: 700; } .g-elog ul { margin: 4px 0 0; padding-left: 18px; }

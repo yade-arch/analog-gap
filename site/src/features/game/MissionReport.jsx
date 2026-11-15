@@ -8,7 +8,7 @@ import { GAME } from "./rules.js";
 
 /** Her yaşa uygun görev raporu. Yüzde = sıralama (adayların kaçından daha benzer), benzerlik yüzdesi değildir.
  *  Bilimsel ayrıntılar #/report sayfasında. */
-export default function MissionReport({ result, p, D, profile, cand, suit, left, reportHref, onAgain, tests }) {
+export default function MissionReport({ result, p, D, profile, cand, suit, left, reportHref, onAgain, tests, earthLog }) {
   const pct = p ? betterThan(p, cand) : null;
   const met = p ? siteChecks(p, cand, D.known, D.tE).filter((c) => c.ok).length : 0;
   const rows = p ? compareRows(p, refTarget(D, profile)) : [];
@@ -45,6 +45,7 @@ export default function MissionReport({ result, p, D, profile, cand, suit, left,
           <a className="g-btn" href={reportHref}>{t("game.end.report")}</a>
         </div>
         <p className="g-small">{t("game.rep.note")}</p>
+        {earthLog?.length > 0 && <details className="g-elog"><summary>{t("gear.log")}</summary><ul>{earthLog.map((e, i) => <li key={i}>{e.ok ? "✅" : "❌"} {t("gear.light")} {e.i + 1}: {t("gear." + e.suit)} + {t("gear." + e.mod)}{!e.ok && " — " + t("gear.z." + e.why)}</li>)}</ul></details>}
       </div>
     </div>
   );
