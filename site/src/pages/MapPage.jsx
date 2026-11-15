@@ -10,7 +10,7 @@ import RefCard from "../features/ui/RefCard.jsx";
 import RegionPanel from "../features/ui/RegionPanel.jsx";
 import PlaceSearch from "../features/ui/PlaceSearch.jsx";
 import "../features/home/home.css";
-import { useMapSection } from "../features/mapSections.js";
+import { useShow } from "../features/mapSections.js";
 import "../features/ui/glass.css";
 
 const VIEWS = ["globe", "flat"];
@@ -22,7 +22,7 @@ export default function MapPage({ cand, candAll, region, setRegion, profile, D, 
   const markers = useMemo(() => dMarkers(cand), [cand]);
   const refs = useMemo(() => ({ moon: D.rm, mars: D.rs }), [D.rm, D.rs]);
   const m = cand.meta;
-  const sec = useMapSection(), show = (k) => sec === "all" || sec === k;
+  const [show, sec] = useShow("map");
   const left = show("ref") || !!sel, right = show("globe") || show("search") || show("info");
   return (
     <div className="glass">

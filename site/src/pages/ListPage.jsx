@@ -9,6 +9,7 @@ import RefCard, { ICON } from "../features/ui/RefCard.jsx";
 import ReliefThumb from "../features/ui/ReliefThumb.jsx";
 import Discovered from "../features/ui/Discovered.jsx";
 import "../features/ui/glass.css";
+import { useShow } from "../features/mapSections.js";
 
 const fill = (s, o) => Object.entries(o).reduce((a, [k, v]) => a.replace(`{${k}}`, v), s);
 
@@ -33,15 +34,16 @@ function CandCard({ p, i, tE, hasDem, go, profile }) {
 }
 
 export default function ListPage({ cand, region, setRegion, profile, reference, known, hasDem, tE, tM }) {
+  const [show] = useShow("list");
   const all = cand.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank);
   const rr = regionRanks(all);
   const rows = all.filter((p) => region === "ALL" || p.region === region).slice(0, 200);
   const go = (id) => { location.hash = `#/compare/${id}/${profile}`; };
   return (
     <div className="glass">
-      <RefCard target={profile} reference={reference} tM={tM} wide />
-      <Discovered />
-      <details className="more">
+      {show("ref") && <RefCard target={profile} reference={reference} tM={tM} wide />}
+      {show("found") && <Discovered />}
+      <details className="more" hidden={!show("table")}>
         <summary><h2 className="g-h">{t("disc.scan")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
         <div className="g-card">
           <div className="regions">{REGION_CODES.map((r) => <button key={r} className={region === r ? "on" : ""} aria-pressed={region === r} onClick={() => setRegion(r)}>{r === "ALL" ? t("world.allRegions") : regionLabel(r)}</button>)}</div>
@@ -70,7 +72,7 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
           <Glossary />
         </div>
       </details>
-      <div className="top3">{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go, profile }} />)}</div>
+      <div className="top3" hidden={!show("top")}>{rows.slice(0, 3).map((p, i) => <CandCard key={p.id} {...{ p, i, tE, hasDem, go, profile }} />)}</div>
     </div>
   );
 }

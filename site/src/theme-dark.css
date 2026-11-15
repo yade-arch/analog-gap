@@ -85,7 +85,7 @@ html button, html .g-btn, html .btn-accent, html .viewtabs button, html .regions
 html .tag { font-size: 11px; padding: 1px 8px; border-radius: 6px; font-weight: 500; }
 html main { max-width: 1440px; } html table td, html table th { padding: 8px 10px; } html table th { color: var(--muted); font-weight: 500; }
 html a:focus-visible, html button:focus-visible, html summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-html .mapgrid.one { grid-template-columns: 1fr; } html .glass [hidden] { display: none !important; }
+html .mapgrid.one { grid-template-columns: 1fr; } html [hidden] { display: none !important; }
 html .navdrop { position: relative; display: flex; align-items: center; } html .navdrop > button { background: none; border: 0; color: var(--muted); padding: 8px 6px; border-radius: 8px; cursor: pointer; }
 html .navdrop > button:hover, html .navdrop > button[aria-expanded="true"] { color: var(--ink); background: var(--bg2); }
 html .navmenu { position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 220px; margin: 0; padding: 6px; list-style: none; background: var(--panel, var(--bg2)); border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.45); }

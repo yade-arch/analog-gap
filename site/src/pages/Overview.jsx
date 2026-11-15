@@ -14,6 +14,7 @@ import { ClimateBox, LinksBox } from "../features/overview/Climate.jsx";
 import { usePoint } from "../features/overview/usePoint.js";
 import GlobeView from "../components/GlobeView.jsx";
 import "../features/overview/overview.css";
+import { useShow } from "../features/mapSections.js";
 const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_2048.jpg";
 
 /** Main screen: Moon/Mars reference and an Earth candidate as two large real-terrain 3D tiles, terrain distance in the
@@ -26,6 +27,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   const refId = SETTINGS.references[profile][0], [zoomed, setZoomed] = useState(false), ready = !!p && !pt?.loading && !pt?.error && zoomed;
   const [dems, setDems] = useState({}), [idx, setIdx] = useState(null);
   const [layer, setLayer] = useState("dem"), [mode, setMode] = useState("3d"), [open, setOpen] = useState(true), [swapped, setSwapped] = useState(false);
+  const [show] = useShow("compare");
   const names = [t("ui.body." + profile), t("side.earth").charAt(0) + t("side.earth").slice(1).toLowerCase()];
 
   useEffect(() => { loadDemIndex().then(setIdx).catch(() => setIdx({ windows: {} })); }, []);
@@ -76,9 +78,9 @@ export default function Overview({ D, profile, cand, reference, selId }) {
 
   return (
     <div className={"ov" + (open ? "" : " ov-full")}>
-      <div className="ov-top">{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
+      <div className="ov-top" hidden={!show("places")}>{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
       {!zoomed ? (
-      <div className="ov-stage ov-intro" onDoubleClick={() => setZoomed(true)}>
+      <div className="ov-stage ov-intro" hidden={!show("view")} onDoubleClick={() => setZoomed(true)}>
         <div className="ov-globes">
           <GlobeView body={profile} compact photo={import.meta.env.BASE_URL + "data/tex/" + (profile === "moon" ? "moon_lroc_color_2048.jpg" : "mars_viking_clr_2048.jpg")} markers={mr ? [{ id: "", lat: mr.lat, lon: mr.lon, kind: "ref", label: mr.title }] : []} />
           <GlobeView body="earth" compact photo={PHOTO} markers={[{ id: "", lat: p.center_lat, lon: p.center_lon, kind: "cand", label: p.id }]} />
@@ -86,7 +88,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
         <button className="ov-zoom" onClick={() => setZoomed(true)}>{t("ov.zoomIn")}</button>
       </div>
       ) : (
-      <div className="ov-stage">
+      <div className="ov-stage" hidden={!show("view")}>
         {gl ? <div ref={host} className="ov-canvas" aria-label={t("ov.aria")} /> : <p className="ov-nogl">{t("cmp.fallback")}</p>}
         {(!dems.r || !dems.c) && <p className="ov-load">{t("cmp.loading")}</p>}
         <button className="ov-swap" onClick={() => setSwapped(!swapped)} aria-label={t("ov.swap")} title={t("ov.swap")}>⇄</button>
@@ -99,11 +101,11 @@ export default function Overview({ D, profile, cand, reference, selId }) {
         <p className="ov-note">{t("ov.exag").replace("{x}", EXAG)} · {t("ov.layer." + layer + ".d")}</p>
       </div>
       )}
-      <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />
-      <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
+      {show("stations") && <Stations D={D} profile={profile} reference={reference} p={p} dems={dems} />}
+      {show("view") && <Panel layer={layer} setLayer={setLayer} mode={mode} setMode={setMode} open={open} setOpen={setOpen}
         profile={{ a: swapped ? profB : profA, b: swapped ? profA : profB, labels: swapped ? [names[1], names[0]] : names, big: mode === "profile" }}
-        stats={statRows(reference, p, mr, mc, names)} actions={{ report: p.onDemand ? null : `#/report/${p.id}/${profile}`, download }} />
-      <details className="ov-more"><summary>{t("ov.moreInfo")}</summary><div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div></details>
+        stats={statRows(reference, p, mr, mc, names)} actions={{ report: p.onDemand ? null : `#/report/${p.id}/${profile}`, download }} />}
+      <details className="ov-more" hidden={!show("info")}><summary>{t("ov.moreInfo")}</summary><div className="ov-grid2"><ClimateBox lat={p.center_lat} lon={p.center_lon} /><LinksBox lat={p.center_lat} lon={p.center_lon} profile={profile} /></div></details>
     </div>
   );
 }

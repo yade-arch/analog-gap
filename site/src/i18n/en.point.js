@@ -1,6 +1,6 @@
 // Texts for the on-demand point analysis (any place on Earth). tr.point.js re-exports this file (English is the interface language).
 export default {
-  "nav.explore": "Find a place", "nav.sections": "Choose what to show", "sec.all": "Everything", "sec.globe": "Globe and map", "sec.ref": "Reference area", "sec.search": "Search by name", "sec.info": "More information", "nav.discoveries": "My places", "nav.mission": "Mission game",
+  "nav.explore": "Find a place", "nav.sections": "Choose what to show", "sec.map.all": "Everything", "sec.map.globe": "Globe and map", "sec.map.ref": "Reference area", "sec.map.search": "Search by name", "sec.map.info": "More information", "sec.compare.all": "Everything", "sec.compare.places": "The two places", "sec.compare.view": "3D view and tools", "sec.compare.stations": "Measurements", "sec.compare.info": "More information", "sec.list.all": "Everything", "sec.list.ref": "Reference area", "sec.list.found": "Places you explored", "sec.list.table": "All checked places", "sec.list.top": "Best three matches", "nav.discoveries": "My places", "nav.mission": "Mission game",
   "flow.1": "Select a place",
   "ex.tip.t": "Click anywhere on Earth to see if its ground looks like the {b}", "ex.tip.d": "Blue squares are places we already checked. Drag to turn the globe.",
   "ov.zoomIn": "Zoom in and measure the ground", "ov.zoomOut": "Back to the two planets", "flow.2": "Compare", "flow.3": "Report",
