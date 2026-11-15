@@ -1,0 +1,17 @@
+/* Opening screen: globe is the main picture, one short panel beside it. */
+.start { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 16px; align-items: stretch; min-height: calc(100vh - var(--hdr, 64px) - 32px); }
+.start-panel { display: flex; flex-direction: column; gap: 14px; align-self: start; padding: 20px; }
+.start-panel h2 { margin: 0; font-size: 1.6rem; line-height: 1.2; }
+.start-panel p { margin: 0; max-width: 60ch; line-height: 1.55; }
+.start-step { display: grid; gap: 6px; }
+.start-go { text-align: center; width: 100%; }
+.start-recent h3 { margin: 0 0 6px; font-size: 1rem; }
+.start-recent ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.start-recent a { display: block; padding: 6px 8px; border-radius: 8px; color: var(--ink); text-decoration: none; background: var(--bg2); }
+.start-recent a:hover, .start-recent a:focus-visible { background: var(--accent-soft); }
+.start-globe { position: relative; min-height: 420px; border-radius: 16px; overflow: hidden; }
+.start-tip { position: absolute; z-index: 2; left: 16px; top: 12px; margin: 0; padding: 6px 12px; border-radius: 999px; background: rgba(0, 0, 0, .55); color: #fff; font-size: .9rem; pointer-events: none; }
+@media (max-width: 860px) {
+  .start { grid-template-columns: 1fr; min-height: 0; }
+  .start-globe { order: -1; min-height: 340px; }
+}

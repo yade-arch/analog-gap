@@ -15,6 +15,7 @@ import WorldBar from "./features/world/WorldBar.jsx";
 const MapPage = lazy(() => import("./pages/MapPage.jsx"));
 const Overview = lazy(() => import("./pages/Overview.jsx"));
 const Game = lazy(() => import("./pages/Game.jsx"));
+const Start = lazy(() => import("./pages/Start.jsx"));
 const base = import.meta.env.BASE_URL;
 const get = (n) => fetch(base + "data/" + n).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
@@ -57,7 +58,7 @@ export default function App() {
     <>
       <TopBar page={page} profile={profile} setProfile={setProfile} reportId={(["compare", "card", "report"].includes(page) && a1) || cand?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />
       <main>
-        {D.cm && page !== "compare" && page !== "mission" && page !== "home" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
+        {D.cm && page !== "compare" && page !== "mission" && page !== "home" && page !== "start" && <WorldBar page={page} target={profile} region={region} setRegion={setRegion} candId={(["card", "report"].includes(page) && a1) || candR?.features.map((f) => f.properties).sort((a, b) => a.rank - b.rank)[0]?.id} />}
         {!D.cm ? <p>Loading data…</p> : (
           <Suspense fallback={<p>Loading page…</p>}>
             {(page === "compare" || page === "mission") && <Overview D={D} profile={profile} cand={cand} reference={reference} selId={a1} />}
@@ -70,6 +71,7 @@ export default function App() {
               ? <Card p={feature} profile={profile} reference={reference} lim={D.lim} tE={D.tE} tM={D.tM} known={D.known} />
               : <div className="card">This window is not in the candidate file for the chosen target (the file holds only the best 250 candidates per region). <a href="#/list">Back to the list</a></div>)}
             {page === "game" && <Game D={D} profile={profile} setProfile={setProfile} />}
+            {page === "start" && <Start profile={profile} setProfile={setProfile} />}
             {page === "method" && <Method lim={D.lim} valid={D.valid} controls={D.controls} inventory={D.inv} expl={D.expl} />}
           </Suspense>
         )}

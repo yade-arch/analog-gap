@@ -9,13 +9,14 @@ Source: the "complete application redesign" brief (Parts 1–15). Work was done 
 - Compare: "Your result" card (`src/features/overview/ResultSummary.jsx`). It shows place and coordinates, reference, D, Earth and reference P50 for slope, relief and roughness with units, most and least alike (smallest/largest d_k), missing data, a caution line, a "Download full PDF report" button (opens the existing report page) and JSON under "More export options". Quick on-demand checks are labelled "Approximate".
 - Explore point panel: action renamed to "Compare this place" (already opened Compare with the point).
 - Merged `claude/global-analysis-8184cd` (any point on Earth).
+- Start screen (`#/start`, now the default page; `src/pages/Start.jsx`): Earth globe, short intro, Moon/Mars choice, place search, "Find a place", up to 4 recent places. A globe click or search opens Explore with that point already selected (`#/map?lat=..&lon=..&name=..`). Checked in the browser.
 
 ## Not verified
 - Black-and-white mode was not looked at in the browser. Check the globe, charts, report printout and the game.
 - The result card for an on-demand point: it may show "not enough data yet" if the point object has no `d` / `derived_percentiles`.
 
 ## Not started (next, in this order)
-1. Start screen: globe + intro + search + Moon/Mars choice + recent places (Part 1).
+1. (done: start screen) — next is the PDF report.
 2. PDF report: real PDF for on-demand points; fix page breaks and image scaling in the print CSS (Part 4).
 3. My places: two groups (Places I explored / Best matches from our scan), favourites and Moon/Mars filters, compare two saved places (Part 6).
 4. One "Data sources" section grouped by purpose. Remove repeated "NASA" badges from cards. Check that AWS Terrain Tiles is never labelled NASADEM (Part 5).

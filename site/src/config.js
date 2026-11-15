@@ -6,7 +6,7 @@ export const ROUTES = [
   { id: "list", key: "nav.list" },
   { id: "game", key: "nav.game" },
 ];
-export const DEFAULT_ROUTE = "map";                // start by exploring Earth
+export const DEFAULT_ROUTE = "start";              // open on the Earth globe start screen
 
 export const SETTINGS = {
   lang: "en",

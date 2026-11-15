@@ -14,11 +14,16 @@ import { useShow } from "../features/mapSections.js";
 import "../features/ui/glass.css";
 
 const VIEWS = ["globe", "flat"];
+// A point handed over from the start screen (#/map?lat=..&lon=..&name=..) opens already selected.
+const fromHash = () => {
+  const q = new URLSearchParams(location.hash.split("?")[1] || ""), lat = parseFloat(q.get("lat")), lon = parseFloat(q.get("lon"));
+  return Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon, ...(q.get("name") ? { name: q.get("name") } : {}) } : null;
+};
 const PHOTO = import.meta.env.BASE_URL + "data/tex/earth_bmng_200412_5400.jpg";   // sharper NASA Blue Marble (same product, 5400 px)
 
 // Harita: solda referans kartı, sağda 3B küre / 2B harita; "Ek bilgiler" açılır kutusu gerçek sayılarla (meta). Bölge kartı ve uyarı altta.
 export default function MapPage({ cand, candAll, region, setRegion, profile, D, onSelect }) {
-  const [view, setView] = useState("globe"), [sel, setSel] = useState(null);
+  const [view, setView] = useState("globe"), [sel, setSel] = useState(fromHash);
   const markers = useMemo(() => dMarkers(cand), [cand]);
   const refs = useMemo(() => ({ moon: D.rm, mars: D.rs }), [D.rm, D.rs]);
   const m = cand.meta;

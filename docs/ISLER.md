@@ -12,3 +12,4 @@
 - 2026-11-15 | gezegen-kesif | global-analysis dalı birleştirildi; Find a place sekmesine bölüm menüsü (tek bölüm göster) | tamam
 - 2026-11-15 | gezegen-kesif | Bölüm menüsü Compare ve My places sekmelerine de eklendi (oyun hariç) | tamam
 - 2026-11-15 | gezegen-kesif | 4 ana sekme, siyah-beyaz mod, Compare sonuç özeti + PDF/JSON eylemleri; kalanlar docs/HANDOFF-REDESIGN.md | devam
+- 2026-11-15 | gezegen-kesif | Açılış ekranı (#/start): küre, tanıtım, arama, Ay/Mars, son yerler; tıklanan nokta Explore'da seçili açılır | tamam
