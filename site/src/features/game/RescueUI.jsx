@@ -8,7 +8,9 @@ import { VARS, assess, suggest } from "./rescue.js";
 
 export const Tag = ({ k }) => <span className={"rs-tag rs-tag-" + k}>{t("game.rs.tag." + k)}</span>;
 const val = (v, d, u) => (v == null || Number.isNaN(v) ? null : `${fmt(v, d)} ${u}`);
-export const siteName = (s) => (s.kind === "cand" ? tf("game.rs.site.cand", { id: s.id }) : t("game.rs.site.free"));
+// Well-known analog areas (approximate centres; the terrain values are fetched live for that point).
+const SPOTS = [["Atacama Desert", -24.1, -69.9], ["Iceland lava fields", 64.85, -16.83], ["Devon Island", 75.38, -89.68], ["Mojave Desert", 35.0, -115.6], ["Namib Desert", -24.75, 15.35]];
+export const siteName = (s) => (s.kind === "cand" ? tf("game.rs.site.cand", { id: s.id }) : s.name || t("game.rs.site.free"));
 export const coords = (s) => `${fmt(Math.abs(s.center_lat), 3)}° ${s.center_lat >= 0 ? "N" : "S"}, ${fmt(Math.abs(s.center_lon), 3)}° ${s.center_lon >= 0 ? "E" : "W"}`;
 
 /** Earth value vs target reference for one variable (typical P50 and steep part P90). Missing never shows as zero. */
@@ -38,18 +40,11 @@ export function TempRows({ s, truth, profile }) {
 
 /** Earth team desk: investigate any place, compare alternatives, choose the one for the report. */
 export function EarthDesk({ r, profile }) {
-  const { S, truth } = r, s = r.site(), [lat, setLat] = useState(""), [lon, setLon] = useState(""), [err, setErr] = useState(false);
-  const go = (e) => { e.preventDefault(); const a = +lat, b = +lon; if (lat === "" || lon === "" || !(Math.abs(a) <= 90 && Math.abs(b) <= 180)) { setErr(true); return; } setErr(false); r.investigate({ lat: a, lon: b, free: true }); };
+  const { S, truth } = r, s = r.site();
   return (
     <aside className="rs-desk" onPointerDown={(e) => e.stopPropagation()}>
       <h3>🌍 {tf("game.rs.desk.title", { b: t("ui.body." + profile) })}</h3>
-      <ol className="rs-steps"><li>{t("game.rs.desk.s1")}</li><li>{t("game.rs.desk.s2")}</li><li>{t("game.rs.desk.s3")}</li></ol>
-      <details className="rs-more"><summary>{t("game.rs.desk.typed")}</summary><form className="rs-coord" onSubmit={go}>
-        <input inputMode="decimal" aria-label={t("game.rs.lat")} placeholder={t("game.rs.lat")} value={lat} onChange={(e) => setLat(e.target.value)} />
-        <input inputMode="decimal" aria-label={t("game.rs.lon")} placeholder={t("game.rs.lon")} value={lon} onChange={(e) => setLon(e.target.value)} />
-        <button className="g-btn2">{t("game.rs.check")}</button>
-      </form>
-      {err && <p className="rs-warn">{t("game.rs.coordErr")}</p>}</details>
+      <div className="rs-sites">{SPOTS.map(([n, la, lo]) => <button key={n} className="g-btn2" onClick={() => r.investigate({ lat: la, lon: lo, free: true, name: n })}>{n}</button>)}</div>
       {S.sites.length > 0 && <div className="rs-tabs" role="tablist"><span className="rs-small">{t("game.rs.desk.checked")}</span>{S.sites.map((x) => (
         <button key={x.key} role="tab" aria-selected={x.key === S.focus} className={x.key === S.focus ? "on" : ""} onClick={() => r.focus(x.key)}>{x.letter}</button>
       ))}</div>}

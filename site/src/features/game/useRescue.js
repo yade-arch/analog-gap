@@ -29,7 +29,7 @@ export default function useRescue({ D, profile, clock, phase, setPhase, paused, 
     const i = R.current.sites.length;
     if (cand) { clock.spend(RESCUE.cost.inspectCand, "inspect"); put((s) => ({ sites: [...s.sites, siteFromCand(cand, D, i)], focus: cand.id })); return; }
     clock.spend(RESCUE.cost.inspectPoint, "inspect");
-    const sp = sitePoint(m.lat, m.lon, i); put((s) => ({ sites: [...s.sites, sp], focus: sp.key }));
+    const sp = { ...sitePoint(m.lat, m.lon, i), name: m.name || null }; put((s) => ({ sites: [...s.sites, sp], focus: sp.key }));
     analysePoint(m.lat, m.lon, { moon: D.rm, mars: D.rs })
       .then((r) => put((s) => ({ sites: s.sites.map((x) => (x.key === sp.key ? fillPoint(x, r, profile) : x)) })))
       .catch((e) => put((s) => ({ sites: s.sites.map((x) => (x.key === sp.key ? { ...x, status: "err", err: String(e.message || e) } : x)) })));
