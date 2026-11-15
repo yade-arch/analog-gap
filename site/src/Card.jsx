@@ -63,8 +63,8 @@ export function GapPanel({ p, profile, reference, lim, tE, tM }) {
       <p className="muted">What this comparison cannot tell you. Shown next to every result.</p>
       <h3>Not compared</h3>
       <table><tbody>
-        {[["Spectral / minerals", "out of scope"], ["Atmosphere", "out of scope"], ["Gravity", "out of scope"], ["Radiation", "out of scope"], ["Soil (regolith) properties", "no data"],
-          ["Temperature", profile === "mars" ? "Mars: data missing" : "not in the distance, see below"]].map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}
+        {[["What the rocks are made of", "not checked"], ["Air", "not checked"], ["How strong gravity pulls", "not checked"], ["Space radiation", "not checked"], ["Dust and soil", "no data"],
+          ["Hot and cold", profile === "mars" ? "no Mars data" : "shown, but not in the number"]].map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}
       </tbody></table>
       <details className="sci"><summary>More numbers (for scientists)</summary>
       <h3>Distance per property d_k <Tag kind="der" /></h3>
@@ -85,6 +85,8 @@ export function GapPanel({ p, profile, reference, lim, tE, tM }) {
     </aside>
   );
 }
+
+const KID = { slope: "How steep", relief: "How tall the bumps are", rough: "How bumpy" };
 
 export default function Card({ p, profile, reference, lim, tE, tM, known }) {
   const [tab, setTab] = useState("char");
@@ -108,17 +110,17 @@ export default function Card({ p, profile, reference, lim, tE, tM, known }) {
           <div className="tabs">{tabs.map(([k, l]) => <button key={k} className={tab === k ? "on" : ""} onClick={() => setTab(k)}>{l}</button>)}</div>
           {tab === "char" && (
             <div className="card">
-              <h3>Properties: landform <span className="muted small">(technical name: Characterize; 30 m, Horn 3×3 slope)</span></h3>
-              <p><Tag kind="obs" />NASADEM elevation &nbsp; <Tag kind="der" />slope, relief, roughness (P10 / P50 / P90)</p>
+              <h3>What the ground is like here</h3>
+              <p>We used NASA height maps of this place to measure three things. <Tag kind="der" /></p>
               <table>
-                <thead><tr><th>Property</th><th className="n">Low end (P10)</th><th className="n">Typical (P50)</th><th className="n">High end (P90)</th></tr></thead>
+                <thead><tr><th>What we measured</th><th className="n">Low</th><th className="n">Usual</th><th className="n">High</th></tr></thead>
                 <tbody>
                   {Object.keys(VARS).map((k) => (
-                    <tr key={k}><td>{VARS[k][0]} ({VARS[k][1]})</td><td className="n">{fmt(p.derived_percentiles[k].p10, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p50, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p90, 2)}</td></tr>
+                    <tr key={k}><td>{KID[k]} ({VARS[k][1]})</td><td className="n">{fmt(p.derived_percentiles[k].p10, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p50, 2)}</td><td className="n">{fmt(p.derived_percentiles[k].p90, 2)}</td></tr>
                   ))}
                 </tbody>
               </table>
-              <p><Tag kind="int" />{p.labels.interpretation}</p>
+              <p className="muted">We only compare the shape of the ground. Air, cold, soil and rocks are not compared (see the box on the right).</p>
             </div>
           )}
           {tab === "cmp" && (
