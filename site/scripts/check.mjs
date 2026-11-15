@@ -85,6 +85,11 @@ await step("gezegen çekirdeği (coords, picking, registry, provider)", async ()
   return planetTests((p) => import(pathToFileURL(join(src, p)).href));
 });
 
+await step("oyun değişmezliği (Ay/Mars arazi ağı, istasyonlar, zemin örnekleri, eğim sınırları)", async () => {
+  const { gameInvarianceTest } = await import(pathToFileURL(join(root, "scripts", "game-invariance.mjs")).href);
+  return gameInvarianceTest();
+});
+
 if (process.argv.includes("--no-build")) console.log("--   derleme atlandı (--no-build)");
 else await step("vite build", () => {
   const r = spawnSync(process.execPath, [join(root, "node_modules", "vite", "bin", "vite.js"), "build"], { cwd: root, encoding: "utf8" });
