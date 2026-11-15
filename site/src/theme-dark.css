@@ -51,3 +51,27 @@ html .rp-name { font-size: 18px; margin: 2px 0; } html .rp-name + h2 { font-size
 html .pt-kid { display: grid; gap: 4px; } html .pt-kid b { font-size: 16px; } html .pt-kid em { font-style: normal; color: var(--cool); font-weight: 500; }
 html .gap-side { position: sticky; top: 12px; max-height: calc(100vh - var(--hdr, 64px) - 24px); overflow-y: auto; align-self: start; } @media (max-width: 860px) { html .gap-side { position: static; max-height: none; } }
 html .rep-ring text { fill: var(--ink) !important; } html .rep-ring, html .rep-ring * { color: var(--ink); } html .rep-ring circle:first-child { stroke: var(--bg2); }
+/* auto: old light-theme text colours made readable on dark */
+html .g-card { color: var(--ink); }
+html .g-kicker { color: var(--muted); }
+html .g-h { color: var(--ink); }
+html .g-btn { color: var(--ink); }
+html .relief-empty { color: var(--muted); }
+html .stats dt { color: var(--muted); }
+html .cand2-d b { color: var(--ink); }
+html .cand2-d span { color: var(--muted); }
+html .rep-nav a { color: var(--muted); }
+html .ref-sub { color: var(--muted); }
+html .ic { color: var(--muted); }
+html .pt-d strong { color: var(--ink); }
+html .pt-note { color: var(--muted); }
+html .disc-body { color: var(--ink); }
+html .disc-body.mars { color: var(--muted); }
+html .topx .brand { color: var(--ink); }
+html .stepx a { color: var(--muted); }
+html .stepx .dot { color: var(--muted); }
+html .stepx li.on a { color: var(--muted); }
+html .conn { color: var(--ink); }
+html .gear summary { color: var(--muted); }
+html .gear-menu a { color: var(--ink); }
+html .gear-menu .g-sub { color: var(--muted); }
