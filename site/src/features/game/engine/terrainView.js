@@ -14,7 +14,7 @@ import { scenery } from "./scenery.js";
 export const EXAG = 2;
 const LOOK = {
   earth: { ground: [176, 138, 99], rock: 0x8a6a4c, sky: 0x9cc3e6, fog: 0xbcd4ea },
-  moon: { ground: [150, 148, 145], rock: 0x6f6d6a, sky: 0x02030a, fog: null },
+  moon: { ground: [150, 148, 145], rock: 0x6f6d6a, sky: 0x02030a, fog: 0x02030a },   // dark "fog" = horizon fades into the black sky (no wall look; visual only)
   mars: { ground: [178, 96, 56], rock: 0x7a3a22, sky: 0x3a2318, fog: 0x8a5a40 },
 };
 
