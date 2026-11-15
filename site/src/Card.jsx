@@ -58,14 +58,15 @@ function Thermal({ p, profile, tE, tM }) {
 export function GapPanel({ p, profile, reference, lim, tE, tM }) {
   const loo = reference?.internal_spread_leave_one_out;
   return (
-    <aside className="card" aria-label="Gap paneli">
+    <aside className="card gap-side" aria-label="Gap panel">
       <h2>Expose the Gap</h2>
-      <p className="muted">This panel is always shown next to the similarity result.</p>
-      <h3>Properties that cannot be calculated / out of scope</h3>
+      <p className="muted">What this comparison cannot tell you. Shown next to every result.</p>
+      <h3>Not compared</h3>
       <table><tbody>
         {[["Spectral / minerals", "out of scope"], ["Atmosphere", "out of scope"], ["Gravity", "out of scope"], ["Radiation", "out of scope"], ["Soil (regolith) properties", "no data"],
           ["Temperature", profile === "mars" ? "Mars: data missing" : "not in the distance, see below"]].map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}
       </tbody></table>
+      <details className="sci"><summary>More numbers (for scientists)</summary>
       <h3>Distance per property d_k <Tag kind="der" /></h3>
       <table><tbody>
         {Object.keys(VARS).map((k) => <tr key={k}><td>{VARS[k][0]}</td><td className="n">{fmt(p.d[k], 3)}</td></tr>)}
@@ -80,6 +81,7 @@ export function GapPanel({ p, profile, reference, lim, tE, tM }) {
       <Thermal p={p} profile={profile} tE={tE} tM={tM} />
       <h3>Known limitations</h3>
       <Limitations lim={lim} profile={profile} />
+      </details>
     </aside>
   );
 }
