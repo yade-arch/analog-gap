@@ -80,7 +80,7 @@ export default function Overview({ D, profile, cand, reference, selId }) {
   return (
     <div className={"ov" + (open ? "" : " ov-full")}>
       <div className="ov-top" hidden={!show("places")}>{cards[0]}<DistanceCard D={p.D} />{cards[1]}</div>
-      {show("summary") && <ResultSummary p={p} reference={reference} names={names} report={p.onDemand ? null : `#/report/${p.id}/${profile}?print=1`} download={download} />}
+      {show("summary") && <ResultSummary p={p} reference={reference} names={names} profile={profile} report={p.onDemand ? null : `#/report/${p.id}/${profile}?print=1`} download={download} />}
       {!zoomed ? (
       <div className="ov-stage ov-intro" hidden={!show("view")} onDoubleClick={() => setZoomed(true)}>
         <div className="ov-globes">

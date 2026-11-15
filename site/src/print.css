@@ -47,3 +47,18 @@
 }
 @media print { .sci-print { margin: 0 0 8pt; } .sci-print figcaption { margin-bottom: 2pt; } }
 @media print { .lg.earth { border-top-color: #000; } }
+/* short-paper report */
+.paper h1 { font-size: 1.4rem; line-height: 1.25; margin: 12px 0 4px; } .paper h2 { font-size: 1.05rem; margin: 16px 0 4px; display: flex; gap: 8px; align-items: center; }
+.paper p { max-width: 75ch; line-height: 1.6; margin: 0 0 8px; } .paper-by { color: var(--muted); }
+.paper table { border-collapse: collapse; width: 100%; max-width: 640px; } .paper th, .paper td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line-soft); }
+.paper-wrap > summary { cursor: pointer; font-weight: 600; }
+.paper-portal { display: none; }
+@media print {
+  .paper { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; }
+  .paper h1 { font-size: 17pt; } .paper h2 { font-size: 12.5pt; margin: 12pt 0 3pt; } .paper p { line-height: 1.5; }
+  .paper section { break-inside: avoid; }
+  .paper-wrap { border: 0 !important; padding: 0 !important; }
+  .rep-appx { break-before: page; page-break-before: always; }
+  html.print-paper #root { display: none !important; }
+  html.print-paper .paper-portal { display: block !important; }
+}

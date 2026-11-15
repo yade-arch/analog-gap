@@ -6,6 +6,7 @@ import anaekran from "./en.anaekran.js";
 import hero from "./en.hero.js";
 import overview from "./en.overview.js";
 import point from "./en.point.js";
+import paper from "./en.paper.js";
 export default {
   ...pages,
   ...game,
@@ -14,6 +15,7 @@ export default {
   ...hero,
   ...overview,
   ...point,
+  ...paper,
   "app.title": "ANALOG GAP",
   "app.sub": "Comparison Mission",
   "nav.compare": "Compare",

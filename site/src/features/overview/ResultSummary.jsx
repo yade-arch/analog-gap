@@ -2,6 +2,7 @@ import React from "react";
 import { t } from "../../i18n/index.js";
 import { TERMS, tipOf } from "../../i18n/terms.js";
 import { fmt, Tag } from "../../common.jsx";
+import { PrintPaperButton } from "../ui/ReportPaper.jsx";
 
 // Short result card shown as soon as a comparison is ready. Uses only numbers that already
 // exist (P50 values, d_k, D); nothing new is calculated. "Most / least alike" is the smallest /
@@ -9,7 +10,7 @@ import { fmt, Tag } from "../../common.jsx";
 const KEYS = ["slope", "relief", "rough"];
 const DEC = { slope: 1, relief: 0, rough: 2 };
 
-export default function ResultSummary({ p, reference, names, report, download }) {
+export default function ResultSummary({ p, reference, names, report, download, profile }) {
   const rows = KEYS.map((k) => ({
     k, ref: reference?.variables?.[k]?.p50, earth: p?.derived_percentiles?.[k]?.p50, d: p?.d?.[k],
   }));
@@ -42,7 +43,7 @@ export default function ResultSummary({ p, reference, names, report, download })
         <li>{t("rs.careful")}</li>
       </ul>
       <div className="rsum-act">
-        {report ? <a className="g-btn primary" href={report}>{t("rs.pdf")}</a> : <p className="muted small">{t("rs.noPdf")}</p>}
+        {report ? <a className="g-btn primary" href={report}>{t("rs.pdf")}</a> : <PrintPaperButton className="g-btn primary" label={t("rs.pdf")} p={p} reference={reference} profile={profile} />}
         <details><summary>{t("rs.more")}</summary><button type="button" className="g-btn" onClick={download}>{t("rs.json")}</button></details>
       </div>
     </section>

@@ -11,6 +11,7 @@ import { exceedFraction } from "../features/compare/stats.js";
 import { buildReport } from "../features/mission/report.js";
 import { StationTable } from "../hud/StationCard.jsx";
 import ReportOverview from "../features/ui/ReportOverview.jsx";
+import ReportPaper from "../features/ui/ReportPaper.jsx";
 
 /** Otomatik ANALOG GAP Report (yazdırılabilir). Ekrandaki istasyon kartlarıyla aynı hesap (stationResult). Rover limiti kullanılır. */
 export default function Report({ D, profile, cand, id }) {
@@ -63,6 +64,8 @@ export default function Report({ D, profile, cand, id }) {
           <dt>{t("rep.data")}</dt><dd>{SOURCES}</dd>
         </dl>
       </header>
+      <details className="g-card paper-wrap"><summary>{t("rep.paper")}</summary><ReportPaper p={p} reference={reference} profile={profile} /></details>
+      <h2 className="print-only rep-appx">{t("rep.appx")}</h2>
       <div className="rep-actions noprint">
         <button type="button" className="g-btn primary" onClick={printPdf}>{t("rs.pdf")}</button>
         <span className="muted small">{t("rep.pdfHint")}</span>

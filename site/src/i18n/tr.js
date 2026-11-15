@@ -6,10 +6,12 @@ import world from "./tr.world.js";
 import hero from "./tr.hero.js";
 import overview from "./tr.overview.js";
 import point from "./tr.point.js";
+import paper from "./tr.paper.js";
 export default {
   ...pages,
   ...game,
   ...point,
+  ...paper,
   "app.title": "ANALOG GAP",
   "app.sub": "Karşılaştırma Görevi",
   "nav.compare": "Karşılaştırma",
