@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 /* One design system for every page: calm dark navy (from the compare screen), simple solid panels, one blue accent.
    Loaded last; overrides the older light theme. Body colours: Moon grey, Mars rust, Earth blue-green (small accents only). */
 :root { --bg: #0b1426; --bg2: #121d33; --panel: #131f37; --panel-solid: #131f37; --ink: #e6ecf5; --muted: #a2b0c6;
@@ -76,3 +77,11 @@ html .gear summary { color: var(--muted); }
 html .gear-menu a { color: var(--ink); }
 html .gear-menu .g-sub { color: var(--muted); }
 html .ref-sub, html .muted { color: #b4c0d3; }
+/* Professional polish: one type scale, one radius, hairline panels, calmer tags, consistent controls */
+html body { font-family: Inter, system-ui, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+html h1, html h2, html h3, html .g-h { font-weight: 600; letter-spacing: -0.01em; } html h2, html .g-h { font-size: 20px; } html h3 { font-size: 16px; }
+html .g-card, html .card, html .ov-card, html .ov-dist, html .ov-box, html .ov-st { border-radius: 12px; border: 1px solid rgba(230, 236, 245, .08); }
+html button, html .g-btn, html .btn-accent, html .viewtabs button, html .regions button { border-radius: 8px; font-weight: 500; transition: background-color .15s ease, border-color .15s ease; }
+html .tag { font-size: 11px; padding: 1px 8px; border-radius: 6px; font-weight: 500; }
+html main { max-width: 1440px; } html table td, html table th { padding: 8px 10px; } html table th { color: var(--muted); font-weight: 500; }
+html a:focus-visible, html button:focus-visible, html summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
