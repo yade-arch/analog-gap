@@ -58,12 +58,13 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   if (L.fog) scene.fog = new THREE.Fog(L.fog, 7, 30);
   const { geometry, zmed } = buildTerrain(dem);
   const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1, metalness: 0 });
-  const mesh = new THREE.Mesh(geometry, mat); mesh.scale.y = EXAG; scene.add(mesh);
+  const mesh = new THREE.Mesh(geometry, mat); const EX = body === "moon" ? 1 : EXAG;   // Moon: true heights (Shackleton rim is already steep; 2× made it a wall)
+  mesh.scale.y = EX; scene.add(mesh);
   let zmin = Infinity; for (let k = 0; k < dem.z.length; k++) { const e = elev(dem, k); if (!Number.isNaN(e) && e < zmin) zmin = e; }
   const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1 }));
   base.material.map.repeat.set(960, 960);   // same colour and tile size as the data window (400 km / 10 km × 24): no visible seam base.rotation.x = -Math.PI / 2;
-  base.position.y = ((zmin - zmed) / 1000) * EXAG - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
-  const h = (x, z) => sampleH(dem, x, z) * EXAG;
+  base.position.y = ((zmin - zmed) / 1000) * EX - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
+  const h = (x, z) => sampleH(dem, x, z) * EX;
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));
   scene.add(scenery(body, base.position.y));
   if (body !== "earth") scene.add(stars());
