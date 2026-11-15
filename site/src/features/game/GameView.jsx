@@ -8,6 +8,7 @@ import { astronaut, lander } from "./engine/voxel.js";
 import { loadDem } from "../compare/demLoader.js";
 import { SETTINGS } from "../../config.js";
 import { candMarkers, candOf, refMarkers, refOf, roverLimit } from "./data.js";
+import { MODS6 } from "./gear.js";
 
 const UP = new THREE.Vector3(0, 0.55, 0);
 
@@ -20,9 +21,9 @@ function crashSite(tv, suit, withLander = true) {
 }
 
 /** Sahne köprüsü. Sol yuva = hedef gövde (Ay/Mars), sağ yuva = Dünya. Tek oyunculuda yalnızca sol (tam ekran). */
-export default function GameView({ profile, D, phase, mode, sel, suit, region, dems, done, paused, keys, onPick, onArrive, onBlocked, onLanded, anchors, hud, ctl }) {
+export default function GameView({ profile, D, phase, mode, sel, suit, region, dems, done, paused, keys, onPick, onArrive, onBlocked, onLanded, anchors, hud, ctl, mod2, look, onZones }) {
   const host = useRef(null), stage = useRef(null), F = useRef({});
-  const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done, ctl };
+  const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done, ctl, onZones };
   const group = ["drive", "suit", "result", "loadout"].includes(phase) ? "field" : phase === "earthdrive" ? "earthfield" : phase === "transmit" ? "explore" : phase;
   const refId = profile === "moon" ? "Site07" : SETTINGS.references[profile][0];   // Moon field: real LOLA window "Peak near Shackleton" (gentler; Site04 rim is a ~2 km wall)
   const refM = useMemo(() => refMarkers(refOf(D, profile)), [D, profile]);
@@ -61,6 +62,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
         if (!live.on) return;
         const tl = makeTerrainView(st.els.left, dr, profile); st.setView("left", tl);
         F0.tl = tl; F0.astro = crashSite(tl, suit);
+        cb.current.onZones?.(tl.points.map((p) => p && { i: p.i, h: tl.height(p.x, p.z), slope: tl.slopeAt(p.x, p.z) }));   // real beacon height/slope -> hazard zones
         F0.r1 = createRover(tl, roverLimit(D.params, profile)?.num, mode === "multi" ? KEYMAPS.p1 : KEYMAPS.solo); tl.chase(F0.r1.obj);
         if (dc) {
           const tr = makeTerrainView(st.els.right, dc, "earth"); st.setView("right", tr); F0.tr = tr;
@@ -95,6 +97,13 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
     }
   }, [phase, suit]);
 
+  useEffect(() => {                                  // Earth rover module: small coloured roof part (visual only)
+    const r = F.current.r2; if (!r) return;
+    r.obj.getObjectByName("mod")?.removeFromParent(); if (!mod2) return;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(mod2 === "solar" ? 1.6 : 0.6, mod2 === "solar" ? 0.06 : 0.4, mod2 === "solar" ? 1.2 : 0.6), new THREE.MeshStandardMaterial({ color: MODS6[mod2].color, emissive: mod2 === "lidar" ? 0x0a6080 : 0 }));
+    m.name = "mod"; m.position.set(0, mod2 === "lidar" ? 1.9 : 1.45, 0); r.obj.add(m);
+  }, [mod2, group]);
+  useEffect(() => { const f = F.current; if (phase === "result" && look && f.tl && f.astro) { const old = f.astro; f.astro = crashSite(f.tl, look, false); old.parent?.remove(old); } }, [look, phase]);
   useEffect(() => { for (const i of done.p1 || []) F.current.tl?.markDone(i); for (const i of done.p2 || []) F.current.tr?.markDone(i); }, [JSON.stringify(done)]);
 
   useEffect(() => stage.current.onFrame((dt) => {      // sürüş, varış, HUD ve etiket konumları (React dışı)

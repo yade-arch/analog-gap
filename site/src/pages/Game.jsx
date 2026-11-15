@@ -18,6 +18,9 @@ import { addLog } from "../features/game/logbook.js";
 import { EarthPanel, LandCard, LinkBadge, Location, Oxygen, Prompt, RegionBar, RoverHud, Speech, Toast, TouchPad, WaypointTags } from "../features/game/Hud.jsx";
 import { PauseMenu, StartMenu } from "../features/game/Menus.jsx";
 import useRescue from "../features/game/useRescue.js";
+import { tf } from "../features/game/ui.jsx";
+import { Garage, Loadout as GearLoadout, Stress, Telemetry, Uplink, beep } from "../features/game/GearUI.jsx";
+import { testGear, zonesOf, FAIL_MIN } from "../features/game/gear.js";
 import { Decision, DriveHud, EarthDesk, EarthSurvey, Loadout, Transmit } from "../features/game/RescueUI.jsx";
 import RescueResult from "../features/game/RescueResult.jsx";
 
@@ -35,6 +38,7 @@ export default function Game({ D, profile, setProfile }) {
   const reportHref = `#/report/${(sel || best)?.id || ""}/${profile}`;
   const tests = mode === "multi" ? done.p1.filter((i) => done.p2.includes(i)) : done.p1;
   const flags = riskFlags(profile, Object.fromEntries(tests.map((i) => [TESTS[i], true])), target, roverLimit(D.params, profile));
+  const [gear2, setGear2] = useState({ suit: "carbon", mod: "mesh" }), [garage, setGarage] = useState(false), [elog, setElog] = useState([]), [up, setUp] = useState(0), [zones, setZones] = useState([]), [flash, setFlash] = useState(null), [look, setLook] = useState(null);
   const lastBlock = useRef(0), loc = t("game.loc." + profile), solo = mode === "solo";
   const say = (lines, then) => setSpeech({ lines, i: 0, then });
   const rescue = useRescue({ D, profile, clock, phase, setPhase, paused, hud, toast: setToast, say, on: solo });   // solo = Earth-to-Space Rescue
@@ -45,7 +49,7 @@ export default function Game({ D, profile, setProfile }) {
   useEffect(() => { if (PLAYING.includes(phase)) { if (paused) clock.stop(); else clock.start(); } }, [paused, phase]);
   useEffect(() => { if (clock.left <= 0 && PLAYING.includes(phase)) { if (solo) rescue.end("timeout"); else finish("timeout", 0); } }, [clock.left]);
 
-  const reset = () => { clock.reset(); setPhase("menu"); setPaused(false); setSel(null); setRegion(null); setSeen(new Set()); setDone({ p1: [], p2: [] }); setSuit(null); setFinal(null); setEnded(false); setSpeech(null); rescue.reset(); };
+  const reset = () => { clock.reset(); setPhase("menu"); setPaused(false); setSel(null); setRegion(null); setSeen(new Set()); setDone({ p1: [], p2: [] }); setSuit(null); setFinal(null); setEnded(false); setSpeech(null); rescue.reset(); setGarage(false); setElog([]); setUp(0); setZones([]); setLook(null); };
   useEffect(reset, [profile]);
   const start = () => { document.documentElement.requestFullscreen?.().catch(() => {}); reset(); setPhase("intro"); };
   const next = () => setSpeech((s) => { if (!s) return s; if (s.i + 1 < s.lines.length) return { ...s, i: s.i + 1 }; setTimeout(() => s.then?.(), 0); return null; });
@@ -75,8 +79,20 @@ export default function Game({ D, profile, setProfile }) {
     if (solo) { if (k === "p1") { const d0 = doneRef.current; if (!d0.p1.includes(i)) { const nd0 = { ...d0, p1: [...d0.p1, i] }; doneRef.current = nd0; setDone(nd0); rescue.arrive(i); } } return; }
     const d = doneRef.current; if (d[k].includes(i)) return;
     const nd = { ...d, [k]: [...d[k], i] }; doneRef.current = nd; setDone(nd);
-    if (mode === "multi" && !(nd.p1.includes(i) && nd.p2.includes(i))) { setToast(t("game.msg.wait." + k)); return; }
+    if (k === "p2") earthTest(i);
+    if (mode === "multi" && !(nd.p1.includes(i) && nd.p2.includes(i))) { if (k !== "p2") setToast(t("game.msg.wait." + k)); return; }
     clock.spend(GAME.cost.test, TESTS[i]); setToast(testLine(i, sel, D, profile, target));
+  };
+  function earthTest(i) {                              // Earth player reached beacon i: test the current gear against Moon/Mars zone i (game rule)
+    const z = zones.find((x) => x.i === i); if (!z) return;
+    const r = testGear(z, gear2.suit, gear2.mod), e = { i, suit: gear2.suit, mod: gear2.mod, ok: r.ok, why: r.why };
+    setElog((l) => [...l, e]);
+    if (r.ok) { setToast(tf("gear.verified", { s: t("gear." + e.suit), m: t("gear." + e.mod) })); beep(880, 120); }
+    else { setToast(tf("gear.fail." + (r.why === "cold" || r.why === "hot" ? "suit" : "mod"), { g: t("gear." + (r.why === "cold" || r.why === "hot" ? e.suit : e.mod)), z: t("gear.z." + r.why) })); beep(220, 300); setFlash(r.why === "cold" ? "cold" : "hot"); setTimeout(() => setFlash(null), 700); }
+  }
+  const confirmGear = (g, fails) => {                 // left loadout: failing zones cost time and lower the result (game rule)
+    const after = Math.max(0, clock.left - GAME.cost.suit - fails.length * FAIL_MIN), res = fails.length === 0 ? outcome(SUITS.suit1, after, []) : fails.length === 1 ? "risky" : "nooxygen";
+    setSuit(fails.length ? "suit2" : "suit1"); setLook(g.suit); clock.spend(GAME.cost.suit + fails.length * FAIL_MIN, "suit"); finish(res, res === "nooxygen" ? 0 : after);
   };
   const confirmSuit = (id) => {
     const s = SUITS[id], after = Math.max(0, clock.left - GAME.cost.suit), res = outcome(s, after, flags);
@@ -91,6 +107,8 @@ export default function Game({ D, profile, setProfile }) {
     if (speech && (k === "e" || k === "enter" || k === " ")) { next(); return; }
     if (phase === "explore" && k === "e" && !solo) land();
     if (phase === "drive" && k === "t" && !solo) setPhase("suit");
+    if (phase === "drive" && !solo && k === "g") setGarage((x) => !x);
+    if (phase === "drive" && !solo && k === "u" && up === 0) setUp(1);
     if (phase === "drive" && k === "m" && solo) rescue.cmd.mode(rescue.S.ctrl === "cmd" ? "direct" : "cmd");
   });
 
@@ -102,7 +120,7 @@ export default function Game({ D, profile, setProfile }) {
 
   return (
     <div className={"g-root g-" + phase + " g-mode-" + mode}>
-      {gl && <GameView profile={profile} D={D} phase={phase} mode={mode} sel={view} suit={solo ? rescue.S.load?.suit : suit} ctl={solo ? rescue.ctl : null} region={region} dems={dems} done={done} paused={paused} keys={keys} anchors={anchor} hud={hud}
+      {gl && <GameView profile={profile} D={D} phase={phase} mode={mode} sel={view} suit={solo ? rescue.S.load?.suit : suit} ctl={solo ? rescue.ctl : null} mod2={mode === "multi" ? gear2.mod : null} look={look} onZones={(pts) => setZones(zonesOf(pts, roverLimit(D.params, profile)?.num, profile))} region={region} dems={dems} done={done} paused={paused} keys={keys} anchors={anchor} hud={hud}
         onPick={pick} onArrive={arrive} onLanded={() => say([...introLines(profile), ...(solo ? [t("game.rs.say.help")] : [])], () => { setPhase("explore"); setToast(t("game.msg.start")); })}
         onBlocked={(b) => { const n = performance.now(); if (n - lastBlock.current > 3000) { lastBlock.current = n; setToast(t("game.msg.block." + b)); } }} />}
       {phase === "menu" && <StartMenu profile={profile} setProfile={setProfile} mode={mode} setMode={setMode} onStart={start} gl={gl} reportHref={reportHref} />}
@@ -122,7 +140,16 @@ export default function Game({ D, profile, setProfile }) {
       <Toast text={toast} />
       {!solo && phase === "explore" && !sel && !paused && (<div className="g-story" role="note"><svg className="g-pxman" viewBox="0 0 8 12" width="32" height="48" aria-hidden="true" shapeRendering="crispEdges"><rect x="2" y="0" width="4" height="3" fill="#ffd9b0"/><rect x="2" y="3" width="4" height="4" fill="#4d8fe6"/><rect x="0" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="6" y="3" width="2" height="3" fill="#4d8fe6"/><rect x="2" y="7" width="1.6" height="4" fill="#2b3a5c"/><rect x="4.4" y="7" width="1.6" height="4" fill="#2b3a5c"/></svg><p>{t("game.story.find")}</p></div>)}
       <Prompt text={prompt} />
-      {phase === "suit" && !paused && <SuitScreen suit={suit} setSuit={setSuit} onConfirm={confirmSuit} left={clock.left} />}
+      {!solo && phase === "drive" && !paused && <>
+        <Stress zone={zones.find((z) => !done.p2.includes(z.i))} gear={gear2} />
+        <div className="gr-btns"><button onClick={() => setGarage(!garage)}>🔧 {t("gear.garageKey")}</button>{up === 0 && <button onClick={() => setUp(1)}>📡 {t("gear.sendKey")}</button>}</div>
+        {garage && <Garage gear={gear2} setGear={setGear2} onClose={() => setGarage(false)} />}
+        {up === 1 && <Uplink log={elog} onDone={() => { setUp(2); beep(660, 120); }} />}
+      </>}
+      {!solo && up === 2 && phase === "drive" && <Telemetry log={elog} />}
+      {flash && <div className={"gr-flash gr-flash-" + flash} />}
+      {!solo && phase === "suit" && !paused && <GearLoadout zones={zones} log={elog} uplinked={up === 2} onGo={confirmGear} />}
+      {solo && phase === "suit" && !paused && <SuitScreen suit={suit} setSuit={setSuit} onConfirm={confirmSuit} left={clock.left} />}
       {!solo && phase === "result" && ended && <MissionReport result={final?.result || "timeout"} p={sel} D={D} profile={profile} cand={cand} suit={suit} left={final?.left ?? 0} reportHref={reportHref} onAgain={reset} tests={tests.length} />}
       {TOUCH && phase === "drive" && !paused && <TouchPad keys={keys} actions={solo ? [["m", "M", () => rescue.cmd.mode(rescue.S.ctrl === "cmd" ? "direct" : "cmd")]] : [["t", "T", () => setPhase("suit")]]} />}
       {phase !== "menu" && !paused && <button className="g-pausebtn" onClick={() => setPaused(true)} aria-label={t("game.pause.title")}>II</button>}

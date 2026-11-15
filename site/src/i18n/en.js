@@ -9,6 +9,7 @@ import point from "./en.point.js";
 import paper from "./en.paper.js";
 import rescue from "./en.rescue.js";
 import guide from "./en.guide.js";
+import gear from "./en.gear.js";
 export default {
   ...pages,
   ...game,
@@ -20,6 +21,7 @@ export default {
   ...paper,
   ...rescue,
   ...guide,
+  ...gear,
   "app.title": "ANALOG GAP",
   "app.sub": "Comparison Mission",
   "nav.compare": "Compare",

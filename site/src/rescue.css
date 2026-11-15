@@ -74,3 +74,23 @@
   .rs-res { box-shadow: none; padding: 0; max-height: none; }
   .rs-print h4 { break-after: avoid; } .rs-row { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
 }
+/* 2-player analog testing */
+.gr-btns { position: absolute; right: 10px; bottom: 54px; display: flex; gap: 6px; }
+.gr-btns button { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(160, 190, 255, .4); background: rgba(10, 16, 32, .7); color: #fff; cursor: pointer; font: 600 12px system-ui; }
+.gr-panel { position: absolute; top: 52px; width: min(420px, 48vw); max-height: calc(100% - 120px); overflow: auto; padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .97); color: #14243a; font-size: 12px; z-index: 4; }
+.gr-right { right: 10px; } .gr-panel h3 { margin: 0 0 6px; font-size: 14px; }
+.gr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 5px; margin: 6px 0; }
+.gr-item { position: relative; display: grid; gap: 2px; text-align: left; padding: 6px 8px; border-radius: 10px; border: 2px solid #d3dce7; background: #fff; color: #14243a; cursor: pointer; font: inherit; }
+.gr-item.on { border-color: #1d5fae; background: #eef4fb; } .gr-item i { width: 18px; height: 10px; border-radius: 3px; } .gr-item small { color: #4b5e76; font-size: 10.5px; }
+.gr-item em { position: absolute; top: 4px; right: 6px; font-style: normal; }
+.gr-stress { position: absolute; right: 10px; top: 150px; width: 200px; display: grid; gap: 3px; padding: 6px 10px; border-radius: 12px; background: rgba(10, 16, 32, .66); font-size: 11px; color: #fff; }
+.gr-bar { display: grid; grid-template-columns: 62px 1fr; align-items: center; gap: 6px; } .gr-bar em { font-style: normal; }
+.gr-bar i { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .15); overflow: hidden; } .gr-bar b { display: block; height: 100%; background: #7fc4ff; } .gr-bar.bad b { background: #ff6a3a; }
+.gr-uplink, .gr-tele { position: absolute; top: 72px; left: 25%; transform: translateX(-50%); max-width: 46vw; padding: 5px 12px; border-radius: 999px; background: rgba(10, 16, 32, .75); color: #e8f1ff; font: 600 12px system-ui; }
+.gr-uplink i { display: inline-block; width: 120px; height: 6px; margin-left: 8px; border-radius: 3px; background: rgba(255, 255, 255, .2); overflow: hidden; vertical-align: middle; } .gr-uplink b { display: block; height: 100%; background: #37e0ff; }
+.gr-tele { border-radius: 12px; }
+.gr-flash { position: absolute; inset: 0; pointer-events: none; animation: gr-fl .7s ease-out forwards; }
+.gr-flash-hot { box-shadow: inset 0 0 80px rgba(255, 90, 30, .7); } .gr-flash-cold { box-shadow: inset 0 0 80px rgba(80, 180, 255, .7); }
+@keyframes gr-fl { to { opacity: 0; } }
+.gr-load { position: absolute; inset: 0; display: grid; place-items: center; padding: 56px 12px 12px; background: rgba(4, 8, 18, .5); overflow: auto; }
+.gr-load .rs-card { width: min(760px, 100%); }
