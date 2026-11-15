@@ -101,7 +101,7 @@ export default function Game({ D, profile, setProfile }) {
   return (
     <div className={"g-root g-" + phase + " g-mode-" + mode}>
       {gl && <GameView profile={profile} D={D} phase={phase} mode={mode} sel={view} suit={solo ? rescue.S.load?.suit : suit} ctl={solo ? rescue.ctl : null} region={region} dems={dems} done={done} paused={paused} keys={keys} anchors={anchor} hud={hud}
-        onPick={pick} onArrive={arrive} onLanded={() => say([loc, ...introLines(profile), ...(solo ? [t("game.rs.say.help")] : [])], () => { setPhase("explore"); setToast(t("game.msg.start")); })}
+        onPick={pick} onArrive={arrive} onLanded={() => say([...introLines(profile), ...(solo ? [t("game.rs.say.help")] : [])], () => { setPhase("explore"); setToast(t("game.msg.start")); })}
         onBlocked={(b) => { const n = performance.now(); if (n - lastBlock.current > 3000) { lastBlock.current = n; setToast(t("game.msg.block." + b)); } }} />}
       {phase === "menu" && <StartMenu profile={profile} setProfile={setProfile} mode={mode} setMode={setMode} onStart={start} gl={gl} reportHref={reportHref} />}
       {PLAYING.includes(phase) && <Oxygen clock={clock} />}

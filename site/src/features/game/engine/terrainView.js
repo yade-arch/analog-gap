@@ -62,7 +62,7 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
     const earth = new THREE.Mesh(new THREE.SphereGeometry(3, 48, 32), new THREE.MeshStandardMaterial({ map: tex("earth_bmng_200412_2048.jpg"), roughness: 1, fog: false }));
     earth.position.set(-40, 9, -45); scene.add(earth);
   }
-  scene.add(new THREE.HemisphereLight(body === "moon" ? 0x30323a : 0xbfd6ff, 0x2a2018, body === "moon" ? 0.25 : 0.6));
+  scene.add(new THREE.HemisphereLight(body === "moon" ? 0x6a6e7a : 0xbfd6ff, 0x2a2018, body === "moon" ? 0.9 : 0.6));
   const sun = new THREE.DirectionalLight(0xffffff, body === "moon" ? 3 : 2.3); sun.position.set(-6, 5, 3); scene.add(sun);
 
   const camera = new THREE.PerspectiveCamera(55, 1, 0.01, 300);
