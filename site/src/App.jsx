@@ -54,7 +54,8 @@ export default function App() {
   const reference = profile === "moon" ? D.rm : D.rs;
   useEffect(() => { document.documentElement.dataset.page = page; }, [page]);
   const sel = page === "card" ? a1 : null;
-  const [foot, setFoot] = useState(false);   // footer data/method text: closed by default
+  const [foot, setFoot] = useState(false);
+  useEffect(() => { if (!foot) return undefined; const f = (e) => { if (!e.target.closest?.(".data-pop")) setFoot(false); }; addEventListener("pointerdown", f); return () => removeEventListener("pointerdown", f); }, [foot]);   // footer data/method text: closed by default
   const go = (id) => { location.hash = `#/card/${id}/${profile}`; };
   const feature = useMemo(() => cand?.features.find((f) => f.properties.id === sel)?.properties, [cand, sel]);
 
@@ -83,9 +84,9 @@ export default function App() {
           </Suspense>
         )}
       </main>
-      <footer>
-        <button type="button" className="foot-tog" aria-expanded={foot} onClick={() => setFoot(!foot)}>{foot ? "▾" : "▸"} Data sources &amp; methodology</button>
-        {foot && <div className="foot-body">
+      <footer className="data-pop" data-open={foot || undefined}>
+        <button type="button" className="foot-tog" aria-expanded={foot} onClick={() => setFoot(!foot)}>ⓘ Data</button>
+        {foot && <div className="foot-body"><button type="button" className="foot-x" aria-label="Close" onClick={() => setFoot(false)}>✕</button>
         <div><strong>Data products:</strong> {SOURCES} · <a href="#/data">All data sources</a></div>
         <div>Method and limits: <a href="#/method">Method & Validation</a>. No window is presented as an exact copy of the Moon/Mars; we say "less studied / not in catalog". Labels: <Tag kind="obs" /><Tag kind="der" /><Tag kind="int" /></div>
         </div>}
