@@ -20,15 +20,37 @@ export function createRover(tv, limitDeg, map = KEYMAPS.solo, accent) {
   };
   place(); tv.add(obj);
 
+  /** Command mode: turn the queue's first goal into virtual key presses. avoid: probe ahead and steer around ground steeper than the limit. */
+  function autoKeys(a) {
+    const out = new Set(), g = a.queue?.[0];
+    if (a.stop || !g) return out;
+    if (Math.hypot(g.x - s.x, g.z - s.z) < 0.3) { a.queue.shift(); a.reached?.(g); return out; }
+    let want = Math.atan2(-(g.z - s.z), g.x - s.x);
+    if (a.avoid && limitDeg) {
+      const steepAt = (h) => [0.35, 0.7].some((r) => tv.slopeAt(s.x + Math.cos(h) * r, s.z - Math.sin(h) * r) > limitDeg);
+      if (a.detour && performance.now() < a.detour.until) want += a.detour.off;
+      else if (steepAt(want)) {
+        const off = [0.4, -0.4, 0.8, -0.8, 1.2, -1.2, 1.6, -1.6].find((o) => !steepAt(want + o));
+        if (off !== undefined) { a.detour = { off, until: performance.now() + 900 }; want += off; }
+      }
+    }
+    const diff = Math.atan2(Math.sin(want - s.heading), Math.cos(want - s.heading));
+    if (diff > 0.06) out.add("a"); else if (diff < -0.06) out.add("d");
+    if (Math.abs(diff) < 1.1) out.add("w");
+    return out;
+  }
+
   return {
     obj, stats: s,
-    /** keys: Set -> engel olayı ("steep" | "nodata" | null) */
-    update(dt, keys) {
+    /** keys: Set -> engel olayı ("steep" | "nodata" | null). ctl (rescue): { auto: komut kuyruğu | null, mods: { speed, drain, wear } } */
+    update(dt, keys, ctl) {
+      if (ctl?.auto) keys = autoKeys(ctl.auto);
+      const m = ctl?.mods || {};
       const on = (a) => a.some((k) => keys.has(k));
       const thr = (on(map.up) ? 1 : 0) - (on(map.down) ? 1 : 0), turn = (on(map.left) ? 1 : 0) - (on(map.right) ? 1 : 0);
       const boost = on(map.boost) && s.fuel > 0;
       s.heading += turn * TURN * dt * (thr < 0 ? -1 : 1);
-      const vmax = (boost ? BOOST : VMAX) * (s.battery > 0 ? 1 : 0.4) * (0.5 + s.health / 200);
+      const vmax = (m.speed ?? 1) * (boost ? BOOST : VMAX) * (s.battery > 0 ? 1 : 0.4) * (0.5 + s.health / 200);
       s.v += (thr * vmax - s.v) * Math.min(1, dt * 3);
       let blocked = null;
       if (Math.abs(s.v) > 0.01) {
@@ -41,9 +63,9 @@ export function createRover(tv, limitDeg, map = KEYMAPS.solo, accent) {
           if (steep && !boost) { s.v *= 0.25; blocked = "steep"; }        // too steep: crawl slowly (warning), Shift climbs faster
           const k = steep && !boost ? 0.25 : 1, mx = s.x + (nx - s.x) * k, mz = s.z + (nz - s.z) * k;
           const d = Math.hypot(mx - s.x, mz - s.z); s.x = mx; s.z = mz;
-          if (steep && !boost) s.health = Math.max(0, s.health - d * 2);
-          s.battery = Math.max(0, s.battery - d * 1.5);
-          if (boost) { s.fuel = Math.max(0, s.fuel - d * 6); if (steep) s.health = Math.max(0, s.health - d * 4); }
+          if (steep && !boost) s.health = Math.max(0, s.health - d * 2 * (m.wear ?? 1));
+          s.battery = Math.max(0, s.battery - d * 1.5 * (m.drain ?? 1));
+          if (boost) { s.fuel = Math.max(0, s.fuel - d * 6); if (steep) s.health = Math.max(0, s.health - d * 4 * (m.wear ?? 1)); }
         }
       }
       obj.userData.tick?.(dt, Math.abs(s.v) > 0.05, s.v);

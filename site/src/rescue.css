@@ -1,0 +1,65 @@
+/* Earth-to-Space Rescue panels (solo game). Same light cards and dark HUD glass as the rest of the game. */
+.rs-desk { position: absolute; top: 52px; right: 10px; max-height: calc(100% - 62px); width: min(360px, 34vw); overflow: auto; padding: 12px 14px; border-radius: 14px; background: rgba(255, 255, 255, .96); color: #14243a; font-size: 13px; box-shadow: 0 8px 30px rgba(0, 0, 0, .35); user-select: text; }
+.rs-desk h3 { margin: 0 0 4px; font-size: 16px; }
+.rs-small { font-size: 12px; color: #4b5e76; margin: 4px 0; }
+.rs-warn { font-size: 12px; color: #8a4b00; margin: 4px 0; display: block; }
+.rs-coord { display: flex; gap: 6px; margin: 6px 0; }
+.rs-coord input { flex: 1; min-width: 0; padding: 7px 8px; border-radius: 8px; border: 1px solid #c9d5e3; font: inherit; color: #14243a; background: #fff; }
+.rs-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.rs-tabs button { min-width: 34px; padding: 5px 8px; border-radius: 8px; border: 1px solid #c9d5e3; background: #fff; color: #14243a; font-weight: 700; cursor: pointer; }
+.rs-tabs button.on { background: #1d5fae; border-color: #1d5fae; color: #fff; }
+.rs-site { display: grid; gap: 6px; }
+.rs-row { display: grid; gap: 2px; padding: 6px 8px; border-radius: 8px; background: #f1f5fa; }
+.rs-row b { font-size: 12px; } .rs-row em { font-style: normal; color: #6a5a3a; }
+.rs-tag { display: inline-block; padding: 0 6px; border-radius: 999px; font-size: 10px; font-weight: 700; border: 1px solid currentColor; vertical-align: 1px; }
+.rs-tag-real { color: #1d5fae; } .rs-tag-approx { color: #8a6400; } .rs-tag-missing { color: #6b7280; border-style: dashed; } .rs-tag-calc { color: #4d5bb0; }
+.rs-verdict { margin: 4px 0; padding: 6px 8px; border-radius: 8px; font-weight: 600; border-left: 4px solid #1d5fae; background: #eef4fb; }
+.rs-q-wrong { border-left-color: #8a4b00; background: #fbf3e8; } .rs-q-incomplete { border-left-color: #6b7280; background: #f3f4f6; }
+.rs-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.rs-acts > * { flex: 1 1 140px; text-align: center; text-decoration: none; }
+.rs-modal { position: absolute; inset: 0; display: grid; place-items: center; padding: 56px 12px 12px; background: rgba(4, 8, 18, .45); z-index: 5; }
+.rs-modal-low { background: rgba(4, 8, 18, .2); }
+.rs-card { width: min(580px, 100%); max-height: 100%; overflow: auto; padding: 18px 20px; border-radius: 16px; background: #fff; color: #14243a; font-size: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, .45); user-select: text; }
+.rs-card h2 { margin: 0 0 6px; font-size: 19px; }
+.rs-find { margin: 8px 0; padding-left: 18px; display: grid; gap: 4px; }
+.rs-pick { border: 1px solid #d3dce7; border-radius: 10px; margin: 8px 0; padding: 6px 10px; display: grid; gap: 4px; }
+.rs-pick legend { font-weight: 700; font-size: 13px; padding: 0 4px; }
+.rs-pick label { display: flex; gap: 6px; align-items: center; padding: 4px 6px; border-radius: 8px; cursor: pointer; }
+.rs-pick label.on { background: #e6eefa; } .rs-pick em { font-style: normal; font-size: 11px; color: #1d5fae; font-weight: 700; }
+.rs-msg { margin: 8px 0; padding: 10px 12px; border-left: 4px solid #1d5fae; background: #eef4fb; border-radius: 8px; }
+.rs-dec .rs-opt { display: block; width: 100%; margin: 6px 0; text-align: left; }
+.rs-opt:disabled { opacity: .5; cursor: default; }
+.rs-gauges { position: absolute; top: 52px; right: 10px; width: 230px; display: grid; gap: 4px; padding: 8px 10px; border-radius: 12px; background: rgba(10, 16, 32, .66); border: 1px solid rgba(160, 190, 255, .25); font-size: 12px; }
+.rs-g { display: grid; grid-template-columns: 84px 1fr 36px; align-items: center; gap: 6px; }
+.rs-g i { height: 7px; border-radius: 4px; background: rgba(255, 255, 255, .15); overflow: hidden; } .rs-g b { display: block; height: 100%; background: #7fc4ff; }
+.rs-g.low b { background: #ffb347; } .rs-g em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+.rs-temp { font-size: 11px; color: #d6e4ff; }
+.rs-event { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); padding: 5px 12px; border-radius: 999px; background: rgba(120, 70, 10, .85); color: #fff; font-size: 13px; font-weight: 600; }
+.rs-ev-cold { background: rgba(20, 70, 140, .85); }
+.rs-ctrl { position: absolute; left: 10px; bottom: 10px; width: min(300px, 70vw); display: grid; gap: 6px; padding: 8px 10px; border-radius: 12px; background: rgba(10, 16, 32, .72); border: 1px solid rgba(160, 190, 255, .25); font-size: 12px; }
+.rs-ctrl .rs-small { color: #c6d4ea; }
+.rs-obj { font-weight: 700; font-size: 13px; }
+.rs-mode { display: flex; gap: 4px; } .rs-mode button, .rs-cmds button { flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(160, 190, 255, .4); background: rgba(255, 255, 255, .08); color: #fff; cursor: pointer; font: inherit; }
+.rs-mode button.on, .rs-cmds button.on { background: #1d5fae; border-color: #5fb4ff; }
+.rs-cmds { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.rs-result { position: absolute; inset: 0; display: grid; place-items: center; padding: 56px 12px 12px; overflow: auto; background: rgba(4, 8, 18, .5); z-index: 6; }
+.rs-res { width: min(680px, 100%); }
+.rs-tier { margin: 0 0 8px; font-size: clamp(1.5rem, 4vw, 2.2rem); letter-spacing: .06em; }
+.rs-tier-success { color: #1d5fae; } .rs-tier-partial { color: #8a6400; } .rs-tier-failure { color: #8a3b00; }
+.rs-kid { font-size: 17px; line-height: 1.5; }
+.rs-why { padding-left: 18px; display: grid; gap: 3px; }
+.rs-details summary { cursor: pointer; font-weight: 800; letter-spacing: .06em; padding: 8px 0; }
+.rs-sci h4 { margin: 12px 0 4px; } .rs-sci ul { padding-left: 18px; } .rs-sci code { word-break: break-all; }
+.g-drive.g-mode-solo .g-dir-left { bottom: 12px; } .g-drive.g-mode-solo .g-speed-left { display: none; }
+@media (max-width: 760px) {
+  .rs-desk { top: auto; left: 8px; right: 8px; width: auto; height: 52vh; }
+  .rs-gauges { width: 180px; top: 48px; } .rs-g { grid-template-columns: 62px 1fr 32px; }
+  .rs-ctrl { bottom: 8px; left: 8px; }
+}
+@media print {
+  .g-root { position: static !important; overflow: visible !important; background: #fff !important; color: #000 !important; }
+  .g-root > *:not(.rs-result) { display: none !important; }
+  .rs-result { position: static; display: block; padding: 0; background: #fff; overflow: visible; }
+  .rs-res { box-shadow: none; padding: 0; max-height: none; }
+  .rs-print h4 { break-after: avoid; } .rs-row { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
+}

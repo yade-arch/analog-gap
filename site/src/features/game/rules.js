@@ -20,3 +20,23 @@ export const SUITS = {
 };
 
 export const TESTS = ["thermal", "terrain", "surface"];
+
+// Earth-to-Space Rescue (solo mode). Every number below is a GAME RULE (fictional gameplay parameter), not NASA data.
+// Real values (slopes, roughness, temperatures, rover slope limit) come from the data files; these only set time costs and wear.
+export const RESCUE = {
+  cost: { inspectCand: 10, inspectPoint: 15, send: 10, askEarth: 15, waitAnalysis: 20, switchSuit: 10, toRover: 8, scan: 5 },   // game minutes
+  collectMin: { suit1: 12, suit2: 6 },      // time to load one supply cache (sturdy suit moves slower)
+  suitWear: 0.3,                            // suit durability lost per game minute on gentle ground (%)
+  steepWear: 3,                             // multiplier while the rover is on ground steeper than the rover limit
+  suitWearMul: { suit1: 0.5, suit2: 1 },    // sturdy suit wears slower
+  waterPerMin: 0.25,                        // drinking water used per game minute (%)
+  dryWear: 1.5,                             // wear multiplier once the water is gone
+  eventAt: 25, eventLen: 20,                // unexpected event: minutes after the drive starts, and how long it lasts
+  storm: { speed: 0.6, drain: 1.6 },        // Mars dust storm: slower rover, faster battery use
+  cold: { suit1: 1.4, suit2: 2.5 },         // Moon shadow (sudden cold): extra suit wear
+  equip: { wheels: { wear: 0.4 }, battery: { drain: 0.6 }, backup: {} },   // spare wheels: less rover damage; extra battery: slower drain
+  safeSpeed: 0.85,                          // safe route: auto-avoid steep ground, a bit slower
+  suitLow: 50, backupSuit: 80, roverRest: 15,
+  betterD: 0.8,                             // decision 3 appears if the best catalog place has D below 80 % of the reported place's D
+};
+export const EQUIP = ["wheels", "battery", "backup"];

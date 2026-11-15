@@ -7,9 +7,11 @@ import hero from "./tr.hero.js";
 import overview from "./tr.overview.js";
 import point from "./tr.point.js";
 import paper from "./tr.paper.js";
+import rescue from "./en.rescue.js";   // rescue game: English only (backup dictionary uses the same texts)
 export default {
   ...pages,
   ...game,
+  ...rescue,
   ...point,
   ...paper,
   "app.title": "ANALOG GAP",

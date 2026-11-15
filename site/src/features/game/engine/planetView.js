@@ -21,7 +21,7 @@ function atmosphere(rgb, k) {
   return new THREE.Mesh(new THREE.SphereGeometry(1.06, 64, 48), mat);
 }
 
-export function makePlanetView(el, body, { markers = [], onPick, color = 0x7fb2e0 } = {}) {
+export function makePlanetView(el, body, { markers = [], onPick, color = 0x7fb2e0, free = false } = {}) {
   const B = BODY[body], scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 100);
   camera.position.set(0, 0.4, 3.4); camera.userData.fit = 40;
@@ -55,7 +55,7 @@ export function makePlanetView(el, body, { markers = [], onPick, color = 0x7fb2e
     const ll = toLatLon(hit.point.x, hit.point.y, hit.point.z), tol = 0.03 * (camera.position.length() - 0.9);
     let best = null, bd = tol;
     for (const m of markers) { const d = angle(ll, m) * (m.hot ? 0.5 : 1); if (d < bd) { bd = d; best = m; } }   // hot: öncelikli (ör. DEM'i olan aday)
-    if (best) onPick(best);
+    if (best) onPick(best); else if (free) onPick({ lat: ll.lat, lon: ll.lon, free: true });   // free: any spot on the globe, named or not
   };
   el.addEventListener("pointerdown", onDown); el.addEventListener("pointerup", onUp);
 

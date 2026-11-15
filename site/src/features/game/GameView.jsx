@@ -20,10 +20,10 @@ function crashSite(tv, suit, withLander = true) {
 }
 
 /** Sahne köprüsü. Sol yuva = hedef gövde (Ay/Mars), sağ yuva = Dünya. Tek oyunculuda yalnızca sol (tam ekran). */
-export default function GameView({ profile, D, phase, mode, sel, suit, region, dems, done, paused, keys, onPick, onArrive, onBlocked, onLanded, anchors, hud }) {
+export default function GameView({ profile, D, phase, mode, sel, suit, region, dems, done, paused, keys, onPick, onArrive, onBlocked, onLanded, anchors, hud, ctl }) {
   const host = useRef(null), stage = useRef(null), F = useRef({});
-  const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done };
-  const group = ["drive", "suit", "result"].includes(phase) ? "field" : phase;
+  const cb = useRef({}); cb.current = { onPick, onArrive, onBlocked, onLanded, paused, phase, done, ctl };
+  const group = ["drive", "suit", "result", "loadout"].includes(phase) ? "field" : phase === "transmit" ? "explore" : phase;
   const refId = SETTINGS.references[profile][0];
   const refM = useMemo(() => refMarkers(refOf(D, profile)), [D, profile]);
   const cands = useMemo(() => candMarkers(candOf(D, profile)).map((m) => ({ ...m, hot: !!dems?.[m.id], color: dems?.[m.id] ? 0x9fd0ff : 0x3d5a78 })), [D, profile, dems]);
@@ -34,7 +34,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
     const st = stage.current, live = { on: true }, F0 = (F.current = {});
     const planets = () => {
       st.setView("left", makePlanetView(st.els.left, profile, { markers: refM, color: 0xffd27a }));
-      st.setView("right", makePlanetView(st.els.right, "earth", { markers: cands, onPick: (m) => cb.current.onPick?.(m) }));
+      st.setView("right", makePlanetView(st.els.right, "earth", { markers: cands, free: !!cb.current.ctl, onPick: (m) => cb.current.onPick?.(m) }));
     };
     if (group === "menu" || group === "explore") { st.setLayout("split"); planets(); }
     if (group === "intro") {
@@ -59,6 +59,15 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
           const tr = makeTerrainView(st.els.right, dc, "earth"); st.setView("right", tr); F0.tr = tr;
           F0.r2 = createRover(tr, roverLimit(D.params, profile)?.num, KEYMAPS.p2, 0x2a6fd6); tr.chase(F0.r2.obj);
         } else st.setView("right", null);
+        if (cb.current.ctl) cb.current.ctl.current.api = {                 // rescue: base, caches and a real-DEM slope scan along a straight line
+          start: tl.start, points: tl.points, limit: roverLimit(D.params, profile)?.num ?? null,
+          rover: () => ({ x: F0.r1.stats.x, z: F0.r1.stats.z }),
+          scan(to) {
+            const a = F0.r1.stats, n = 60, lim = roverLimit(D.params, profile)?.num; let max = -1, over = 0, ok = 0;
+            for (let i = 0; i <= n; i++) { const sl = tl.slopeAt(a.x + ((to.x - a.x) * i) / n, a.z + ((to.z - a.z) * i) / n); if (Number.isNaN(sl)) continue; ok++; max = Math.max(max, sl); if (lim && sl > lim) over++; }
+            return ok ? { max, over: over / ok, lim, km: Math.hypot(to.x - a.x, to.z - a.z) } : null;
+          },
+        };
         st.setLayout(mode === "multi" ? "split" : "left");
       });
     }
@@ -87,7 +96,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
     for (const [k, r, tv, side] of [["p1", f.r1, f.tl, "left"], ["p2", f.r2, f.tr, "right"]]) {
       if (!r || !tv) continue;
       if (drive) {
-        const b = r.update(dt, keys.current); if (b) c.onBlocked?.(b, k);
+        const b = r.update(dt, keys.current, k === "p1" ? c.ctl?.current : null); if (b) c.onBlocked?.(b, k);
         const i = tv.points.findIndex((p) => p && !c.done[k]?.includes(p.i) && r.near(p));
         if (i >= 0) c.onArrive?.(k, i);
       }
@@ -95,7 +104,7 @@ export default function GameView({ profile, D, phase, mode, sel, suit, region, d
       const pos = next && st.project(side, next.obj.position.clone().add(new THREE.Vector3(0, 3.1, 0)));
       let dir = null;                                   // sıradaki noktanın yönü (aracın burnuna göre) ve uzaklığı
       if (next) { let a = Math.atan2(-(next.z - r.stats.z), next.x - r.stats.x) - r.stats.heading; a = Math.atan2(Math.sin(a), Math.cos(a)); dir = { a, m: Math.round(r.dist(next) * 1000) }; }
-      out[k] = { ...r.stats, speed: Math.abs(r.stats.v), dir, tag: next && pos ? { ...pos, m: dir.m } : null };
+      out[k] = { ...r.stats, speed: Math.abs(r.stats.v), dir, tag: next && pos ? { ...pos, m: dir.m } : null, slope: tv.slopeAt(r.stats.x, r.stats.z), atBase: !!tv.start && r.near(tv.start, 0.7) };
     }
     if (hud) hud.current = out;
     if (anchors) anchors.current = f.astro ? st.project("left", f.astro.position.clone().add(UP)) : null;

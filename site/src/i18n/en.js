@@ -7,6 +7,7 @@ import hero from "./en.hero.js";
 import overview from "./en.overview.js";
 import point from "./en.point.js";
 import paper from "./en.paper.js";
+import rescue from "./en.rescue.js";
 export default {
   ...pages,
   ...game,
@@ -16,6 +17,7 @@ export default {
   ...overview,
   ...point,
   ...paper,
+  ...rescue,
   "app.title": "ANALOG GAP",
   "app.sub": "Comparison Mission",
   "nav.compare": "Compare",
