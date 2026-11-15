@@ -73,6 +73,7 @@ details.more > summary { list-style: none; display: flex; justify-content: space
 details.more > summary::-webkit-details-marker { display: none; }
 .more-btn { padding: 10px 20px; border-radius: 999px; background: rgba(255, 255, 255, .9); border: 1px solid #e3e8f3; font-weight: 600; }
 .extra[open] { max-height: 70vh; overflow: auto; width: min(420px, 90vw); }
+.mappanel:has(> .darkstage[hidden]) .extra { position: static; width: auto; max-height: none; min-width: 0; }   /* info part alone: use the full width */
 .mapgrid .refcard { margin: 0; }
 .rep-sci { grid-area: sci; } .rep-lead { font-size: 17px; }
 .sci-tabs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
