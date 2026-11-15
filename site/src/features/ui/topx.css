@@ -28,3 +28,9 @@ html[data-page="home"] .topx svg ellipse { stroke: #9cc0ff; } html[data-page="ho
 html .gear-menu, html[data-mono] .gear-menu { z-index: 1000; isolation: isolate; } html[data-mono] .gear-menu { background: #000 !important; opacity: 1 !important; backdrop-filter: none !important; }
 header.topx { position: relative; z-index: 900; }
 main, main > *, main .card, main .glass, main .g-card { max-width: 100%; box-sizing: border-box; } main { padding-inline: 16px; overflow-x: hidden; }
+/* Drawer: fixed overlay above everything (cannot be clipped by page cards or footer) */
+html .gear-menu { position: fixed !important; top: 56px; right: 8px; z-index: 9999 !important; max-height: calc(100vh - 70px); overflow: auto; background: var(--panel-solid, #fff) !important; }
+html[data-mono] .gear-menu { background: #000 !important; color: #fff; border: 1px solid #fff; }
+main { width: 100%; max-width: 100vw; box-sizing: border-box; } main .g-card { width: 100%; box-sizing: border-box; }
+html .g-btn.primary { background: var(--accent, #1d5fae); color: #fff !important; border-color: var(--accent, #1d5fae); }
+html[data-mono] .g-btn.primary { background: #fff !important; color: #000 !important; border: 1px solid #000; }
