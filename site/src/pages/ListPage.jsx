@@ -24,7 +24,7 @@ function CandCard({ p, i, tE, hasDem, go, profile }) {
         <span className="g-badge">{i === 0 ? "🏆 " : ""}{i + 1}. {t("ui.rank")}</span>
         <div className="cand2-d" title={t("list.dnote")}><b>{fmt(p.D, 3)}</b><span>{t("gauge.title")}</span></div>
       </div>
-      <div className="cand2-loc">📍 {regionLabel(p.region)}</div>
+      <div className="cand2-loc">{regionLabel(p.region)}</div>
       <div className="muted small">{t("disc.vs").replace("{b}", t("ui.body." + profile))}</div>
       <div className="stat3 cardstats">{st.map(([k, n, x, tip]) => <div key={k} title={tip}><span className="muted"><span className="ic">{ICON[k]}</span>{n}</span><b>{x}</b></div>)}</div>
       <button className={i === 0 ? "g-btn primary" : "g-btn"} onClick={() => go(p.id)}>{i === 0 ? "→ " : ""}{t("ui.select")}{i === 0 ? "" : " ›"}</button>
@@ -42,7 +42,7 @@ export default function ListPage({ cand, region, setRegion, profile, reference, 
       <RefCard target={profile} reference={reference} tM={tM} wide />
       <Discovered />
       <details className="more">
-        <summary><h2 className="g-h">🌐 {t("disc.scan")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
+        <summary><h2 className="g-h">{t("disc.scan")}</h2><span className="more-btn">{t("ui.details")} ⌄</span></summary>
         <div className="g-card">
           <div className="regions">{REGION_CODES.map((r) => <button key={r} className={region === r ? "on" : ""} aria-pressed={region === r} onClick={() => setRegion(r)}>{r === "ALL" ? t("world.allRegions") : regionLabel(r)}</button>)}</div>
           <p className="muted small">{fill(t("list.count"), { total: cand.meta.n_windows_total, pass: cand.meta.n_pass_filter, shown: rows.length })} {t("list.shipped")} {t("list.dnote")} {t("ui.tempNote")} {t("ui.refSrc." + profile)}</p>

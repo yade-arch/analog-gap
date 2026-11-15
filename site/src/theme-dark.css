@@ -75,3 +75,4 @@ html .conn { color: var(--ink); }
 html .gear summary { color: var(--muted); }
 html .gear-menu a { color: var(--ink); }
 html .gear-menu .g-sub { color: var(--muted); }
+html .ref-sub, html .muted { color: #b4c0d3; }

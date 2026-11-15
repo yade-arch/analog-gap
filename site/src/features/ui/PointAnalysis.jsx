@@ -20,7 +20,7 @@ export default function PointAnalysis({ sel, target, refs }) {
   const body = t("ui.body." + target), ref = refs[target]?.variables;
   return (
     <section className="pt-box" aria-live="polite">
-      <div className="g-sub">▦ {t("pt.title")}</div>
+      <div className="g-sub">{t("pt.title")}</div>
       {st.s === "load" && <p className="muted">{t("pt.loading")}</p>}
       {st.s === "err" && <p>{t("pt.err")} <span className="muted small">({st.e})</span> <button className="g-btn" style={{ width: "auto" }} onClick={() => setN((x) => x + 1)}>{t("ui.retry")}</button></p>}
       {st.s === "ok" && (st.r.missing ? <p>{t("ui.noData")}: {t("pt.polar")}</p> : <Result r={st.r} target={target} body={body} ref_={ref} />)}

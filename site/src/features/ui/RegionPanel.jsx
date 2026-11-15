@@ -38,7 +38,7 @@ export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose
         <div className="rp-tabs">{LAYERS.map(([, k], i) => <button key={k} className={lay === i ? "on" : ""} onClick={() => setLay(i)}>{t(k)}</button>)}</div>
       </div>
       {refs && <PointAnalysis sel={sel} target={target} refs={refs} />}
-      <div className="g-sub">⛰ {t("ui.terrain")}</div>
+      <div className="g-sub">{t("ui.terrain")}</div>
       {tr.s === "load" && <p className="muted">{t("ui.loading")}</p>}
       {tr.s === "err" && <p>{t("ui.terrErr")}</p>}
       {tr.s === "ok" && (T.missing ? <p>{t("list.nodata")}: {T.missing}</p> : (
@@ -48,7 +48,7 @@ export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose
           ))}
         </div>
       ))}
-      <div className="g-sub">🌍 {t("ui.climate")}</div>
+      <div className="g-sub">{t("ui.climate")}</div>
       {st.s === "load" && <p className="muted">{t("ui.loading")}</p>}
       {st.s === "err" && <p>{t("ui.powerErr")} <button className="g-btn" style={{ width: "auto" }} onClick={() => setN((x) => x + 1)}>{t("ui.retry")}</button></p>}
       {st.s === "ok" && (
@@ -58,7 +58,7 @@ export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose
           ); })}
         </div>
       )}
-      <div className="g-sub">🔎 {t("ui.nearScan")}</div>
+      <div className="g-sub">{t("ui.nearScan")}</div>
       {near.map((p) => (
         <button key={p.id} className="rep-row rp-near" onClick={() => onSelect(p.id)}>
           <span className="tag-body earth">{t("side.earth")}</span><span>{regionLabel(p.region)} · {fmt(p.km, 0)} km<br /><span className="muted small">{t("ui.nearD").replace("{b}", t("ui.body." + target))} {fmt(p.D, 3)}</span></span><b>›</b>

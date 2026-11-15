@@ -20,7 +20,7 @@ function DiscCard({ x }) {
         <span className={"disc-body " + (b || "none")}>{b ? t("disc.closer").replace("{b}", body) : t("disc.none")}</span>
         <div className="cand2-d" title={t("list.dnote")}><b>{b ? fmt(x[b].D, 3) : "—"}</b><span>{t("gauge.title")}</span></div>
       </div>
-      <div className="cand2-loc">📍 {x.name ? x.name.split(",").slice(0, 2).join(",") : ll(x)}</div>
+      <div className="cand2-loc">{x.name ? x.name.split(",").slice(0, 2).join(",") : ll(x)}</div>
       {x.name && <div className="muted small">{ll(x)}</div>}
       <p className="small disc-ds">{t("ui.body.moon")}: <b>{dTxt(x.moon)}</b> · {t("ui.body.mars")}: <b>{dTxt(x.mars)}</b> <span className="muted">({t("disc.lower")})</span></p>
       <div className="stat3 cardstats">{vals.map(([k, n, v, u, d]) => <div key={k}><span className="muted small">{n}</span><b>{v == null ? t("list.nodata") : `${fmt(v, d)} ${u}`}</b></div>)}</div>
@@ -35,7 +35,7 @@ export default function Discovered() {
   return (
     <section className="disc-wrap">
       <div className="disc-head">
-        <h2 className="g-h">🧭 {t("disc.title")}</h2>
+        <h2 className="g-h">{t("disc.title")}</h2>
         {list.length > 0 && <button className="g-btn disc-clear" onClick={() => { clearDiscovered(); setList([]); }}>{t("disc.clear")}</button>}
       </div>
       {list.length === 0
