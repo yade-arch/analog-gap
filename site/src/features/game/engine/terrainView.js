@@ -10,11 +10,12 @@ import { SETTINGS } from "../../../config.js";
 import { disposeScene, tex } from "./stage.js";
 import { rocks } from "./voxel.js";
 import { scenery } from "./scenery.js";
+import { lunarLights, regolithMaps, regolithMaterial, starField } from "./lunarLook.js";
 
 export const EXAG = 2;
 const LOOK = {
   earth: { ground: [176, 138, 99], rock: 0x8a6a4c, sky: 0x9cc3e6, fog: 0xbcd4ea },
-  moon: { ground: [150, 148, 145], rock: 0x6f6d6a, sky: 0x02030a, fog: null },
+  moon: { ground: [150, 148, 145], rock: 0x6f6d6a, sky: 0x000000, fog: null },   // atmosfer yok: tam siyah, sis yok
   mars: { ground: [178, 96, 56], rock: 0x7a3a22, sky: 0x3a2318, fog: 0x8a5a40 },
 };
 
@@ -48,22 +49,29 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   scene.background = new THREE.Color(L.sky);
   if (L.fog) scene.fog = new THREE.Fog(L.fog, 7, 30);
   const { geometry, zmed } = buildTerrain(dem);
-  const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground), roughness: 1, metalness: 0 });
-  const mesh = new THREE.Mesh(geometry, mat); mesh.scale.y = EXAG; scene.add(mesh);
+  const moon = body === "moon", reg = moon ? regolithMaps() : null;   // Ay: prosedürel regolit (görsel); diğerleri eski görünüm
+  const mat = moon ? regolithMaterial(reg, 14) : new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground), roughness: 1, metalness: 0 });
+  const mesh = new THREE.Mesh(geometry, mat); mesh.scale.y = EXAG; mesh.castShadow = mesh.receiveShadow = moon; scene.add(mesh);
   let zmin = Infinity; for (let k = 0; k < dem.z.length; k++) { const e = elev(dem, k); if (!Number.isNaN(e) && e < zmin) zmin = e; }
-  const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground.map((v) => v * 0.8)), roughness: 1 }));
-  base.material.map.repeat.set(600, 600); base.rotation.x = -Math.PI / 2;
+  const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), moon ? regolithMaterial(reg, 560) : new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground.map((v) => v * 0.8)), roughness: 1 }));
+  if (!moon) base.material.map.repeat.set(600, 600);
+  base.receiveShadow = moon; base.rotation.x = -Math.PI / 2;
   base.position.y = ((zmin - zmed) / 1000) * EXAG - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
   const h = (x, z) => sampleH(dem, x, z) * EXAG;
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));
   scene.add(scenery(body, base.position.y));
-  if (body !== "earth") scene.add(stars());
+  if (body === "mars") scene.add(stars());
+  if (moon) scene.add(starField());
   if (body === "moon") {                               // Ay güney kutbundan Dünya ufka yakın görünür (görsel)
-    const earth = new THREE.Mesh(new THREE.SphereGeometry(3, 48, 32), new THREE.MeshStandardMaterial({ map: tex("earth_bmng_200412_2048.jpg"), roughness: 1, fog: false }));
-    earth.position.set(-40, 9, -45); scene.add(earth);
+    // Gösterim: güney kutbundan Dünya ufka yakın; açısal boyut ~1,9° (yarıçap 1 birim / uzaklık ~61), gökyüzünün ortasında değil.
+    const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 32), new THREE.MeshStandardMaterial({ map: tex("earth_bmng_200412_2048.jpg"), roughness: 1, fog: false }));
+    earth.position.set(-40, 3, -45); scene.add(earth);
   }
-  scene.add(new THREE.HemisphereLight(body === "moon" ? 0x30323a : 0xbfd6ff, 0x2a2018, body === "moon" ? 0.25 : 0.6));
-  const sun = new THREE.DirectionalLight(0xffffff, body === "moon" ? 3 : 2.3); sun.position.set(-6, 5, 3); scene.add(sun);
+  if (moon) scene.add(lunarLights(SETTINGS.windowKm));
+  else {
+    scene.add(new THREE.HemisphereLight(0xbfd6ff, 0x2a2018, 0.6));
+    const sun = new THREE.DirectionalLight(0xffffff, 2.3); sun.position.set(-6, 5, 3); scene.add(sun);
+  }
 
   const camera = new THREE.PerspectiveCamera(55, 1, 0.01, 300);
   camera.position.set(0, 4, 6);

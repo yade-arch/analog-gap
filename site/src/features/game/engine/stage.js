@@ -9,6 +9,7 @@ export function createStage(host) {
   const renderer = new THREE.WebGLRenderer({ antialias: !MOBILE, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(MOBILE ? 1.25 : 2, window.devicePixelRatio || 1));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;   // yalnızca castShadow ışıklı sahneler (Ay) gölge üretir
   renderer.setScissorTest(true);
   renderer.domElement.className = "g-canvas";
   host.appendChild(renderer.domElement);
