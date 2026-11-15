@@ -18,11 +18,19 @@ export default function RegionPanel({ sel, cand, target, refs, onSelect, onClose
   const near = useMemo(() => (cand?.features || []).map((f) => f.properties).map((p) => ({ ...p, km: surfaceKm(sel, { lat: p.center_lat, lon: p.center_lon }, 6371) })).sort((a, b) => a.km - b.km).slice(0, 3), [cand, sel]);
   const [tr, setTr] = useState({ s: "load" });
   useEffect(() => { let live = true; setTr({ s: "load" }); queryTerrain(sel.lat, sel.lon).then((r) => live && setTr({ s: "ok", r })).catch(() => live && setTr({ s: "err" })); return () => { live = false; }; }, [sel.lat, sel.lon]);
+  const [nm, setNm] = useState(sel.name || null);            // place name: search result, else OpenStreetMap Nominatim reverse lookup (not NASA data)
+  useEffect(() => {
+    if (sel.name) { setNm(sel.name); return undefined; }
+    let live = true; setNm(null);
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&zoom=8&lat=${sel.lat}&lon=${sel.lon}`).then((r) => r.json())
+      .then((j) => live && setNm(j?.display_name || null)).catch(() => {});
+    return () => { live = false; };
+  }, [sel.lat, sel.lon, sel.name]);
   const c = st.r?.cell, T = tr.r;
   return (
     <div className="g-card regpanel">
       <div className="rp-head">
-        <div><div className="g-kicker">{t("ui.selRegion")}</div><h2 className="g-h">{fmt(Math.abs(sel.lat), 2)}° {sel.lat >= 0 ? "N" : "S"}, {fmt(Math.abs(sel.lon), 2)}° {sel.lon >= 0 ? "E" : "W"}</h2></div>
+        <div><div className="g-kicker">{t("ui.selRegion")}</div>{nm && <h2 className="g-h rp-name" title="Place name: OpenStreetMap Nominatim">{nm.split(",").slice(0, 3).join(",")}</h2>}<h2 className="g-h">{fmt(Math.abs(sel.lat), 2)}° {sel.lat >= 0 ? "N" : "S"}, {fmt(Math.abs(sel.lon), 2)}° {sel.lon >= 0 ? "E" : "W"}</h2></div>
         <button className="rp-x" onClick={onClose} aria-label={t("station.close")}>✕</button>
       </div>
       <div className="rp-img">
