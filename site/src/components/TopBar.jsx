@@ -30,18 +30,37 @@ function TabDrop({ tab, home, children }) {
   );
 }
 
+// One tab, several pages: the ▾ menu links to each (e.g. Robot guide -> Story Mode / Time Machine).
+function LinkDrop({ items, children }) {
+  const [open, setOpen] = useState(false), ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const f = (e) => { if (e.key === "Escape" || (e.type === "pointerdown" && !ref.current?.contains(e.target))) setOpen(false); };
+    addEventListener("pointerdown", f); addEventListener("keydown", f);
+    return () => { removeEventListener("pointerdown", f); removeEventListener("keydown", f); };
+  }, [open]);
+  return (
+    <span className="navdrop" ref={ref}>
+      {children}
+      <button type="button" aria-haspopup="true" aria-expanded={open} aria-label={t("nav.sections")} onClick={() => setOpen(!open)}>▾</button>
+      {open && <ul className="navmenu">{items.map(([k, h, cur]) => <li key={k}><a href={h} aria-current={cur || undefined} onClick={() => setOpen(false)}>{t(k)}</a></li>)}</ul>}
+    </span>
+  );
+}
+
 export default function TopBar({ page, profile, setProfile, reportId }) {
   const [online, setOnline] = useState(navigator.onLine), [theme, setThemeS] = useState(getTheme);
   useEffect(() => { const f = () => setOnline(navigator.onLine); addEventListener("online", f); addEventListener("offline", f); return () => { removeEventListener("online", f); removeEventListener("offline", f); }; }, []);
   const id = reportId;
-  const SEC = [["map", "nav.explore", "#/map"], ["compare", "nav.compare", id ? `#/compare/${id}/${profile}` : "#/compare"], ["list", "nav.discoveries", "#/list"], ["game", "nav.mission", "#/game"], ["story", "nav.story", "#/story"], ["time", "nav.time", "#/time"]];
-  const on = (k) => k === page || (k === "compare" && (page === "home" || page === "report")) || (k === "list" && page === "card");
+  const SEC = [["map", "nav.explore", "#/map"], ["compare", "nav.compare", id ? `#/compare/${id}/${profile}` : "#/compare"], ["list", "nav.discoveries", "#/list"], ["game", "nav.mission", "#/game"], ["guide", "nav.guide", "#/story"]];
+  const on = (k) => k === page || (k === "compare" && (page === "home" || page === "report")) || (k === "list" && page === "card") || (k === "guide" && (page === "story" || page === "time"));
   return (
     <header className="top topx">
       <a className="brand" href="#/start" aria-label={t("nav.home")}><Logo /><h1>Analog Gap</h1></a>
       <nav className="mainnav" aria-label={t("ui.pages")}>
         {SEC.map(([k, key, h]) => {
           const a = <a key={k} href={h} className={on(k) ? "on" : ""} aria-current={on(k) ? "page" : undefined}>{t(key)}</a>;
+          if (k === "guide") return <LinkDrop key={k} items={[["nav.story", "#/story", page === "story"], ["nav.time", "#/time", page === "time"]]}>{a}</LinkDrop>;
           return SECTIONS[k] ? <TabDrop key={k} tab={k} home={h}>{a}</TabDrop> : a;
         })}
       </nav>

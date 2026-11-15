@@ -1,6 +1,6 @@
 // Story Mode + Time Machine texts (robot guide). Numbers are filled in from real data only.
 export default {
-  "nav.story": "Story Mode", "nav.time": "Time Machine",
+  "nav.guide": "Robot guide", "nav.story": "Story Mode", "nav.time": "Time Machine",
   "gd.pick.list": "Earth place", "gd.pick.choose": "Choose a place…", "gd.pick.cand": "Closest matches from our scan", "gd.pick.saved": "My saved places", "gd.pick.go": "Go",
   "gd.loading": "Loading real data…", "gd.err": "Oops, I could not load the data for this spot. Try another place.", "gd.nodata": "There is no land elevation data here (sea or polar area). Try another place.",
   "gd.earth": "Earth", "gd.dName": "Terrain Gap (D, lower = closer)", "gd.step": "Step {n} of {of}",
