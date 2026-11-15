@@ -18,10 +18,19 @@ const LOOK = {
   mars: { ground: [178, 96, 56], rock: 0x7a3a22, sky: 0x3a2318, fog: 0x8a5a40 },
 };
 
-function surfaceTex([r, g, b]) {                       // blok desenli yüzey (görsel; veri değil)
+function surfaceTex([r, g, b], craters = false) {      // blok desenli yüzey (görsel; veri değil). craters: small decorative crater rings (not data)
   const c = document.createElement("canvas"); c.width = c.height = 256; const x = c.getContext("2d");
   for (let i = 0; i < 64; i++) for (let j = 0; j < 64; j++) {
     const k = 0.82 + Math.random() * 0.3; x.fillStyle = `rgb(${r * k | 0},${g * k | 0},${b * k | 0})`; x.fillRect(i * 4, j * 4, 4, 4);
+  }
+  const col = (k, a) => `rgba(${r * k | 0},${g * k | 0},${b * k | 0},${a})`;
+  for (let n = 0; craters && n < 14; n++) {
+    const R = 6 + Math.random() * 22;
+    for (const dx of [-256, 0, 256]) for (const dy of [-256, 0, 256]) {   // drawn on all wrap sides so tiles join without seams
+      const cx = (n * 97 % 256) + dx, cy = (n * 61 % 256) + dy;
+      x.fillStyle = col(0.62, 0.55); x.beginPath(); x.arc(cx, cy, R, 0, 7); x.fill();
+      x.strokeStyle = col(1.18, 0.7); x.lineWidth = Math.max(2, R * 0.18); x.beginPath(); x.arc(cx - R * 0.08, cy - R * 0.08, R, 0, 7); x.stroke();
+    }
   }
   const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(24, 24);
   t.magFilter = THREE.NearestFilter; t.colorSpace = THREE.SRGBColorSpace; return t;
@@ -48,11 +57,11 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   scene.background = new THREE.Color(L.sky);
   if (L.fog) scene.fog = new THREE.Fog(L.fog, 7, 30);
   const { geometry, zmed } = buildTerrain(dem);
-  const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground), roughness: 1, metalness: 0 });
+  const mat = new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1, metalness: 0 });
   const mesh = new THREE.Mesh(geometry, mat); mesh.scale.y = EXAG; scene.add(mesh);
   let zmin = Infinity; for (let k = 0; k < dem.z.length; k++) { const e = elev(dem, k); if (!Number.isNaN(e) && e < zmin) zmin = e; }
-  const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground.map((v) => v * 0.8)), roughness: 1 }));
-  base.material.map.repeat.set(600, 600); base.rotation.x = -Math.PI / 2;
+  const base = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ map: surfaceTex(L.ground, body === "moon"), roughness: 1 }));
+  base.material.map.repeat.set(960, 960);   // same colour and tile size as the data window (400 km / 10 km × 24): no visible seam base.rotation.x = -Math.PI / 2;
   base.position.y = ((zmin - zmed) / 1000) * EXAG - 0.05; scene.add(base);       // pencere dışı düz zemin (veri değil)
   const h = (x, z) => sampleH(dem, x, z) * EXAG;
   scene.add(rocks(h, L.rock, 260, SETTINGS.windowKm));

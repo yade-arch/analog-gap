@@ -60,8 +60,8 @@ export function createRover(tv, limitDeg, map = KEYMAPS.solo, accent) {
         if (Number.isNaN(ny)) blocked = "nodata";
         if (blocked) s.v = 0;
         else {
-          if (steep && !boost) { s.v *= 0.25; blocked = "steep"; }        // too steep: crawl slowly (warning), Shift climbs faster
-          const k = steep && !boost ? 0.25 : 1, mx = s.x + (nx - s.x) * k, mz = s.z + (nz - s.z) * k;
+          if (steep && !boost) { s.v = Math.sign(s.v) * Math.min(Math.abs(s.v), vmax * 0.45); blocked = "steep"; }   // too steep: capped crawl (warning), Shift climbs faster
+          const k = steep && !boost ? 0.6 : 1, mx = s.x + (nx - s.x) * k, mz = s.z + (nz - s.z) * k;
           const d = Math.hypot(mx - s.x, mz - s.z); s.x = mx; s.z = mz;
           if (steep && !boost) s.health = Math.max(0, s.health - d * 2 * (m.wear ?? 1));
           s.battery = Math.max(0, s.battery - d * 1.5 * (m.drain ?? 1));
