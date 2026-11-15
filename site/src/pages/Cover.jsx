@@ -70,7 +70,7 @@ export default function Cover({ setProfile }) {
         <h1 key={hero}>{hero.toUpperCase()}</h1>
         <i className="cv-line" />
         <p>{SUB[hero]}</p>
-        <a className="cv-go" href="#/game">GET STARTED</a>
+        <a className="cv-go" href="#/map">GET STARTED</a>
       </div>
       <a className="cv-down" href="#/map" aria-label="Explore">↓</a>
       <small className="cv-data">Data: NASA Blue Marble · LRO LROC / LOLA · Viking MDIM</small>
