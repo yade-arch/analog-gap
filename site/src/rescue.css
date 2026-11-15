@@ -11,7 +11,8 @@
 .rs-survey button { padding: 4px 10px; border-radius: 999px; border: 0; background: var(--accent, #1d5fae); color: #fff; font: inherit; cursor: pointer; }
 .g-earthdrive .g-speed-left { left: 12px; bottom: 12px; }
 .g-earthdrive .g-dir-left { left: auto; right: 12px; bottom: 12px; transform: none; }
-.rs-sites { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; margin: 8px 0; } .rs-sites button { font-weight: 700; }
+.rs-sites { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; margin: 8px 0; } .rs-sites button { font-weight: 700; } .rs-sites button.on { background: #1d5fae; border-color: #1d5fae; color: #fff; }
+.rs-desk .rs-acts .g-go { padding: 14px; font-size: 18px; }
 .rs-tabs { align-items: center; display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
 .rs-tabs button { min-width: 34px; padding: 5px 8px; border-radius: 8px; border: 1px solid #c9d5e3; background: #fff; color: #14243a; font-weight: 700; cursor: pointer; }
 .rs-tabs button.on { background: #1d5fae; border-color: #1d5fae; color: #fff; }

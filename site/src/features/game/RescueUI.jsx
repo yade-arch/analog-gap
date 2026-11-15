@@ -43,9 +43,9 @@ export function EarthDesk({ r, profile }) {
   const { S, truth } = r, s = r.site();
   return (
     <aside className="rs-desk" onPointerDown={(e) => e.stopPropagation()}>
-      <h3>🌍 {tf("game.rs.desk.title", { b: t("ui.body." + profile) })}</h3>
-      <div className="rs-sites">{SPOTS.map(([n, la, lo]) => <button key={n} className="g-btn2" onClick={() => r.investigate({ lat: la, lon: lo, free: true, name: n })}>{n}</button>)}</div>
-      {s ? <SiteBox s={s} truth={truth} profile={profile} /> : <p className="rs-small">{t("game.rs.desk.empty")}</p>}
+      <h3>🌍 {t("game.rs.desk.kid")}</h3>
+      <div className="rs-sites">{SPOTS.map(([n, la, lo]) => <button key={n} className={"g-btn2" + (s?.name === n ? " on" : "")} onClick={() => r.investigate({ lat: la, lon: lo, free: true, name: n })}>{n}</button>)}</div>
+      {s && (s.status === "nodata" || s.status === "err") && <p className="rs-warn">{t("game.rs.cantLand")}</p>}
       {s && <div className="rs-acts">
         <button className="g-go" disabled={s.status !== "ok"} onClick={r.chooseReport}>{t("game.rs.land")}</button>
       </div>}
