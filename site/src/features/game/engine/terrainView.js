@@ -68,16 +68,17 @@ export function makeTerrainView(el, dem, body, { spots = 3 } = {}) {
   const h = (x, z) => sampleH(dem, x, z) * EX;
   // Open ground to the horizon (visual only, not data): rays from the window edge outwards; height starts at the real edge
   // height (seamless join) and eases to a flat plain over 5 km, then runs 150 km out where the fog hides it. No walls, no drop-offs.
-  const W2 = SETTINGS.windowKm / 2 * 0.999, RS = [0, 0.1, 0.3, 0.7, 1.4, 2.5, 4, 6, 10, 18, 35, 70, 150], N = 320;
+  const W2 = SETTINGS.windowKm / 2 * 0.999, RS = [0, 0.05, 0.15, 0.3, 0.5, 0.75, 1.1, 1.6, 2.2, 3, 4, 5, 7, 10, 18, 35, 70, 150], N = 320;
   const fade = (d) => { const t = Math.min(1, d / 5); return 1 - t * t * (3 - 2 * t); };
   const edgeAt = (a) => { const c = Math.cos(a), sn = Math.sin(a), k = W2 / Math.max(Math.abs(c), Math.abs(sn)); return [c * k, sn * k]; };
-  const edgeH = (ex, ez) => { const y = h(ex, ez); return Number.isNaN(y) ? 0 : y; };
-  const outerH = (x, z) => { const a = Math.atan2(z, x), [ex, ez] = edgeAt(a); return edgeH(ex, ez) * fade(Math.hypot(x - ex, z - ez)); };
+  let plain = 0, pn = 0; for (let i = 0; i < 64; i++) { const a = (i / 64) * Math.PI * 2, y = h(...edgeAt(a)); if (!Number.isNaN(y)) { plain += y; pn++; } } plain = pn ? plain / pn : 0;   // flat horizon at the mean real edge height (no bowl / upward curve)
+  const edgeH = (ex, ez) => { const y = h(ex, ez); return Number.isNaN(y) ? plain : y; };
+  const outerH = (x, z) => { const a = Math.atan2(z, x), [ex, ez] = edgeAt(a); const f = fade(Math.hypot(x - ex, z - ez)); return edgeH(ex, ez) * f + plain * (1 - f); };
   {
     const pos = [], uv = [], idx = [], Wk = SETTINGS.windowKm;
     for (let i = 0; i <= N; i++) {
       const a = (i / N) * Math.PI * 2, [ex, ez] = edgeAt(a), y0 = edgeH(ex, ez), c = Math.cos(a), sn = Math.sin(a);
-      for (const r of RS) { const x = ex + c * r, z = ez + sn * r; pos.push(x, y0 * fade(r), z); uv.push(x / Wk + 0.5, 0.5 - z / Wk); }
+      for (const r of RS) { const x = ex + c * r, z = ez + sn * r; pos.push(x, y0 * fade(r) + plain * (1 - fade(r)), z); uv.push(x / Wk + 0.5, 0.5 - z / Wk); }
     }
     const M = RS.length;
     for (let i = 0; i < N; i++) for (let j = 0; j < M - 1; j++) { const p = i * M + j, q = p + M; idx.push(p, q, p + 1, p + 1, q, q + 1); }
